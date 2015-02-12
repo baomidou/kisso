@@ -13,11 +13,9 @@ kisso cookie sso framework
 Usage
 ====================
 
-[kisso dependent libs](https://github.com/tuzip/kisso-libs)
+[kisso 依赖 jars](http://git.oschina.net/juapk/kisso-deplibs)
 
-[kisso-test-my](https://github.com/leqwang/kisso/tree/master/kisso/test-my)
-
-[kisso-test-sso](https://github.com/leqwang/kisso/tree/master/kisso/test-sso)
+测试待定！！！！
 
 （1）sso 登录状态
 ![GitHub](https://raw.githubusercontent.com/leqwang/kisso/master/images/sso.jpg "Kisso,login cookie")
