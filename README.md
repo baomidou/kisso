@@ -15,6 +15,8 @@ Usage
 
 [kisso 依赖 jars](http://git.oschina.net/juapk/kisso-deplibs)
 
+[kisso 验证码字体](http://git.oschina.net/juapk/kisso-files/tree/master/kisso-files/font)
+
 测试待定！！！！
 
 （1）sso 登录状态
