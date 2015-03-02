@@ -17,7 +17,9 @@ Usage
 
 [kisso 验证码字体](http://git.oschina.net/juapk/kisso-files/tree/master/kisso-files/font)
 
-测试待定！！！！
+[kisso_jfnal 演示 demo](http://git.oschina.net/juapk/kisso_jfinal)
+
+kisso_spring 测试待定！！！！
 
 （1）sso 登录状态
 ![GitHub](https://raw.githubusercontent.com/leqwang/kisso/master/images/sso.jpg "Kisso,login cookie")
