@@ -68,7 +68,6 @@ public class WebKissoConfigurer {
 		} else {
 			servletContext.log("Initializing is not available kissoConfigLocation on the classpath");
 		}
-		System.out.println(SSOConfig.getLoginUrl());
 	}
 
 
