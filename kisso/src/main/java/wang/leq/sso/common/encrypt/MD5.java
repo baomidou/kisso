@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import wang.leq.sso.SSOConfig;
+import wang.leq.sso.SSOConstant;
 
 /**
  * MD5加密工具类
@@ -50,7 +51,7 @@ public class MD5 {
 	public static String toMD5(String plainText) {
 		StringBuffer rlt = new StringBuffer();
 		try {
-			rlt.append(md5String(plainText.getBytes(SSOConfig.getEncoding())));
+			rlt.append(md5String(plainText.getBytes(SSOConstant.ENCODING)));
 		} catch (UnsupportedEncodingException e) {
 			logger.error(" CipherHelper toMD5 exception:", e.toString());
 		}
