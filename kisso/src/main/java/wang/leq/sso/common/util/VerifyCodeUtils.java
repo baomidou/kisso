@@ -39,40 +39,13 @@ import javax.imageio.ImageIO;
  */
 public class VerifyCodeUtils {
 
-	//使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符
-	public static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+	/***
+	 * 使用到Algerian字体，系统里没有的话需要安装字体，
+	 * 去掉了0,1,4,i,l,o几个容易混淆的字符
+	 */
+	private static final String VERIFY_CODES = "abcdefghjkmnpqrstuvwxyz2356789";
 
 	private static Random random = new Random();
-
-
-	/**
-	 * 使用系统默认字符源生成验证码
-	 * @param verifySize	验证码长度
-	 * @return
-	 */
-	public static String generateVerifyCode( int verifySize ) {
-		return generateVerifyCode(verifySize, VERIFY_CODES);
-	}
-
-
-	/**
-	 * 使用指定源生成验证码
-	 * @param verifySize	验证码长度
-	 * @param sources	验证码字符源
-	 * @return
-	 */
-	public static String generateVerifyCode( int verifySize, String sources ) {
-		if ( sources == null || sources.length() == 0 ) {
-			sources = VERIFY_CODES;
-		}
-		int codesLen = sources.length();
-		Random rand = new Random(System.currentTimeMillis());
-		StringBuilder verifyCode = new StringBuilder(verifySize);
-		for ( int i = 0 ; i < verifySize ; i++ ) {
-			verifyCode.append(sources.charAt(rand.nextInt(codesLen - 1)));
-		}
-		return verifyCode.toString();
-	}
 
 
 	/**
@@ -108,6 +81,28 @@ public class VerifyCodeUtils {
 
 
 	/**
+	 * 使用系统默认字符源生成验证码
+	 * @param verifySize	验证码长度
+	 * @return
+	 */
+	private static String generateVerifyCode( int verifySize ) {
+		int codesLen = VERIFY_CODES.length();
+		Random rand = new Random(System.currentTimeMillis());
+		StringBuilder verifyCode = new StringBuilder(verifySize);
+		for ( int i = 0 ; i < verifySize ; i++ ) {
+			int j = rand.nextInt(codesLen);
+			//0、随机大小写
+			if ( rand.nextBoolean() ) {
+				verifyCode.append(VERIFY_CODES.toUpperCase().charAt(j));
+			} else {
+				verifyCode.append(VERIFY_CODES.charAt(j));
+			}
+		}
+		return verifyCode.toString();
+	}
+
+
+	/**
 	 * 生成指定验证码图像文件
 	 * @param w
 	 * @param h
@@ -115,7 +110,7 @@ public class VerifyCodeUtils {
 	 * @param code
 	 * @throws IOException
 	 */
-	public static void outputImage( int w, int h, File outputFile, String code ) throws IOException {
+	private static void outputImage( int w, int h, File outputFile, String code ) throws IOException {
 		if ( outputFile == null ) {
 			return;
 		}
@@ -142,7 +137,7 @@ public class VerifyCodeUtils {
 	 * @param code
 	 * @throws IOException
 	 */
-	public static void outputImage( int w, int h, OutputStream os, String code ) throws IOException {
+	private static void outputImage( int w, int h, OutputStream os, String code ) throws IOException {
 		int verifySize = code.length();
 		BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		Random rand = new Random();
@@ -166,7 +161,6 @@ public class VerifyCodeUtils {
 		g2.fillRect(0, 2, w, h - 4);
 
 		//绘制干扰线
-		Random random = new Random();
 		g2.setColor(getRandColor(160, 200));//设置线条的颜色
 		for ( int i = 0 ; i < 20 ; i++ ) {
 			int x = random.nextInt(w - 1);
@@ -207,15 +201,17 @@ public class VerifyCodeUtils {
 
 
 	private static Color getRandColor( int fc, int bc ) {
-		if ( fc > 255 ) {
-			fc = 255;
+		int _fc = 255;
+		if ( fc < 255 ) {
+			_fc = fc;
 		}
-		if ( bc > 255 ) {
-			bc = 255;
+		int _bc = 255;
+		if ( bc < 255 ) {
+			_bc = bc;
 		}
-		int r = fc + random.nextInt(bc - fc);
-		int g = fc + random.nextInt(bc - fc);
-		int b = fc + random.nextInt(bc - fc);
+		int r = _fc + random.nextInt(_bc - _fc);
+		int g = _fc + random.nextInt(_bc - _fc);
+		int b = _fc + random.nextInt(_bc - _fc);
 		return new Color(r, g, b);
 	}
 
