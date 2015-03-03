@@ -24,9 +24,20 @@ Usage
 跨域演示demo待定！！！！
 
 （1）sso 登录状态
-![GitHub](https://raw.githubusercontent.com/leqwang/kisso/master/images/sso.jpg "Kisso,login cookie")
+--------------------------------------------
+
+ #登录
+
+<img alt="welcome" width="800" height="500" src="http://git.oschina.net/uploads/images/2015/0302/180314_ddd9616f_12260.png">
+
+ #登录成功
+
+<img alt="welcome" width="800" height="500" src="http://git.oschina.net/uploads/images/2015/0302/180138_590ee527_12260.png">
+
+
 
 （2）跨域登录
+--------------------------------------------
 
 ![GitHub](https://raw.githubusercontent.com/leqwang/kisso/master/images/cl.jpg "Kisso,crossdomain login")
 
@@ -34,20 +45,6 @@ hosts:
 --------------------------------------------
 127.0.0.1 sso.test.com
 127.0.0.1 my.web.com
-
-
-#kisso_jfinal
---------------------------------------------
-jfinal 基于 kisso 的 sso 演示 demo
-
-（1）登录
-
-<img alt="welcome" width="800" height="500" src="http://git.oschina.net/uploads/images/2015/0302/180314_ddd9616f_12260.png">
-
-（2）登录成功
-
-<img alt="welcome" width="800" height="500" src="http://git.oschina.net/uploads/images/2015/0302/180138_590ee527_12260.png">
-
 
 --------------------------------------------
 
