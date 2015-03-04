@@ -27,10 +27,9 @@ import wang.leq.sso.common.IpHelper;
  * @Date 2014-5-8
  */
 public class SSOToken extends Token {
-	private final static String DEFAULT_VALUE = "0";// 默认参数值
-	private String appId;// 应用系统 ID
+	private long appId;// 应用系统 ID
 	private long userId;// 用户 ID
-	private String loginType;// 登录类型
+	private int loginType;// 登录类型
 	private long loginTime;// 登录时间
 
 	public SSOToken() {
@@ -38,17 +37,17 @@ public class SSOToken extends Token {
 	}
 
 	public SSOToken(HttpServletRequest request) {
-		this.appId = DEFAULT_VALUE;
+		this.appId = 0L;
 		setUserIp(IpHelper.getIpAddr(request));
-		this.loginType = DEFAULT_VALUE;
+		this.loginType = 0;
 		this.loginTime = System.currentTimeMillis();
 	}
 
-	public String getAppId() {
+	public long getAppId() {
 		return appId;
 	}
 
-	public void setAppId(String appId) {
+	public void setAppId(long appId) {
 		this.appId = appId;
 	}
 
@@ -60,11 +59,11 @@ public class SSOToken extends Token {
 		this.userId = userId;
 	}
 
-	public String getLoginType() {
+	public int getLoginType() {
 		return loginType;
 	}
 
-	public void setLoginType(String loginType) {
+	public void setLoginType(int loginType) {
 		this.loginType = loginType;
 	}
 
