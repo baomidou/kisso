@@ -28,7 +28,7 @@ public class TestJsonToken {
 
 	public static void main(String[] args) {
 		SSOToken st = new SSOToken();
-		st.setUserId("123");
+		st.setUserId(123L);
 		st.setUserIp("127.0.0.1");
 		String jsonObj = st.jsonToken();
 		System.out.println("==jsonObj=" + jsonObj);
