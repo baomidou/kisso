@@ -20,17 +20,18 @@ import javax.servlet.http.HttpServletRequest;
 import wang.leq.sso.common.IpHelper;
 
 /**
- * SSO登录标记Cookie基本信息对象 
+ * SSO登录标记Cookie基本信息对象
  * <p>
- * @author   hubin
- * @Date	 2014-5-8 	 
+ * 
+ * @author hubin
+ * @Date 2014-5-8
  */
 public class SSOToken extends Token {
-	private final static String DEFAULT_VALUE = "0";//默认参数值
-	private String appId;//应用系统 ID
-	private String userId;//用户 ID
-	private String loginType;//登录类型
-	private long loginTime;//登录时间
+	private final static String DEFAULT_VALUE = "0";// 默认参数值
+	private String appId;// 应用系统 ID
+	private long userId;// 用户 ID
+	private String loginType;// 登录类型
+	private long loginTime;// 登录时间
 
 	public SSOToken() {
 
@@ -51,11 +52,11 @@ public class SSOToken extends Token {
 		this.appId = appId;
 	}
 
-	public String getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 
