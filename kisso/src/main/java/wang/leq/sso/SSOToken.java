@@ -27,10 +27,14 @@ import wang.leq.sso.common.IpHelper;
  * @Date 2014-5-8
  */
 public class SSOToken extends Token {
-	private long appId;// 应用系统 ID
-	private long userId;// 用户 ID
-	private int loginType;// 登录类型
-	private long loginTime;// 登录时间
+	/* 应用系统 ID */
+	private long appId;
+	/* 用户 ID */
+	private long userId;
+	/* 登录类型 */
+	private int loginType;
+	/* 登录时间 */
+	private long loginTime;
 
 	public SSOToken() {
 
