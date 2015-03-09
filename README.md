@@ -28,7 +28,7 @@ Usage
 
  #登录
 
-<img alt="welcome" width="800" height="500" src="http://git.oschina.net/uploads/images/2015/0302/180314_ddd9616f_12260.png">
+<img alt="welcome" width="800" height="500" src="http://git.oschina.net/uploads/images/2015/0309/094255_c46db250_12260.png">
 
  #登录成功
 
