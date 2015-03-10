@@ -1,17 +1,17 @@
 /**
  * Copyright (c) 2011-2014, hubin (243194995@qq.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wang.leq.sso.common.encrypt;
 
@@ -38,7 +38,9 @@ import wang.leq.sso.SSOConstant;
  * @Date	 2014-5-9
  */
 public class MD5 {
+
 	private final static Logger logger = LoggerFactory.getLogger(MD5.class);
+
 
 	/**
 	 * @Description 字符串加密为MD5
@@ -48,15 +50,16 @@ public class MD5 {
 	 * 				需要加密的字符串
 	 * @return
 	 */
-	public static String toMD5(String plainText) {
+	public static String toMD5( String plainText ) {
 		StringBuffer rlt = new StringBuffer();
 		try {
 			rlt.append(md5String(plainText.getBytes(SSOConstant.ENCODING)));
-		} catch (UnsupportedEncodingException e) {
+		} catch ( UnsupportedEncodingException e ) {
 			logger.error(" CipherHelper toMD5 exception:", e.toString());
 		}
 		return rlt.toString();
 	}
+
 
 	/**
 	 * MD5 参数签名生成算法
@@ -65,19 +68,32 @@ public class MD5 {
 	 * @return 签名
 	 * @throws IOException
 	 */
-	public static String getSignature(HashMap<String, String> params, String secret) throws IOException {
+	public static String getSignature( HashMap<String, String> params, String secret ) throws IOException {
 		Map<String, String> sortedParams = new TreeMap<String, String>(params);
 		Set<Entry<String, String>> entrys = sortedParams.entrySet();
 		StringBuilder basestring = new StringBuilder();
-		for (Entry<String, String> param : entrys) {
+		for ( Entry<String, String> param : entrys ) {
 			basestring.append(param.getKey()).append("=").append(param.getValue());
 		}
+		return getSignature(basestring.toString(), secret);
+	}
+
+
+	/**
+	 * MD5 参数签名生成算法
+	 * @param String sigstr 签名字符串
+	 * @param String secret 签名密钥
+	 * @return 签名
+	 * @throws IOException
+	 */
+	public static String getSignature( String sigstr, String secret ) throws IOException {
+		StringBuilder basestring = new StringBuilder(sigstr);
 		basestring.append(secret);
 		byte[] bytes = md5Raw(basestring.toString().getBytes(SSOConfig.getEncoding()));
 		StringBuilder sign = new StringBuilder();
-		for (int i = 0; i < bytes.length; i++) {
+		for ( int i = 0 ; i < bytes.length ; i++ ) {
 			String hex = Integer.toHexString(bytes[i] & 0xFF);
-			if (hex.length() == 1) {
+			if ( hex.length() == 1 ) {
 				sign.append("0");
 			}
 			sign.append(hex);
@@ -85,48 +101,52 @@ public class MD5 {
 		return sign.toString();
 	}
 
-	public static byte[] md5Raw(byte[] data) {
+
+	public static byte[] md5Raw( byte[] data ) {
 		byte[] md5buf = null;
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("md5");
 			md5buf = md5.digest(data);
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			md5buf = null;
 			e.printStackTrace(System.err);
 		}
 		return md5buf;
 	}
 
-	public static String md5String(byte[] data) {
+
+	public static String md5String( byte[] data ) {
 		String md5Str = null;
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("md5");
 			md5Str = "";
 			byte[] buf = md5.digest(data);
-			for (int i = 0; i < buf.length; i++) {
+			for ( int i = 0 ; i < buf.length ; i++ ) {
 				md5Str += byte2Hex(buf[i]);
 			}
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			md5Str = null;
 			e.printStackTrace(System.err);
 		}
 		return md5Str;
 	}
 
-	public static String byte2Hex(byte b) {
+
+	public static String byte2Hex( byte b ) {
 		String hex = Integer.toHexString(b);
-		if (hex.length() > 2) {
+		if ( hex.length() > 2 ) {
 			hex = hex.substring(hex.length() - 2);
 		}
-		while (hex.length() < 2) {
+		while ( hex.length() < 2 ) {
 			hex = "0" + hex;
 		}
 		return hex;
 	}
-	
-	public static String byte2Hex(byte[] bytes) {
+
+
+	public static String byte2Hex( byte[] bytes ) {
 		Formatter formatter = new Formatter();
-		for (byte b : bytes) {
+		for ( byte b : bytes ) {
 			formatter.format("%02x", b);
 		}
 		String hash = formatter.toString();
