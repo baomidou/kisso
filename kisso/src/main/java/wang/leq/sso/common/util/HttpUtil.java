@@ -1,21 +1,24 @@
 /**
  * Copyright (c) 2011-2014, hubin (243194995@qq.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wang.leq.sso.common.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -39,14 +42,15 @@ public class HttpUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String getQueryString(HttpServletRequest request, String encode) throws IOException {
+	public static String getQueryString( HttpServletRequest request, String encode ) throws IOException {
 		StringBuffer sb = request.getRequestURL();
 		String query = request.getQueryString();
-		if (query != null && query.length() > 0) {
+		if ( query != null && query.length() > 0 ) {
 			sb.append("?").append(query);
 		}
 		return URLEncoder.encode(sb.toString(), encode);
 	}
+
 
 	/**
 	 * @Description getRequestURL是否包含在URL之内
@@ -55,13 +59,13 @@ public class HttpUtil {
 	 *            参数为以';'分割的URL字符串
 	 * @return
 	 */
-	public static boolean inContainURL(HttpServletRequest request, String url) {
+	public static boolean inContainURL( HttpServletRequest request, String url ) {
 		boolean result = false;
-		if (url != null && !"".equals(url.trim())) {
+		if ( url != null && !"".equals(url.trim()) ) {
 			String[] urlArr = url.split(";");
 			StringBuffer reqUrl = request.getRequestURL();
-			for (int i = 0; i < urlArr.length; i++) {
-				if (reqUrl.indexOf(urlArr[i]) > 1) {
+			for ( int i = 0 ; i < urlArr.length ; i++ ) {
+				if ( reqUrl.indexOf(urlArr[i]) > 1 ) {
 					result = true;
 					break;
 				}
@@ -69,6 +73,7 @@ public class HttpUtil {
 		}
 		return result;
 	}
+
 
 	/**
 	 * @Description URLEncoder返回地址
@@ -80,8 +85,8 @@ public class HttpUtil {
 	 * 				返回地址
 	 * @return
 	 */
-	public static String encodeRetURL(String url, String retParam, String retUrl) {
-		if (url == null) {
+	public static String encodeRetURL( String url, String retParam, String retUrl ) {
+		if ( url == null ) {
 			return null;
 		}
 		StringBuffer retStr = new StringBuffer(url);
@@ -90,11 +95,12 @@ public class HttpUtil {
 		retStr.append("=");
 		try {
 			retStr.append(URLEncoder.encode(retUrl, SSOConfig.getEncoding()));
-		} catch (UnsupportedEncodingException e) {
+		} catch ( UnsupportedEncodingException e ) {
 			e.printStackTrace();
 		}
 		return retStr.toString();
 	}
+
 
 	/**
 	 * GET 请求
@@ -102,12 +108,13 @@ public class HttpUtil {
 	 * @param request
 	 * @return boolean
 	 */
-	public static boolean isGet(HttpServletRequest request) {
-		if ("GET".equalsIgnoreCase(request.getMethod())) {
+	public static boolean isGet( HttpServletRequest request ) {
+		if ( "GET".equalsIgnoreCase(request.getMethod()) ) {
 			return true;
 		}
 		return false;
 	}
+
 
 	/**
 	 * POST 请求
@@ -115,10 +122,46 @@ public class HttpUtil {
 	 * @param request
 	 * @return boolean
 	 */
-	public static boolean isPost(HttpServletRequest request) {
-		if ("POST".equalsIgnoreCase(request.getMethod())) {
+	public static boolean isPost( HttpServletRequest request ) {
+		if ( "POST".equalsIgnoreCase(request.getMethod()) ) {
 			return true;
 		}
 		return false;
+	}
+
+
+	/**
+	 * 获取Request Playload 内容
+	 * <p>
+	 * @param request
+	 * @return Request Playload 内容
+	 */
+	public static String requestPlayload( HttpServletRequest request ) throws IOException {
+		StringBuilder stringBuilder = new StringBuilder();
+		BufferedReader bufferedReader = null;
+		try {
+			InputStream inputStream = request.getInputStream();
+			if ( inputStream != null ) {
+				bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+				char[] charBuffer = new char[128];
+				int bytesRead = -1;
+				while ( (bytesRead = bufferedReader.read(charBuffer)) > 0 ) {
+					stringBuilder.append(charBuffer, 0, bytesRead);
+				}
+			} else {
+				stringBuilder.append("");
+			}
+		} catch ( IOException ex ) {
+			throw ex;
+		} finally {
+			if ( bufferedReader != null ) {
+				try {
+					bufferedReader.close();
+				} catch ( IOException ex ) {
+					throw ex;
+				}
+			}
+		}
+		return stringBuilder.toString();
 	}
 }
