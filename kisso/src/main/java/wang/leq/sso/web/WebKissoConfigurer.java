@@ -50,6 +50,7 @@ public class WebKissoConfigurer {
 				String[] cfg = location.split(":");
 				if ( cfg.length == 2 ) {
 					InputStream in = WebKissoConfigurer.class.getClassLoader().getResourceAsStream(cfg[1]);
+					//初始化配置
 					SSOConfig.init(getInputStream(servletContext, in));
 				}
 			} else {

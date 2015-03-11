@@ -37,17 +37,34 @@ public class ReflectUtil {
 
 	private final static Logger logger = LoggerFactory.getLogger(ReflectUtil.class);
 
+	private static Encrypt encrypt = null;
+
+	private static TokenCache tokenCache = null;
+
+
+	/**
+	 * 反射初始化
+	 */
+	public static void init() {
+		getConfigEncrypt();
+		getConfigTokenCache();
+	}
+
 
 	/**
 	 * 反射获取自定义Encrypt
 	 * @return
 	 */
 	public static Encrypt getConfigEncrypt() {
+
+		if ( encrypt != null ) {
+			return encrypt;
+		}
+
 		/**
 		 * 判断是否自定义 Encrypt
 		 * 默认 AES
 		 */
-		Encrypt encrypt = null;
 		if ( "".equals(SSOConfig.getEncryptClass()) ) {
 			encrypt = new AES();
 		} else {
@@ -113,11 +130,15 @@ public class ReflectUtil {
 	 * @return
 	 */
 	public static TokenCache getConfigTokenCache() {
+
+		if ( tokenCache != null ) {
+			return tokenCache;
+		}
+
 		/**
 		 * 判断是否自定义 TokenCache
 		 * 默认 TokenCacheMap
 		 */
-		TokenCache tokenCache = null;
 		if ( "".equals(SSOConfig.getTokenCacheClass()) ) {
 			tokenCache = new TokenCacheMap();
 		} else {

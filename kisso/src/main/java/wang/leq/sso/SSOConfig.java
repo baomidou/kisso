@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import wang.leq.sso.common.util.PropertiesUtil;
+import wang.leq.sso.common.util.ReflectUtil;
 import wang.leq.sso.exception.KissoException;
 
 /**
@@ -43,6 +44,8 @@ public class SSOConfig {
 		if ( props != null ) {
 			prop = new PropertiesUtil(props);
 			logger.info("loading kisso config.");
+			//初始化反射配置
+			ReflectUtil.init();
 		} else {
 			throw new KissoException(" cannot load kisso config. ");
 		}
