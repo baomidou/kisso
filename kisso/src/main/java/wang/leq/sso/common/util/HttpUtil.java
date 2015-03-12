@@ -164,4 +164,24 @@ public class HttpUtil {
 		}
 		return stringBuilder.toString();
 	}
+
+
+	/**
+	 * 获取当前完整请求地址
+	 * <p>
+	 * @param request
+	 * @return 请求地址
+	 */
+	public String getRequestUrl( HttpServletRequest request ) {
+		StringBuffer url = new StringBuffer(request.getScheme());
+		//请求协议 http,https
+		url.append("://");
+		url.append(request.getHeader("host"));//请求服务器
+		url.append(request.getRequestURI());//工程名
+		if ( request.getQueryString() != null ) {
+			//请求参数 
+			url.append("?").append(request.getQueryString());
+		}
+		return url.toString();
+	}
 }
