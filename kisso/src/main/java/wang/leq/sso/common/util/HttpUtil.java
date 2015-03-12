@@ -172,7 +172,7 @@ public class HttpUtil {
 	 * @param request
 	 * @return 请求地址
 	 */
-	public String getRequestUrl( HttpServletRequest request ) {
+	public static String getRequestUrl( HttpServletRequest request ) {
 		StringBuffer url = new StringBuffer(request.getScheme());
 		//请求协议 http,https
 		url.append("://");
