@@ -67,7 +67,7 @@ public class MD5 {
 	 * @return 签名
 	 * @throws IOException
 	 */
-	public static String getSignature( HashMap<String, String> params, String secret ) throws IOException {
+	public static String getSignature( HashMap<String, String> params, String secret ) {
 		Map<String, String> sortedParams = new TreeMap<String, String>(params);
 		Set<Entry<String, String>> entrys = sortedParams.entrySet();
 		StringBuilder basestring = new StringBuilder();
@@ -85,19 +85,10 @@ public class MD5 {
 	 * @return 签名
 	 * @throws IOException
 	 */
-	public static String getSignature( String sigstr, String secret ) throws IOException {
+	public static String getSignature( String sigstr, String secret ) {
 		StringBuilder basestring = new StringBuilder(sigstr);
 		basestring.append(secret);
-		byte[] bytes = md5Raw(basestring.toString().getBytes(SSOConfig.getEncoding()));
-		StringBuilder sign = new StringBuilder();
-		for ( int i = 0 ; i < bytes.length ; i++ ) {
-			String hex = Integer.toHexString(bytes[i] & 0xFF);
-			if ( hex.length() == 1 ) {
-				sign.append("0");
-			}
-			sign.append(hex);
-		}
-		return sign.toString();
+		return toMD5(basestring.toString());
 	}
 
 
