@@ -87,7 +87,8 @@ public class MD5 {
 	 */
 	public static String getSignature( String sigstr, String secret ) {
 		StringBuilder basestring = new StringBuilder(sigstr);
-		basestring.append(secret);
+		basestring.append("#");
+		basestring.append(toMD5(secret));
 		return toMD5(basestring.toString());
 	}
 
