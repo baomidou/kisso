@@ -64,7 +64,7 @@ public class SSOConfig {
 	 * 编码格式默认 UTF-8
 	 */
 	public static String getEncoding() {
-		if ( prop != null ) {
+		if ( prop == null ) {
 			return SSOConstant.ENCODING;
 		}
 		return prop.get("sso.encoding", SSOConstant.ENCODING);
