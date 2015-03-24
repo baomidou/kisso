@@ -205,4 +205,13 @@ public class SSOConfig {
 	public static int getAuthCookieMaxage() {
 		return prop.getInt("sso.crossdomain.cookie.maxage", SSOConstant.SSO_AUTH_COOKIE_MAXAGE);
 	}
+
+
+	/**
+	 * 跳转参数
+	 * 默认：ReturnURL
+	 */
+	public static String getParamReturl() {
+		return prop.get("sso.param.returl", SSOConstant.SSO_PARAM_RETURL);
+	}
 }
