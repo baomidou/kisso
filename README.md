@@ -21,7 +21,9 @@ Usage
 
 [kisso_SpringMvc 演示 demo](http://git.oschina.net/juapk/kisso_springmvc)
 
-跨域演示demo待定！！！！
+[kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)
+
+
 
 （1）sso 登录状态
 --------------------------------------------
