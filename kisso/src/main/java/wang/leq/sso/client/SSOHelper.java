@@ -79,7 +79,7 @@ public class SSOHelper {
 
 
 	/**
-	 * Token 是否缓存至 session处理逻辑
+	 * Token 是否缓存处理逻辑
 	 * <p>
 	 * @param request
 	 * @param encrypt
@@ -113,7 +113,7 @@ public class SSOHelper {
 				token = token.parseToken(jsonToken);
 
 				/**
-				 * 判断 Token 是否缓存至 session
+				 * 判断 Token 是否缓存
 				 * 减少解密次数、提高访问速度
 				 */
 				if ( SSOConfig.getCookieCache() && cache != null ) {
