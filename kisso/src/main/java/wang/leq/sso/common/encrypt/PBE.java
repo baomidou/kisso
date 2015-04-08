@@ -27,6 +27,7 @@ import javax.crypto.spec.PBEParameterSpec;
 import org.bouncycastle.util.encoders.Base64;
 
 import wang.leq.sso.common.util.Base64Util;
+import wang.leq.sso.exception.KissoException;
 
 /**
  * PBE 对称加密算法
@@ -109,15 +110,31 @@ public class PBE extends Encrypt {
 	private static byte[] generateSalt(String key){
 		return MD5.toMD5(key).substring(0, 8).getBytes();
 	}
+	
+	public static String encryptPBE(String value, String key) {
+		try {
+			return Base64Util.encryptBASE64(encrypt(value.getBytes(), key, generateSalt(key)));
+		} catch (Exception e) {
+			throw new KissoException(e.toString());
+		}
+	}
+	
+	public static String decryptPBE(String value, String key) {
+		try {
+			return new String(decrypt(Base64Util.decryptBASE64(value), key, generateSalt(key)));
+		} catch (Exception e) {
+			throw new KissoException(e.toString());
+		}
+	}
 
 	@Override
 	public String encrypt(String value, String key) throws Exception {
-		return Base64Util.encryptBASE64(encrypt(value.getBytes(), key, generateSalt(key)));
+		return encryptPBE(value, key);
 	}
 
 	@Override
 	public String decrypt(String value, String key) throws Exception {
-		return new String(decrypt(Base64Util.decryptBASE64(value), key, generateSalt(key)));
+		return decryptPBE(value, key);
 	}
 	
 	/**
