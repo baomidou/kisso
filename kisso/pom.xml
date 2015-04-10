@@ -23,7 +23,6 @@
 		<UserAgentUtils.version>1.2.4</UserAgentUtils.version>
 		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
 		<fastjson.version>1.1.46</fastjson.version>
-		<spring.version>4.1.4.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
