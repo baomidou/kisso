@@ -65,7 +65,7 @@ Supports
 
 3、支持防止 XSS攻击, SQL注入，脚本注入
 
-4、支持Base64 / MD5 / AES / RSA 算法
+4、支持 Base64 / MD5 / AES / PBE / RSA 算法
 
 5、支持浏览器客户端校验
 
