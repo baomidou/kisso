@@ -58,6 +58,7 @@ public class EnvUtil {
 				prop.setProperty(key, value);
 			}
 		}
+		br.close();
 		return prop;
 	}
 
