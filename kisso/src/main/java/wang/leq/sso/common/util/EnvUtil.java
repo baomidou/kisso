@@ -43,7 +43,7 @@ public class EnvUtil {
 		if ( OS_LINUX == null ) {
 			String OS = System.getProperty("os.name").toLowerCase();
 			logger.info("os.name: {}", OS);
-			if ( OS.indexOf("windows") > -1 ) {
+			if ( OS != null && OS.contains("windows") ) {
 				OS_LINUX = false;
 			} else {
 				OS_LINUX = true;
