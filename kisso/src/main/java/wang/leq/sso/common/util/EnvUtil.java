@@ -34,19 +34,31 @@ public class EnvUtil {
 
 
 	/**
+	 * 判断当前系统是否为 linux
+	 * @return true linux, false windows
+	 */
+	public static boolean isLinux() {
+		String OS = System.getProperty("os.name").toLowerCase();
+		logger.info("os.name: {}", OS);
+		if ( OS.indexOf("windows") > -1 ) {
+			return false;
+		}
+		return true;
+	}
+
+
+	/**
 	 * 返回当前系统变量的函数
 	 * 结果放至 Properties
 	 */
 	public static Properties getEnv() throws Exception {
 		Properties prop = new Properties();
-		String OS = System.getProperty("os.name").toLowerCase();
-		logger.info("os.name: {}", OS);
 		Process p = null;
-		if ( OS.indexOf("windows") > -1 ) {
-			p = Runtime.getRuntime().exec("cmd /c set");
-		} else {
-			//linux
+		if ( isLinux() ) {
 			p = Runtime.getRuntime().exec("sh -c set");
+		} else {
+			//windows
+			p = Runtime.getRuntime().exec("cmd /c set");
 		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line;
