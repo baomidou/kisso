@@ -32,18 +32,24 @@ public class EnvUtil {
 
 	private final static Logger logger = LoggerFactory.getLogger(EnvUtil.class);
 
+	private static Boolean OS_LINUX = null;
+
 
 	/**
 	 * 判断当前系统是否为 linux
 	 * @return true linux, false windows
 	 */
 	public static boolean isLinux() {
-		String OS = System.getProperty("os.name").toLowerCase();
-		logger.info("os.name: {}", OS);
-		if ( OS.indexOf("windows") > -1 ) {
-			return false;
+		if ( OS_LINUX == null ) {
+			String OS = System.getProperty("os.name").toLowerCase();
+			logger.info("os.name: {}", OS);
+			if ( OS.indexOf("windows") > -1 ) {
+				OS_LINUX = false;
+			} else {
+				OS_LINUX = true;
+			}
 		}
-		return true;
+		return OS_LINUX;
 	}
 
 
