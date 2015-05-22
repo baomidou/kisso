@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>wang.leq</groupId>
 	<artifactId>kisso</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-RELEASE</version>
 	<packaging>jar</packaging>
 
 	<name>kisso</name>
@@ -22,7 +22,7 @@
 		<slf4j-api.version>1.7.7</slf4j-api.version>
 		<UserAgentUtils.version>1.2.4</UserAgentUtils.version>
 		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
-		<fastjson.version>1.1.46</fastjson.version>
+		<fastjson.version>1.2.6</fastjson.version>
 	</properties>
 
 	<dependencies>
