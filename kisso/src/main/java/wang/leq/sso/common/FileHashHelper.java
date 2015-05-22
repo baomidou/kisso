@@ -120,7 +120,7 @@ public class FileHashHelper {
 				md5.update(buffer, 0, len);
 			}
 		} catch ( Exception e ) {
-			e.printStackTrace();
+			logger.error("getHash error: ", e);
 		} finally {
 			ins.close();
 		}

@@ -1,17 +1,17 @@
 /**
  * Copyright (c) 2011-2014, hubin (243194995@qq.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wang.leq.sso;
 
@@ -38,31 +38,27 @@ import com.alibaba.fastjson.JSON;
  * @Date	 2014-06-27
  */
 public class CrossDomainHelper {
+
 	private final static Logger logger = LoggerFactory.getLogger(CrossDomainHelper.class);
+
 
 	/**
 	 * 设置跨域信任 Cookie
 	 * @param authToken
 	 * 				跨域信任 Token
 	 */
-	public static void setAuthCookie(HttpServletRequest request,
-			HttpServletResponse response, AuthToken authToken) {
+	public static void setAuthCookie( HttpServletRequest request, HttpServletResponse response, AuthToken authToken ) {
 		try {
-			CookieHelper.addCookie(
-					response,
-					SSOConfig.getCookieDomain(),
-					SSOConfig.getCookiePath(),
-					SSOConfig.getAuthCookieName(),
-					KissoHelper.encryptCookie(request, authToken,
-							ReflectUtil.getConfigEncrypt()),
-					SSOConfig.getAuthCookieMaxage(), true,
-					SSOConfig.getCookieSecure());
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("AuthToken encryptCookie error.");
+			CookieHelper.addCookie(response, SSOConfig.getCookieDomain(), SSOConfig.getCookiePath(),
+				SSOConfig.getAuthCookieName(),
+				KissoHelper.encryptCookie(request, authToken, ReflectUtil.getConfigEncrypt()),
+				SSOConfig.getAuthCookieMaxage(), true, SSOConfig.getCookieSecure());
+		} catch ( Exception e ) {
+			logger.error("AuthToken encryptCookie error.", e);
 		}
 	}
-	
+
+
 	/**
 	 * 获取跨域信任 AuthToken
 	 * @param request
@@ -70,10 +66,10 @@ public class CrossDomainHelper {
 	 * 				RSA 公钥 (SSO)
 	 * @return
 	 */
-	public static AuthToken getAuthToken(HttpServletRequest request, String publicKey) {
-		String jsonToken = KissoHelper.getJsonToken(request,
-				ReflectUtil.getConfigEncrypt(), SSOConfig.getAuthCookieName());
-		if (jsonToken == null || "".equals(jsonToken)) {
+	public static AuthToken getAuthToken( HttpServletRequest request, String publicKey ) {
+		String jsonToken = KissoHelper.getJsonToken(request, ReflectUtil.getConfigEncrypt(),
+			SSOConfig.getAuthCookieName());
+		if ( jsonToken == null || "".equals(jsonToken) ) {
 			logger.info("jsonToken is null.");
 			return null;
 		} else {
@@ -82,13 +78,14 @@ public class CrossDomainHelper {
 			 * 合法返回 AuthToken
 			 */
 			AuthToken at = JSON.parseObject(jsonToken, AuthToken.class);
-			if (KissoHelper.checkIp(request, at) == null) {
+			if ( KissoHelper.checkIp(request, at) == null ) {
 				return null;
 			}
 			return at.verify(publicKey);
 		}
 	}
-	
+
+
 	/**
 	 * 生成跨域询问密文
 	 * @param authToken
@@ -96,16 +93,16 @@ public class CrossDomainHelper {
 	 * @param aesKey
 	 * 				AES 密钥
 	 */
-	public static String askCiphertext(AuthToken authToken, String aesKey) {
+	public static String askCiphertext( AuthToken authToken, String aesKey ) {
 		try {
 			return new AES().encrypt(authToken.jsonToken(), aesKey);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.info("askCiphertext AES encrypt error.");
+		} catch ( Exception e ) {
+			logger.info("askCiphertext AES encrypt error.", e);
 		}
 		return null;
 	}
-	
+
+
 	/**
 	 * 生成跨域回复密文
 	 * @param authToken
@@ -121,18 +118,17 @@ public class CrossDomainHelper {
 	 * @param aesKey
 	 * 				AES 密钥
 	 */
-	public static String replyCiphertext(HttpServletRequest request, String userId,
-			String askTxt, String privateKey, String publicKey, String aesKey) {
+	public static String replyCiphertext( HttpServletRequest request, String userId, String askTxt, String privateKey,
+			String publicKey, String aesKey ) {
 		String at = null;
 		try {
 			at = new AES().decrypt(askTxt, aesKey);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.info("replyCiphertext AES decrypt error.");
+		} catch ( Exception e ) {
+			logger.info("replyCiphertext AES decrypt error.", e);
 		}
-		if (at != null) {
+		if ( at != null ) {
 			AuthToken authToken = JSON.parseObject(at, AuthToken.class);
-			if (KissoHelper.checkIp(request, authToken.verify(publicKey)) != null) {
+			if ( KissoHelper.checkIp(request, authToken.verify(publicKey)) != null ) {
 				authToken.setUserId(userId);
 				try {
 					/**
@@ -141,15 +137,15 @@ public class CrossDomainHelper {
 					 */
 					authToken.sign(privateKey);
 					return new AES().encrypt(authToken.jsonToken(), aesKey);
-				} catch (Exception e) {
-					e.printStackTrace();
-					logger.info("replyCiphertext AES encrypt error.");
-				} 
+				} catch ( Exception e ) {
+					logger.info("replyCiphertext AES encrypt error.", e);
+				}
 			}
 		}
 		return null;
 	}
-	
+
+
 	/**
 	 * 验证回复密文，成功! 返回绑定用户ID
 	 * @param request
@@ -166,27 +162,26 @@ public class CrossDomainHelper {
 	 * 				AES 密钥
 	 * @return 用户ID
 	 */
-	public static String ok(HttpServletRequest request, HttpServletResponse response,
-			String replyTxt, String tokenPk, String replyPk, String aesKey) {
+	public static String ok( HttpServletRequest request, HttpServletResponse response, String replyTxt, String tokenPk,
+			String replyPk, String aesKey ) {
 		AuthToken authToken = getAuthToken(request, tokenPk);
-		if (authToken != null) {
+		if ( authToken != null ) {
 			String rt = null;
 			try {
 				rt = new AES().decrypt(replyTxt, aesKey);
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.info("kisso AES decrypt error.");
+			} catch ( Exception e ) {
+				logger.error("kisso AES decrypt error.", e);
 			}
-			if (rt != null) {
+			if ( rt != null ) {
 				AuthToken atk = JSON.parseObject(rt, AuthToken.class);
-				if (atk != null && atk.getUuid().equals(authToken.getUuid())) {
-					if (atk.verify(replyPk) != null) {
+				if ( atk != null && atk.getUuid().equals(authToken.getUuid()) ) {
+					if ( atk.verify(replyPk) != null ) {
 						/**
 						 * 删除跨域信任Cookie
 						 * 返回 userId
 						 */
 						CookieHelper.clearCookieByName(request, response, SSOConfig.getAuthCookieName(),
-								SSOConfig.getCookieDomain(), SSOConfig.getCookiePath());
+							SSOConfig.getCookieDomain(), SSOConfig.getCookiePath());
 						return atk.getUserId();
 					}
 				}
@@ -194,5 +189,5 @@ public class CrossDomainHelper {
 		}
 		return null;
 	}
-	
+
 }

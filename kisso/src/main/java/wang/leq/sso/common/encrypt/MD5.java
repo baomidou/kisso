@@ -54,7 +54,7 @@ public class MD5 {
 		try {
 			rlt.append(md5String(plainText.getBytes(SSOConfig.getEncoding())));
 		} catch ( UnsupportedEncodingException e ) {
-			logger.error(" CipherHelper toMD5 exception:", e.toString());
+			logger.error(" CipherHelper toMD5 exception:", e);
 		}
 		return rlt.toString();
 	}
@@ -100,7 +100,7 @@ public class MD5 {
 			md5buf = md5.digest(data);
 		} catch ( Exception e ) {
 			md5buf = null;
-			e.printStackTrace(System.err);
+			logger.error("md5Raw error: ", e);
 		}
 		return md5buf;
 	}
@@ -117,7 +117,7 @@ public class MD5 {
 			}
 		} catch ( Exception e ) {
 			md5Str = null;
-			e.printStackTrace(System.err);
+			logger.error("md5String error: ", e);
 		}
 		return md5Str;
 	}

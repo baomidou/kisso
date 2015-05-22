@@ -27,6 +27,8 @@ import java.security.Security;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.encoders.UrlBase64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wang.leq.sso.SSOConfig;
 
@@ -42,6 +44,8 @@ import wang.leq.sso.SSOConfig;
  * @Date	 2014-6-17
  */
 public class Base64Util {
+
+	private static final Logger logger = LoggerFactory.getLogger(Base64Util.class);
 
 	/**
 	 * 文件读取缓冲区大小
@@ -187,7 +191,7 @@ public class Base64Util {
 				}
 				data = out.toByteArray();
 			} catch ( Exception e ) {
-				e.printStackTrace();
+				logger.error("fileToByte error: ", e);
 			} finally {
 				out.close();
 				in.close();
@@ -221,7 +225,7 @@ public class Base64Util {
 				out.flush();
 			}
 		} catch ( Exception e ) {
-			e.printStackTrace();
+			logger.error("byteArrayToFile error: ", e);
 		} finally {
 			out.close();
 			in.close();

@@ -1,17 +1,17 @@
 /**
  * Copyright (c) 2011-2014, hubin (243194995@qq.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wang.leq.sso;
 
@@ -35,8 +35,10 @@ import wang.leq.sso.exception.KissoException;
  * @Date	 2014-5-9
  */
 public class LoginHelper {
+
 	private final static Logger logger = LoggerFactory.getLogger(LoginHelper.class);
-	
+
+
 	/**
 	 * @Description 根据Token生成登录信息Cookie 
 	 * @param request
@@ -46,11 +48,9 @@ public class LoginHelper {
 	 * 				对称加密算法类
 	 * @return	Cookie 登录信息Cookie 
 	 */
-	private static Cookie generateCookie(HttpServletRequest request,
-			Token token, Encrypt encrypt) {
+	private static Cookie generateCookie( HttpServletRequest request, Token token, Encrypt encrypt ) {
 		try {
-			Cookie cookie = new Cookie(SSOConfig.getCookieName(), 
-					KissoHelper.encryptCookie(request, token, encrypt));
+			Cookie cookie = new Cookie(SSOConfig.getCookieName(), KissoHelper.encryptCookie(request, token, encrypt));
 			cookie.setPath(SSOConfig.getCookiePath());
 			cookie.setSecure(SSOConfig.getCookieSecure());
 			cookie.setDomain(SSOConfig.getCookieDomain());
@@ -58,15 +58,16 @@ public class LoginHelper {
 			 * 设置Cookie超时时间
 			 */
 			int maxAge = SSOConfig.getCookieMaxage();
-			if (maxAge >= 0) {
+			if ( maxAge >= 0 ) {
 				cookie.setMaxAge(maxAge);
 			}
 			return cookie;
-		} catch (Exception e) {
-			logger.error("generateCookie is exception!", e.toString());
+		} catch ( Exception e ) {
+			logger.error("generateCookie is exception!", e);
 			return null;
 		}
 	}
+
 
 	/**
 	 * @Description 当前访问域下设置登录Cookie
@@ -75,14 +76,14 @@ public class LoginHelper {
 	 * @param encrypt
 	 * 				对称加密算法类
 	 */
-	private static void setSSOCookie(HttpServletRequest request, HttpServletResponse response, Token token,
-			Encrypt encrypt) {
-		if (encrypt == null) {
+	private static void setSSOCookie( HttpServletRequest request, HttpServletResponse response, Token token,
+			Encrypt encrypt ) {
+		if ( encrypt == null ) {
 			throw new KissoException(" Encrypt not for null.");
 		}
 		try {
 			Cookie ck = generateCookie(request, token, encrypt);
-			if (SSOConfig.getCookieHttponly()) {
+			if ( SSOConfig.getCookieHttponly() ) {
 				/**
 				 * Cookie设置HttpOnly
 				 */
@@ -90,19 +91,21 @@ public class LoginHelper {
 			} else {
 				response.addCookie(ck);
 			}
-		} catch (Exception e) {
-			logger.error("set HTTPOnly cookie createAUID is exception!", e.toString());
+		} catch ( Exception e ) {
+			logger.error("set HTTPOnly cookie createAUID is exception! ", e);
 		}
 	}
+
 
 	/**
 	 * @Description 当前访问域下设置登录Cookie
 	 * @param request
 	 * @param response
 	 */
-	public static void setSSOCookie(HttpServletRequest request, HttpServletResponse response, Token token) {
+	public static void setSSOCookie( HttpServletRequest request, HttpServletResponse response, Token token ) {
 		setSSOCookie(request, response, token, ReflectUtil.getConfigEncrypt());
 	}
+
 
 	/**
 	 * @Description 当前访问域下设置登录Cookie
@@ -110,7 +113,7 @@ public class LoginHelper {
 	 * @param request
 	 * @param response
 	 */
-	public static void authSSOCookie(HttpServletRequest request, HttpServletResponse response, Token token) {
+	public static void authSSOCookie( HttpServletRequest request, HttpServletResponse response, Token token ) {
 		CookieHelper.authJSESSIONID(request, RandomUtil.getCharacterAndNumber(8));
 		setSSOCookie(request, response, token);
 	}

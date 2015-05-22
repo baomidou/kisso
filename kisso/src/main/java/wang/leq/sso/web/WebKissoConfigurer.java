@@ -59,7 +59,6 @@ public class WebKissoConfigurer {
 					try {
 						SSOConfig.init(getInputStream(servletContext, new FileInputStream(file)));
 					} catch ( FileNotFoundException e ) {
-						e.printStackTrace();
 						throw new KissoException(location);
 					}
 				} else {

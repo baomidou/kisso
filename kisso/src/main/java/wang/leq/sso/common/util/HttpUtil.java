@@ -24,6 +24,9 @@ import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import wang.leq.sso.SSOConfig;
 
 /**
@@ -33,6 +36,9 @@ import wang.leq.sso.SSOConfig;
  * @Date	 2014-5-8 	 
  */
 public class HttpUtil {
+
+	private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+
 
 	/**
 	 * @Description 获取URL查询条件
@@ -96,7 +102,7 @@ public class HttpUtil {
 		try {
 			retStr.append(URLEncoder.encode(retUrl, SSOConfig.getEncoding()));
 		} catch ( UnsupportedEncodingException e ) {
-			e.printStackTrace();
+			logger.error("encodeRetURL error: ", e);
 		}
 		return retStr.toString();
 	}

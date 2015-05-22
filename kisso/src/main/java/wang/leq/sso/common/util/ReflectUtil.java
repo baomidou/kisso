@@ -77,12 +77,11 @@ public class ReflectUtil {
 						throw new KissoException(SSOConfig.getEncryptClass() + " not instanceof Encrypt.");
 					}
 				} catch ( InstantiationException e ) {
-					e.printStackTrace();
+					logger.error("getConfigEncrypt error: ", e);
 				} catch ( IllegalAccessException e ) {
-					e.printStackTrace();
+					logger.error("getConfigEncrypt error: ", e);
 				}
 			} catch ( ClassNotFoundException e ) {
-				e.printStackTrace();
 				logger.error("sso.encrypt.class. error..! " + SSOConfig.getEncryptClass());
 			}
 		}
@@ -112,12 +111,11 @@ public class ReflectUtil {
 						throw new KissoException(SSOConfig.getTokenClass() + " not instanceof Token.");
 					}
 				} catch ( InstantiationException e ) {
-					e.printStackTrace();
+					logger.error("getConfigEncrypt error: ", e);
 				} catch ( IllegalAccessException e ) {
-					e.printStackTrace();
+					logger.error("getConfigEncrypt error: ", e);
 				}
 			} catch ( ClassNotFoundException e ) {
-				e.printStackTrace();
 				logger.error("sso.token.class. error..! " + SSOConfig.getTokenClass());
 			}
 		}
@@ -151,12 +149,11 @@ public class ReflectUtil {
 						throw new KissoException(SSOConfig.getTokenCacheClass() + " not instanceof TokenCache.");
 					}
 				} catch ( InstantiationException e ) {
-					e.printStackTrace();
+					logger.error("getConfigEncrypt error: ", e);
 				} catch ( IllegalAccessException e ) {
-					e.printStackTrace();
+					logger.error("getConfigEncrypt error: ", e);
 				}
 			} catch ( ClassNotFoundException e ) {
-				e.printStackTrace();
 				logger.error("sso.tokencache.class. error..! " + SSOConfig.getTokenCacheClass());
 			}
 		}

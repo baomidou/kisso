@@ -1,17 +1,17 @@
 /**
  * Copyright (c) 2011-2014, hubin (243194995@qq.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wang.leq.sso.common;
 
@@ -19,6 +19,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 获取IP地址类
@@ -28,6 +31,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class IpHelper {
 
+	private final static Logger logger = LoggerFactory.getLogger(IpHelper.class);
+
 	private static String LOCAL_IP_STAR_STR = "192.168.";
 
 	static {
@@ -36,18 +41,18 @@ public class IpHelper {
 		try {
 			hostName = InetAddress.getLocalHost().getHostName();
 			InetAddress ipAddr[] = InetAddress.getAllByName(hostName);
-			for (int i = 0; i < ipAddr.length; i++) {
+			for ( int i = 0 ; i < ipAddr.length ; i++ ) {
 				ip = ipAddr[i].getHostAddress();
-				if (ip.startsWith(LOCAL_IP_STAR_STR)) {
+				if ( ip.startsWith(LOCAL_IP_STAR_STR) ) {
 					break;
 				}
 			}
-			if (ip == null) {
+			if ( ip == null ) {
 				ip = ipAddr[0].getHostAddress();
 			}
 
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+		} catch ( UnknownHostException e ) {
+			logger.error("IpHelper error: ", e);
 		}
 
 		LOCAL_IP = ip;
@@ -61,6 +66,7 @@ public class IpHelper {
 	/** 系统的本地服务器名 */
 	public static final String HOST_NAME;
 
+
 	/**
 	 * @Description 获取客户端的IP地址的方法是：request.getRemoteAddr()，这种方法在大部分情况下都是有效的。
 	 * 但是在通过了Apache,Squid等反向代理软件就不能获取到客户端的真实IP地址了，如果通过了多级反向代理的话，
@@ -71,23 +77,23 @@ public class IpHelper {
 	 * @param request
 	 * @return
 	 */
-	public static String getIpAddr(HttpServletRequest request) {
+	public static String getIpAddr( HttpServletRequest request ) {
 		String ip = request.getHeader("x-forwarded-for");
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if ( ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip) ) {
 			ip = request.getHeader("Proxy-Client-IP");
 		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if ( ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip) ) {
 			ip = request.getHeader("WL-Proxy-Client-IP");
 		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if ( ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip) ) {
 			ip = request.getRemoteAddr();
-			if (ip.equals("127.0.0.1")) {
+			if ( ip.equals("127.0.0.1") ) {
 				/** 根据网卡取本机配置的IP */
 				InetAddress inet = null;
 				try {
 					inet = InetAddress.getLocalHost();
 					ip = inet.getHostAddress();
-				} catch (UnknownHostException e) {
+				} catch ( UnknownHostException e ) {
 					e.printStackTrace();
 				}
 			}
@@ -97,8 +103,8 @@ public class IpHelper {
 		 * 第一个IP为客户端真实IP,多个IP按照','分割
 		 * "***.***.***.***".length() = 15
 		 */
-		if (ip != null && ip.length() > 15) {
-			if (ip.indexOf(",") > 0) {
+		if ( ip != null && ip.length() > 15 ) {
+			if ( ip.indexOf(",") > 0 ) {
 				ip = ip.substring(0, ip.indexOf(","));
 			}
 		}
