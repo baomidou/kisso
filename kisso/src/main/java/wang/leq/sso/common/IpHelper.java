@@ -94,7 +94,7 @@ public class IpHelper {
 					inet = InetAddress.getLocalHost();
 					ip = inet.getHostAddress();
 				} catch ( UnknownHostException e ) {
-					e.printStackTrace();
+					logger.error("IpHelper error: ", e);
 				}
 			}
 		}
