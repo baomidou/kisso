@@ -23,14 +23,27 @@ package wang.leq.sso.exception;
  */
 public class KissoException extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 
 	public KissoException( String message ) {
-		super("Kisso exception: " + message);
+		super(kissMessage(message));
 	}
 
+
+	public KissoException( Throwable throwable ) {
+		super(throwable);
+	}
+
+
+	public KissoException( String message, Throwable throwable ) {
+		super(kissMessage(message), throwable);
+	}
+
+
+	private static String kissMessage( String message ) {
+		StringBuffer msg = new StringBuffer(" kisso exception ");
+		msg.append(message);
+		return msg.toString();
+	}
 }

@@ -1,21 +1,24 @@
 /**
  * Copyright (c) 2011-2014, hubin (243194995@qq.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wang.leq.sso;
 
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wang.leq.sso.common.encrypt.RSA;
 import wang.leq.sso.common.util.Base64Util;
@@ -28,7 +31,10 @@ import wang.leq.sso.common.util.Base64Util;
  */
 public class TestRSA {
 
+	protected static Logger logger = LoggerFactory.getLogger(TestJsonToken.class);
+
 	static String publicKey;
+
 	static String privateKey;
 
 	static {
@@ -41,15 +47,17 @@ public class TestRSA {
 
 			//Base64Util.decodeToFile(Base64Util.filePath("/home", "d://rsa", "publicKey.rsa"), publicKey);
 			//Base64Util.decodeToFile(Base64Util.filePath("/home", "d://rsa", "privateKey.rsa"), privateKey);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch ( Exception e ) {
+			logger.error(" TestRSA init: ", e);
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
+
+	public static void main( String[] args ) throws Exception {
 		test();
 		testSign();
 	}
+
 
 	static void test() throws Exception {
 		System.err.println("公钥加密——私钥解密");
@@ -63,6 +71,7 @@ public class TestRSA {
 		String target = new String(decodedData);
 		System.out.println("解密后文字: \r\n" + target);
 	}
+
 
 	static void testSign() throws Exception {
 		System.err.println("私钥加密——公钥解密");

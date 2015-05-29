@@ -30,11 +30,14 @@ import wang.leq.sso.exception.KissoException;
  */
 public class AuthToken extends Token {
 
-	private String userId;//用户ID
+	/* 用户ID */
+	private String userId;
 
-	private String uuid;//32 uuid
+	/* 32 uuid */
+	private String uuid;
 
-	private String rsaSign;//ras sign
+	/* ras sign */
+	private String rsaSign;
 
 
 	@SuppressWarnings("unused")

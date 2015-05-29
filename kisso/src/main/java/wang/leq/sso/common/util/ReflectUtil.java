@@ -82,7 +82,7 @@ public class ReflectUtil {
 					logger.error("getConfigEncrypt error: ", e);
 				}
 			} catch ( ClassNotFoundException e ) {
-				logger.error("sso.encrypt.class. error..! " + SSOConfig.getEncryptClass());
+				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
 			}
 		}
 		return encrypt;
@@ -116,7 +116,7 @@ public class ReflectUtil {
 					logger.error("getConfigEncrypt error: ", e);
 				}
 			} catch ( ClassNotFoundException e ) {
-				logger.error("sso.token.class. error..! " + SSOConfig.getTokenClass());
+				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
 			}
 		}
 		return token;
@@ -154,7 +154,7 @@ public class ReflectUtil {
 					logger.error("getConfigEncrypt error: ", e);
 				}
 			} catch ( ClassNotFoundException e ) {
-				logger.error("sso.tokencache.class. error..! " + SSOConfig.getTokenCacheClass());
+				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
 			}
 		}
 		return tokenCache;
