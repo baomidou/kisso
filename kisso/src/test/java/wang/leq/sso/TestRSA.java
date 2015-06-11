@@ -31,7 +31,7 @@ import wang.leq.sso.common.util.Base64Util;
  */
 public class TestRSA {
 
-	protected static Logger logger = LoggerFactory.getLogger(TestJsonToken.class);
+	protected static Logger logger = LoggerFactory.getLogger(TestRSA.class);
 
 	static String publicKey;
 

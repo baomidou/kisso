@@ -49,7 +49,7 @@ public class HttpUtil {
 	 * @throws IOException
 	 */
 	public static String getQueryString( HttpServletRequest request, String encode ) throws IOException {
-		StringBuffer sb = request.getRequestURL();
+		StringBuffer sb = new StringBuffer(request.getRequestURL());
 		String query = request.getQueryString();
 		if ( query != null && query.length() > 0 ) {
 			sb.append("?").append(query);
@@ -69,7 +69,7 @@ public class HttpUtil {
 		boolean result = false;
 		if ( url != null && !"".equals(url.trim()) ) {
 			String[] urlArr = url.split(";");
-			StringBuffer reqUrl = request.getRequestURL();
+			StringBuffer reqUrl = new StringBuffer(request.getRequestURL());
 			for ( int i = 0 ; i < urlArr.length ; i++ ) {
 				if ( reqUrl.indexOf(urlArr[i]) > 1 ) {
 					result = true;

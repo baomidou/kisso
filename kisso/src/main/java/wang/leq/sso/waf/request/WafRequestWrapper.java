@@ -1,17 +1,17 @@
 /**
  * Copyright (c) 2011-2014, hubin (243194995@qq.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wang.leq.sso.waf.request;
 
@@ -28,18 +28,23 @@ import wang.leq.sso.waf.WafHelper;
  * @Date	 2014-5-8 	 
  */
 public class WafRequestWrapper extends HttpServletRequestWrapper {
+
 	private boolean filterXSS = true;
+
 	private boolean filterSQL = true;
 
-	public WafRequestWrapper(HttpServletRequest request, boolean filterXSS, boolean filterSQL) {
+
+	public WafRequestWrapper( HttpServletRequest request, boolean filterXSS, boolean filterSQL ) {
 		super(request);
 		this.filterXSS = filterXSS;
 		this.filterSQL = filterSQL;
 	}
 
-	public WafRequestWrapper(HttpServletRequest request) {
+
+	public WafRequestWrapper( HttpServletRequest request ) {
 		this(request, true, true);
 	}
+
 
 	/**
 	 * @Description 数组参数过滤
@@ -48,20 +53,21 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 	 * @return
 	 */
 	@Override
-	public String[] getParameterValues(String parameter) {
+	public String[] getParameterValues( String parameter ) {
 		String[] values = super.getParameterValues(parameter);
-		if (values == null) {
+		if ( values == null ) {
 			return null;
 		}
 
 		int count = values.length;
 		String[] encodedValues = new String[count];
-		for (int i = 0; i < count; i++) {
+		for ( int i = 0 ; i < count ; i++ ) {
 			encodedValues[i] = filterParamString(values[i]);
 		}
 
 		return encodedValues;
 	}
+
 
 	/**
 	 * @Description 参数过滤
@@ -70,9 +76,10 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 	 * @return
 	 */
 	@Override
-	public String getParameter(String parameter) {
+	public String getParameter( String parameter ) {
 		return filterParamString(super.getParameter(parameter));
 	}
+
 
 	/**
 	 * @Description 请求头过滤 
@@ -81,9 +88,10 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 	 * @return
 	 */
 	@Override
-	public String getHeader(String name) {
+	public String getHeader( String name ) {
 		return filterParamString(super.getHeader(name));
 	}
+
 
 	/**
 	 * @Description Cookie内容过滤
@@ -92,8 +100,8 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 	@Override
 	public Cookie[] getCookies() {
 		Cookie[] existingCookies = super.getCookies();
-		if (existingCookies != null) {
-			for (int i = 0; i < existingCookies.length; ++i) {
+		if ( existingCookies != null ) {
+			for ( int i = 0 ; i < existingCookies.length ; ++i ) {
 				Cookie cookie = existingCookies[i];
 				cookie.setValue(filterParamString(cookie.getValue()));
 			}
@@ -101,21 +109,22 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 		return existingCookies;
 	}
 
+
 	/**
 	 * @Description 过滤字符串内容
 	 * @param rawValue
 	 * 				待处理内容
 	 * @return
 	 */
-	protected String filterParamString(String rawValue) {
-		if (rawValue == null) {
+	protected String filterParamString( String rawValue ) {
+		if ( rawValue == null ) {
 			return null;
 		}
-		String tmpStr = "";
-		if (this.filterXSS) {
+		String tmpStr = rawValue;
+		if ( this.filterXSS ) {
 			tmpStr = WafHelper.stripXSS(rawValue);
 		}
-		if (this.filterSQL) {
+		if ( this.filterSQL ) {
 			tmpStr = WafHelper.stripSqlInjection(tmpStr);
 		}
 		return tmpStr;

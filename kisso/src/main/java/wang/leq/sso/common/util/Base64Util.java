@@ -89,6 +89,7 @@ public class Base64Util {
 	 * @throws Exception
 	 */
 	public static String encryptBASE64( byte[] key ) throws Exception {
+		/* 设置加密提供者，解决不同容器加密不一致问题 */
 		Security.addProvider(new BouncyCastleProvider());
 		byte[] b = UrlBase64.encode(key);
 		return new String(b, SSOConfig.getEncoding());
