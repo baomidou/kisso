@@ -15,7 +15,12 @@
  */
 package wang.leq.sso.common.util;
 
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Properties 工具类
@@ -25,14 +30,74 @@ import java.util.Properties;
  */
 public class PropertiesUtil {
 
+	private final static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
 	private Properties properties;
 
 	public PropertiesUtil(Properties properties) {
 		this.properties = properties;
 	}
+	
+	public PropertiesUtil(Properties mergeProperties, String productionMode) {
+		this.properties = extractProductionMode(mergeProperties, productionMode);
+	}
 
 	public String get(String key) {
 		return properties.getProperty(key);
+	}
+	
+	/**
+	 * properties 	提取当前模式配置
+	 * --------------------
+	 * dev_mode 	开发模式
+	 * test_mode	测试模式
+	 * online_mode	生产模式
+	 * --------------------
+	 */
+	public static Properties extractProductionMode(Properties mergeProperties,
+			String productionMode) {
+		if (mergeProperties == null) {
+			return null;
+		}
+		
+		/**
+		 * 获取路由规则, 系统属性设置mode优先
+		 */
+		Properties properties = new Properties();
+		String mode = System.getProperty(productionMode);
+		if (mode == null) {
+			String str = mergeProperties.getProperty(productionMode);
+			mode = (str != null) ? str : "online_mode";
+		}
+		logger.info("production.mode={}", mode);
+		properties.put(productionMode, mode);
+		Set<Entry<Object, Object>> es = mergeProperties.entrySet();
+		for (Entry<Object, Object> entry : es) {
+			String key = (String) entry.getKey();
+			int idx = key.lastIndexOf("_mode");
+			String realKey = key;
+			if (idx > 0) {
+				if (key.contains(mode)) {
+					realKey = key.substring(0, key.lastIndexOf("_" + mode));
+				} else {
+					realKey = null;
+				}
+			}
+			if (realKey != null && !properties.containsKey(realKey)) {
+				Object value = null;
+				if (idx > 0) {
+					value = mergeProperties.get(realKey + "_" + mode);
+				} else {
+					value = mergeProperties.get(realKey);
+				}
+				if (value != null) {
+					properties.put(realKey, value);
+				} else {
+					throw new RuntimeException("impossible empty property for "
+							+ realKey);
+				}
+			}
+		}
+		return properties;
 	}
 
 	public String get(String key, String defaultVal) {

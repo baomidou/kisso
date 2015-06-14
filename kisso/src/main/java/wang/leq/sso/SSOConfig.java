@@ -27,6 +27,14 @@ import wang.leq.sso.exception.KissoException;
 /**
  * SSO 配置文件解析
  * <p>
+ * 按照不同的运行模式启用相应的配置 默认开发环境，
+ * 调试方式 Eclipse 环境的 VM 参数中加上 -Dsso.production.mode=dev_mode
+ * 例如：
+ * ------------------------------------------------------------------
+ * sso.login.url_online_mode=http://sso.online.com/login.html
+ * sso.login.url_test_mode=http://sso.test.com/login.html
+ * sso.login.url_dev_mode=http://localhost:8080/login.html
+ * ------------------------------------------------------------------
  * @author   hubin
  * @Date	 2014-5-12 	 
  */
@@ -34,6 +42,11 @@ public class SSOConfig {
 
 	private final static Logger logger = LoggerFactory.getLogger(SSOConfig.class);
 
+	/**
+	 * 运行模式
+	 */
+	private static final String SSO_PRODUCTION_MODE = "sso.production.mode";
+	
 	private static PropertiesUtil prop = null;
 
 
@@ -42,7 +55,7 @@ public class SSOConfig {
 	 */
 	public static void init( Properties props ) {
 		if ( props != null ) {
-			prop = new PropertiesUtil(props);
+			prop = new PropertiesUtil(props, SSO_PRODUCTION_MODE);
 			logger.info("loading kisso config.");
 			//初始化反射配置
 			ReflectUtil.init();
@@ -51,7 +64,18 @@ public class SSOConfig {
 		}
 	}
 
-
+	/**
+	 * SSO 配置模式
+	 * --------------------
+	 * dev_mode 	开发模式
+	 * test_mode	测试模式
+	 * online_mode	生产模式
+	 * --------------------
+	 */
+	public String getProductionMode() {
+		return prop.get(SSO_PRODUCTION_MODE, "online_mode");
+	}
+	
 	/**
 	 * PropertiesUtil
 	 */

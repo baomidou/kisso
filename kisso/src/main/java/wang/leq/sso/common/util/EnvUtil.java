@@ -57,26 +57,31 @@ public class EnvUtil {
 	 * 返回当前系统变量的函数
 	 * 结果放至 Properties
 	 */
-	public static Properties getEnv() throws Exception {
+	public static Properties getEnv() {
 		Properties prop = new Properties();
-		Process p = null;
-		if ( isLinux() ) {
-			p = Runtime.getRuntime().exec("sh -c set");
-		} else {
-			//windows
-			p = Runtime.getRuntime().exec("cmd /c set");
-		}
-		BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		String line;
-		while ( (line = br.readLine()) != null ) {
-			int i = line.indexOf("=");
-			if ( i > -1 ) {
-				String key = line.substring(0, i);
-				String value = line.substring(i + 1);
-				prop.setProperty(key, value);
+		try {
+			Process p = null;
+			if (isLinux()) {
+				p = Runtime.getRuntime().exec("sh -c set");
+			} else {
+				// windows
+				p = Runtime.getRuntime().exec("cmd /c set");
 			}
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					p.getInputStream()));
+			String line;
+			while ((line = br.readLine()) != null) {
+				int i = line.indexOf("=");
+				if (i > -1) {
+					String key = line.substring(0, i);
+					String value = line.substring(i + 1);
+					prop.setProperty(key, value);
+				}
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		br.close();
 		return prop;
 	}
 
@@ -94,12 +99,8 @@ public class EnvUtil {
 	 * 程序输入结果：0
 	 */
 	public static void main( String[] args ) {
-		try {
-			Properties p = EnvUtil.getEnv();
-			//注意大小写，比如读取PATH，Linux下为PATH；Windows为Path。
-			System.out.println(p.getProperty("SSO_LOGIN"));
-		} catch ( Exception e ) {
-			System.out.println(e);
-		}
+		//注意大小写，比如读取PATH，Linux下为PATH；Windows为Path。
+		Properties p = EnvUtil.getEnv();
+		System.out.println(p.getProperty("SSO_LOGIN"));
 	}
 }
