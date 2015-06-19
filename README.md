@@ -4,6 +4,8 @@ kisso  =  cookie sso
 
 http://www.oschina.net/p/kisso
 
+[kisso捐赠记录,感谢你们的支持！](http://git.oschina.net/juapk/kisso/wikis/%E6%8D%90%E8%B5%A0%E8%AE%B0%E5%BD%95)
+
 ﻿sso
 ===
 
