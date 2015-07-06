@@ -57,6 +57,8 @@ public class PropertiesUtil {
 	 * test_mode	测试模式
 	 * online_mode	生产模式
 	 * --------------------
+	 * eclipse 开发模式配置，启动参数 Arguments 属性
+	 * VM arguments 设置 -Dsso.production.mode=dev_mode
 	 */
 	public static Properties extractProductionMode( Properties prop, String productionMode ) {
 		return extractProductionMode(prop, productionMode, "online_mode");
