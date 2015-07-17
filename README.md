@@ -19,7 +19,7 @@ Usage
 
 [kisso 验证码字体](http://git.oschina.net/juapk/kisso-files/tree/master/kisso-files/font)
 
-[kisso_JFnal 演示 demo](http://git.oschina.net/juapk/kisso_jfinal)
+[kisso_Jfinal 演示 demo](http://git.oschina.net/juapk/kisso_jfinal)
 
 [kisso_SpringMvc 演示 demo](http://git.oschina.net/juapk/kisso_springmvc)
 
