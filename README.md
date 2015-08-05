@@ -14,6 +14,7 @@ kisso cookie sso framework
 
 Maven 坐标
 ===
+
 <dependency>
     <groupId>wang.leq</groupId>
     <artifactId>kisso</artifactId>
