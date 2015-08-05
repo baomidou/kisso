@@ -14,12 +14,13 @@ kisso cookie sso framework
 
 Maven 坐标
 ===
-
+```
 <dependency>
     <groupId>wang.leq</groupId>
     <artifactId>kisso</artifactId>
     <version>1.0-RELEASE</version>
 </dependency>
+```
 
 Usage
 ====================
