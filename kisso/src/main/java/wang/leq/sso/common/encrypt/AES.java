@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import wang.leq.sso.SSOConfig;
 import wang.leq.sso.common.util.Base64Util;
+import wang.leq.sso.exception.KissoException;
 
 /**
  * AES encrypt util
@@ -83,7 +84,7 @@ public class AES extends Encrypt {
 				encryptStr = Base64Util.encryptBASE64(encryptBytes);
 			}
 		} catch ( Exception e ) {
-			logger.error("Encrypt encryptAES is exception:", e);
+			throw new KissoException(e);
 		}
 		return encryptStr;
 	}
@@ -103,7 +104,7 @@ public class AES extends Encrypt {
 			byte[] scrBytes = Base64Util.decryptBASE64(str);
 			decryptBytes = cipher.doFinal(scrBytes);
 		} catch ( Exception e ) {
-			logger.error("Encrypt decryptAES is exception:", e);
+			throw new KissoException(e);
 		}
 		if ( decryptBytes != null ) {
 			decryptStr = new String(decryptBytes);

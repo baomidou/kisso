@@ -115,7 +115,7 @@ public class PBE extends Encrypt {
 		try {
 			return Base64Util.encryptBASE64(encrypt(value.getBytes(), key, generateSalt(key)));
 		} catch (Exception e) {
-			throw new KissoException(e.toString());
+			throw new KissoException(e);
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class PBE extends Encrypt {
 		try {
 			return new String(decrypt(Base64Util.decryptBASE64(value), key, generateSalt(key)));
 		} catch (Exception e) {
-			throw new KissoException(e.toString());
+			throw new KissoException(e);
 		}
 	}
 
