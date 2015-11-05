@@ -2,7 +2,19 @@ kisso  =  cookie sso
 
 基于 Cookie 的 SSO 中间件，欢迎大家使用 kisso !! 
 
-> kisso 版本升级，不再兼容之前版本，   当然  demo 查看源码，请检出分支  v1.0-old
+
+[kisso 依赖 jars](http://git.oschina.net/juapk/kisso-deplibs)
+
+[kisso 验证码字体](http://git.oschina.net/juapk/kisso-files/tree/master/kisso-files/font)
+
+[kisso_JFinal 演示 demo](http://git.oschina.net/juapk/kisso_jfinal)
+
+[kisso_SpringMvc 演示 demo](http://git.oschina.net/juapk/kisso_springmvc)
+
+[kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)
+
+
+> kisso 版本升级，不再兼容之前版本， 旧版本 demo 源码查看，请检出分支  v1.0-old
 
 
 http://www.oschina.net/p/kisso
