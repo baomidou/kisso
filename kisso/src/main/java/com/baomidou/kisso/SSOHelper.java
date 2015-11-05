@@ -280,9 +280,6 @@ public class SSOHelper {
 	 * @return Token
 	 */
 	private static Token getToken(HttpServletRequest request, Encrypt encrypt, TokenCache cache) {
-		if (cache == null) {
-			throw new KissoException(" TokenCache not for null.");
-		}
 		if (encrypt == null) {
 			throw new KissoException(" Encrypt not for null.");
 		}

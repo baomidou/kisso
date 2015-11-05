@@ -134,21 +134,24 @@ public class ReflectUtil {
 		/**
 		 * 反射获得缓存类
 		 */
-		try {
-			Class<?> tc = Class.forName(SSOConfig.getTokenCacheClass());
+		String cacheClass = SSOConfig.getTokenCacheClass();
+		if (!"".equals(cacheClass)) {
 			try {
-				if (tc.newInstance() instanceof TokenCache) {
-					tokenCache = (TokenCache) tc.newInstance();
-				} else {
-					throw new KissoException(SSOConfig.getTokenCacheClass() + " not instanceof TokenCache.");
+				Class<?> tc = Class.forName(cacheClass);
+				try {
+					if (tc.newInstance() instanceof TokenCache) {
+						tokenCache = (TokenCache) tc.newInstance();
+					} else {
+						throw new KissoException(SSOConfig.getTokenCacheClass() + " not instanceof TokenCache.");
+					}
+				} catch (InstantiationException e) {
+					logger.error("getConfigEncrypt error: ", e);
+				} catch (IllegalAccessException e) {
+					logger.error("getConfigEncrypt error: ", e);
 				}
-			} catch (InstantiationException e) {
-				logger.error("getConfigEncrypt error: ", e);
-			} catch (IllegalAccessException e) {
-				logger.error("getConfigEncrypt error: ", e);
+			} catch (ClassNotFoundException e) {
+				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
 			}
-		} catch (ClassNotFoundException e) {
-			throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
 		}
 		
 		return tokenCache;
