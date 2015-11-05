@@ -1,0 +1,47 @@
+
+=====================================================================================
+### SSO 跨域登录实现方案
+
+（A）、单点登录系统 SSO
+（B）、业务系统
+=====================================================================================
+(1)、Content内容 + A_PrivateKey摘要  ----> Aeskey加密   ----> 密文请求业务系统
+(2)、AesKey解密 ----> A_PublicKey验证摘要  ----> 业务系统确认登录  ----> 用户ID + B_PublicKey摘要
+(2)、AesKey解密 ----> B_PublicKey验证摘要  ----> 登录B系统用户ID绑定用户
+=====================================================================================
+
+
+
+-------------------------------------------------------------------------------------
+cross_domain 跨域表结构
+-------------------------------------------------------------------------------------
+主键 				id
+业务系统域名 		domain
+SSO私钥			sprk
+SSO公钥			spuk
+业务系统公钥			opuk
+AES密钥 			asek
+校验IP			ip
+登录确认地址			certurl
+更新时间			lastdate
+创建时间			createdate
+-------------------------------------------------------------------------------------
+（A）、单点登录系统 SSO
+------------
+公钥: 
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCDZmAZgJcQV0XjBOk/CB2nR+AXXyVMdcErLgz5LYb/g/Ar7tiHhYlGk69/mlItDnvHxeV/t7ibEqwvQnlDiM6BsYW/9HBzYWiF54D7hxd2MUWqNit232pS5XlmzurrFmqhSomrR0KKJHoA3HIsIGJ/AT9xzDb93GqPtDm6Yt24fwIDAQAB
+
+私钥： 
+MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAINmYBmAlxBXReME6T8IHadH4BdfJUx1wSsuDPkthv+D8Cvu2IeFiUaTr3+aUi0Oe8fF5X+3uJsSrC9CeUOIzoGxhb/0cHNhaIXngPuHF3YxRao2K3bfalLleWbO6usWaqFKiatHQookegDcciwgYn8BP3HMNv3cao+0Obpi3bh/AgMBAAECgYBPbtn1ULkBleCXpmZiRkO21kpvloLzv9OwiLwq/gy39kiAJnkbI+yij7DuEJpQxoqpb8aW+LdOd3FDeInZ+5/qAW5wdMgvABIINxpsQvED9RWb8NvL7Hqvv/ByMFONhyxdbzRDEVcR6SG7pGTJ1NY4TvfUmLDJrXa5N1LZ5lwZoQJBAN2bUnqVwWaQA5V7ZCEPYKAu6rQj0W6fKzcM84Q7dFskF7ZN8lK2zDtiyH9HTYCPtg51rdtIjZ6O2TVz8pDfp/cCQQCXywmR8HxLWhpvQ28e0LbqPMZrP2FBPo9Fe/UneIOtFhi1bC78xvY3b00a7qHSca8UuWGdzI0FPPhaRsLjfaG5AkEAi1gUR8KMxqn9puvcrTEXKAH4UOdI1I8/RDFfmiEsa/bI9jgTDFGnIBxgSDAUmqdC6dqzRHRdoHrgN809lD0eRwJAN2XEUlzAIAf8ScsEjOyDNS2FBLMW3WblhuhcalFTTSIZVmzrIRnD1itqqn+Y02LmENwvQhXbCaRcxyW4DqpVEQJABMSyhR1YzeXHmRVs3k8+eQOZPitUKsArs/tSbt5VB9Ym98anq7VNIXrFDmKsEQTuoIamva94yF7vu1HcrR/LiQ==
+
+------------------------
+（B）、业务系统
+-----------
+公钥: 
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDKeDkRea/pgX2K6V/eOCQ8kImiqH+QkONx+ubVkvME9mr0I4lElNr8Hl1Q2zEQ+zz4zgDyOWoiCBxSwagBPTate15aMs+uplJL74ScW5gduBYcoQfHURC/ORCFGoa5Y6049p1lhow31yKkKGNTYQYupdlR4HFbqESOPFMwFnG0gQIDAQAB
+
+私钥： 
+MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMp4ORF5r+mBfYrpX944JDyQiaKof5CQ43H65tWS8wT2avQjiUSU2vweXVDbMRD7PPjOAPI5aiIIHFLBqAE9Nq17Xloyz66mUkvvhJxbmB24FhyhB8dREL85EIUahrljrTj2nWWGjDfXIqQoY1NhBi6l2VHgcVuoRI48UzAWcbSBAgMBAAECgYAtLeaOH7lBQcPh23GpBJ4RZa9QvIi6mZonNPWNct0HnnT/RW67/vtehugLwt2QDH/uhQlxA57LOUQYs13p6N7qMZ+4YY592hw4hrJUEAuuORU+wKWnr+wVQNm6Qc9Qf7axM6B5NgtLPbf0R7M53vgHHMyJh2tJKrY3RUdBbsUugQJBAObj3+B7v2QVKKPZlYvICwbKZAUcb1qZtPjtw7+aDah0EEqkaYD0ytmjl2esoknPySN2gbouc+nDvYZopFLgiDMCQQDgfRqCYfMHhjHPHoOwco3ZAevDDe22QksBIkfgFB9srEJCWauFyvB5PTG6+wFv94zqy3R92C6AVaWn8Ae8uqx7AkBkroWXfB7PY7KfEGh31bmJMoQ+/lFIbrJNwlCTonfGNyZLhjpDc3tpQD7rhIoYKbWJ80lKiKsfCq4AiGzvft2lAkEAqcBQDGmu0XC7N2hWolVtR7x5H8znhNuKRfg7K4lr3cxAalXOKuSzhKoucbqecqFZsK5aj1Kqjya0llIeN6tdAwJAImLxsxLxhk6dc8slEo8ObLAWWWkRZNiXCpr+2aWspVx1cK3GRtAa+0Q7X0TiA62/CrlWR/xJHvDI/+I9mcxJKg==
+
+
+
