@@ -31,9 +31,9 @@ Maven 坐标
 ===
 ```
 <dependency>
-    <groupId>wang.leq</groupId>
-    <artifactId>kisso</artifactId>
-    <version>1.0-RELEASE</version>
+  <groupId>com.baomidou</groupId>
+  <artifactId>kisso</artifactId>
+  <version>2.0</version>
 </dependency>
 ```
 
