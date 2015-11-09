@@ -305,8 +305,14 @@ public class SSOHelper {
 		 */
 		if (cache != null) {
 			Token tk = cache.get(hashCookie(request));
-			if (tk != null && tk.getFlag() != Token.Flag.CACHE_SHUT) {
-				return tk;
+			if (tk == null) {
+				/* 开启缓存且失效，返回 null 清除 Cookie 退出 */
+				return null;
+			} else {
+				/* 开启缓存 1、缓存正常，返回 tk 2、缓存宕机，执行读取 Cookie 逻辑 */
+				if (tk.getFlag() != Token.Flag.CACHE_SHUT) {
+					return tk;
+				}
 			}
 		}
 
@@ -387,10 +393,12 @@ public class SSOHelper {
 	 * @param response
 	 */
 	public static void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		/* 清理当前登录 Cookie 重新登录 */
+		loginClear(request, response);
+
+		/* redirect login page */
 		String retUrl = HttpUtil.getQueryString(request, SSOConfig.getEncoding());
 		logger.debug("loginAgain redirect pageUrl.." + retUrl);
-
-		// redirect login page
 		response.sendRedirect(HttpUtil.encodeRetURL(SSOConfig.getLoginUrl(), SSOConfig.getParamReturl(), retUrl));
 	}
 
