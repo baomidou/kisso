@@ -2,18 +2,6 @@ kisso  =  cookie sso
 
 基于 Cookie 的 SSO 中间件，欢迎大家使用 kisso !! 
 
-
-[kisso 依赖 jars](http://git.oschina.net/juapk/kisso-deplibs)
-
-[kisso 验证码字体](http://git.oschina.net/juapk/kisso-files/tree/master/kisso-files/font)
-
-[kisso_JFinal 演示 demo](http://git.oschina.net/juapk/kisso_jfinal)
-
-[kisso_SpringMvc 演示 demo](http://git.oschina.net/juapk/kisso_springmvc)
-
-[kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)
-
-
 > kisso 版本升级，不再兼容之前版本， 旧版本 demo 源码查看，请检出分支  v1.0-old
 
 
@@ -38,8 +26,7 @@ Maven 坐标
 ```
 
 Usage
-====================
-
+===========
 [kisso 依赖 jars](http://git.oschina.net/juapk/kisso-deplibs)
 
 [kisso 验证码字体](http://git.oschina.net/juapk/kisso-files/tree/master/kisso-files/font)
@@ -48,8 +35,14 @@ Usage
 
 [kisso_SpringMvc 演示 demo](http://git.oschina.net/juapk/kisso_springmvc)
 
-[kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)
+[kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)ossdomain)
 
+
+说明文档
+===========
+[sso.properties 配置说明](http://git.oschina.net/juapk/kisso/blob/master/kisso/src/main/resources/doc.md/?dir=0&filepath=kisso/src/main/resources/doc.md&oid=6376fee85d0184f0cb4957f928f47508f7140e0f&sha=47f98ea6f97eb195b6fe01459b665cb1f5d1f6d9)
+
+[SSO 跨域登录实现方案](http://git.oschina.net/juapk/kisso/blob/master/kisso/src/main/resources/crossdomain.md/?dir=0&filepath=kisso/src/main/resources/crossdomain.md&oid=e6a5e090f661fafa8a6b739152bdd3b4bb1cd248&sha=47f98ea6f97eb195b6fe01459b665cb1f5d1f6d9)
 
 
 （1）sso 登录状态
