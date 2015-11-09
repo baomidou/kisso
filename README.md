@@ -35,7 +35,7 @@ Usage
 
 [kisso_SpringMvc 演示 demo](http://git.oschina.net/juapk/kisso_springmvc)
 
-[kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)ossdomain)
+[kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)
 
 
 说明文档
