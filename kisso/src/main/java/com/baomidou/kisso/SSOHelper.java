@@ -337,11 +337,16 @@ public class SSOHelper {
 	 * SSO 退出登录
 	 */
 	public static void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// delete cookie
+		/* delete cookie */
 		logout(request, response, ReflectUtil.getConfigTokenCache());
 
-		// redirect logout page
-		response.sendRedirect(SSOConfig.getLogoutUrl());
+		/* redirect logout page */
+		String logoutUrl = SSOConfig.getLogoutUrl();
+		if ("".equals(logoutUrl)) {
+			response.getWriter().write("sso.properties Must include: sso.logout.url");
+		} else {
+			response.sendRedirect(logoutUrl);
+		}
 	}
 
 	/**
@@ -353,9 +358,6 @@ public class SSOHelper {
 	 * @return boolean true 成功, false 失败
 	 */
 	private static boolean logout(HttpServletRequest request, HttpServletResponse response, TokenCache cache) {
-		if (cache == null) {
-			throw new KissoException(" TokenCache not for null.");
-		}
 		/**
 		 * Token 如果开启了缓存，删除缓存记录
 		 */
@@ -397,9 +399,14 @@ public class SSOHelper {
 		loginClear(request, response);
 
 		/* redirect login page */
-		String retUrl = HttpUtil.getQueryString(request, SSOConfig.getEncoding());
-		logger.debug("loginAgain redirect pageUrl.." + retUrl);
-		response.sendRedirect(HttpUtil.encodeRetURL(SSOConfig.getLoginUrl(), SSOConfig.getParamReturl(), retUrl));
+		String loginUrl = SSOConfig.getLoginUrl();
+		if ("".equals(loginUrl)) {
+			response.getWriter().write("sso.properties Must include: sso.login.url");
+		} else {
+			String retUrl = HttpUtil.getQueryString(request, SSOConfig.getEncoding());
+			logger.debug("loginAgain redirect pageUrl.." + retUrl);
+			response.sendRedirect(HttpUtil.encodeRetURL(loginUrl, SSOConfig.getParamReturl(), retUrl));
+		}
 	}
 
 	/**

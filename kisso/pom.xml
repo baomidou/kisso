@@ -36,6 +36,7 @@
 		<slf4j-api.version>1.7.7</slf4j-api.version>
 		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
 		<fastjson.version>1.2.6</fastjson.version>
+		<spring.version>4.1.4.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -64,7 +65,13 @@
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
 		</dependency>
-
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<profiles>
