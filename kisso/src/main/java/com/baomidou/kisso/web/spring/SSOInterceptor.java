@@ -67,22 +67,22 @@ public class SSOInterceptor extends HandlerInterceptorAdapter {
 					 * 忽略拦截
 					 */
 					return true;
-				} else {
-					/**
-					 * 正常执行
-					 */
-					Token token = SSOHelper.getToken(request);
-					if (token == null) {
-						/**
-						 * 重新登录
-						 */
-						logger.debug("logout. request url:{}", request.getRequestURL());
-						SSOHelper.login(request, response);
-						return false;
-					} else {
-						request.setAttribute(SSOConstant.SSO_TOKEN_ATTR, token);
-					}
 				}
+			}
+
+			/**
+			 * 正常执行
+			 */
+			Token token = SSOHelper.getToken(request);
+			if (token == null) {
+				/**
+				 * 重新登录
+				 */
+				logger.debug("logout. request url:{}", request.getRequestURL());
+				SSOHelper.login(request, response);
+				return false;
+			} else {
+				request.setAttribute(SSOConstant.SSO_TOKEN_ATTR, token);
 			}
 		}
 
