@@ -178,7 +178,18 @@ public class SSOHelper {
 			Cookie cookie = new Cookie(SSOConfig.getCookieName(), encryptCookie(request, token, encrypt));
 			cookie.setPath(SSOConfig.getCookiePath());
 			cookie.setSecure(SSOConfig.getCookieSecure());
-			cookie.setDomain(SSOConfig.getCookieDomain());
+			/**
+			 * domain 提示
+			 * <p>
+			 * 有些浏览器 localhost 无法设置 cookie
+			 * </p>
+			 */
+			String domain = SSOConfig.getCookieDomain();
+			cookie.setDomain(domain);
+			if ("".equals(domain) || domain.contains("localhost")) {
+				logger.warn("if you can't login, please enter normal domain. instead: {}", domain);
+			}
+			
 			/**
 			 * 设置Cookie超时时间
 			 */
