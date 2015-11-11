@@ -207,6 +207,11 @@ public class SSOHelper {
 		}
 		try {
 			/**
+			 * 设置加密 Cookie
+			 */
+			Cookie ck = generateCookie(request, token, encrypt);
+			
+			/**
 			 * 判断 Token 是否缓存处理失效
 			 * <p>
 			 * cache 缓存宕机，flag 设置为失效
@@ -214,19 +219,16 @@ public class SSOHelper {
 			 */
 			TokenCache cache = ReflectUtil.getConfigTokenCache();
 			if (cache != null) {
-				boolean rlt = cache.set(hashCookie(request), token, SSOConfig.getTokenCacheExpires());
+				boolean rlt = cache.set(hashCookie(ck), token, SSOConfig.getTokenCacheExpires());
 				if (!rlt) {
 					token.setFlag(Token.Flag.CACHE_SHUT);
 				}
 			}
+			
 			/**
-			 * 设置加密 Cookie
+			 * Cookie设置HttpOnly
 			 */
-			Cookie ck = generateCookie(request, token, encrypt);
 			if (SSOConfig.getCookieHttponly()) {
-				/**
-				 * Cookie设置HttpOnly
-				 */
 				CookieHelper.addHttpOnlyCookie(response, ck);
 			} else {
 				response.addCookie(ck);
@@ -261,6 +263,8 @@ public class SSOHelper {
 	/**
 	 * 获取当前请求 Token
 	 * <p>
+	 * 从 Cookie 解密 token 使用场景，拦截器，非拦截器建议使用 attrToken 减少二次解密
+	 * </p>
 	 * 
 	 * @param request
 	 * @return
@@ -419,6 +423,19 @@ public class SSOHelper {
 	 */
 	public static String hashCookie(HttpServletRequest request) {
 		Cookie uid = CookieHelper.findCookieByName(request, SSOConfig.getCookieName());
+		return hashCookie(uid);
+	}
+	
+	/**
+	 * <p>
+	 * Cookie加密值 Hash
+	 * </p>
+	 * 
+	 * @param uid
+	 * 				登录加密 Cookie
+	 * @return String
+	 */
+	private static String hashCookie(Cookie uid) {
 		if (uid != null) {
 			/**
 			 * MD5 Cookie
