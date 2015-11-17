@@ -59,9 +59,9 @@ sso.cookie.checkip		是否检查登录IP，默认 false
 sso.encrypt.class		自定义对称加密类，默认AES，自定义例如：com.testdemo.DES
 sso.token.class			自定义票据，默认SSOTokwn，自定义例如：com.testdemo.LoginToken
 
-------  Token 缓存部分 ------
-sso.tokencache.class	自定义缓存实现：com.testdemo.RedisCache
-sso.tokencache.expires  单位s秒，设置 -1永不失效，大于 0 失效时间
+------  缓存部分 ------
+sso.cache.class	自定义缓存实现：com.baomidou.cache.RedisCache
+sso.cache.expires  单位s秒，设置 -1永不失效，大于 0 失效时间
 
 ------  SSO 请求地址设置 ------
 sso.login.url_online_mode		线上模式，登录地址：http://sso.testdemo.com/login.html

@@ -30,6 +30,14 @@ public class SSOConstant {
 	 */
 	public final static String ENCODING = "UTF-8";
 
+	/**
+	 * 登录用户数量统计（依赖分布式缓存）
+	 * <p>
+	 * 使用该配置，必须开启分布式缓存
+	 * </p>
+	 */
+	public final static boolean STATISTIC = false;
+
 	public final static String ALLCHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	public final static String SSO_SECRET_KEY = "h2wmABdfM7i3K80mAS";
@@ -67,14 +75,19 @@ public class SSOConstant {
 	 * 自定义Token Class
 	 */
 	public final static String SSO_TOKEN_CLASS = "";
-
+	
 	/**
-	 * 自定义TokenCache Class
+	 * 自定义 SSOStatistic Class
 	 */
-	public final static String SSO_TOKENCACHE_CLASS = "";
+	public final static String SSO_STATISTIC_CLASS = "";
 
 	/**
-	 * 自定义TokenCache Expires
+	 * 自定义SSOCache Class
+	 */
+	public final static String SSO_CACHE_CLASS = "";
+
+	/**
+	 * 自定义SSOCache Expires
 	 * <P>
 	 * 缓存过期时间，小于0不过期，单位时间 s 秒
 	 * </p>
@@ -82,7 +95,7 @@ public class SSOConstant {
 	 * 设置缓存Token 如缓存不存在将自动退出登录
 	 * </p>
 	 */
-	public final static int SSO_TOKENCACHE_EXPIRES = -1;
+	public final static int SSO_CACHE_EXPIRES = -1;
 
 	/**
 	 * 登录相关常量

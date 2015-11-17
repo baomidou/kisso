@@ -58,6 +58,23 @@ public class SSOHelper {
 	}
 
 	/**
+	 * 在线人数（总数）
+	 * 
+	 * @param request
+	 *            查询请求
+	 * @return
+	 */
+	public String getLoginCount(HttpServletRequest request) {
+		SSOStatistic statistic = ReflectUtil.getConfigStatistic();
+		if (statistic != null) {
+			return statistic.count(request);
+		} else {
+			logger.warn("please instanceof SSOStatistic.");
+		}
+		return null;
+	}
+
+	/**
 	 * @Description 加密Token信息
 	 * @param request
 	 * @param token
@@ -189,7 +206,7 @@ public class SSOHelper {
 			if ("".equals(domain) || domain.contains("localhost")) {
 				logger.warn("if you can't login, please enter normal domain. instead: {}", domain);
 			}
-			
+
 			/**
 			 * 设置Cookie超时时间
 			 */
@@ -221,21 +238,32 @@ public class SSOHelper {
 			 * 设置加密 Cookie
 			 */
 			Cookie ck = generateCookie(request, token, encrypt);
-			
+
 			/**
 			 * 判断 Token 是否缓存处理失效
 			 * <p>
 			 * cache 缓存宕机，flag 设置为失效
 			 * </p>
 			 */
-			TokenCache cache = ReflectUtil.getConfigTokenCache();
+			SSOCache cache = ReflectUtil.getConfigCache();
 			if (cache != null) {
-				boolean rlt = cache.set(hashCookie(ck), token, SSOConfig.getTokenCacheExpires());
+				boolean rlt = cache.set(hashCookie(ck), token, SSOConfig.getSSOCacheExpires());
 				if (!rlt) {
 					token.setFlag(Token.Flag.CACHE_SHUT);
 				}
 			}
-			
+
+			/**
+			 * 在线人数统计 +1
+			 */
+			SSOStatistic statistic = ReflectUtil.getConfigStatistic();
+			if (statistic != null) {
+				boolean rlt = statistic.increase(request);
+				if (!rlt) {
+					statistic.increase(request);
+				}
+			}
+
 			/**
 			 * Cookie设置HttpOnly
 			 */
@@ -282,7 +310,7 @@ public class SSOHelper {
 	 * @return Token
 	 */
 	public static Token getToken(HttpServletRequest request) {
-		return getToken(request, ReflectUtil.getConfigEncrypt(), ReflectUtil.getConfigTokenCache());
+		return getToken(request, ReflectUtil.getConfigEncrypt(), ReflectUtil.getConfigCache());
 	}
 
 	/**
@@ -294,7 +322,7 @@ public class SSOHelper {
 	 *            对称加密算法类
 	 * @return Token
 	 */
-	private static Token getToken(HttpServletRequest request, Encrypt encrypt, TokenCache cache) {
+	private static Token getToken(HttpServletRequest request, Encrypt encrypt, SSOCache cache) {
 		if (encrypt == null) {
 			throw new KissoException(" Encrypt not for null.");
 		}
@@ -314,7 +342,7 @@ public class SSOHelper {
 	 *            对称加密算法类
 	 * @return Token
 	 */
-	private static Token cacheToken(HttpServletRequest request, Encrypt encrypt, TokenCache cache) {
+	private static Token cacheToken(HttpServletRequest request, Encrypt encrypt, SSOCache cache) {
 		/**
 		 * 如果缓存不存退出登录
 		 */
@@ -353,7 +381,7 @@ public class SSOHelper {
 	 */
 	public static void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		/* delete cookie */
-		logout(request, response, ReflectUtil.getConfigTokenCache());
+		logout(request, response, ReflectUtil.getConfigCache());
 
 		/* redirect logout page */
 		String logoutUrl = SSOConfig.getLogoutUrl();
@@ -369,10 +397,10 @@ public class SSOHelper {
 	 * 
 	 * @param request
 	 * @param response
-	 * @param TokenCache
+	 * @param SSOCache
 	 * @return boolean true 成功, false 失败
 	 */
-	private static boolean logout(HttpServletRequest request, HttpServletResponse response, TokenCache cache) {
+	private static boolean logout(HttpServletRequest request, HttpServletResponse response, SSOCache cache) {
 		/**
 		 * Token 如果开启了缓存，删除缓存记录
 		 */
@@ -382,6 +410,18 @@ public class SSOHelper {
 				cache.delete(hashCookie(request));
 			}
 		}
+
+		/**
+		 * 在线人数统计 -1
+		 */
+		SSOStatistic statistic = ReflectUtil.getConfigStatistic();
+		if (statistic != null) {
+			boolean rlt = statistic.decrease(request);
+			if (!rlt) {
+				statistic.decrease(request);
+			}
+		}
+
 		/**
 		 * 删除登录 Cookie
 		 */
@@ -398,7 +438,7 @@ public class SSOHelper {
 	 */
 	public static boolean loginClear(HttpServletRequest request, HttpServletResponse response) {
 		// delete cookie
-		return logout(request, response, ReflectUtil.getConfigTokenCache());
+		return logout(request, response, ReflectUtil.getConfigCache());
 	}
 
 	/**
@@ -436,14 +476,14 @@ public class SSOHelper {
 		Cookie uid = CookieHelper.findCookieByName(request, SSOConfig.getCookieName());
 		return hashCookie(uid);
 	}
-	
+
 	/**
 	 * <p>
 	 * Cookie加密值 Hash
 	 * </p>
 	 * 
 	 * @param uid
-	 * 				登录加密 Cookie
+	 *            登录加密 Cookie
 	 * @return String
 	 */
 	private static String hashCookie(Cookie uid) {

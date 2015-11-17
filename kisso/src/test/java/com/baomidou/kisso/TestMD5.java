@@ -18,9 +18,12 @@ package com.baomidou.kisso;
 import com.baomidou.kisso.common.encrypt.MD5;
 
 /**
- * MD5加密工具类测试
- * @author hubin
- *
+ * <p>
+ * 测试 MD5加密工具类
+ * </p>
+ * 
+ * @author   hubin
+ * @Date	 2014-5-12 	 
  */
 public class TestMD5 {
 

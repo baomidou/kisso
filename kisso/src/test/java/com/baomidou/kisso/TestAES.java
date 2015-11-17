@@ -18,9 +18,12 @@ package com.baomidou.kisso;
 import com.baomidou.kisso.common.encrypt.AES;
 
 /**
- * AES 加密测试
- * @author hubin
- *
+ * <p>
+ * 测试 AES 加密
+ * </p>
+ * 
+ * @author   hubin
+ * @Date	 2014-5-12 	 
  */
 public class TestAES {
 

@@ -18,10 +18,11 @@ package com.baomidou.kisso.common.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.Token;
-import com.baomidou.kisso.TokenCache;
 import com.baomidou.kisso.common.encrypt.AES;
 import com.baomidou.kisso.common.encrypt.Encrypt;
 import com.baomidou.kisso.exception.KissoException;
@@ -37,23 +38,23 @@ import com.baomidou.kisso.exception.KissoException;
 public class ReflectUtil {
 
 	private final static Logger logger = LoggerFactory.getLogger(ReflectUtil.class);
-
 	private static Encrypt encrypt = null;
-
-	private static TokenCache tokenCache = null;
+	private static SSOCache cache = null;
+	private static SSOStatistic statistic = null;
 
 	/**
 	 * 反射初始化
 	 */
 	public static void init() {
 		getConfigEncrypt();
-		getConfigTokenCache();
+		getConfigStatistic();
+		getConfigCache();
 	}
 
 	/**
 	 * 反射获取自定义Encrypt
 	 * 
-	 * @return
+	 * @return {@link Encrypt}
 	 */
 	public static Encrypt getConfigEncrypt() {
 
@@ -90,7 +91,7 @@ public class ReflectUtil {
 	/**
 	 * 反射获取自定义Token
 	 * 
-	 * @return
+	 * @return {@link Token}
 	 */
 	public static Token getConfigToken() {
 		/**
@@ -119,41 +120,78 @@ public class ReflectUtil {
 		}
 		return token;
 	}
+	
 
 	/**
-	 * 反射获取自定义TokenCache
+	 * 反射获取自定义SSOStatistic
 	 * 
-	 * @return
+	 * @return {@link SSOStatistic}
 	 */
-	public static TokenCache getConfigTokenCache() {
+	public static SSOStatistic getConfigStatistic() {
+		if (statistic != null) {
+			return statistic;
+		}
+		
+		/**
+		 * 反射获得统计类
+		 */
+		String statisticClass = SSOConfig.getStatisticClass();
+		if (!"".equals(statisticClass)) {
+			try {
+				Class<?> tc = Class.forName(statisticClass);
+				try {
+					if (tc.newInstance() instanceof SSOCache) {
+						statistic = (SSOStatistic) tc.newInstance();
+					} else {
+						throw new KissoException(SSOConfig.getStatisticClass() + " not instanceof SSOStatistic.");
+					}
+				} catch (InstantiationException e) {
+					logger.error("getConfigStatistic error: ", e);
+				} catch (IllegalAccessException e) {
+					logger.error("getConfigStatistic error: ", e);
+				}
+			} catch (ClassNotFoundException e) {
+				throw new KissoException(SSOConfig.getStatisticClass() + " not found.", e);
+			}
+		}
+		
+		return statistic;
+	}
 
-		if (tokenCache != null) {
-			return tokenCache;
+	/**
+	 * 反射获取自定义SSOCache
+	 * 
+	 * @return {@link SSOCache}
+	 */
+	public static SSOCache getConfigCache() {
+
+		if (cache != null) {
+			return cache;
 		}
 
 		/**
 		 * 反射获得缓存类
 		 */
-		String cacheClass = SSOConfig.getTokenCacheClass();
+		String cacheClass = SSOConfig.getCacheClass();
 		if (!"".equals(cacheClass)) {
 			try {
 				Class<?> tc = Class.forName(cacheClass);
 				try {
-					if (tc.newInstance() instanceof TokenCache) {
-						tokenCache = (TokenCache) tc.newInstance();
+					if (tc.newInstance() instanceof SSOCache) {
+						cache = (SSOCache) tc.newInstance();
 					} else {
-						throw new KissoException(SSOConfig.getTokenCacheClass() + " not instanceof TokenCache.");
+						throw new KissoException(SSOConfig.getCacheClass() + " not instanceof SSOCache.");
 					}
 				} catch (InstantiationException e) {
-					logger.error("getConfigEncrypt error: ", e);
+					logger.error("getConfigCache error: ", e);
 				} catch (IllegalAccessException e) {
-					logger.error("getConfigEncrypt error: ", e);
+					logger.error("getConfigCache error: ", e);
 				}
 			} catch (ClassNotFoundException e) {
-				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
+				throw new KissoException(SSOConfig.getCacheClass() + " not found.", e);
 			}
 		}
 		
-		return tokenCache;
+		return cache;
 	}
 }

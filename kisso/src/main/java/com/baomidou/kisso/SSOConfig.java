@@ -166,19 +166,26 @@ public class SSOConfig {
 	public static String getTokenClass() {
 		return prop.get("sso.token.class", SSOConstant.SSO_TOKEN_CLASS);
 	}
+	
+	/**
+	 * 自定义SSOStatistic Class
+	 */
+	public static String getStatisticClass() {
+		return prop.get("sso.statistic.class", SSOConstant.SSO_STATISTIC_CLASS);
+	}
 
 	/**
-	 * 自定义TokenCache Class
+	 * 自定义SSOCache Class
 	 */
-	public static String getTokenCacheClass() {
-		return prop.get("sso.tokencache.class", SSOConstant.SSO_TOKENCACHE_CLASS);
+	public static String getCacheClass() {
+		return prop.get("sso.cache.class", SSOConstant.SSO_CACHE_CLASS);
 	}
 	
 	/**
-	 * 自定义TokenCache Expires
+	 * 自定义SSOCache Expires
 	 */
-	public static int getTokenCacheExpires() {
-		return prop.getInt("sso.tokencache.expires", SSOConstant.SSO_TOKENCACHE_EXPIRES);
+	public static int getSSOCacheExpires() {
+		return prop.getInt("sso.cache.expires", SSOConstant.SSO_CACHE_EXPIRES);
 	}
 
 	/**

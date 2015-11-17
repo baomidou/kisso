@@ -17,13 +17,13 @@ package com.baomidou.kisso;
 
 /**
  * <p>
- * Token 缓存父类
+ * SSO 缓存父类
  * </p>
  * 
  * @author hubin
- * @Date 2015-11-30
+ * @Date 2015-11-03
  */
-public abstract class TokenCache {
+public abstract class SSOCache {
 
 	/**
 	 * <p>

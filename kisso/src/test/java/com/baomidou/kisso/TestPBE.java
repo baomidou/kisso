@@ -18,9 +18,12 @@ package com.baomidou.kisso;
 import com.baomidou.kisso.common.encrypt.PBE;
 
 /**
- * PBE 加密测试
- * @author hubin
- *
+ * <p>
+ * 测试 PBE 加密
+ * </p>
+ * 
+ * @author   hubin
+ * @Date	 2014-5-12 	 
  */
 public class TestPBE {
 	
