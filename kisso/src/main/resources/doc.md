@@ -12,9 +12,27 @@ kisso 启动  web.xml 配置
 	<listener-class>com.baomidou.kisso.web.KissoConfigListener</listener-class>
 </listener>
 
+-----------------------------------------------------------------
+Servlet 方式 SSO 拦截器  web.xml 配置 【可选】
+、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
+
+<!-- SSOFilter use . -->
+<filter>
+	<filter-name>SSOFilter</filter-name>
+	<filter-class>com.baomidou.kisso.web.filter.SSOFilter</filter-class>
+	<init-param>
+		<param-name>over.url</param-name>
+		<param-value>/login.html</param-value>
+	</init-param>
+</filter>
+<filter-mapping>
+	<filter-name>SSOFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+
 
 -----------------------------------------------------------------
-spring SSO 拦截器配置
+Spring SSO 拦截器配置 【选择这种方式，SSOFilter 就不需要配置了】
 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 
 <mvc:interceptors>
@@ -26,12 +44,38 @@ spring SSO 拦截器配置
 	</mvc:interceptor>
 </mvc:interceptors>
 
-
------------------------------------------------------------------
-spring SSO 拦截器配置，此基础上支持方法注解，如下跳过该方法登录验证。
+、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
+Spring SSO 拦截器配置，此基础上支持方法注解，如下跳过该方法登录验证。
 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 
 @Login(action = Action.Skip)
+
+
+-----------------------------------------------------------------
+Servlet 方式 SSO 防火墙滤器  web.xml 配置 【可选】
+、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
+
+<!-- WafFilter use . -->
+<filter>
+	<filter-name>WafFilter</filter-name>
+	<filter-class>com.baomidou.kisso.web.filter.WafFilter</filter-class>
+	<init-param>
+		<param-name>over.url</param-name>
+		<param-value>/test/a.html;/test/b.html</param-value>
+	</init-param>
+	<init-param>
+      <param-name>filter_xss</param-name>
+      <param-value>true</param-value>
+    </init-param>
+	<init-param>
+      <param-name>filter_sql_injection</param-name>
+      <param-value>true</param-value>
+    </init-param>
+</filter>
+<filter-mapping>
+	<filter-name>WafFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
 
 
 -------------------------------------------------------------------
