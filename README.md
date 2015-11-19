@@ -24,7 +24,7 @@ Maven 坐标
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>2.1</version>
+  <version>2.2</version>
 </dependency>
 ```
 
@@ -95,6 +95,10 @@ Supports
 6、支持Cookie参数配置及扩展
 
 7、支持跨域登录，模拟登录
+
+8、支持在线人数统计
+
+9、支持生成动态图片验证码
 
 Futures
 ====================
