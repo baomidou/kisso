@@ -26,8 +26,28 @@ package com.baomidou.kisso.annotation;
  */
 public enum Action {
 	/** 正常（默认） */
-	Normal,
+	Normal("0", "执行 SSO 登录验证"),
 	
 	/** 跳过 */
-	Skip;
+	Skip("1", "跳过 SSO 登录验证");
+
+	/** 主键 */
+	private final String key;
+
+	/** 描述 */
+	private final String desc;
+
+	Action(final String key, final String desc) {
+		this.key = key;
+		this.desc = desc;
+	}
+
+	public String getKey() {
+		return this.key;
+	}
+
+	public String getDesc() {
+		return this.desc;
+	}
+
 }
