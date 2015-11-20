@@ -49,7 +49,7 @@ public class AuthToken extends Token {
 	 * 
 	 * @param request
 	 * @param privateKey
-	 *            RSA 密钥
+	 *            RSA 私钥（业务系统）
 	 */
 	public AuthToken(HttpServletRequest request, String privateKey) {
 		this.uuid = RandomUtil.get32UUID();
@@ -72,7 +72,7 @@ public class AuthToken extends Token {
 	 * 设置签名 rsaSign
 	 * 
 	 * @param privateKey
-	 *            RSA 密钥
+	 *            RSA 私钥（签名）
 	 */
 	public void sign(String privateKey) {
 		try {
@@ -87,7 +87,7 @@ public class AuthToken extends Token {
 	 * 验证 AuthToken 签名是否合法
 	 * 
 	 * @param publicKey
-	 *            RSA 公钥
+	 *            RSA 公钥（验证签名）
 	 * @return
 	 */
 	public AuthToken verify(String publicKey) {

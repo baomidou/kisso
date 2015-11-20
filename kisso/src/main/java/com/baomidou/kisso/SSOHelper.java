@@ -528,7 +528,7 @@ public class SSOHelper {
 	 * @param authToken
 	 *            跨域信任 Token
 	 */
-	public static void setAuthCookie(HttpServletRequest request, HttpServletResponse response, AuthToken authToken) {
+	private static void setAuthCookie(HttpServletRequest request, HttpServletResponse response, AuthToken authToken) {
 		try {
 			CookieHelper.addCookie(response, SSOConfig.getCookieDomain(), SSOConfig.getCookiePath(),
 					SSOConfig.getAuthCookieName(), encryptCookie(request, authToken, ReflectUtil.getConfigEncrypt()),
@@ -539,14 +539,19 @@ public class SSOHelper {
 	}
 
 	/**
+	 * <p>
 	 * 获取跨域信任 AuthToken
+	 * </p>
+	 * <p>
+	 * 验证存在并且 IP 地址正确，签名合法
+	 * </p>
 	 * 
 	 * @param request
 	 * @param publicKey
-	 *            RSA 公钥 (SSO)
+	 *            RSA 公钥（业务系统公钥验证签名合法）
 	 * @return
 	 */
-	public static AuthToken getAuthToken(HttpServletRequest request, String publicKey) {
+	private static AuthToken getAuthToken(HttpServletRequest request, String publicKey) {
 		String jsonToken = getJsonToken(request, ReflectUtil.getConfigEncrypt(), SSOConfig.getAuthCookieName());
 		if (jsonToken == null || "".equals(jsonToken)) {
 			logger.info("jsonToken is null.");
@@ -559,21 +564,27 @@ public class SSOHelper {
 			if (checkIp(request, at) == null) {
 				return null;
 			}
-			return at.verify(publicKey);
+			return at;
 		}
 	}
 
 	/**
 	 * 生成跨域询问密文
 	 * 
-	 * @param authToken
-	 *            跨域信任 Token
-	 * @param aesKey
-	 *            AES 密钥
+	 * @param request
+	 * @param response
+	 * @param privateKey
+	 *            RSA 私钥（业务系统私钥，用于签名）
+	 * @return
 	 */
-	public static String askCiphertext(AuthToken authToken, String aesKey) {
+	public static String askCiphertext(HttpServletRequest request, HttpServletResponse response, String privateKey) {
 		try {
-			return AES.getInstance().encrypt(authToken.jsonToken(), aesKey);
+			/**
+			 * 跨域临时信任 Cookie
+			 */
+			AuthToken at = new AuthToken(request, privateKey);
+			setAuthCookie(request, response, at);
+			return ReflectUtil.getConfigEncrypt().encrypt(at.jsonToken(), SSOConfig.getSecretKey());
 		} catch (Exception e) {
 			logger.info("askCiphertext AES encrypt error.", e);
 		}
@@ -589,31 +600,42 @@ public class SSOHelper {
 	 *            用户ID
 	 * @param askTxt
 	 *            询问密文
-	 * @param privateKey
-	 *            RSA 密钥 (业务系统)
-	 * @param publicKey
-	 *            RSA 公钥 (SSO)
-	 * @param aesKey
-	 *            AES 密钥
+	 * @param tokenPk
+	 *            RSA 公钥 (业务系统 AuthToken加密公钥)
+	 * @param ssoPrk
+	 *            RSA 私钥 (SSO私钥再次签名回复)
 	 */
-	public static String replyCiphertext(HttpServletRequest request, String userId, String askTxt, String privateKey,
-			String publicKey, String aesKey) {
+	public static String replyCiphertext(HttpServletRequest request, String userId, String askTxt, String tokenPk,
+			String ssoPrk) {
 		String at = null;
 		try {
-			at = AES.getInstance().decrypt(askTxt, aesKey);
+			at = ReflectUtil.getConfigEncrypt().decrypt(askTxt, SSOConfig.getSecretKey());
 		} catch (Exception e) {
 			logger.info("replyCiphertext AES decrypt error.", e);
 		}
 		if (at != null) {
+			/**
+			 * <p>
+			 * 使用业务系统公钥验证签名
+			 * </p>
+			 * <p>
+			 * 验证 IP 地址是否合法
+			 * </p>
+			 */
 			AuthToken authToken = JSON.parseObject(at, AuthToken.class);
-			if (checkIp(request, authToken.verify(publicKey)) != null) {
+			if (checkIp(request, authToken.verify(tokenPk)) != null) {
 				authToken.setUserId(userId);
 				try {
 					/**
-					 * 使用业务系统密钥 重新签名
+					 * <p>
+					 * 使用 SSO 私钥签名
+					 * </p>
+					 * <p>
+					 * 然后再对称加密
+					 * </p>
 					 */
-					authToken.sign(privateKey);
-					return AES.getInstance().encrypt(authToken.jsonToken(), aesKey);
+					authToken.sign(ssoPrk);
+					return ReflectUtil.getConfigEncrypt().encrypt(authToken.jsonToken(), SSOConfig.getSecretKey());
 				} catch (Exception e) {
 					logger.info("replyCiphertext AES encrypt error.", e);
 				}
@@ -629,30 +651,27 @@ public class SSOHelper {
 	 * @param response
 	 * @param authToken
 	 *            跨域信任 Token
-	 * @param askTxt
-	 *            询问密文
-	 * @param tokenPk
-	 *            RSA 公钥 (业务系统 AuthToken加密公钥)
-	 * @param replyPk
-	 *            RSA 公钥 (SSO 回复密文公钥)
-	 * @param aesKey
-	 *            AES 密钥
-	 * @return 用户ID
+	 * @param replyTxt
+	 *            回复密文
+	 * @param atPk
+	 *            RSA 公钥 (业务系统公钥，验证authToken签名)
+	 * @param ssoPrk
+	 *            RSA 公钥 (SSO 回复密文公钥验证签名)
 	 */
-	public static String ok(HttpServletRequest request, HttpServletResponse response, String replyTxt, String tokenPk,
-			String replyPk, String aesKey) {
-		AuthToken authToken = getAuthToken(request, tokenPk);
-		if (authToken != null) {
+	public static String ok(HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk,
+			String ssoPrk) {
+		AuthToken token = getAuthToken(request, atPk);
+		if (token != null) {
 			String rt = null;
 			try {
-				rt = AES.getInstance().decrypt(replyTxt, aesKey);
+				rt = AES.getInstance().decrypt(replyTxt, SSOConfig.getSecretKey());
 			} catch (Exception e) {
 				logger.error("kisso AES decrypt error.", e);
 			}
 			if (rt != null) {
 				AuthToken atk = JSON.parseObject(rt, AuthToken.class);
-				if (atk != null && atk.getUuid().equals(authToken.getUuid())) {
-					if (atk.verify(replyPk) != null) {
+				if (atk != null && atk.getUuid().equals(token.getUuid())) {
+					if (atk.verify(ssoPrk) != null) {
 						/**
 						 * 删除跨域信任Cookie 返回 userId
 						 */

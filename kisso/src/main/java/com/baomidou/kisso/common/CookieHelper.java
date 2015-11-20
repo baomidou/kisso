@@ -144,10 +144,10 @@ public class CookieHelper {
 			cookie.setDomain(domain);
 			cookie.setPath(path);
 			response.addCookie(cookie);
-			logger.info("clear cookie" + cookieName);
+			logger.info("clear cookie " + cookieName);
 			result = true;
 		} catch (Exception e) {
-			logger.error("clear cookie" + cookieName + " is exception!", e);
+			logger.error("clear cookie " + cookieName + " is exception!", e);
 		}
 		return result;
 	}
