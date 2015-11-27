@@ -1,6 +1,9 @@
 kisso  =  cookie sso
 
 基于 Cookie 的 SSO 中间件，欢迎大家使用 kisso !! 
+
+![kisso图标](http://git.oschina.net/uploads/images/2015/1122/122054_3b6813fa_12260.png "爱心萝卜 kisso")
+
 > 技术讨论 QQ 群 492238239
 
 > kisso 版本升级，不再兼容之前版本， 旧版本 demo 源码查看，请检出分支  v1.0-old
@@ -24,7 +27,7 @@ Maven 坐标
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>2.2</version>
+  <version>2.3</version>
 </dependency>
 ```
 
