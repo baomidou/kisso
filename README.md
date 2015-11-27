@@ -4,7 +4,9 @@ kisso  =  cookie sso
 
 ![kisso图标](http://git.oschina.net/uploads/images/2015/1122/122054_3b6813fa_12260.png "爱心萝卜 kisso")
 
-> 技术讨论 QQ 群 492238239
+> 技术讨论 QQ 群 492238239 
+
+http://daheiya.com/
 
 > kisso 版本升级，不再兼容之前版本， 旧版本 demo 源码查看，请检出分支  v1.0-old
 
