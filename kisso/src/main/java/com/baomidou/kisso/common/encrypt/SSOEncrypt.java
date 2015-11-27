@@ -17,13 +17,13 @@ package com.baomidou.kisso.common.encrypt;
 
 /**
  * <p>
- * SSO 对称加密父类
+ * SSO 对称加密接口
  * </p>
  * 
  * @author hubin
  * @Date 2014-5-9
  */
-public abstract class Encrypt {
+public interface SSOEncrypt {
 
 	/**
 	 * 字符串内容加密
@@ -36,7 +36,7 @@ public abstract class Encrypt {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract String encrypt(String value, String key) throws Exception;
+	String encrypt(String value, String key) throws Exception;
 
 	/**
 	 * 字符串内容解密
@@ -49,5 +49,5 @@ public abstract class Encrypt {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract String decrypt(String value, String key) throws Exception;
+	String decrypt(String value, String key) throws Exception;
 }

@@ -101,6 +101,8 @@ sso.cookie.path			路径，默认 / 							【客户端配置可无】
 sso.cookie.browser		是否检查浏览器，默认 true
 sso.cookie.checkip		是否检查登录IP，默认 false
 sso.encrypt.class		自定义对称加密类，默认AES，自定义例如：com.baomidou.my.DES
+sso.parser.class		自定义解析类，默认 FastJsonParser			【必须加入 fastjson 依赖】
+
 sso.statistic.class		自定义在线人数统计类，必须实现  SSOStatistic 接口
 sso.token.class			自定义票据，默认SSOToken，自定义例如：com.baomidou.bo.LoginToken
 

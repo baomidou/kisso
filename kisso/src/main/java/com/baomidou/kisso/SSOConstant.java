@@ -67,14 +67,19 @@ public class SSOConstant {
 	public final static boolean SSO_COOKIE_CHECKIP = false;
 
 	/**
-	 * 自定义Encrypt Class
+	 * 自定义 SSOEncrypt Class
 	 */
 	public final static String SSO_ENCRYPT_CLASS = "";
 
 	/**
-	 * 自定义Token Class
+	 * 自定义 Token Class
 	 */
 	public final static String SSO_TOKEN_CLASS = "";
+	
+	/**
+	 * 自定义 SSOParser Class
+	 */
+	public final static String SSO_PARSER_CLASS = "";
 	
 	/**
 	 * 自定义 SSOStatistic Class

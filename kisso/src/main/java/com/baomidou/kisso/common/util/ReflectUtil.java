@@ -15,15 +15,15 @@
  */
 package com.baomidou.kisso.common.util;
 
-import java.util.logging.Logger;
-
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.Token;
 import com.baomidou.kisso.common.encrypt.AES;
-import com.baomidou.kisso.common.encrypt.Encrypt;
+import com.baomidou.kisso.common.encrypt.SSOEncrypt;
+import com.baomidou.kisso.common.parser.FastJsonParser;
+import com.baomidou.kisso.common.parser.SSOParser;
 import com.baomidou.kisso.exception.KissoException;
 
 /**
@@ -35,10 +35,10 @@ import com.baomidou.kisso.exception.KissoException;
  * @Date 2014-6-27
  */
 public class ReflectUtil {
-	private static final Logger logger = Logger.getLogger("ReflectUtil");
-	private static Encrypt encrypt = null;
+	private static SSOEncrypt encrypt = null;
 	private static SSOCache cache = null;
 	private static SSOStatistic statistic = null;
+	private static SSOParser parser = null;
 
 	/**
 	 * 反射初始化
@@ -54,7 +54,7 @@ public class ReflectUtil {
 	 * 
 	 * @return {@link Encrypt}
 	 */
-	public static Encrypt getConfigEncrypt() {
+	public static SSOEncrypt getConfigEncrypt() {
 
 		if (encrypt != null) {
 			return encrypt;
@@ -68,21 +68,11 @@ public class ReflectUtil {
 		} else {
 			try {
 				Class<?> tc = Class.forName(SSOConfig.getEncryptClass());
-				try {
-					if (tc.newInstance() instanceof Encrypt) {
-						encrypt = (Encrypt) tc.newInstance();
-					} else {
-						throw new KissoException(SSOConfig.getEncryptClass() + " not instanceof Encrypt.");
-					}
-				} catch (InstantiationException e) {
-					logger.severe("getConfigEncrypt error.");
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					logger.severe("getConfigEncrypt error.");
-					e.printStackTrace();
+				if (tc.newInstance() instanceof SSOEncrypt) {
+					encrypt = (SSOEncrypt) tc.newInstance();
 				}
-			} catch (ClassNotFoundException e) {
-				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
+			} catch (Exception e) {
+				throw new KissoException(e);
 			}
 		}
 		return encrypt;
@@ -103,24 +93,42 @@ public class ReflectUtil {
 		} else {
 			try {
 				Class<?> tc = Class.forName(SSOConfig.getTokenClass());
-				try {
-					if (tc.newInstance() instanceof Token) {
-						token = (Token) tc.newInstance();
-					} else {
-						throw new KissoException(SSOConfig.getTokenClass() + " not instanceof Token.");
-					}
-				} catch (InstantiationException e) {
-					logger.severe("getConfigEncrypt error.");
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					logger.severe("getConfigEncrypt error.");
-					e.printStackTrace();
+				if (tc.newInstance() instanceof Token) {
+					token = (Token) tc.newInstance();
 				}
-			} catch (ClassNotFoundException e) {
-				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
+			} catch (Exception e) {
+				throw new KissoException(e);
 			}
 		}
 		return token;
+	}
+	/**
+	 * 反射获取自定义SSOParser
+	 * 
+	 * @return {@link Token}
+	 */
+	public static SSOParser getConfigParser() {
+		
+		if (parser != null) {
+			return parser;
+		}
+		
+		/**
+		 * 获取自定义 SSOParser
+		 */
+		if ("".equals(SSOConfig.getParserClass())) {
+			parser = new FastJsonParser();
+		} else {
+			try {
+				Class<?> tc = Class.forName(SSOConfig.getTokenClass());
+				if (tc.newInstance() instanceof Token) {
+					parser = (SSOParser) tc.newInstance();
+				}
+			} catch (Exception e) {
+				throw new KissoException(" kisso Config 【 sso.parser.class 】 not find. or not instanceof SSOParser", e);
+			}
+		}
+		return parser;
 	}
 	
 
@@ -130,6 +138,7 @@ public class ReflectUtil {
 	 * @return {@link SSOStatistic}
 	 */
 	public static SSOStatistic getConfigStatistic() {
+		
 		if (statistic != null) {
 			return statistic;
 		}
@@ -141,24 +150,13 @@ public class ReflectUtil {
 		if (!"".equals(statisticClass)) {
 			try {
 				Class<?> tc = Class.forName(statisticClass);
-				try {
-					if (tc.newInstance() instanceof SSOCache) {
-						statistic = (SSOStatistic) tc.newInstance();
-					} else {
-						throw new KissoException(SSOConfig.getStatisticClass() + " not instanceof SSOStatistic.");
-					}
-				} catch (InstantiationException e) {
-					logger.severe("getConfigStatistic error.");
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					logger.severe("getConfigStatistic error.");
-					e.printStackTrace();
+				if (tc.newInstance() instanceof SSOCache) {
+					statistic = (SSOStatistic) tc.newInstance();
 				}
-			} catch (ClassNotFoundException e) {
-				throw new KissoException(SSOConfig.getStatisticClass() + " not found.", e);
+			} catch (Exception e) {
+				throw new KissoException(e);
 			}
 		}
-		
 		return statistic;
 	}
 
@@ -180,24 +178,13 @@ public class ReflectUtil {
 		if (!"".equals(cacheClass)) {
 			try {
 				Class<?> tc = Class.forName(cacheClass);
-				try {
-					if (tc.newInstance() instanceof SSOCache) {
-						cache = (SSOCache) tc.newInstance();
-					} else {
-						throw new KissoException(SSOConfig.getCacheClass() + " not instanceof SSOCache.");
-					}
-				} catch (InstantiationException e) {
-					logger.severe("getConfigCache error.");
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					logger.severe("getConfigCache error.");
-					e.printStackTrace();
+				if (tc.newInstance() instanceof SSOCache) {
+					cache = (SSOCache) tc.newInstance();
 				}
-			} catch (ClassNotFoundException e) {
-				throw new KissoException(SSOConfig.getCacheClass() + " not found.", e);
+			} catch (Exception e) {
+				throw new KissoException(e);
 			}
 		}
-		
 		return cache;
 	}
 }

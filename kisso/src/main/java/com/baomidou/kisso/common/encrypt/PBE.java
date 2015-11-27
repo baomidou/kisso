@@ -36,7 +36,7 @@ import com.baomidou.kisso.exception.KissoException;
  * @author hubin
  * @Date	 2014-6-17
  */
-public class PBE extends Encrypt {
+public class PBE implements SSOEncrypt {
 	public static final String ALGORITHM = "PBEWITHMD5andDES";
 	/** 迭代次数 */
 	public static final int ITERATION_COUNT = 100;
@@ -127,12 +127,10 @@ public class PBE extends Encrypt {
 		}
 	}
 
-	@Override
 	public String encrypt(String value, String key) throws Exception {
 		return encryptPBE(value, key);
 	}
 
-	@Override
 	public String decrypt(String value, String key) throws Exception {
 		return decryptPBE(value, key);
 	}

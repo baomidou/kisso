@@ -15,7 +15,7 @@
  */
 package com.baomidou.kisso;
 
-import com.alibaba.fastjson.JSON;
+import com.baomidou.kisso.common.util.ReflectUtil;
 
 /**
  * <p>
@@ -46,7 +46,7 @@ public class Token {
 	 * @return JSON格式Token值
 	 */
 	public String jsonToken() {
-		return JSON.toJSONString(this);
+		return ReflectUtil.getConfigParser().toJson(this);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class Token {
 	 * @return Token对象
 	 */
 	public Token parseToken(String jsonToken) {
-		return JSON.parseObject(jsonToken, this.getClass());
+		return ReflectUtil.getConfigParser().parseToken(jsonToken, this.getClass());
 	}
 
 	public String getIp() {

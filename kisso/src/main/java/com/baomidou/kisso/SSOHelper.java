@@ -27,8 +27,8 @@ import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.encrypt.AES;
-import com.baomidou.kisso.common.encrypt.Encrypt;
 import com.baomidou.kisso.common.encrypt.MD5;
+import com.baomidou.kisso.common.encrypt.SSOEncrypt;
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.common.util.RandomUtil;
 import com.baomidou.kisso.common.util.ReflectUtil;
@@ -84,7 +84,7 @@ public class SSOHelper {
 	 *            对称加密算法类
 	 * @return Cookie 登录信息Cookie
 	 */
-	private static String encryptCookie( HttpServletRequest request, Token token, Encrypt encrypt ) throws Exception {
+	private static String encryptCookie( HttpServletRequest request, Token token, SSOEncrypt encrypt ) throws Exception {
 		if ( token == null ) {
 			throw new KissoException(" Token not for null.");
 		}
@@ -146,7 +146,7 @@ public class SSOHelper {
 	 *            Cookie名称
 	 * @return String 当前Token的json格式值
 	 */
-	private static String getJsonToken( HttpServletRequest request, Encrypt encrypt, String cookieName ) {
+	private static String getJsonToken( HttpServletRequest request, SSOEncrypt encrypt, String cookieName ) {
 		Cookie uid = CookieHelper.findCookieByName(request, cookieName);
 		if ( uid != null ) {
 			String jsonToken = uid.getValue();
@@ -195,7 +195,7 @@ public class SSOHelper {
 	 *            对称加密算法类
 	 * @return Cookie 登录信息Cookie
 	 */
-	private static Cookie generateCookie( HttpServletRequest request, Token token, Encrypt encrypt ) {
+	private static Cookie generateCookie( HttpServletRequest request, Token token, SSOEncrypt encrypt ) {
 		try {
 			Cookie cookie = new Cookie(SSOConfig.getCookieName(), encryptCookie(request, token, encrypt));
 			cookie.setPath(SSOConfig.getCookiePath());
@@ -236,7 +236,7 @@ public class SSOHelper {
 	 *            对称加密算法类
 	 */
 	private static void setSSOCookie( HttpServletRequest request, HttpServletResponse response, Token token,
-			Encrypt encrypt ) {
+			SSOEncrypt encrypt ) {
 		if ( encrypt == null ) {
 			throw new KissoException(" Encrypt not for null.");
 		}
@@ -334,7 +334,7 @@ public class SSOHelper {
 	 *            对称加密算法类
 	 * @return Token
 	 */
-	private static Token getToken( HttpServletRequest request, Encrypt encrypt, SSOCache cache ) {
+	private static Token getToken( HttpServletRequest request, SSOEncrypt encrypt, SSOCache cache ) {
 		if ( encrypt == null ) {
 			throw new KissoException(" Encrypt not for null.");
 		}
@@ -355,7 +355,7 @@ public class SSOHelper {
 	 *            对称加密算法类
 	 * @return Token
 	 */
-	private static Token cacheToken( HttpServletRequest request, Encrypt encrypt, SSOCache cache ) {
+	private static Token cacheToken( HttpServletRequest request, SSOEncrypt encrypt, SSOCache cache ) {
 		/**
 		 * 如果缓存不存退出登录
 		 */

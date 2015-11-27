@@ -153,28 +153,35 @@ public class SSOConfig {
 	}
 
 	/**
-	 * 自定义Encrypt Class
+	 * 自定义 SSOEncrypt Class
 	 */
 	public static String getEncryptClass() {
 		return prop.get("sso.encrypt.class", SSOConstant.SSO_ENCRYPT_CLASS);
 	}
 
 	/**
-	 * 自定义Token Class
+	 * 自定义 Token Class
 	 */
 	public static String getTokenClass() {
 		return prop.get("sso.token.class", SSOConstant.SSO_TOKEN_CLASS);
 	}
 	
 	/**
-	 * 自定义SSOStatistic Class
+	 * 自定义 SSOParser Class
+	 */
+	public static String getParserClass() {
+		return prop.get("sso.parser.class", SSOConstant.SSO_PARSER_CLASS);
+	}
+	
+	/**
+	 * 自定义 SSOStatistic Class
 	 */
 	public static String getStatisticClass() {
 		return prop.get("sso.statistic.class", SSOConstant.SSO_STATISTIC_CLASS);
 	}
 
 	/**
-	 * 自定义SSOCache Class
+	 * 自定义 SSOCache Class
 	 */
 	public static String getCacheClass() {
 		return prop.get("sso.cache.class", SSOConstant.SSO_CACHE_CLASS);

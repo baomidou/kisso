@@ -33,7 +33,7 @@ import com.baomidou.kisso.exception.KissoException;
  * @author hubin
  * @Date 2014-5-8
  */
-public class AES extends Encrypt {
+public class AES implements SSOEncrypt {
 	private static final Logger logger = Logger.getLogger("AES");
 	private static final String ALGORITHM = "AES";
 	private SecretKeySpec secretKey;
@@ -116,7 +116,6 @@ public class AES extends Encrypt {
 	/**
 	 * AES encrypt
 	 */
-	@Override
 	public String encrypt(String value, String key) throws Exception {
 		setKey(key);
 		return encryptAES(value);
@@ -125,7 +124,6 @@ public class AES extends Encrypt {
 	/**
 	 * AES decrypt
 	 */
-	@Override
 	public String decrypt(String value, String key) throws Exception {
 		setKey(key);
 		return decryptAES(value);
