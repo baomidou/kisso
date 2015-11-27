@@ -15,8 +15,7 @@
  */
 package com.baomidou.kisso.common.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
@@ -36,8 +35,7 @@ import com.baomidou.kisso.exception.KissoException;
  * @Date 2014-6-27
  */
 public class ReflectUtil {
-
-	private final static Logger logger = LoggerFactory.getLogger(ReflectUtil.class);
+	private static final Logger logger = Logger.getLogger("ReflectUtil");
 	private static Encrypt encrypt = null;
 	private static SSOCache cache = null;
 	private static SSOStatistic statistic = null;
@@ -77,9 +75,11 @@ public class ReflectUtil {
 						throw new KissoException(SSOConfig.getEncryptClass() + " not instanceof Encrypt.");
 					}
 				} catch (InstantiationException e) {
-					logger.error("getConfigEncrypt error: ", e);
+					logger.severe("getConfigEncrypt error.");
+					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					logger.error("getConfigEncrypt error: ", e);
+					logger.severe("getConfigEncrypt error.");
+					e.printStackTrace();
 				}
 			} catch (ClassNotFoundException e) {
 				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
@@ -110,9 +110,11 @@ public class ReflectUtil {
 						throw new KissoException(SSOConfig.getTokenClass() + " not instanceof Token.");
 					}
 				} catch (InstantiationException e) {
-					logger.error("getConfigEncrypt error: ", e);
+					logger.severe("getConfigEncrypt error.");
+					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					logger.error("getConfigEncrypt error: ", e);
+					logger.severe("getConfigEncrypt error.");
+					e.printStackTrace();
 				}
 			} catch (ClassNotFoundException e) {
 				throw new KissoException(SSOConfig.getEncryptClass() + " not found.", e);
@@ -146,9 +148,11 @@ public class ReflectUtil {
 						throw new KissoException(SSOConfig.getStatisticClass() + " not instanceof SSOStatistic.");
 					}
 				} catch (InstantiationException e) {
-					logger.error("getConfigStatistic error: ", e);
+					logger.severe("getConfigStatistic error.");
+					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					logger.error("getConfigStatistic error: ", e);
+					logger.severe("getConfigStatistic error.");
+					e.printStackTrace();
 				}
 			} catch (ClassNotFoundException e) {
 				throw new KissoException(SSOConfig.getStatisticClass() + " not found.", e);
@@ -183,9 +187,11 @@ public class ReflectUtil {
 						throw new KissoException(SSOConfig.getCacheClass() + " not instanceof SSOCache.");
 					}
 				} catch (InstantiationException e) {
-					logger.error("getConfigCache error: ", e);
+					logger.severe("getConfigCache error.");
+					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					logger.error("getConfigCache error: ", e);
+					logger.severe("getConfigCache error.");
+					e.printStackTrace();
 				}
 			} catch (ClassNotFoundException e) {
 				throw new KissoException(SSOConfig.getCacheClass() + " not found.", e);

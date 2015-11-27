@@ -15,12 +15,11 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
+import java.util.logging.Logger;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.common.util.Base64Util;
@@ -35,7 +34,7 @@ import com.baomidou.kisso.exception.KissoException;
  * @Date 2014-5-8
  */
 public class AES extends Encrypt {
-	private static final Logger logger = LoggerFactory.getLogger(AES.class);
+	private static final Logger logger = Logger.getLogger("AES");
 	private static final String ALGORITHM = "AES";
 	private SecretKeySpec secretKey;
 	private static AES aes;
@@ -66,7 +65,8 @@ public class AES extends Encrypt {
 			byte[] bk = MD5.md5Raw(strKey.getBytes(SSOConfig.getEncoding()));
 			this.secretKey = new SecretKeySpec(bk, ALGORITHM);
 		} catch (Exception e) {
-			logger.error("Encrypt setKey is exception:", e);
+			logger.severe("Encrypt setKey is exception.");
+			e.printStackTrace();
 		}
 	}
 

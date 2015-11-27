@@ -15,8 +15,7 @@
  */
 package com.baomidou.kisso;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.baomidou.kisso.common.encrypt.AES;
 import com.baomidou.kisso.common.encrypt.MD5;
@@ -31,7 +30,7 @@ import com.baomidou.kisso.common.encrypt.MD5;
  */
 public class TestJsonToken {
 
-	protected static Logger logger = LoggerFactory.getLogger(TestJsonToken.class);
+	protected static final Logger logger = Logger.getLogger("TestJsonToken");
 
 
 	public static void main( String[] args ) {
@@ -45,7 +44,8 @@ public class TestJsonToken {
 		try {
 			System.out.println("=====AESDecrypt=====" + new AES().encrypt(jsonObj + "-" + md5, "123154456565546"));
 		} catch ( Exception e ) {
-			logger.error(" TestJsonToken AESDecrypt: ", e);
+			logger.severe(" TestJsonToken AESDecrypt error.");
+			e.printStackTrace();
 		}
 		SSOToken mt = (SSOToken) st.parseToken(jsonObj);
 		if ( null != mt ) {

@@ -17,11 +17,9 @@ package com.baomidou.kisso.common;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -33,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class IpHelper {
 
-	private final static Logger logger = LoggerFactory.getLogger(IpHelper.class);
+	private static final Logger logger = Logger.getLogger("IpHelper");
 
 	private static String LOCAL_IP_STAR_STR = "192.168.";
 
@@ -54,7 +52,8 @@ public class IpHelper {
 			}
 
 		} catch (UnknownHostException e) {
-			logger.error("IpHelper error: ", e);
+			logger.severe("IpHelper error.");
+			e.printStackTrace();
 		}
 
 		LOCAL_IP = ip;
@@ -95,7 +94,8 @@ public class IpHelper {
 					inet = InetAddress.getLocalHost();
 					ip = inet.getHostAddress();
 				} catch (UnknownHostException e) {
-					logger.error("IpHelper error: ", e);
+					logger.severe("IpHelper error.");
+					e.printStackTrace();
 				}
 			}
 		}

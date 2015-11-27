@@ -18,9 +18,7 @@ package com.baomidou.kisso.common.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -32,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class EnvUtil {
 
-	private final static Logger logger = LoggerFactory.getLogger(EnvUtil.class);
+	private static final Logger logger = Logger.getLogger("EnvUtil");
 
 	private static Boolean OS_LINUX = null;
 
@@ -44,7 +42,7 @@ public class EnvUtil {
 	public static boolean isLinux() {
 		if (OS_LINUX == null) {
 			String OS = System.getProperty("os.name").toLowerCase();
-			logger.info("os.name: {}", OS);
+			logger.info("os.name: " + OS);
 			if (OS != null && OS.contains("windows")) {
 				OS_LINUX = false;
 			} else {

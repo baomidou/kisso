@@ -16,9 +16,7 @@
 package com.baomidou.kisso;
 
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.baomidou.kisso.common.encrypt.RSA;
 import com.baomidou.kisso.common.util.Base64Util;
@@ -32,8 +30,7 @@ import com.baomidou.kisso.common.util.Base64Util;
  * @Date	 2014-6-17
  */
 public class TestRSA {
-
-	protected static Logger logger = LoggerFactory.getLogger(TestRSA.class);
+	protected static final Logger logger = Logger.getLogger("TestRSA");
 
 	static String publicKey;
 
@@ -50,7 +47,8 @@ public class TestRSA {
 			//Base64Util.decodeToFile(Base64Util.filePath("/home", "d://rsa", "publicKey.rsa"), publicKey);
 			//Base64Util.decodeToFile(Base64Util.filePath("/home", "d://rsa", "privateKey.rsa"), privateKey);
 		} catch ( Exception e ) {
-			logger.error(" TestRSA init: ", e);
+			logger.severe(" TestRSA init error.");
+			e.printStackTrace();
 		}
 	}
 

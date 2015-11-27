@@ -15,12 +15,11 @@
  */
 package com.baomidou.kisso.common;
 
+import java.util.logging.Logger;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.baomidou.kisso.SSOConstant;
 
@@ -34,7 +33,7 @@ import com.baomidou.kisso.SSOConstant;
  * @Date 2014-5-8
  */
 public class CookieHelper {
-	private final static Logger logger = LoggerFactory.getLogger(CookieHelper.class);
+	private static final Logger logger = Logger.getLogger("CookieHelper");
 	public final static int CLEAR_BROWSER_IS_CLOSED = -1;// 浏览器关闭时自动删除
 	public final static int CLEAR_IMMEDIATELY_REMOVE = 0;// 立即删除
 
@@ -144,10 +143,11 @@ public class CookieHelper {
 			cookie.setDomain(domain);
 			cookie.setPath(path);
 			response.addCookie(cookie);
-			logger.info("clear cookie " + cookieName);
+			logger.fine("clear cookie " + cookieName);
 			result = true;
 		} catch (Exception e) {
-			logger.error("clear cookie " + cookieName + " is exception!", e);
+			logger.severe("clear cookie " + cookieName + " is exception!");
+			e.printStackTrace();
 		}
 		return result;
 	}

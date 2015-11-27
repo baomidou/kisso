@@ -15,22 +15,17 @@
  */
 package com.baomidou.kisso;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.alibaba.fastjson.JSON;
 
 /**
  * <p>
- * SSO票据顶级父类
+ * SSO 票据顶级父类
  * </p>
  * 
  * @author hubin
  * @Date 2015-11-30
  */
 public class Token {
-
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * 登录 IP

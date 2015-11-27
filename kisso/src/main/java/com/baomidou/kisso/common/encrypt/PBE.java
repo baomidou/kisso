@@ -24,8 +24,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import org.bouncycastle.util.encoders.Base64;
-
+import com.baomidou.kisso.common.bcprov.util.encoders.Base64;
 import com.baomidou.kisso.common.util.Base64Util;
 import com.baomidou.kisso.exception.KissoException;
 

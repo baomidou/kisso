@@ -23,14 +23,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Security;
-
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.util.encoders.Base64;
-import org.bouncycastle.util.encoders.UrlBase64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.common.bcprov.jce.provider.BouncyCastleProvider;
+import com.baomidou.kisso.common.bcprov.util.encoders.Base64;
+import com.baomidou.kisso.common.bcprov.util.encoders.UrlBase64;
 
 /**
  * <p>
@@ -45,12 +43,14 @@ import com.baomidou.kisso.SSOConfig;
  */
 public class Base64Util {
 
-	private static final Logger logger = LoggerFactory.getLogger(Base64Util.class);
+	private static final Logger logger = Logger.getLogger("Base64Util");
+
 
 	/**
 	 * 文件读取缓冲区大小
 	 */
 	private static final int CACHE_SIZE = 1024;
+
 
 	/**
 	 * <p>
@@ -61,9 +61,10 @@ public class Base64Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] decode(String base64) throws Exception {
+	public static byte[] decode( String base64 ) throws Exception {
 		return Base64.decode(base64.getBytes());
 	}
+
 
 	/**
 	 * <p>
@@ -74,9 +75,10 @@ public class Base64Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String encode(byte[] bytes) throws Exception {
+	public static String encode( byte[] bytes ) throws Exception {
 		return new String(Base64.encode(bytes));
 	}
+
 
 	/**
 	 * BASE64 encrypt
@@ -85,12 +87,13 @@ public class Base64Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String encryptBASE64(byte[] key) throws Exception {
+	public static String encryptBASE64( byte[] key ) throws Exception {
 		/* 设置加密提供者，解决不同容器加密不一致问题 */
 		Security.addProvider(new BouncyCastleProvider());
 		byte[] b = UrlBase64.encode(key);
 		return new String(b, SSOConfig.getEncoding());
 	}
+
 
 	/**
 	 * BASE64 decrypt
@@ -99,10 +102,11 @@ public class Base64Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] decryptBASE64(String key) throws Exception {
+	public static byte[] decryptBASE64( String key ) throws Exception {
 		Security.addProvider(new BouncyCastleProvider());
 		return UrlBase64.decode(key.getBytes(SSOConfig.getEncoding()));
 	}
+
 
 	/**
 	 * <p>
@@ -117,10 +121,11 @@ public class Base64Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String encodeFile(String filePath) throws Exception {
+	public static String encodeFile( String filePath ) throws Exception {
 		byte[] bytes = fileToByte(filePath);
 		return encode(bytes);
 	}
+
 
 	/**
 	 * <p>
@@ -133,10 +138,11 @@ public class Base64Util {
 	 *            编码字符串
 	 * @throws Exception
 	 */
-	public static void decodeToFile(String filePath, String base64) throws Exception {
+	public static void decodeToFile( String filePath, String base64 ) throws Exception {
 		byte[] bytes = decode(base64);
 		byteArrayToFile(bytes, filePath);
 	}
+
 
 	/**
 	 * 文件绝对路径
@@ -150,12 +156,12 @@ public class Base64Util {
 	 *            文件名
 	 * @return String
 	 */
-	public static String filePath(String linuxDir, String winDir, String fileName) {
+	public static String filePath( String linuxDir, String winDir, String fileName ) {
 		StringBuffer bf = new StringBuffer();
-		if ("\\".equals(File.separator)) {
+		if ( "\\".equals(File.separator) ) {
 			// windows
 			bf.append(winDir);
-		} else if ("/".equals(File.separator)) {
+		} else if ( "/".equals(File.separator) ) {
 			// Linux
 			bf.append(linuxDir);
 		}
@@ -163,6 +169,7 @@ public class Base64Util {
 		bf.append(fileName);
 		return bf.toString();
 	}
+
 
 	/**
 	 * <p>
@@ -174,22 +181,23 @@ public class Base64Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] fileToByte(String filePath) throws Exception {
+	public static byte[] fileToByte( String filePath ) throws Exception {
 		byte[] data = new byte[0];
 		File file = new File(filePath);
-		if (file.exists()) {
+		if ( file.exists() ) {
 			FileInputStream in = new FileInputStream(file);
 			ByteArrayOutputStream out = new ByteArrayOutputStream(2048);
 			try {
 				byte[] cache = new byte[CACHE_SIZE];
 				int nRead = 0;
-				while ((nRead = in.read(cache)) != -1) {
+				while ( (nRead = in.read(cache)) != -1 ) {
 					out.write(cache, 0, nRead);
 					out.flush();
 				}
 				data = out.toByteArray();
-			} catch (Exception e) {
-				logger.error("fileToByte error: ", e);
+			} catch ( Exception e ) {
+				logger.severe("fileToByte error.");
+				e.printStackTrace();
 			} finally {
 				out.close();
 				in.close();
@@ -197,6 +205,7 @@ public class Base64Util {
 		}
 		return data;
 	}
+
 
 	/**
 	 * <p>
@@ -208,10 +217,10 @@ public class Base64Util {
 	 * @param filePath
 	 *            文件生成目录
 	 */
-	public static void byteArrayToFile(byte[] bytes, String filePath) throws Exception {
+	public static void byteArrayToFile( byte[] bytes, String filePath ) throws Exception {
 		InputStream in = new ByteArrayInputStream(bytes);
 		File destFile = new File(filePath);
-		if (!destFile.getParentFile().exists()) {
+		if ( !destFile.getParentFile().exists() ) {
 			destFile.getParentFile().mkdirs();
 		}
 		destFile.createNewFile();
@@ -219,12 +228,13 @@ public class Base64Util {
 		try {
 			byte[] cache = new byte[CACHE_SIZE];
 			int nRead = 0;
-			while ((nRead = in.read(cache)) != -1) {
+			while ( (nRead = in.read(cache)) != -1 ) {
 				out.write(cache, 0, nRead);
 				out.flush();
 			}
-		} catch (Exception e) {
-			logger.error("byteArrayToFile error: ", e);
+		} catch ( Exception e ) {
+			logger.severe("byteArrayToFile error.");
+			e.printStackTrace();
 		} finally {
 			out.close();
 			in.close();

@@ -15,10 +15,9 @@
  */
 package com.baomidou.kisso.common;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpServletRequest;
 
 import com.baomidou.kisso.common.encrypt.MD5;
 
@@ -32,7 +31,7 @@ import com.baomidou.kisso.common.encrypt.MD5;
  */
 public class Browser {
 
-	private final static Logger logger = LoggerFactory.getLogger(Browser.class);
+	private static final Logger logger = Logger.getLogger("Browser");
 
 	/**
 	 * 混淆浏览器版本信息
@@ -50,7 +49,7 @@ public class Browser {
 		/**
 		 * MD5 浏览器版本信息
 		 */
-		logger.debug("Browser info:{}", sf.toString());
+		logger.fine("Browser info:" + sf.toString());
 		return MD5.toMD5(sf.toString());
 	}
 
@@ -63,14 +62,13 @@ public class Browser {
 	 */
 	public static boolean isLegalUserAgent(HttpServletRequest request, String value, String userAgent) {
 		String rlt = getUserAgent(request, value);
-		logger.debug("Browser getUserAgent:{}", rlt);
 
 		if (rlt.equalsIgnoreCase(userAgent)) {
-			logger.debug("Browser isLegalUserAgent is legal.");
+			logger.fine("Browser isLegalUserAgent is legal. Browser getUserAgent:" + rlt);
 			return true;
 		}
 
-		logger.debug("Browser isLegalUserAgent is illegal.");
+		logger.fine("Browser isLegalUserAgent is illegal. Browser getUserAgent:" + rlt);
 		return false;
 	}
 }

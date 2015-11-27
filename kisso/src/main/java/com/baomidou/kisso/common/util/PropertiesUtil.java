@@ -18,9 +18,7 @@ package com.baomidou.kisso.common.util;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -32,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PropertiesUtil {
 
-	private final static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
+	private static final Logger logger = Logger.getLogger("PropertiesUtil");
 
 	private final Properties properties;
 
@@ -88,7 +86,7 @@ public class PropertiesUtil {
 			String str = prop.getProperty(productionMode);
 			mode = (str != null) ? str : defaultMode;
 		}
-		logger.info("production.mode={}", mode);
+		logger.info("production.mode=" + mode);
 		properties.put(productionMode, mode);
 		Set<Entry<Object, Object>> es = prop.entrySet();
 		for (Entry<Object, Object> entry : es) {

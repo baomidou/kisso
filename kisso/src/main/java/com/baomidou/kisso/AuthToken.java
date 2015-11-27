@@ -15,6 +15,8 @@
  */
 package com.baomidou.kisso;
 
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.baomidou.kisso.common.IpHelper;
@@ -31,6 +33,8 @@ import com.baomidou.kisso.exception.KissoException;
  * @Date 2015-11-30
  */
 public class AuthToken extends Token {
+	
+	private static final Logger logger = Logger.getLogger("AuthToken");
 
 	/* 用户ID */
 	private String userId;
@@ -78,7 +82,8 @@ public class AuthToken extends Token {
 		try {
 			this.rsaSign = RSA.sign(signByte(), privateKey);
 		} catch (Exception e) {
-			logger.error("sign error: ", e);
+			logger.severe("sign error.");
+			e.printStackTrace();
 			throw new KissoException(" AuthToken RSA sign error. ");
 		}
 	}
@@ -99,7 +104,8 @@ public class AuthToken extends Token {
 				return this;
 			}
 		} catch (Exception e) {
-			logger.error("verify error: ", e);
+			logger.severe("verify error.");
+			e.printStackTrace();
 			throw new KissoException(" AuthToken RSA verify error. ");
 		}
 		return null;

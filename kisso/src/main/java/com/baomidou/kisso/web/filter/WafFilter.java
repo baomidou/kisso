@@ -16,6 +16,7 @@
 package com.baomidou.kisso.web.filter;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -24,9 +25,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.web.waf.request.WafRequestWrapper;
@@ -39,7 +37,7 @@ import com.baomidou.kisso.web.waf.request.WafRequestWrapper;
  */
 public class WafFilter implements Filter {
 
-	private final static Logger logger = LoggerFactory.getLogger(WafFilter.class);
+	private static final Logger logger = Logger.getLogger("WafFilter");
 
 	private static String OVER_URL = null;//非过滤地址
 
@@ -54,14 +52,11 @@ public class WafFilter implements Filter {
 
 		FILTER_XSS = getParamConfig(config.getInitParameter("filter_xss"));
 		FILTER_SQL = getParamConfig(config.getInitParameter("filter_sql_injection"));
-		logger.info(" WafFilter init . filter_xss: {} , filter_sql_injection: {} , FilterUrl:{}", new Object[ ] {
-				FILTER_XSS, FILTER_SQL, OVER_URL });
 	}
 
 
 	public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws IOException,
 		ServletException {
-		logger.debug(" WafFilter doFilter .");
 		HttpServletRequest req = (HttpServletRequest) request;
 		// HttpServletResponse res = (HttpServletResponse) response;
 
@@ -69,12 +64,11 @@ public class WafFilter implements Filter {
 
 		/** 非拦截URL、直接通过. */
 		if ( !isOver ) {
-			logger.debug(" Yes doFilter .");
 			try {
 				//Request请求XSS过滤
 				chain.doFilter(new WafRequestWrapper(req, FILTER_XSS, FILTER_SQL), response);
 			} catch ( Exception e ) {
-				logger.error(" wafxx.jar WafFilter exception , requestURL: {}", req.getRequestURL());
+				logger.severe(" wafxx.jar WafFilter exception , requestURL: " + req.getRequestURL());
 			}
 			return;
 		}
@@ -84,7 +78,7 @@ public class WafFilter implements Filter {
 
 
 	public void destroy() {
-		logger.debug(" WafFilter destroy .");
+		logger.warning(" WafFilter destroy .");
 	}
 
 

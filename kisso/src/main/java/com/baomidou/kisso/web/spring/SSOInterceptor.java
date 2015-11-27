@@ -16,12 +16,11 @@
 package com.baomidou.kisso.web.spring;
 
 import java.lang.reflect.Method;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -41,7 +40,7 @@ import com.baomidou.kisso.annotation.Login;
  * @Date 2015-11-10
  */
 public class SSOInterceptor extends HandlerInterceptorAdapter {
-	private final static Logger logger = LoggerFactory.getLogger(SSOInterceptor.class);
+	private static final Logger logger = Logger.getLogger("SSOInterceptor");
 
 	/**
 	 * 登录权限验证
@@ -78,7 +77,7 @@ public class SSOInterceptor extends HandlerInterceptorAdapter {
 				/**
 				 * 重新登录
 				 */
-				logger.debug("logout. request url:{}", request.getRequestURL());
+				logger.fine("logout. request url:" + request.getRequestURL());
 				SSOHelper.login(request, response);
 				return false;
 			} else {

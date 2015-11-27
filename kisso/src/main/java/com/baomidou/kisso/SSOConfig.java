@@ -16,9 +16,7 @@
 package com.baomidou.kisso;
 
 import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.baomidou.kisso.common.util.PropertiesUtil;
 import com.baomidou.kisso.common.util.ReflectUtil;
@@ -41,7 +39,7 @@ import com.baomidou.kisso.exception.KissoException;
  */
 public class SSOConfig {
 
-	private final static Logger logger = LoggerFactory.getLogger(SSOConfig.class);
+	private static final Logger logger = Logger.getLogger("SSOConfig");
 
 	/**
 	 * 运行模式
@@ -56,9 +54,10 @@ public class SSOConfig {
 	public static void init(Properties props) {
 		if (props != null) {
 			prop = new PropertiesUtil(props, SSO_PRODUCTION_MODE);
-			logger.info("loading kisso config.");
+			logger.config("loading kisso config.");
 			// 初始化反射配置
 			ReflectUtil.init();
+			logger.info("kisso init success.");
 		} else {
 			throw new KissoException(" cannot load kisso config. ");
 		}

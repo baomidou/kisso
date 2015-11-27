@@ -16,6 +16,7 @@
 package com.baomidou.kisso.web.filter;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -25,9 +26,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.baomidou.kisso.SSOConstant;
 import com.baomidou.kisso.SSOHelper;
@@ -41,7 +39,7 @@ import com.baomidou.kisso.common.util.HttpUtil;
  * @Date	 2014-5-8 	 
  */
 public class SSOFilter implements Filter {
-	private final static Logger logger = LoggerFactory.getLogger(SSOFilter.class);
+	private static final Logger logger = Logger.getLogger("SSOFilter");
 	private static String OVERURL = null;
 
 	public void init(FilterConfig config) throws ServletException {
@@ -64,7 +62,7 @@ public class SSOFilter implements Filter {
 				/**
 				 * 重新登录
 				 */
-				logger.debug("logout. request url:{}", req.getRequestURL());
+				logger.fine("logout. request url:" + req.getRequestURL());
 				SSOHelper.login(req, res);
 				return ;
 			} else {

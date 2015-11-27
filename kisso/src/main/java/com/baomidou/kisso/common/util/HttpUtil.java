@@ -21,11 +21,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.baomidou.kisso.SSOConfig;
 
@@ -39,7 +37,7 @@ import com.baomidou.kisso.SSOConfig;
  */
 public class HttpUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+	private static final Logger logger = Logger.getLogger("HttpUtil");
 
 	/**
 	 * @Description 获取URL查询条件
@@ -101,7 +99,8 @@ public class HttpUtil {
 		try {
 			retStr.append(URLEncoder.encode(retUrl, SSOConfig.getEncoding()));
 		} catch (UnsupportedEncodingException e) {
-			logger.error("encodeRetURL error: ", e);
+			logger.severe("encodeRetURL error.");
+			e.printStackTrace();
 		}
 		return retStr.toString();
 	}

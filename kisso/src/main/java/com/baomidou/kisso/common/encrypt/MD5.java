@@ -24,9 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.baomidou.kisso.SSOConfig;
 
@@ -40,7 +38,7 @@ import com.baomidou.kisso.SSOConfig;
  */
 public class MD5 {
 
-	private final static Logger logger = LoggerFactory.getLogger(MD5.class);
+	private static final Logger logger = Logger.getLogger("MD5");
 
 	/**
 	 * @Description 字符串加密为MD5 中文加密一致通用,必须转码处理： plainText.getBytes("UTF-8")
@@ -53,7 +51,8 @@ public class MD5 {
 		try {
 			rlt.append(md5String(plainText.getBytes(SSOConfig.getEncoding())));
 		} catch (UnsupportedEncodingException e) {
-			logger.error(" CipherHelper toMD5 exception:", e);
+			logger.severe(" CipherHelper toMD5 exception.");
+			e.printStackTrace();
 		}
 		return rlt.toString();
 	}
@@ -102,7 +101,8 @@ public class MD5 {
 			md5buf = md5.digest(data);
 		} catch (Exception e) {
 			md5buf = null;
-			logger.error("md5Raw error: ", e);
+			logger.severe("md5Raw error.");
+			e.printStackTrace();
 		}
 		return md5buf;
 	}
@@ -118,7 +118,8 @@ public class MD5 {
 			}
 		} catch (Exception e) {
 			md5Str = null;
-			logger.error("md5String error: ", e);
+			logger.severe("md5String error.");
+			e.printStackTrace();
 		}
 		return md5Str;
 	}
