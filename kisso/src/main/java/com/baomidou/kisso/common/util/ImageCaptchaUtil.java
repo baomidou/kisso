@@ -18,6 +18,7 @@ package com.baomidou.kisso.common.util;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -77,7 +78,7 @@ public class ImageCaptchaUtil {
 	 */
 	public static String outputImage(OutputStream out, Color fontColor, int width, int height, int captchaLength)
 			throws IOException {
-		return outputImage(out, fontColor, "Arial", Font.ITALIC, width, height, captchaLength);
+		return outputImage(out, fontColor, "Verdana", Font.PLAIN, width, height, captchaLength);
 	}
 
 	/**
@@ -104,6 +105,7 @@ public class ImageCaptchaUtil {
 			int height, int length) throws IOException {
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = (Graphics2D) bi.getGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, width, height);
 		/* 绘制干扰线 */
