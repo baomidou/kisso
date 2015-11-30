@@ -8,8 +8,6 @@ kisso  =  cookie sso
 
 http://daheiya.com/
 
-> kisso 版本升级，不再兼容之前版本， 旧版本 demo 源码查看，请检出分支  v1.0-old
-
 
 http://www.oschina.net/p/kisso
 
@@ -29,7 +27,7 @@ Maven 坐标
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>2.3</version>
+  <version>3.0</version>
 </dependency>
 ```
 
