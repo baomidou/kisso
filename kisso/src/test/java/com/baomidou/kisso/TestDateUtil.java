@@ -23,7 +23,7 @@ import com.baomidou.kisso.common.util.DateUtil;
  * </p>
  * 
  * @author   hubin
- * @Date	 2014-5-12 	 
+ * @Date	 2014-5-12
  */
 public class TestDateUtil {
 

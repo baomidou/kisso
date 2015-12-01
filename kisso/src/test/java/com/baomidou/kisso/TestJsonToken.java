@@ -26,7 +26,7 @@ import com.baomidou.kisso.common.encrypt.MD5;
  * </p>
  * 
  * @author   hubin
- * @Date	 2014-5-12 	 
+ * @Date	 2014-5-12
  */
 public class TestJsonToken {
 
