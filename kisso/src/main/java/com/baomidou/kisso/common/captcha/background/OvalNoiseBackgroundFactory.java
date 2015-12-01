@@ -24,8 +24,18 @@ import java.util.Random;
  * 椭圆形噪点干扰背景
  */
 public class OvalNoiseBackgroundFactory implements BackgroundFactory {
-
 	private static final Random rand = new Random();
+	
+	/** 噪点数量 */
+	private int noises = 20;
+
+	public OvalNoiseBackgroundFactory() {
+		
+	}
+	
+	public OvalNoiseBackgroundFactory( int noises ) {
+		this.noises = noises;
+	}
 
 	public void fillBackground( BufferedImage image ) {
 		Graphics graphics = image.getGraphics();
@@ -41,12 +51,13 @@ public class OvalNoiseBackgroundFactory implements BackgroundFactory {
 		/**
 		 * 画 20 个椭圆形噪点(颜色及位置随机)
 		 */
-		for (int i = 0; i < 20; i++) {
+		for ( int i = 0 ; i < getNoises() ; i++ ) {
 			graphics.setColor(_getRandColor(150, 250));
-			graphics.drawOval(rand.nextInt(imgWidth), rand.nextInt(imgHeight), 5 + rand.nextInt(10), 5 + rand.nextInt(10));
+			graphics.drawOval(rand.nextInt(imgWidth), rand.nextInt(imgHeight), 5 + rand.nextInt(10),
+				5 + rand.nextInt(10));
 		}
 	}
-	
+
 	/**
 	 * 给定范围获得随机颜色
 	 * 
@@ -54,16 +65,24 @@ public class OvalNoiseBackgroundFactory implements BackgroundFactory {
 	 * @param bc
 	 * @return
 	 */
-	protected static Color _getRandColor(int fc, int bc) {
-		if (fc > 255) {
+	protected static Color _getRandColor( int fc, int bc ) {
+		if ( fc > 255 ) {
 			fc = 255;
 		}
-		if (bc > 255) {
+		if ( bc > 255 ) {
 			bc = 255;
 		}
 		int r = fc + rand.nextInt(bc - fc);
 		int g = fc + rand.nextInt(bc - fc);
 		int b = fc + rand.nextInt(bc - fc);
 		return new Color(r, g, b);
+	}
+
+	public int getNoises() {
+		return noises;
+	}
+
+	public void setNoises( int noises ) {
+		this.noises = noises;
 	}
 }

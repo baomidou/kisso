@@ -24,8 +24,18 @@ import java.util.Random;
  * 线形噪点干扰背景
  */
 public class LineNoiseBackgroundFactory implements BackgroundFactory {
-
 	private static final Random rand = new Random();
+	
+	/** 噪点数量 */
+	private int noises = 20;
+	
+	public LineNoiseBackgroundFactory(){
+		
+	}
+	
+	public LineNoiseBackgroundFactory( int noises ) {
+		this.noises = noises;
+	}
 
 	public void fillBackground( BufferedImage image ) {
 		Graphics graphics = image.getGraphics();
@@ -41,7 +51,7 @@ public class LineNoiseBackgroundFactory implements BackgroundFactory {
 		/**
 		 * 画100个噪点(颜色及位置随机)
 		 */
-		for ( int i = 0 ; i < 100 ; i++ ) {
+		for ( int i = 0 ; i < getNoises() ; i++ ) {
 			//随机颜色
 			int rInt = rand.nextInt(255);
 			int gInt = rand.nextInt(255);
@@ -70,5 +80,13 @@ public class LineNoiseBackgroundFactory implements BackgroundFactory {
 				graphics.drawLine(xInt, yInt, xInt2, yInt2);
 			}
 		}
+	}
+
+	public int getNoises() {
+		return noises;
+	}
+
+	public void setNoises( int noises ) {
+		this.noises = noises;
 	}
 }
