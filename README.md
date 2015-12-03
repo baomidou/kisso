@@ -33,9 +33,7 @@ Maven 坐标
 
 Usage
 ===========
-[kisso 依赖 jars](http://git.oschina.net/juapk/kisso-deplibs)
-
-[kisso 验证码字体](http://git.oschina.net/juapk/kisso-files/tree/master/kisso-files/font)
+[kisso 依赖 jars](http://git.oschina.net/juapk/kisso/wikis/kisso-%E4%BE%9D%E8%B5%96%E5%8C%85-jars)
 
 [kisso_Jfinal 演示 demo](http://git.oschina.net/juapk/kisso_jfinal)
 
