@@ -6,7 +6,7 @@ kisso  =  cookie sso
 
 > 技术讨论 QQ 群 492238239 
 
-http://daheiya.com/
+http://baomidou.com/
 
 
 http://www.oschina.net/p/kisso
@@ -15,10 +15,10 @@ http://www.oschina.net/p/kisso
 
 [kisso捐赠记录,感谢你们的支持！](http://git.oschina.net/juapk/kisso/wikis/%E6%8D%90%E8%B5%A0%E8%AE%B0%E5%BD%95)
 
-﻿sso
+ki﻿sso
 ===
 
-kisso cookie sso framework
+kisso = java cookie sso framework
 
 
 Maven 坐标
