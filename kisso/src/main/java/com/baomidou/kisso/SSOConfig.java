@@ -85,6 +85,10 @@ public class SSOConfig {
 	private static PropertiesUtil prop = null;
 	private static SSOConfig ssoConfig = null;
 	
+	protected SSOConfig() {
+		/* 保护 */
+	}
+	
 	/**
 	 * new 当前对象
 	 */
