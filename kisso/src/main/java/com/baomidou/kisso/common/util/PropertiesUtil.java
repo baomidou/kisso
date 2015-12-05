@@ -38,8 +38,8 @@ public class PropertiesUtil {
 		this.properties = properties;
 	}
 
-	public PropertiesUtil(Properties mergeProperties, String productionMode) {
-		this.properties = extractProductionMode(mergeProperties, productionMode);
+	public PropertiesUtil(Properties mergeProperties, String runMode) {
+		this.properties = extractRunMode(mergeProperties, runMode);
 	}
 
 	public String get(String key) {
@@ -56,8 +56,8 @@ public class PropertiesUtil {
 	 * eclipse 开发模式配置，启动参数 Arguments 属性 VM
 	 * arguments 设置 -Dsso.production.mode=dev_mode
 	 */
-	public static Properties extractProductionMode(Properties prop, String productionMode) {
-		return extractProductionMode(prop, productionMode, "online_mode");
+	public static Properties extractRunMode(Properties prop, String runMode) {
+		return extractRunMode(prop, runMode, "online_mode");
 	}
 
 	/**
@@ -66,14 +66,14 @@ public class PropertiesUtil {
 	 * 
 	 * @param prop
 	 *            配置文件 Properties
-	 * @param productionMode
+	 * @param runMode
 	 *            当前配置模式
 	 * @param defaultMode
 	 *            默认模式
 	 * @return
 	 */
-	public static Properties extractProductionMode(Properties prop, String productionMode, String defaultMode) {
-		if (prop == null || productionMode == null || defaultMode == null) {
+	public static Properties extractRunMode(Properties prop, String runMode, String defaultMode) {
+		if (prop == null || runMode == null || defaultMode == null) {
 			return null;
 		}
 
@@ -81,13 +81,13 @@ public class PropertiesUtil {
 		 * 获取路由规则, 系统属性设置mode优先
 		 */
 		Properties properties = new Properties();
-		String mode = System.getProperty(productionMode);
+		String mode = System.getProperty(runMode);
 		if (mode == null) {
-			String str = prop.getProperty(productionMode);
+			String str = prop.getProperty(runMode);
 			mode = (str != null) ? str : defaultMode;
 		}
 		logger.info("production.mode=" + mode);
-		properties.put(productionMode, mode);
+		properties.put(runMode, mode);
 		Set<Entry<Object, Object>> es = prop.entrySet();
 		for (Entry<Object, Object> entry : es) {
 			String key = (String) entry.getKey();
