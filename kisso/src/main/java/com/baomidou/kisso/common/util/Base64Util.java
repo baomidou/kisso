@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -91,7 +91,7 @@ public class Base64Util {
 		/* 设置加密提供者，解决不同容器加密不一致问题 */
 		Security.addProvider(new BouncyCastleProvider());
 		byte[] b = UrlBase64.encode(key);
-		return new String(b, SSOConfig.getEncoding());
+		return new String(b, SSOConfig.getSSOEncoding());
 	}
 
 
@@ -104,7 +104,7 @@ public class Base64Util {
 	 */
 	public static byte[] decryptBASE64( String key ) throws Exception {
 		Security.addProvider(new BouncyCastleProvider());
-		return UrlBase64.decode(key.getBytes(SSOConfig.getEncoding()));
+		return UrlBase64.decode(key.getBytes(SSOConfig.getSSOEncoding()));
 	}
 
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -42,6 +42,7 @@ public class WebKissoConfigurer {
 	public static final String CONFIG_LOCATION_PARAM = "kissoConfigLocation";
 
 	protected WebKissoConfigurer() {
+		
 	}
 
 	public static void initKisso(ServletContext servletContext) {
@@ -50,8 +51,8 @@ public class WebKissoConfigurer {
 			if (location.indexOf("classpath") >= 0) {
 				String[] cfg = location.split(":");
 				if (cfg.length == 2) {
+					/* 初始化配置 */
 					InputStream in = WebKissoConfigurer.class.getClassLoader().getResourceAsStream(cfg[1]);
-					// 初始化配置
 					SSOConfig.init(getInputStream(servletContext, in));
 				}
 			} else {
@@ -85,4 +86,5 @@ public class WebKissoConfigurer {
 		}
 		return p;
 	}
+	
 }

@@ -13,45 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso;
+package com.baomidou.kisso.service;
 
-import javax.servlet.http.HttpServletRequest;
+import com.baomidou.kisso.SSOConfig;
 
 /**
  * <p>
- * SSO 在线人数统计接口
+ * SSO 单点登录服务抽象实现类
  * </p>
  * 
  * @author hubin
- * @Date 2015-11-17
+ * @Date 2015-12-03
  */
-public interface SSOStatistic {
+public class ConfigurableAbstractKissoService extends AbstractKissoService {
 
-	/**
-	 * 在线人数 +1
-	 * 
-	 * @param request
-	 *            登录请求
-	 * @return boolean
-	 */
-	boolean increase(HttpServletRequest request);
-
-	/**
-	 * 在线人数 -1
-	 * 
-	 * @param request
-	 *            退出请求
-	 * @return boolean
-	 */
-	boolean decrease(HttpServletRequest request);
-
-	/**
-	 * 在线人数（总数）
-	 * 
-	 * @param request
-	 *            查询请求
-	 * @return String
-	 */
-	String count(HttpServletRequest request);
-
+	public ConfigurableAbstractKissoService() {
+		config = SSOConfig.newInstance();
+	}
+	
 }

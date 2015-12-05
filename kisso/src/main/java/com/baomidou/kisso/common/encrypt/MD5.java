@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -49,7 +49,7 @@ public class MD5 {
 	public static String toMD5(String plainText) {
 		StringBuffer rlt = new StringBuffer();
 		try {
-			rlt.append(md5String(plainText.getBytes(SSOConfig.getEncoding())));
+			rlt.append(md5String(plainText.getBytes(SSOConfig.getSSOEncoding())));
 		} catch (UnsupportedEncodingException e) {
 			logger.severe(" CipherHelper toMD5 exception.");
 			e.printStackTrace();

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.baomidou.kisso.SSOConstant;
-
 /**
  * Cookie工具类
  * <p>
@@ -34,8 +32,12 @@ import com.baomidou.kisso.SSOConstant;
  */
 public class CookieHelper {
 	private static final Logger logger = Logger.getLogger("CookieHelper");
-	public final static int CLEAR_BROWSER_IS_CLOSED = -1;// 浏览器关闭时自动删除
-	public final static int CLEAR_IMMEDIATELY_REMOVE = 0;// 立即删除
+	
+	/* 浏览器关闭时自动删除 */
+	public final static int CLEAR_BROWSER_IS_CLOSED = -1;
+	
+	/* 立即删除 */
+	public final static int CLEAR_IMMEDIATELY_REMOVE = 0;
 
 	/**
 	 * @Description 防止伪造SESSIONID攻击. 用户登录校验成功销毁当前JSESSIONID. 创建可信的JSESSIONID
@@ -150,36 +152,6 @@ public class CookieHelper {
 			e.printStackTrace();
 		}
 		return result;
-	}
-
-	/**
-	 * 当前域下添加 Cookie 关闭浏览器失效
-	 * <p>
-	 * 
-	 * @param response
-	 * @param name
-	 *            名称
-	 * @param value
-	 *            内容
-	 */
-	public static void addCookie(HttpServletResponse response, String name, String value) {
-		addCookie(response, null, name, value);
-	}
-
-	/**
-	 * 添加 Cookie 关闭浏览器失效
-	 * <p>
-	 * 
-	 * @param response
-	 * @param domain
-	 *            所在域
-	 * @param name
-	 *            名称
-	 * @param value
-	 *            内容
-	 */
-	public static void addCookie(HttpServletResponse response, String domain, String name, String value) {
-		addCookie(response, domain, SSOConstant.SSO_COOKIE_PATH, name, value, CLEAR_BROWSER_IS_CLOSED, false, false);
 	}
 
 	/**

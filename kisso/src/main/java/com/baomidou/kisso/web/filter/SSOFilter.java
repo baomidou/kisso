@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.baomidou.kisso.SSOConstant;
+import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.Token;
 import com.baomidou.kisso.common.util.HttpUtil;
@@ -66,7 +66,7 @@ public class SSOFilter implements Filter {
 				SSOHelper.login(req, res);
 				return ;
 			} else {
-				req.setAttribute(SSOConstant.SSO_TOKEN_ATTR, token);
+				req.setAttribute(SSOConfig.SSO_TOKEN_ATTR, token);
 			}
 		}
 		chain.doFilter(request, response);

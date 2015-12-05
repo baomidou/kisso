@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,8 +15,6 @@
  */
 package com.baomidou.kisso;
 
-import com.baomidou.kisso.common.util.ReflectUtil;
-
 /**
  * <p>
  * SSO 票据顶级父类
@@ -26,6 +24,11 @@ import com.baomidou.kisso.common.util.ReflectUtil;
  * @Date 2015-11-30
  */
 public class Token {
+	/* 正常 */
+	public final static int FLAG_NORMAL = 0;
+
+	/* 缓存宕机 */
+	public final static int FLAG_CACHE_SHUT = 1;
 
 	/**
 	 * 登录 IP
@@ -37,8 +40,24 @@ public class Token {
 	 * 默认正常执行
 	 * </p>
 	 */
-	private Flag flag = Flag.NORMAL;
+	private int flag = FLAG_NORMAL;
 
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
+	
 	/**
 	 * Token转为JSON格式
 	 * <p>
@@ -46,7 +65,7 @@ public class Token {
 	 * @return JSON格式Token值
 	 */
 	public String jsonToken() {
-		return ReflectUtil.getConfigParser().toJson(this);
+		return SSOConfig.newInstance().getParser().toJson(this);
 	}
 
 	/**
@@ -58,51 +77,7 @@ public class Token {
 	 * @return Token对象
 	 */
 	public Token parseToken(String jsonToken) {
-		return ReflectUtil.getConfigParser().parseToken(jsonToken, this.getClass());
+		return SSOConfig.newInstance().getParser().parseToken(jsonToken, this.getClass());
 	}
-
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public Flag getFlag() {
-		return flag;
-	}
-
-	public void setFlag(Flag flag) {
-		this.flag = flag;
-	}
-
-	/**
-	 * <p>
-	 * Token状态标示
-	 * </p>
-	 */
-	public enum Flag {
-		/* 正常 */
-		NORMAL("0", "正常执行"),
-
-		/* 缓存宕机 */
-		CACHE_SHUT("1", "缓存可能关闭或宕机");
-
-		private final String key;
-		private final String desc;
-
-		private Flag(String key, String desc) {
-			this.key = key;
-			this.desc = desc;
-		}
-
-		public String key() {
-			return this.key;
-		}
-
-		public String desc() {
-			return this.desc;
-		}
-	}
+	
 }

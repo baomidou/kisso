@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -28,10 +28,16 @@ import javax.servlet.ServletContextListener;
  */
 public class KissoConfigListener implements ServletContextListener {
 
+	/**
+	 * 初始化
+	 */
 	public void contextInitialized(ServletContextEvent sce) {
 		WebKissoConfigurer.initKisso(sce.getServletContext());
 	}
 
+	/**
+	 * 销毁
+	 */
 	public void contextDestroyed(ServletContextEvent sce) {
 		WebKissoConfigurer.shutdownKisso(sce.getServletContext());
 	}

@@ -82,7 +82,7 @@ Servlet 方式 SSO 防火墙滤器  web.xml 配置 【可选】
 sso.properties 配置说明
 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 
-sso.production.mode  模式配置，默认不带后缀为线上模式，
+sso.run.mode		   模式配置，默认不带后缀为线上模式，
 					   模式设置：_dev_mode 开发 ，_test_mode 测试 ，_online_mode 生产
 
 sso.encoding		   编码格式： 默认 UTF-8
@@ -120,8 +120,8 @@ sso.logout.url_dev_mode			开发模式，退出地址：http://localhost:8080/lo
 sso.param.returl				重定向地址参数配置，默认：ReturnURL
 
 ------  跨域 cookie 设置部分 ------
-sso.crossdomain.cookie.name		名称pid，请不要与登录 cookie 名称一致
-sso.crossdomain.cookie.maxage	过期时间，默认 -1 关闭浏览器失效
+sso.authcookie.name				名称pid，请不要与登录 cookie 名称一致
+sso.authcookie.maxage			过期时间，默认 -1 关闭浏览器失效
 
 -----------------------------------------------------------------
 

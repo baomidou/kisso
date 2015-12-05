@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -17,13 +17,13 @@ package com.baomidou.kisso;
 
 /**
  * <p>
- * SSO 缓存父类
+ * SSO 缓存接口
  * </p>
  * 
  * @author hubin
  * @Date 2015-11-03
  */
-public abstract class SSOCache {
+public interface SSOCache {
 
 	/**
 	 * <p>
@@ -37,7 +37,7 @@ public abstract class SSOCache {
 	 *            关键词
 	 * @return Token SSO票据
 	 */
-	public abstract Token get(String key);
+	Token get(String key);
 
 	/**
 	 * 设置SSO票据
@@ -49,7 +49,7 @@ public abstract class SSOCache {
 	 * @param expires
 	 *            过期时间
 	 */
-	public abstract boolean set(String key, Token token, long expires);
+	boolean set(String key, Token token, long expires);
 
 	/**
 	 * 删除SSO票据
@@ -58,5 +58,6 @@ public abstract class SSOCache {
 	 * @param key
 	 *            关键词
 	 */
-	public abstract boolean delete(String key);
+	boolean delete(String key);
+	
 }

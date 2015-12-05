@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -97,7 +97,7 @@ public class HttpUtil {
 		retStr.append(retParam);
 		retStr.append("=");
 		try {
-			retStr.append(URLEncoder.encode(retUrl, SSOConfig.getEncoding()));
+			retStr.append(URLEncoder.encode(retUrl, SSOConfig.getSSOEncoding()));
 		} catch (UnsupportedEncodingException e) {
 			logger.severe("encodeRetURL error.");
 			e.printStackTrace();

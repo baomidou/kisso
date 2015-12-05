@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -62,7 +62,7 @@ public class AES implements SSOEncrypt {
 	 */
 	public void setKey(String strKey) {
 		try {
-			byte[] bk = MD5.md5Raw(strKey.getBytes(SSOConfig.getEncoding()));
+			byte[] bk = MD5.md5Raw(strKey.getBytes(SSOConfig.getSSOEncoding()));
 			this.secretKey = new SecretKeySpec(bk, ALGORITHM);
 		} catch (Exception e) {
 			logger.severe("Encrypt setKey is exception.");

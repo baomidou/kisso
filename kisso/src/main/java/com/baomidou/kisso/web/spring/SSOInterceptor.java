@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.baomidou.kisso.SSOConstant;
+import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.Token;
 import com.baomidou.kisso.annotation.Action;
@@ -81,7 +81,7 @@ public class SSOInterceptor extends HandlerInterceptorAdapter {
 				SSOHelper.login(request, response);
 				return false;
 			} else {
-				request.setAttribute(SSOConstant.SSO_TOKEN_ATTR, token);
+				request.setAttribute(SSOConfig.SSO_TOKEN_ATTR, token);
 			}
 		}
 

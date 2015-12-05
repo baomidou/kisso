@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (243194995@qq.com).
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,10 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.common.util;
+package com.baomidou.kisso.common;
 
 import com.baomidou.kisso.SSOCache;
-import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.Token;
@@ -28,71 +27,33 @@ import com.baomidou.kisso.exception.KissoException;
 
 /**
  * <p>
- * 反射工具类
+ * SSO 反射辅助类
  * </p>
  * 
  * @author hubin
- * @Date 2014-6-27
+ * @Date 2015-12-05
  */
-public class ReflectUtil {
+public class SSOReflectHelper {
 	private static SSOEncrypt encrypt = null;
 	private static SSOCache cache = null;
 	private static SSOStatistic statistic = null;
 	private static SSOParser parser = null;
-
-	/**
-	 * 反射初始化
-	 */
-	public static void init() {
-		getConfigEncrypt();
-		getConfigStatistic();
-		getConfigCache();
-	}
-
-	/**
-	 * 反射获取自定义Encrypt
-	 * 
-	 * @return {@link Encrypt}
-	 */
-	public static SSOEncrypt getConfigEncrypt() {
-
-		if (encrypt != null) {
-			return encrypt;
-		}
-
-		/**
-		 * 判断是否自定义 Encrypt 默认 AES
-		 */
-		if ("".equals(SSOConfig.getEncryptClass())) {
-			encrypt = new AES();
-		} else {
-			try {
-				Class<?> tc = Class.forName(SSOConfig.getEncryptClass());
-				if (tc.newInstance() instanceof SSOEncrypt) {
-					encrypt = (SSOEncrypt) tc.newInstance();
-				}
-			} catch (Exception e) {
-				throw new KissoException(e);
-			}
-		}
-		return encrypt;
-	}
-
+	
 	/**
 	 * 反射获取自定义Token
 	 * 
 	 * @return {@link Token}
 	 */
-	public static Token getConfigToken() {
+	public static Token getConfigToken(String tokenClass) {
 		/**
 		 * 判断是否自定义 Token 默认 SSOToken
 		 */
 		Token token = null;
-		if ("".equals(SSOConfig.getTokenClass())) {
+		if ("".equals(tokenClass)) {
 			token = new SSOToken();
 		} else {
 			try {
-				Class<?> tc = Class.forName(SSOConfig.getTokenClass());
+				Class<?> tc = Class.forName(tokenClass);
 				if (tc.newInstance() instanceof Token) {
 					token = (Token) tc.newInstance();
 				}
@@ -100,14 +61,16 @@ public class ReflectUtil {
 				throw new KissoException(e);
 			}
 		}
+		
 		return token;
 	}
+	
 	/**
 	 * 反射获取自定义SSOParser
 	 * 
 	 * @return {@link Token}
 	 */
-	public static SSOParser getConfigParser() {
+	public static SSOParser getConfigParser(String parserClass) {
 		
 		if (parser != null) {
 			return parser;
@@ -116,48 +79,50 @@ public class ReflectUtil {
 		/**
 		 * 获取自定义 SSOParser
 		 */
-		if ("".equals(SSOConfig.getParserClass())) {
+		if ("".equals(parserClass)) {
 			parser = new FastJsonParser();
 		} else {
 			try {
-				Class<?> tc = Class.forName(SSOConfig.getTokenClass());
-				if (tc.newInstance() instanceof Token) {
+				Class<?> tc = Class.forName(parserClass);
+				if (tc.newInstance() instanceof SSOParser) {
 					parser = (SSOParser) tc.newInstance();
 				}
 			} catch (Exception e) {
 				throw new KissoException(" kisso Config 【 sso.parser.class 】 not find. or not instanceof SSOParser", e);
 			}
 		}
+		
 		return parser;
 	}
-	
 
 	/**
-	 * 反射获取自定义SSOStatistic
+	 * 反射获取自定义Encrypt
 	 * 
-	 * @return {@link SSOStatistic}
+	 * @return {@link Encrypt}
 	 */
-	public static SSOStatistic getConfigStatistic() {
-		
-		if (statistic != null) {
-			return statistic;
+	public static SSOEncrypt getConfigEncrypt(String encryptClass) {
+
+		if (encrypt != null) {
+			return encrypt;
 		}
-		
+
 		/**
-		 * 反射获得统计类
+		 * 判断是否自定义 Encrypt 默认 AES
 		 */
-		String statisticClass = SSOConfig.getStatisticClass();
-		if (!"".equals(statisticClass)) {
+		if ("".equals(encryptClass)) {
+			encrypt = new AES();
+		} else {
 			try {
-				Class<?> tc = Class.forName(statisticClass);
-				if (tc.newInstance() instanceof SSOCache) {
-					statistic = (SSOStatistic) tc.newInstance();
+				Class<?> tc = Class.forName(encryptClass);
+				if (tc.newInstance() instanceof SSOEncrypt) {
+					encrypt = (SSOEncrypt) tc.newInstance();
 				}
 			} catch (Exception e) {
 				throw new KissoException(e);
 			}
 		}
-		return statistic;
+		
+		return encrypt;
 	}
 
 	/**
@@ -165,7 +130,7 @@ public class ReflectUtil {
 	 * 
 	 * @return {@link SSOCache}
 	 */
-	public static SSOCache getConfigCache() {
+	public static SSOCache getConfigCache(String cacheClass) {
 
 		if (cache != null) {
 			return cache;
@@ -174,7 +139,6 @@ public class ReflectUtil {
 		/**
 		 * 反射获得缓存类
 		 */
-		String cacheClass = SSOConfig.getCacheClass();
 		if (!"".equals(cacheClass)) {
 			try {
 				Class<?> tc = Class.forName(cacheClass);
@@ -187,4 +151,33 @@ public class ReflectUtil {
 		}
 		return cache;
 	}
+	
+	/**
+	 * 反射获取自定义SSOStatistic
+	 * 
+	 * @return {@link SSOStatistic}
+	 */
+	public static SSOStatistic getConfigStatistic(String encryptClass) {
+		
+		if (statistic != null) {
+			return statistic;
+		}
+		
+		/**
+		 * 反射获得统计类
+		 */
+		if (!"".equals(encryptClass)) {
+			try {
+				Class<?> tc = Class.forName(encryptClass);
+				if (tc.newInstance() instanceof SSOStatistic) {
+					statistic = (SSOStatistic) tc.newInstance();
+				}
+			} catch (Exception e) {
+				throw new KissoException(e);
+			}
+		}
+		
+		return statistic;
+	}
+
 }
