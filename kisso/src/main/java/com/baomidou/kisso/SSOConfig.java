@@ -90,6 +90,15 @@ public class SSOConfig {
 	 */
 	public static SSOConfig newInstance() {
 		if ( ssoConfig == null ) {
+			if ( prop == null ) {
+				/*
+				 * 如果不是配置文件启动
+				 * <p>
+				 * 初始化空 Properties
+				 * </p>
+				 */
+				prop = new PropertiesUtil(new Properties());
+			}
 			ssoConfig = new SSOConfig();
 		}
 		return ssoConfig;
@@ -123,7 +132,7 @@ public class SSOConfig {
 		if ( prop == null ) {
 			return SSO_ENCODING;
 		}
-		return prop.get("sso.encoding", SSO_ENCODING);
+		return newInstance().getEncoding();
 	}
 	
 	/**
