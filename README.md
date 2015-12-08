@@ -65,7 +65,7 @@ Usage
 （2）跨域登录
 --------------------------------------------
 
-![GitHub](https://raw.githubusercontent.com/leqwang/kisso/master/images/cl.jpg "Kisso,crossdomain login")
+![crossdomain](http://git.oschina.net/uploads/images/2015/1208/101724_845ea916_12260.jpeg "Kisso,crossdomain login")
 
 hosts:
 --------------------------------------------
@@ -75,10 +75,12 @@ hosts:
 --------------------------------------------
 
 访问 my.web.com:8090/index.html  如果未登录会重定向至sso域登录页面
-![GitHub](https://raw.githubusercontent.com/leqwang/kisso/master/images/nologin.jpg "Kisso,crossdomain login")
+
+![kisso login](http://git.oschina.net/uploads/images/2015/1208/101635_99913d35_12260.jpeg "Kisso,crossdomain login")
 
 登录成功 my.web.com 如图
-![GitHub](https://raw.githubusercontent.com/leqwang/kisso/master/images/login.jpg "Kisso,crossdomain login")
+
+![kisso login](http://git.oschina.net/uploads/images/2015/1208/101605_2037b254_12260.jpeg "Kisso,crossdomain login")
 
 
 Supports
@@ -108,7 +110,7 @@ Futures
 
 开源赞助我(支付宝)
 ====================
-![GitHub](https://raw.githubusercontent.com/leqwang/kisso/master/images/donate.png "开源赞助我(支付宝)")
+![赞助 kisso](http://git.oschina.net/uploads/images/2015/1208/101534_761146da_12260.png "开源赞助我(支付宝)")
 
 copyright
 ====================
