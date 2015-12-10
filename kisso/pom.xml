@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.baomidou</groupId>
 	<artifactId>kisso</artifactId>
-	<version>3.2</version>
+	<version>3.3</version>
 	<packaging>jar</packaging>
 
 	<name>kisso</name>
@@ -34,6 +34,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<servlet-api.version>2.5</servlet-api.version>
 		<fastjson.version>1.2.6</fastjson.version>
+		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
 		<spring.version>4.1.4.RELEASE</spring.version>
 	</properties>
 
@@ -51,6 +52,14 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Encryption library -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk14</artifactId>
+			<version>${bcprov-jdk14.version}</version>
 			<scope>provided</scope>
 		</dependency>
 

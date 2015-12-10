@@ -25,10 +25,11 @@ import java.io.OutputStream;
 import java.security.Security;
 import java.util.logging.Logger;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.encoders.Base64;
+import org.bouncycastle.util.encoders.UrlBase64;
+
 import com.baomidou.kisso.SSOConfig;
-import com.baomidou.kisso.common.bcprov.jce.provider.BouncyCastleProvider;
-import com.baomidou.kisso.common.bcprov.util.encoders.Base64;
-import com.baomidou.kisso.common.bcprov.util.encoders.UrlBase64;
 
 /**
  * <p>
