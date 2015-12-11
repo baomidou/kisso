@@ -25,7 +25,6 @@ import com.baomidou.kisso.AuthToken;
 import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.Token;
 import com.baomidou.kisso.common.CookieHelper;
-import com.baomidou.kisso.common.encrypt.AES;
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.common.util.RandomUtil;
 
@@ -248,7 +247,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 		if ( token != null ) {
 			String rt = null;
 			try {
-				rt = AES.getInstance().decrypt(replyTxt, config.getSecretkey());
+				rt = config.getEncrypt().decrypt(replyTxt, config.getSecretkey());
 			} catch ( Exception e ) {
 				logger.severe("kisso AES decrypt error.");
 				e.printStackTrace();
