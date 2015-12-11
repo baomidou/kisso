@@ -27,7 +27,7 @@ Maven 坐标
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>3.2</version>
+  <version>3.4</version>
 </dependency>
 ```
 
