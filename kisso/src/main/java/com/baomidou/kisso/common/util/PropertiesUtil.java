@@ -54,7 +54,7 @@ public class PropertiesUtil {
 	 * online_mode 生产模式 
 	 * -------------------- 
 	 * eclipse 开发模式配置，启动参数 Arguments 属性 VM
-	 * arguments 设置 -Dsso.production.mode=dev_mode
+	 * arguments 设置 -Dsso.run.mode=dev_mode
 	 */
 	public static Properties extractRunMode(Properties prop, String runMode) {
 		return extractRunMode(prop, runMode, "online_mode");
@@ -86,7 +86,7 @@ public class PropertiesUtil {
 			String str = prop.getProperty(runMode);
 			mode = (str != null) ? str : defaultMode;
 		}
-		logger.info("production.mode=" + mode);
+		logger.info("sso.run.mode=" + mode);
 		properties.put(runMode, mode);
 		Set<Entry<Object, Object>> es = prop.entrySet();
 		for (Entry<Object, Object> entry : es) {

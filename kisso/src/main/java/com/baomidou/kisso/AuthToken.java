@@ -46,6 +46,7 @@ public class AuthToken extends Token {
 	private String rsaSign;
 
 	protected AuthToken() {
+		
 	}
 
 	/**
