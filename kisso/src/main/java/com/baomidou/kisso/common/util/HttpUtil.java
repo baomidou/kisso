@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.kisso.SSOConfig;
 
@@ -38,6 +39,20 @@ import com.baomidou.kisso.SSOConfig;
 public class HttpUtil {
 
 	private static final Logger logger = Logger.getLogger("HttpUtil");
+	
+	/**
+	 * 
+	 * 允许 JS 跨域设置
+	 * 
+	 * @param response
+	 * 				响应请求
+	 */
+	public static void allowJsCrossDomain( HttpServletResponse response ) {
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT, DELETE");
+		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		response.setHeader("Access-Control-Max-Age", "3600");
+	}
 
 	/**
 	 * @Description 获取URL查询条件
