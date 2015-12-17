@@ -44,6 +44,17 @@ public class HttpUtil {
 	 * 
 	 * 允许 JS 跨域设置
 	 * 
+	 * <p>
+	 * <!-- 使用 nginx 注意在 nginx.conf 中配置 -->
+	 * http {
+  	 * 	......
+     * 	 add_header Access-Control-Allow-Origin *;
+     * 	 add_header Access-Control-Allow-Headers X-Requested-With;
+  	 *   add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
+     *  ......
+  	 * } 
+	 * </p>
+	 * 
 	 * @param response
 	 * 				响应请求
 	 */
