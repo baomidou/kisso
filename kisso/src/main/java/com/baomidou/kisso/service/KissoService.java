@@ -57,14 +57,14 @@ public interface KissoService {
 	 * 
 	 * <p> 退出 </p>
 	 */
-	boolean loginClear( HttpServletRequest request, HttpServletResponse response );
+	boolean clearLogin( HttpServletRequest request, HttpServletResponse response );
 
 	/**
 	 * 退出并跳至登录页
 	 * 
 	 * <p> 退出 </p>
 	 */
-	void login( HttpServletRequest request, HttpServletResponse response ) throws IOException;
+	void redirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException;
 
 	/**
 	 * 生成跨域询问密文

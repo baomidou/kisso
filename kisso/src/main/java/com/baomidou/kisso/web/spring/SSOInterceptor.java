@@ -78,7 +78,7 @@ public class SSOInterceptor extends HandlerInterceptorAdapter {
 				 * 重新登录
 				 */
 				logger.fine("logout. request url:" + request.getRequestURL());
-				SSOHelper.login(request, response);
+				SSOHelper.redirectLogin(request, response);
 				return false;
 			} else {
 				request.setAttribute(SSOConfig.SSO_TOKEN_ATTR, token);

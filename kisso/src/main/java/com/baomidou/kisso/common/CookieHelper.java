@@ -40,7 +40,11 @@ public class CookieHelper {
 	public final static int CLEAR_IMMEDIATELY_REMOVE = 0;
 
 	/**
-	 * @Description 防止伪造SESSIONID攻击. 用户登录校验成功销毁当前JSESSIONID. 创建可信的JSESSIONID
+	 * 
+	 * <p>
+	 * 防止伪造SESSIONID攻击. 用户登录校验成功销毁当前JSESSIONID. 创建可信的JSESSIONID
+	 * </p>
+	 * 
 	 * @param request
 	 *            当前HTTP请求
 	 * @param value
@@ -52,7 +56,10 @@ public class CookieHelper {
 	}
 
 	/**
-	 * @Description 根据cookieName获取Cookie
+	 * <p>
+	 * 根据cookieName获取Cookie
+	 * </p>
+	 * 
 	 * @param request
 	 * @param cookieName
 	 *            Cookie name
@@ -71,7 +78,10 @@ public class CookieHelper {
 	}
 
 	/**
+	 * 
+	 * <p>
 	 * 根据 cookieName 清空 Cookie【默认域下】
+	 * </p>
 	 * 
 	 * @param response
 	 * @param cookieName
@@ -83,7 +93,11 @@ public class CookieHelper {
 	}
 
 	/**
-	 * @Description 清除指定doamin的所有Cookie
+	 * 
+	 * <p>
+	 * 清除指定doamin的所有Cookie
+	 * </p>
+	 * 
 	 * @param request
 	 * @param response
 	 * @param cookieName
@@ -104,7 +118,11 @@ public class CookieHelper {
 	}
 
 	/**
-	 * @Description 根据cookieName清除指定Cookie
+	 * 
+	 * <p>
+	 * 根据cookieName清除指定Cookie
+	 * </p>
+	 * 
 	 * @param request
 	 * @param response
 	 * @param cookieName
@@ -126,8 +144,14 @@ public class CookieHelper {
 	}
 
 	/**
-	 * @Description 清除指定Cookie 等同于 clearCookieByName(...)
-	 *              该方法不判断Cookie是否存在,因此不对外暴露防止Cookie不存在异常.
+	 * <p>
+	 * 清除指定Cookie 等同于 clearCookieByName(...)
+	 * </p>
+	 * 
+	 * <p>
+	 * 该方法不判断Cookie是否存在,因此不对外暴露防止Cookie不存在异常.
+	 * </p>
+	 * 
 	 * @param response
 	 * @param cookieName
 	 *            cookie name
@@ -155,8 +179,10 @@ public class CookieHelper {
 	}
 
 	/**
-	 * 添加 Cookie
+	 * 
 	 * <p>
+	 * 添加 Cookie
+	 * </p>
 	 * 
 	 * @param response
 	 * @param domain
@@ -205,8 +231,10 @@ public class CookieHelper {
 	}
 
 	/**
-	 * 解决 servlet 3.0 以下版本不支持 HttpOnly
+	 * 
 	 * <p>
+	 * 解决 servlet 3.0 以下版本不支持 HttpOnly
+	 * </p>
 	 * 
 	 * @param response
 	 *            HttpServletResponse类型的响应

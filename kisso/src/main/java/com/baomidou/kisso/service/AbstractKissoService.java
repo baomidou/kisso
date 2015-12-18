@@ -99,7 +99,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	 * @param response
 	 * @return boolean true 成功, false 失败
 	 */
-	public boolean loginClear( HttpServletRequest request, HttpServletResponse response ) {
+	public boolean clearLogin( HttpServletRequest request, HttpServletResponse response ) {
 		return logout(request, response, config.getCache());
 	}
 	
@@ -111,9 +111,10 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	 * @param request
 	 * @param response
 	 */
-	public void login( HttpServletRequest request, HttpServletResponse response ) throws IOException {
-		/* 清理当前登录 Cookie 重新登录 */
-		loginClear(request, response);
+	public void redirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException {
+		
+		/* 清理当前登录状态 */
+		clearLogin(request, response);
 
 		/* redirect login page */
 		String loginUrl = config.getLoginUrl();
