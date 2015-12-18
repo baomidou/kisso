@@ -40,7 +40,7 @@ public class SSOHelper {
 	/**
 	 * 创建 Kisso 服务
 	 */
-	protected static ConfigurableAbstractKissoService getKissoService() {
+	private static ConfigurableAbstractKissoService getKissoService() {
 		if ( kissService == null ) {
 			kissService = new ConfigurableAbstractKissoService();
 		}
@@ -92,22 +92,12 @@ public class SSOHelper {
 		getKissoService().login(request, response);
 	}
 
-	public static String hashCookie( HttpServletRequest request ) {
-		return getKissoService().hashCookie(request);
+	public static String getTokenCacheKey( HttpServletRequest request ) {
+		return getKissoService().tokenCacheKey(request, null);
 	}
 
-	/**
-	 * 获取当前请求 Token
-	 * <p>
-	 * 此属性在过滤器拦截器中设置，业务系统中调用有效
-	 * </p>
-	 * 
-	 * @param request
-	 * @return
-	 * @return Token
-	 */
-	public static Object attrToken( HttpServletRequest request ) {
-		return request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
+	public static Token attrToken( HttpServletRequest request ) {
+		return getKissoService().attrToken(request);
 	}
 
 

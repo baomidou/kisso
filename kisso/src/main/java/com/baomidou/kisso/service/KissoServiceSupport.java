@@ -28,7 +28,6 @@ import com.baomidou.kisso.Token;
 import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.IpHelper;
-import com.baomidou.kisso.common.encrypt.MD5;
 import com.baomidou.kisso.common.encrypt.SSOEncrypt;
 import com.baomidou.kisso.common.util.RandomUtil;
 import com.baomidou.kisso.exception.KissoException;
@@ -57,6 +56,20 @@ public class KissoServiceSupport {
 	/**
 	 * ------------------------------- 客户端相关方法
 	 */
+	
+	/**
+	 * 获取当前请求 Token
+	 * <p>
+	 * 此属性在过滤器拦截器中设置，业务系统中调用有效
+	 * </p>
+	 * 
+	 * @param request
+	 * @return
+	 * @return Token
+	 */
+	public Token attrToken( HttpServletRequest request ) {
+		return (Token) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
+	}
 
 	/**
 	 * 获取当前请求 Token
@@ -94,7 +107,7 @@ public class KissoServiceSupport {
 		 * 如果缓存不存退出登录
 		 */
 		if ( cache != null ) {
-			Token tk = cache.get(hashCookie(request));
+			Token tk = cache.get(tokenCacheKey(request, null));
 			if ( tk == null ) {
 				/* 开启缓存且失效，返回 null 清除 Cookie 退出 */
 				return null;
@@ -196,40 +209,34 @@ public class KissoServiceSupport {
 		return token;
 	}
 
+
 	/**
+	 * 
+	 * Token 缓存主键
+	 * 
 	 * <p>
-	 * Cookie加密值 Hash
+	 * 1、自动设置
+	 * 2、拦截器 request 中获取
+	 * 3、解密 Cookie 获取
 	 * </p>
 	 * 
 	 * @param request
-	 * @return String
+	 * 				HTTP 请求
+	 * @param token
+	 * 				SSO 票据
+	 * @return
 	 */
-	public String hashCookie( HttpServletRequest request ) {
-		Cookie uid = CookieHelper.findCookieByName(request, config.getCookieName());
-		return hashCookie(uid);
+	public String tokenCacheKey( HttpServletRequest request, Token token ) {
+		Token tk = token;
+		if ( tk == null ) {
+			tk = this.attrToken(request);
+			if ( tk == null ) {
+				tk = this.getToken(request, config.getEncrypt(), config.getCache());
+			}
+		}
+		return token.toCacheKey();
 	}
 	
-	/**
-	 * <p>
-	 * Cookie加密值 Hash
-	 * </p>
-	 * 
-	 * @param uid
-	 *            登录加密 Cookie
-	 * @return String
-	 */
-	private String hashCookie( Cookie uid ) {
-		if ( uid != null ) {
-			/**
-			 * MD5 Cookie
-			 */
-			StringBuffer cmd5 = new StringBuffer();
-			cmd5.append("ssocookie_");
-			cmd5.append(MD5.toMD5(uid.getValue()));
-			return cmd5.toString();
-		}
-		return null;
-	}
 	
 	/**
 	 * ------------------------------- 登录相关方法
@@ -333,7 +340,7 @@ public class KissoServiceSupport {
 			 */
 			SSOCache cache = config.getCache();
 			if ( cache != null ) {
-				boolean rlt = cache.set(hashCookie(ck), token, config.getCacheExpires());
+				boolean rlt = cache.set(tokenCacheKey(request, token), token, config.getCacheExpires());
 				if ( !rlt ) {
 					token.setFlag(Token.FLAG_CACHE_SHUT);
 				}
@@ -377,9 +384,9 @@ public class KissoServiceSupport {
 		 * Token 如果开启了缓存，删除缓存记录
 		 */
 		if ( cache != null ) {
-			boolean rlt = cache.delete(hashCookie(request));
+			boolean rlt = cache.delete(tokenCacheKey(request, null));
 			if ( !rlt ) {
-				cache.delete(hashCookie(request));
+				cache.delete(tokenCacheKey(request, null));
 			}
 		}
 

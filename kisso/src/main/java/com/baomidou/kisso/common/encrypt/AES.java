@@ -47,6 +47,7 @@ public class AES implements SSOEncrypt {
 	}
 
 	public AES() {
+		
 	}
 
 	public AES(String str) {

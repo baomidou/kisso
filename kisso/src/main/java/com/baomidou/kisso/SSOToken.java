@@ -29,59 +29,36 @@ import com.baomidou.kisso.common.IpHelper;
  */
 public class SSOToken extends Token {
 
-	/* 应用系统 ID */
-	private long appId;
-
-	/* 用户 ID */
-	private long userId;
-
 	/* 登录类型 */
-	private int loginType;
+	private int type;
 
 	/* 登录时间 */
-	private long loginTime;
-
+	private long time;
+	
 	public SSOToken() {
 
 	}
 
 	public SSOToken(HttpServletRequest request) {
-		this.appId = 0L;
 		this.setIp(IpHelper.getIpAddr(request));
-		this.loginType = 0;
-		this.loginTime = System.currentTimeMillis();
+		this.type = 0;
+		this.time = System.currentTimeMillis();
+	}
+	
+	public int getType() {
+		return type;
+	}
+	
+	public void setType( int type ) {
+		this.type = type;
+	}
+	
+	public long getTime() {
+		return time;
 	}
 
-	public long getAppId() {
-		return appId;
-	}
-
-	public void setAppId(long appId) {
-		this.appId = appId;
-	}
-
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public int getLoginType() {
-		return loginType;
-	}
-
-	public void setLoginType(int loginType) {
-		this.loginType = loginType;
-	}
-
-	public long getLoginTime() {
-		return loginTime;
-	}
-
-	public void setLoginTime(long loginTime) {
-		this.loginTime = loginTime;
+	public void setTime( long time ) {
+		this.time = time;
 	}
 
 }

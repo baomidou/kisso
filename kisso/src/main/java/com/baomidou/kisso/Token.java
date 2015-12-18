@@ -29,11 +29,16 @@ public class Token {
 
 	/* 缓存宕机 */
 	public final static int FLAG_CACHE_SHUT = 1;
+	
+	/* 应用系统，例如：系统 ID */
+	private String app;
 
-	/**
-	 * 登录 IP
-	 */
+	/* 用户 ID */
+	private String uid;
+
+	/* 登录 IP */
 	private String ip;
+	
 	/**
 	 * Token 状态标示
 	 * <p>
@@ -41,6 +46,23 @@ public class Token {
 	 * </p>
 	 */
 	private int flag = FLAG_NORMAL;
+
+	
+	public String getApp() {
+		return app;
+	}
+	
+	public void setApp( String app ) {
+		this.app = app;
+	}
+	
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid( String uid ) {
+		this.uid = uid;
+	}
 
 	public String getIp() {
 		return ip;
@@ -78,6 +100,16 @@ public class Token {
 	 */
 	public Token parseToken(String jsonToken) {
 		return SSOConfig.newInstance().getParser().parseToken(jsonToken, this.getClass());
+	}
+	
+	/**
+	 * 生成 Token 缓存主键
+	 */
+	public String toCacheKey() {
+		StringBuffer ck = new StringBuffer();
+		ck.append("ssoToken_");
+		ck.append(this.getUid());
+		return ck.toString();
 	}
 	
 }

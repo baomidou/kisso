@@ -35,7 +35,8 @@ public class TestJsonToken {
 
 	public static void main( String[] args ) {
 		SSOToken st = new SSOToken();
-		st.setUserId(123L);
+		st.setApp("sso");
+		st.setUid("123");
 		st.setIp("127.0.0.1");
 		String jsonObj = st.jsonToken();
 		System.out.println("==jsonObj=" + jsonObj);
@@ -49,7 +50,7 @@ public class TestJsonToken {
 		}
 		SSOToken mt = (SSOToken) st.parseToken(jsonObj);
 		if ( null != mt ) {
-			System.out.println("==parse==" + mt.getLoginTime());
+			System.out.println("==parse==" + mt.getTime());
 		}
 	}
 }

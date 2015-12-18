@@ -70,7 +70,9 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	}
 	
 	/**
-	 * @Description 当前访问域下设置登录Cookie
+	 * 
+	 * 当前访问域下设置登录Cookie
+	 * 
 	 * @param request
 	 * @param response
 	 */
@@ -79,7 +81,9 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	}
 
 	/**
-	 * @Description 当前访问域下设置登录Cookie 设置防止伪造SESSIONID攻击
+	 * 
+	 * 当前访问域下设置登录Cookie 设置防止伪造SESSIONID攻击
+	 * 
 	 * @param request
 	 * @param response
 	 */
@@ -165,7 +169,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 			setAuthCookie(request, response, at);
 			return config.getEncrypt().encrypt(at.jsonToken(), config.getSecretkey());
 		} catch ( Exception e ) {
-			logger.info("askCiphertext AES encrypt error.");
+			logger.severe("askCiphertext AES encrypt error.");
 			e.printStackTrace();
 		}
 		return null;
@@ -192,7 +196,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 		try {
 			at = config.getEncrypt().decrypt(askTxt, config.getSecretkey());
 		} catch ( Exception e ) {
-			logger.info("replyCiphertext AES decrypt error.");
+			logger.severe("replyCiphertext AES decrypt error.");
 			e.printStackTrace();
 		}
 		if ( at != null ) {
@@ -206,7 +210,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 			 */
 			AuthToken authToken = JSON.parseObject(at, AuthToken.class);
 			if ( checkIp(request, authToken.verify(tokenPk)) != null ) {
-				authToken.setUserId(userId);
+				authToken.setUid(userId);
 				try {
 					/**
 					 * <p>
@@ -219,7 +223,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 					authToken.sign(ssoPrk);
 					return config.getEncrypt().encrypt(authToken.jsonToken(), config.getSecretkey());
 				} catch ( Exception e ) {
-					logger.info("replyCiphertext AES encrypt error.");
+					logger.severe("replyCiphertext AES encrypt error.");
 					e.printStackTrace();
 				}
 			}
@@ -261,7 +265,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 						 */
 						CookieHelper.clearCookieByName(request, response, config.getAuthCookieName(),
 							config.getCookieDomain(), config.getCookiePath());
-						return atk.getUserId();
+						return atk.getUid();
 					}
 				}
 			}

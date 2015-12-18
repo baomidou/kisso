@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 
@@ -39,12 +40,21 @@ public class WebKissoConfigurer {
 	/**
 	 * Parameter specifying the location of the kisso config file
 	 */
+	protected static final Logger logger = Logger.getLogger("WebKissoConfigurer");
 	public static final String CONFIG_LOCATION_PARAM = "kissoConfigLocation";
+	private String ssoPropPath = "sso.properties";
 
 	protected WebKissoConfigurer() {
-		
+		/* 保护 */
 	}
 
+	/**
+	 * 
+	 * web.xml 启动监听, 初始化
+	 * 
+	 * @param servletContext
+	 * 
+	 */
 	public static void initKisso(ServletContext servletContext) {
 		String location = servletContext.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (location != null) {
@@ -52,14 +62,13 @@ public class WebKissoConfigurer {
 				String[] cfg = location.split(":");
 				if (cfg.length == 2) {
 					/* 初始化配置 */
-					InputStream in = WebKissoConfigurer.class.getClassLoader().getResourceAsStream(cfg[1]);
-					SSOConfig.init(getInputStream(servletContext, in));
+					SSOConfig.init(getInputStream(cfg[1]));
 				}
 			} else {
 				File file = new File(location);
 				if (file.isFile()) {
 					try {
-						SSOConfig.init(getInputStream(servletContext, new FileInputStream(file)));
+						SSOConfig.init(getInputStream(new FileInputStream(file)));
 					} catch (FileNotFoundException e) {
 						throw new KissoException(location);
 					}
@@ -71,20 +80,75 @@ public class WebKissoConfigurer {
 			servletContext.log("Initializing is not available kissoConfigLocation on the classpath");
 		}
 	}
+	
 
+	/**
+	 * 
+	 * Spring bean 注入初始化
+	 * <p>
+	 * xml 配置方法：
+	 * 
+	 * <bean id="kissoInit" class="com.baomidou.kisso.web.WebKissoConfigurer" init-method="initKisso">
+	 * 		<property name="ssoPropPath" value="sso.properties" />
+	 * </bean>
+	 * </p>
+	 * 
+	 */
+	public void initKisso() {
+		Properties prop = null;
+		
+		/* 尝试文件读取 */
+		File file = new File(this.getSsoPropPath());
+		if ( file.isFile() ) {
+			try {
+				prop = getInputStream(new FileInputStream(file));
+			} catch ( FileNotFoundException e ) {
+				throw new KissoException(this.getSsoPropPath());
+			}
+		} else {
+			prop = getInputStream(this.getSsoPropPath());
+		}
+		
+		/**
+		 * 初始化
+		 */
+		if ( prop != null ) {
+			SSOConfig.init(prop);
+		} else {
+			logger.severe("Initializing is not available kissoConfigLocation on the classpath");
+		}
+	}
+
+	
 	public static void shutdownKisso(ServletContext servletContext) {
 		servletContext.log("Uninstalling Kisso ");
 	}
 
-	private static Properties getInputStream(ServletContext servletContext, InputStream in) {
+
+	private static Properties getInputStream( String cfg ) {
+		return getInputStream(WebKissoConfigurer.class.getClassLoader().getResourceAsStream(cfg));
+	}
+
+
+	private static Properties getInputStream( InputStream in ) {
 		Properties p = null;
 		try {
 			p = new Properties();
 			p.load(in);
-		} catch (Exception e) {
-			servletContext.log(" kisso read config file error. ", e);
+		} catch ( Exception e ) {
+			logger.severe(" kisso read config file error. ");
+			e.printStackTrace();
 		}
 		return p;
+	}
+	
+	
+	public String getSsoPropPath() {
+		return ssoPropPath;
+	}
+
+	public void setSsoPropPath( String ssoPropPath ) {
+		this.ssoPropPath = ssoPropPath;
 	}
 	
 }

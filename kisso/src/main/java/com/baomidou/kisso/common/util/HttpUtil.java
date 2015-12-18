@@ -46,13 +46,18 @@ public class HttpUtil {
 	 * 
 	 * <p>
 	 * <!-- 使用 nginx 注意在 nginx.conf 中配置 -->
+	 * 
 	 * http {
   	 * 	......
      * 	 add_header Access-Control-Allow-Origin *;
-     * 	 add_header Access-Control-Allow-Headers X-Requested-With;
-  	 *   add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
      *  ......
   	 * } 
+	 * </p>
+	 * 
+	 * <p>
+	 * 非 ngnix 下，如果该方法设置不管用、可以尝试增加下行代码。 
+	 * 
+	 * response.setHeader("Access-Control-Allow-Origin", "*");
 	 * </p>
 	 * 
 	 * @param response

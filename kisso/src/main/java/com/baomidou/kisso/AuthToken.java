@@ -37,13 +37,13 @@ public class AuthToken extends Token {
 	private static final Logger logger = Logger.getLogger("AuthToken");
 
 	/* 用户ID */
-	private String userId;
+	private String uid;
 
 	/* 32 uuid */
 	private String uuid;
 
 	/* ras sign */
-	private String rsaSign;
+	private String sign;
 
 	protected AuthToken() {
 		
@@ -81,7 +81,7 @@ public class AuthToken extends Token {
 	 */
 	public void sign(String privateKey) {
 		try {
-			this.rsaSign = RSA.sign(signByte(), privateKey);
+			this.sign = RSA.sign(signByte(), privateKey);
 		} catch (Exception e) {
 			logger.severe("sign error.");
 			e.printStackTrace();
@@ -101,7 +101,7 @@ public class AuthToken extends Token {
 			/**
 			 * RSA 验证摘要 是否合法
 			 */
-			if (RSA.verify(signByte(), publicKey, getRsaSign())) {
+			if (RSA.verify(signByte(), publicKey, getSign())) {
 				return this;
 			}
 		} catch (Exception e) {
@@ -112,27 +112,28 @@ public class AuthToken extends Token {
 		return null;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getUid() {
+		return uid;
 	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
+	
+	public void setUid( String uid ) {
+		this.uid = uid;
 	}
 
 	public String getUuid() {
 		return uuid;
 	}
 
-	public void setUuid(String uuid) {
+	public void setUuid( String uuid ) {
 		this.uuid = uuid;
 	}
 
-	public String getRsaSign() {
-		return rsaSign;
+	public String getSign() {
+		return sign;
 	}
 
-	public void setRsaSign(String rsaSign) {
-		this.rsaSign = rsaSign;
+	public void setSign( String sign ) {
+		this.sign = sign;
 	}
+
 }

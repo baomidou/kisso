@@ -41,6 +41,19 @@ public class PBE implements SSOEncrypt {
 	public static final String ALGORITHM = "PBEWITHMD5andDES";
 	/** 迭代次数 */
 	public static final int ITERATION_COUNT = 100;
+	
+	private static PBE pbe;
+
+	public static PBE getInstance() {
+		if (pbe == null) {
+			pbe = new PBE();
+		}
+		return pbe;
+	}
+
+	public PBE() {
+
+	}
 
 	/**
 	 * 盐初始化<br>
