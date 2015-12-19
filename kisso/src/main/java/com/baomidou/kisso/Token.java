@@ -21,7 +21,7 @@ package com.baomidou.kisso;
  * </p>
  * 
  * @author hubin
- * @Date 2015-11-30
+ * @Date 2015-12-29
  */
 public class Token {
 	/* 正常 */
@@ -38,6 +38,9 @@ public class Token {
 
 	/* 登录 IP */
 	private String ip;
+
+	/* 创建 token 当前系统时间 */
+	private long time = System.currentTimeMillis();
 	
 	/**
 	 * Token 状态标示
@@ -80,6 +83,14 @@ public class Token {
 		this.flag = flag;
 	}
 	
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime( long time ) {
+		this.time = time;
+	}
+	
 	/**
 	 * Token转为JSON格式
 	 * <p>
@@ -109,6 +120,8 @@ public class Token {
 		StringBuffer ck = new StringBuffer();
 		ck.append("ssoToken_");
 		ck.append(this.getUid());
+		ck.append("_");
+		ck.append(this.getTime());
 		return ck.toString();
 	}
 	

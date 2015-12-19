@@ -173,8 +173,8 @@ public class SSOHelper {
 	 * @param response
 	 * @throws IOException
 	 */
-	public static void redirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException {
-		getKissoService().redirectLogin(request, response);
+	public static void clearRedirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException {
+		getKissoService().clearRedirectLogin(request, response);
 	}
 
 	/**

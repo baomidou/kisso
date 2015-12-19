@@ -30,7 +30,7 @@ import com.baomidou.kisso.exception.KissoException;
  * </p>
  * <p>
  * 按照不同的运行模式启用相应的配置 默认开发环境， 调试方式 Eclipse 环境的 VM 参数中加上
- * -Dsso.production.mode=dev_mode 例如：
+ * -Dsso.run.mode=dev_mode 例如：
  * ------------------------------------------------------------------
  * sso.login.url_online_mode=http://sso.online.com/login.html
  * sso.login.url_test_mode=http://sso.test.com/login.html

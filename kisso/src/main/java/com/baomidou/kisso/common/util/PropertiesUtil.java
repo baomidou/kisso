@@ -61,8 +61,9 @@ public class PropertiesUtil {
 	}
 
 	/**
-	 * properties 提取当前模式配置
 	 * <p>
+	 * properties 提取当前模式配置
+	 * </p>
 	 * 
 	 * @param prop
 	 *            配置文件 Properties

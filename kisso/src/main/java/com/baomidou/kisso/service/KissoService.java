@@ -64,7 +64,7 @@ public interface KissoService {
 	 * 
 	 * <p> 退出 </p>
 	 */
-	void redirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException;
+	void clearRedirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException;
 
 	/**
 	 * 生成跨域询问密文

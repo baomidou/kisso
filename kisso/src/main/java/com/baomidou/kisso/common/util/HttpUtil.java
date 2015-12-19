@@ -71,7 +71,11 @@ public class HttpUtil {
 	}
 
 	/**
-	 * @Description 获取URL查询条件
+	 * 
+	 * <p>
+	 * 获取URL查询条件
+	 * </p>
+	 * 
 	 * @param request
 	 * @param encode
 	 *            URLEncoder编码格式
@@ -88,7 +92,11 @@ public class HttpUtil {
 	}
 
 	/**
-	 * @Description getRequestURL是否包含在URL之内
+	 * 
+	 * <p>
+	 * getRequestURL是否包含在URL之内
+	 * </p>
+	 * 
 	 * @param request
 	 * @param url
 	 *            参数为以';'分割的URL字符串
@@ -110,7 +118,10 @@ public class HttpUtil {
 	}
 
 	/**
-	 * @Description URLEncoder返回地址
+	 * <p>
+	 * URLEncoder返回地址
+	 * </p>
+	 * 
 	 * @param url
 	 *            跳转地址
 	 * @param retParam
@@ -137,8 +148,9 @@ public class HttpUtil {
 	}
 
 	/**
-	 * GET 请求
 	 * <p>
+	 * GET 请求
+	 * </p>
 	 * 
 	 * @param request
 	 * @return boolean
@@ -151,8 +163,9 @@ public class HttpUtil {
 	}
 
 	/**
-	 * POST 请求
 	 * <p>
+	 * POST 请求
+	 * </p>
 	 * 
 	 * @param request
 	 * @return boolean
@@ -165,8 +178,9 @@ public class HttpUtil {
 	}
 
 	/**
-	 * 获取Request Playload 内容
 	 * <p>
+	 * 获取Request Playload 内容
+	 * </p>
 	 * 
 	 * @param request
 	 * @return Request Playload 内容
@@ -201,8 +215,9 @@ public class HttpUtil {
 	}
 
 	/**
-	 * 获取当前完整请求地址
 	 * <p>
+	 * 获取当前完整请求地址
+	 * </p>
 	 * 
 	 * @param request
 	 * @return 请求地址

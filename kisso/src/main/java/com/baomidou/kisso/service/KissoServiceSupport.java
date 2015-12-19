@@ -54,7 +54,7 @@ public class KissoServiceSupport {
 	}
 
 	/**
-	 * ------------------------------- 客户端相关方法
+	 * ------------------------------- 客户端相关方法 -------------------------------
 	 */
 	
 	/**
@@ -110,6 +110,7 @@ public class KissoServiceSupport {
 			Token tk = cache.get(tokenCacheKey(request, null));
 			if ( tk == null ) {
 				/* 开启缓存且失效，返回 null 清除 Cookie 退出 */
+				logger.fine("cacheToken token is null.");
 				return null;
 			} else {
 				/* 开启缓存 1、缓存正常，返回 tk 2、缓存宕机，执行读取 Cookie 逻辑 */
@@ -239,7 +240,7 @@ public class KissoServiceSupport {
 	
 	
 	/**
-	 * ------------------------------- 登录相关方法
+	 * ------------------------------- 登录相关方法 -------------------------------
 	 */
 
 	/**

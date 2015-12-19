@@ -111,7 +111,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	 * @param request
 	 * @param response
 	 */
-	public void redirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException {
+	public void clearRedirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException {
 		
 		/* 清理当前登录状态 */
 		clearLogin(request, response);

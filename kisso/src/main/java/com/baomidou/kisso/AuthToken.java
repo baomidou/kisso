@@ -36,9 +36,6 @@ public class AuthToken extends Token {
 	
 	private static final Logger logger = Logger.getLogger("AuthToken");
 
-	/* 用户ID */
-	private String uid;
-
 	/* 32 uuid */
 	private String uuid;
 
@@ -110,14 +107,6 @@ public class AuthToken extends Token {
 			throw new KissoException(" AuthToken RSA verify error. ");
 		}
 		return null;
-	}
-
-	public String getUid() {
-		return uid;
-	}
-	
-	public void setUid( String uid ) {
-		this.uid = uid;
 	}
 
 	public String getUuid() {

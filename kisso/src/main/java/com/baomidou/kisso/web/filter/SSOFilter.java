@@ -63,7 +63,7 @@ public class SSOFilter implements Filter {
 				 * 重新登录
 				 */
 				logger.fine("logout. request url:" + req.getRequestURL());
-				SSOHelper.redirectLogin(req, res);
+				SSOHelper.clearRedirectLogin(req, res);
 				return ;
 			} else {
 				req.setAttribute(SSOConfig.SSO_TOKEN_ATTR, token);

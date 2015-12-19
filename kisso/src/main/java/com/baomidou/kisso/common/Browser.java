@@ -54,7 +54,9 @@ public class Browser {
 	}
 
 	/**
-	 * @Description 请求浏览器是否合法 (只校验客户端信息不校验domain)
+	 * <p>
+	 * 请求浏览器是否合法 (只校验客户端信息不校验domain)
+	 * </p>
 	 * @param request
 	 * @param userAgent
 	 *            浏览器客户端信息

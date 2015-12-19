@@ -31,8 +31,9 @@ import java.util.TimeZone;
 public class DateUtil {
 
 	/**
-	 * @Description 获取当前中国时区的TIMESTAMP日期
-	 * @return
+	 * <p> 
+	 * 获取当前中国时区的TIMESTAMP日期
+	 * </p> 
 	 */
 	public static Timestamp getSysTimestamp() {
 		final TimeZone zone = TimeZone.getTimeZone("GMT+8");// 获取中国时区
@@ -41,8 +42,10 @@ public class DateUtil {
 	}
 
 	/**
-	 * 格式日期为字符串内容
+	 * 
 	 * <p>
+	 * 格式日期为字符串内容
+	 * </p>
 	 * 
 	 * @param date
 	 *            时间
@@ -56,8 +59,10 @@ public class DateUtil {
 	}
 
 	/**
-	 * 格式long类型日期为 Date
+	 * 
 	 * <p>
+	 * 格式long类型日期为 Date
+	 * </p>
 	 * 
 	 * @param time
 	 *            long类型日期

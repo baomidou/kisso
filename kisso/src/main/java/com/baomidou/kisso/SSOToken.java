@@ -30,19 +30,14 @@ import com.baomidou.kisso.common.IpHelper;
 public class SSOToken extends Token {
 
 	/* 登录类型 */
-	private int type;
-
-	/* 登录时间 */
-	private long time;
+	private int type = 0;
 	
 	public SSOToken() {
-
+		
 	}
 
 	public SSOToken(HttpServletRequest request) {
 		this.setIp(IpHelper.getIpAddr(request));
-		this.type = 0;
-		this.time = System.currentTimeMillis();
 	}
 	
 	public int getType() {
@@ -51,14 +46,6 @@ public class SSOToken extends Token {
 	
 	public void setType( int type ) {
 		this.type = type;
-	}
-	
-	public long getTime() {
-		return time;
-	}
-
-	public void setTime( long time ) {
-		this.time = time;
 	}
 
 }

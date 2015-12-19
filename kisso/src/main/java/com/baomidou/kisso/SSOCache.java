@@ -30,7 +30,7 @@ public interface SSOCache {
 	 * 根据key获取SSO票据
 	 * </p>
 	 * <p>
-	 * 如果缓存服务宕机，返回 token 设置 flag 为 Token.Flag.CACHE_SHUT
+	 * 如果缓存服务宕机，返回 token 设置 flag 为 Token.FLAG_CACHE_SHUT
 	 * </p>
 	 * 
 	 * @param key

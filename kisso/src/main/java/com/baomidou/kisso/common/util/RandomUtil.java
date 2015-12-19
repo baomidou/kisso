@@ -29,7 +29,11 @@ import java.util.UUID;
 public class RandomUtil {
 
 	/**
-	 * @Description 生产长度为length的随机字母数字混合字符串
+	 * 
+	 * <p>
+	 * 生产长度为length的随机字母数字混合字符串
+	 * </p>
+	 * 
 	 * @param length
 	 *            指定字符串长度
 	 * @return
@@ -55,9 +59,9 @@ public class RandomUtil {
 	}
 
 	/**
+	 * <p>
 	 * 获取去掉"-" UUID
-	 * 
-	 * @return
+	 * </p>
 	 */
 	public static String get32UUID() {
 		return UUID.randomUUID().toString().replace("-", "");
