@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.baomidou.kisso.AuthToken;
 import com.baomidou.kisso.Token;
 
 /**
@@ -35,60 +36,73 @@ public interface KissoService {
 	/**
 	 * 获取登录 Token
 	 * 
-	 * <p> 登录 </p>
+	 * <p>
+	 * 登录
+	 * </p>
 	 */
-	Token getToken( HttpServletRequest request );
+	Token getToken(HttpServletRequest request);
 
 	/**
 	 * 在线人数（总数）
 	 */
-	String getLoginCount( HttpServletRequest request );
+	String getLoginCount(HttpServletRequest request);
 
 	/**
 	 * 设置登录 Cookie
 	 * 
-	 * <p> 登录 </p>
+	 * <p>
+	 * 登录
+	 * </p>
 	 */
-	void setSSOCookie( HttpServletRequest request, HttpServletResponse response, Token token );
-
+	void setSSOCookie(HttpServletRequest request, HttpServletResponse response, Token token);
 
 	/**
 	 * 清理登录状态
 	 * 
-	 * <p> 退出 </p>
+	 * <p>
+	 * 退出
+	 * </p>
 	 */
-	boolean clearLogin( HttpServletRequest request, HttpServletResponse response );
+	boolean clearLogin(HttpServletRequest request, HttpServletResponse response);
 
 	/**
 	 * 退出并跳至登录页
 	 * 
-	 * <p> 退出 </p>
-	 */
-	void clearRedirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException;
-
-	/**
-	 * 生成跨域询问密文
-	 * 
-	 * <p> 跨域</p>
-	 */
-	String askCiphertext( HttpServletRequest request, HttpServletResponse response, String privateKey );
-
-
-	/**
-	 * 生成跨域回复密文
-	 * 
-	 * <p> 跨域</p>
-	 */
-	String replyCiphertext( HttpServletRequest request, String userId, String askTxt, String tokenPk, String ssoPrk );
-
-
-	/**
-	 * 验证跨域回复密文，成功! 
 	 * <p>
-	 * 返回绑定用户ID
+	 * 退出
+	 * </p>
+	 */
+	void clearRedirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+	/**
+	 * 生成跨域询问票据
+	 * 
+	 * <p>
+	 * 跨域
+	 * </p>
+	 */
+	AuthToken askCiphertext(HttpServletRequest request, HttpServletResponse response, String privateKey);
+
+	/**
+	 * 生成跨域回复票据
+	 * 
+	 * <p>
+	 * 跨域
+	 * </p>
+	 */
+	AuthToken replyCiphertext(HttpServletRequest request, String askTxt);
+	// AuthToken replyCiphertext( HttpServletRequest request, String userId,
+	// String askTxt, String tokenPk, String ssoPrk );
+
+	/**
+	 * 验证跨域回复密文，成功!
+	 * <p>
+	 * 返回 绑定用户ID 等信息
 	 * </p>
 	 * 
-	 * <p> 跨域</p>
+	 * <p>
+	 * 跨域
+	 * </p>
 	 */
-	String ok( HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk, String ssoPrk );
+	AuthToken ok(HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk, String ssoPrk);
 }

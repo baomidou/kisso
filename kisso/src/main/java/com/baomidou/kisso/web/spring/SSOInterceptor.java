@@ -29,6 +29,8 @@ import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.Token;
 import com.baomidou.kisso.annotation.Action;
 import com.baomidou.kisso.annotation.Login;
+import com.baomidou.kisso.web.handler.KissoDefaultHandler;
+import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
 
 /**
  * 登录权限验证
@@ -41,6 +43,7 @@ import com.baomidou.kisso.annotation.Login;
  */
 public class SSOInterceptor extends HandlerInterceptorAdapter {
 	private static final Logger logger = Logger.getLogger("SSOInterceptor");
+	private SSOHandlerInterceptor handlerInterceptor;
 
 	/**
 	 * 登录权限验证
@@ -74,13 +77,27 @@ public class SSOInterceptor extends HandlerInterceptorAdapter {
 			 */
 			Token token = SSOHelper.getToken(request);
 			if (token == null) {
-				/**
-				 * 重新登录
-				 */
-				logger.fine("logout. request url:" + request.getRequestURL());
-				SSOHelper.clearRedirectLogin(request, response);
-				return false;
+				if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+					/*
+					 * Handler 处理 AJAX 请求
+					 */
+					this.getHandlerInterceptor().preTokenIsNullAjax(request, response);
+					return false;
+				} else {
+					/*
+					 * token 为空，调用 Handler 处理
+					 * 返回 true 继续执行，清理登录状态并重定向至登录界面
+					 */
+					if (this.getHandlerInterceptor().preTokenIsNull(request, response)) {
+						logger.fine("logout. request url:" + request.getRequestURL());
+						SSOHelper.clearRedirectLogin(request, response);
+					}
+					return false;
+				}
 			} else {
+				/*
+				 * 正常请求，request 设置 token 减少二次解密
+				 */
 				request.setAttribute(SSOConfig.SSO_TOKEN_ATTR, token);
 			}
 		}
@@ -89,6 +106,17 @@ public class SSOInterceptor extends HandlerInterceptorAdapter {
 		 * 通过拦截
 		 */
 		return true;
+	}
+
+	public SSOHandlerInterceptor getHandlerInterceptor() {
+		if (handlerInterceptor == null) {
+			return KissoDefaultHandler.getInstance();
+		}
+		return handlerInterceptor;
+	}
+
+	public void setHandlerInterceptor(SSOHandlerInterceptor handlerInterceptor) {
+		this.handlerInterceptor = handlerInterceptor;
 	}
 
 }

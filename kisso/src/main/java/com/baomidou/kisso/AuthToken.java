@@ -41,9 +41,12 @@ public class AuthToken extends Token {
 
 	/* ras sign */
 	private String sign;
+	
+	/* 预留 */
+	private String data;
 
 	protected AuthToken() {
-		
+		/* 保护 */
 	}
 
 	/**
@@ -57,6 +60,7 @@ public class AuthToken extends Token {
 		this.uuid = RandomUtil.get32UUID();
 		this.setIp(IpHelper.getIpAddr(request));
 		this.sign(privateKey);
+		this.setApp(SSOConfig.getInstance().getRole());
 	}
 
 	/**
@@ -85,7 +89,7 @@ public class AuthToken extends Token {
 			throw new KissoException(" AuthToken RSA sign error. ");
 		}
 	}
-
+	
 	/**
 	 * 验证 AuthToken 签名是否合法
 	 * 
@@ -123,6 +127,14 @@ public class AuthToken extends Token {
 
 	public void setSign( String sign ) {
 		this.sign = sign;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	}
 
 }

@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,7 +75,7 @@ public class HttpUtil {
 	/**
 	 * 
 	 * <p>
-	 * 获取URL查询条件
+	 * 获取当前 URL 包含查询条件
 	 * </p>
 	 * 
 	 * @param request
@@ -119,7 +121,7 @@ public class HttpUtil {
 
 	/**
 	 * <p>
-	 * URLEncoder返回地址
+	 * URLEncoder 返回地址
 	 * </p>
 	 * 
 	 * @param url
@@ -131,9 +133,29 @@ public class HttpUtil {
 	 * @return
 	 */
 	public static String encodeRetURL(String url, String retParam, String retUrl) {
+		return encodeRetURL(url, retParam, retUrl, null);
+	}
+
+	/**
+	 * <p>
+	 * URLEncoder 返回地址
+	 * </p>
+	 * 
+	 * @param url
+	 *            跳转地址
+	 * @param retParam
+	 *            返回地址参数名
+	 * @param retUrl
+	 *            返回地址
+	 * @param Map
+	 *            携带参数
+	 * @return
+	 */
+	public static String encodeRetURL(String url, String retParam, String retUrl, Map<String, String> data) {
 		if (url == null) {
 			return null;
 		}
+
 		StringBuffer retStr = new StringBuffer(url);
 		retStr.append("?");
 		retStr.append(retParam);
@@ -141,10 +163,42 @@ public class HttpUtil {
 		try {
 			retStr.append(URLEncoder.encode(retUrl, SSOConfig.getSSOEncoding()));
 		} catch (UnsupportedEncodingException e) {
-			logger.severe("encodeRetURL error.");
+			logger.severe("encodeRetURL error." + url);
 			e.printStackTrace();
 		}
+		
+		if (data != null) {
+			for (Map.Entry<String, String> entry : data.entrySet()) {
+				retStr.append("&").append(entry.getKey()).append("=").append(entry.getValue());
+			}
+		}
+
 		return retStr.toString();
+	}
+	
+	/**
+	 * <p>
+	 * URLDecoder 解码地址
+	 * </p>
+	 * 
+	 * @param url
+	 *            解码地址
+	 * @return
+	 */
+	public static String decodeURL(String url) {
+		if (url == null) {
+			return null;
+		}
+		String retUrl = "";
+		
+		try {
+			retUrl = URLDecoder.decode(url, SSOConfig.getSSOEncoding());
+		} catch (UnsupportedEncodingException e) {
+			logger.severe("encodeRetURL error." + url);
+			e.printStackTrace();
+		}
+
+		return retUrl;
 	}
 
 	/**
@@ -175,6 +229,26 @@ public class HttpUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * <p>
+	 * 请求重定向至地址 location
+	 * </p>
+	 * 
+	 * @param response
+	 * 				请求响应
+	 * @param location
+	 * 				重定向至地址
+	 */
+	public static void sendRedirect(HttpServletResponse response, String location) {
+		try {
+			response.sendRedirect(location);
+		} catch (IOException e) {
+			logger.severe("sendRedirect location:" + location);
+			e.printStackTrace();
+		}
 	}
 
 	/**

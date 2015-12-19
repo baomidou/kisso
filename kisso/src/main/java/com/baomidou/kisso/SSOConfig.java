@@ -45,6 +45,7 @@ public class SSOConfig {
 	private static final Logger logger = Logger.getLogger("SSOConfig");
 	private static final String SSO_ENCODING = "UTF-8";
 	private String runMode = "online_mode";
+	private String role = "";
 	private String encoding = SSO_ENCODING;
 	private String secretkey = "p00Tm071X992t3Eg05";
 	private String cookieName = "uid";
@@ -92,7 +93,7 @@ public class SSOConfig {
 	/**
 	 * new 当前对象
 	 */
-	public static SSOConfig newInstance() {
+	public static SSOConfig getInstance() {
 		if ( ssoConfig == null ) {
 			if ( prop == null ) {
 				/*
@@ -136,7 +137,7 @@ public class SSOConfig {
 		if ( prop == null ) {
 			return SSO_ENCODING;
 		}
-		return newInstance().getEncoding();
+		return getInstance().getEncoding();
 	}
 	
 	/**
@@ -157,6 +158,23 @@ public class SSOConfig {
 		this.runMode = runMode;
 	}
 	
+	/**
+	 * 系统角色（默认 空）
+	 * <p>
+	 * 该属性为跨域区分当前系统使用，与 token 变量应用系统 app 参数自动设置为该属性值。
+	 * </p>
+	 * <p>
+	 * 该值非空则自动开启跨域功能，单点登录系统名必须设置为 sso.role=sso
+	 * </p>
+	 */
+	public String getRole() {
+		return prop.get("sso.role", role);
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	/**
 	 * 编码格式默认 UTF-8
 	 */

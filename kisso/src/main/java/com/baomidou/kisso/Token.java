@@ -15,6 +15,8 @@
  */
 package com.baomidou.kisso;
 
+import java.util.logging.Logger;
+
 /**
  * <p>
  * SSO 票据顶级父类
@@ -24,13 +26,14 @@ package com.baomidou.kisso;
  * @Date 2015-12-29
  */
 public class Token {
+	protected final Logger logger = Logger.getLogger("Token");
 	/* 正常 */
 	public final static int FLAG_NORMAL = 0;
 
 	/* 缓存宕机 */
 	public final static int FLAG_CACHE_SHUT = 1;
 	
-	/* 应用系统，例如：系统 ID */
+	/* 系统名称  */
 	private String app;
 
 	/* 用户 ID */
@@ -92,25 +95,45 @@ public class Token {
 	}
 	
 	/**
-	 * Token转为JSON格式
 	 * <p>
+	 * Token转为JSON格式
+	 * </p>
 	 * 
 	 * @return JSON格式Token值
 	 */
 	public String jsonToken() {
-		return SSOConfig.newInstance().getParser().toJson(this);
+		return SSOConfig.getInstance().getParser().toJson(this);
 	}
 
 	/**
-	 * JSON格式Token值转为Token对象
 	 * <p>
+	 * JSON格式Token值转为Token对象
+	 * </p>
 	 * 
 	 * @param jsonToken
 	 *            JSON格式Token值
 	 * @return Token对象
 	 */
 	public Token parseToken(String jsonToken) {
-		return SSOConfig.newInstance().getParser().parseToken(jsonToken, this.getClass());
+		return SSOConfig.getInstance().getParser().parseToken(jsonToken, this.getClass());
+	}
+	
+	/**
+	 * <p>
+	 * Token 转为字符串密文
+	 * </p>
+	 * 
+	 * @return Token 密文信息
+	 */
+	public String encryptToken() {
+		try {
+			SSOConfig sc = SSOConfig.getInstance();
+			return sc.getEncrypt().encrypt(jsonToken(), sc.getSecretkey());
+		} catch (Exception e) {
+			logger.severe("replyCiphertext AES encrypt error.");
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**

@@ -28,7 +28,7 @@ import com.baomidou.kisso.SSOConfig;
 public class ConfigurableAbstractKissoService extends AbstractKissoService {
 
 	public ConfigurableAbstractKissoService() {
-		config = SSOConfig.newInstance();
+		config = SSOConfig.getInstance();
 	}
 	
 }

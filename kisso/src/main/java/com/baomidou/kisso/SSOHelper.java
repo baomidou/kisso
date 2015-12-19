@@ -77,7 +77,7 @@ public class SSOHelper {
 	 * 设置加密 Cookie（登录验证成功） 
 	 * 
 	 * <p>
-	 * 最后一个参数 true 销毁当前JSESSIONID. 创建可信的JSESSIONID 防止伪造SESSIONID攻击
+	 * 最后一个参数 true 销毁当前JSESSIONID. 创建可信的 JSESSIONID 防止伪造 SESSIONID 攻击
 	 * </p>
 	 * <p>
 	 * 最后一个参数 false 只设置 cookie 
@@ -87,11 +87,11 @@ public class SSOHelper {
 	 * @param response
 	 * @param token
 	 * 					SSO 票据
-	 * @param invalidateSessionID
-	 * 					销毁当前SessionID
+	 * @param invalidate
+	 * 					销毁当前 JSESSIONID
 	 */
-	public static void setSSOCookie( HttpServletRequest request, HttpServletResponse response, Token token, boolean invalidateSessionID ) {
-		if(invalidateSessionID){
+	public static void setSSOCookie( HttpServletRequest request, HttpServletResponse response, Token token, boolean invalidate ) {
+		if(invalidate){
 			getKissoService().authSSOCookie(request, response, token);
 		} else {
 			getKissoService().setSSOCookie(request, response, token);
@@ -194,17 +194,16 @@ public class SSOHelper {
 	/**
 	 * ------------------------------- 跨域相关方法 -------------------------------
 	 */
-	public static String askCiphertext( HttpServletRequest request, HttpServletResponse response, String privateKey ) {
+	public static AuthToken askCiphertext( HttpServletRequest request, HttpServletResponse response, String privateKey ) {
 		return getKissoService().askCiphertext(request, response, privateKey);
 	}
 
-	public static String replyCiphertext( HttpServletRequest request, String userId, String askTxt, String tokenPk,
-			String ssoPrk ) {
-		return getKissoService().replyCiphertext(request, userId, askTxt, tokenPk, ssoPrk);
+	public static AuthToken replyCiphertext( HttpServletRequest request, String askTxt) {
+		return getKissoService().replyCiphertext(request, askTxt);
 	}
 
 
-	public static String ok( HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk,
+	public static AuthToken ok( HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk,
 			String ssoPrk ) {
 		return getKissoService().ok(request, response, replyTxt, atPk, ssoPrk);
 	}

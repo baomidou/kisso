@@ -36,7 +36,7 @@ import com.baomidou.kisso.common.util.RandomUtil;
  * @author hubin
  * @Date 2015-12-03
  */
-public class AbstractKissoService extends KissoServiceSupport implements KissoService {
+public abstract class AbstractKissoService extends KissoServiceSupport implements KissoService {
 
 	/**
 	 * 获取当前请求 Token
@@ -144,7 +144,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	}
 
 	/**
-	 * ------------------------------- 跨域相关方法
+	 * ------------------------------- 跨域相关方法 -------------------------------
 	 * <p>
 	 * 1、业务系统访问 SSO 保护系统、 验证未登录跳转至 SSO系统。 2、SSO 设置信任Cookie 生成询问密文，通过代理页面 JSONP
 	 * 询问业务系统是否允许登录。 2、业务系统验证询问密文生成回复密文。 3、代理页面 getJSON SSO 验证回复密文，SSO 根据 ok 返回
@@ -153,7 +153,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	 */
 	
 	/**
-	 * 生成跨域询问密文
+	 * 生成跨域询问票据
 	 * 
 	 * @param request
 	 * @param response
@@ -161,24 +161,18 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	 *            RSA 私钥（业务系统私钥，用于签名）
 	 * @return
 	 */
-	public String askCiphertext( HttpServletRequest request, HttpServletResponse response, String privateKey ) {
-		try {
-			/**
-			 * 跨域临时信任 Cookie
-			 */
-			AuthToken at = new AuthToken(request, privateKey);
-			setAuthCookie(request, response, at);
-			return config.getEncrypt().encrypt(at.jsonToken(), config.getSecretkey());
-		} catch ( Exception e ) {
-			logger.severe("askCiphertext AES encrypt error.");
-			e.printStackTrace();
-		}
-		return null;
+	public AuthToken askCiphertext( HttpServletRequest request, HttpServletResponse response, String privateKey ) {
+		/*
+		 * 签名 Token, 设置跨域临时信任 Cookie
+		 */
+		AuthToken at = new AuthToken(request, privateKey);
+		setAuthCookie(request, response, at);
+		return at;
 	}
 
 	
 	/**
-	 * 生成跨域回复密文
+	 * 生成跨域回复票据
 	 * 
 	 * @param authToken
 	 *            跨域信任 Token
@@ -186,22 +180,17 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	 *            用户ID
 	 * @param askTxt
 	 *            询问密文
-	 * @param tokenPk
-	 *            RSA 公钥 (业务系统 AuthToken加密公钥)
-	 * @param ssoPrk
-	 *            RSA 私钥 (SSO私钥再次签名回复)
 	 */
-	public String replyCiphertext( HttpServletRequest request, String userId, String askTxt, String tokenPk,
-			String ssoPrk ) {
-		String at = null;
+	public AuthToken replyCiphertext( HttpServletRequest request, String askTxt) {
+		String str = null;
 		try {
-			at = config.getEncrypt().decrypt(askTxt, config.getSecretkey());
+			str = config.getEncrypt().decrypt(askTxt, config.getSecretkey());
 		} catch ( Exception e ) {
 			logger.severe("replyCiphertext AES decrypt error.");
 			e.printStackTrace();
 		}
-		if ( at != null ) {
-			/**
+		if ( str != null ) {
+			/*
 			 * <p>
 			 * 使用业务系统公钥验证签名
 			 * </p>
@@ -209,31 +198,16 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 			 * 验证 IP 地址是否合法
 			 * </p>
 			 */
-			AuthToken authToken = JSON.parseObject(at, AuthToken.class);
-			if ( checkIp(request, authToken.verify(tokenPk)) != null ) {
-				authToken.setUid(userId);
-				try {
-					/**
-					 * <p>
-					 * 使用 SSO 私钥签名
-					 * </p>
-					 * <p>
-					 * 然后再对称加密
-					 * </p>
-					 */
-					authToken.sign(ssoPrk);
-					return config.getEncrypt().encrypt(authToken.jsonToken(), config.getSecretkey());
-				} catch ( Exception e ) {
-					logger.severe("replyCiphertext AES encrypt error.");
-					e.printStackTrace();
-				}
+			AuthToken at = JSON.parseObject(str, AuthToken.class);
+			if ( checkIp(request, at) != null ) {
+				return at;
 			}
 		}
 		return null;
 	}
 
 	/**
-	 * 验证回复密文，成功! 返回绑定用户ID
+	 * 验证回复密文，成功! 返回 绑定用户ID 等信息
 	 * 
 	 * @param request
 	 * @param response
@@ -246,9 +220,9 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	 * @param ssoPrk
 	 *            RSA 公钥 (SSO 回复密文公钥验证签名)
 	 */
-	public String ok( HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk,
+	public AuthToken ok( HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk,
 			String ssoPrk ) {
-		AuthToken token = getAuthToken(request, atPk);
+		AuthToken token = getAuthCookie(request, atPk);
 		if ( token != null ) {
 			String rt = null;
 			try {
@@ -258,15 +232,15 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 				e.printStackTrace();
 			}
 			if ( rt != null ) {
-				AuthToken atk = JSON.parseObject(rt, AuthToken.class);
-				if ( atk != null && atk.getUuid().equals(token.getUuid()) ) {
-					if ( atk.verify(ssoPrk) != null ) {
-						/**
+				AuthToken at = JSON.parseObject(rt, AuthToken.class);
+				if ( at != null && at.getUuid().equals(token.getUuid()) ) {
+					if ( at.verify(ssoPrk) != null ) {
+						/*
 						 * 删除跨域信任Cookie 返回 userId
 						 */
 						CookieHelper.clearCookieByName(request, response, config.getAuthCookieName(),
 							config.getCookieDomain(), config.getCookiePath());
-						return atk.getUid();
+						return at;
 					}
 				}
 			}
@@ -293,7 +267,7 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	
 	/**
 	 * <p>
-	 * 获取跨域信任 AuthToken
+	 * 获取跨域信任临时 Cookie 保存的 AuthToken 票据
 	 * </p>
 	 * <p>
 	 * 验证存在并且 IP 地址正确，签名合法
@@ -304,13 +278,13 @@ public class AbstractKissoService extends KissoServiceSupport implements KissoSe
 	 *            RSA 公钥（业务系统公钥验证签名合法）
 	 * @return
 	 */
-	private AuthToken getAuthToken( HttpServletRequest request, String publicKey ) {
+	private AuthToken getAuthCookie( HttpServletRequest request, String publicKey ) {
 		String jsonToken = getJsonToken(request, config.getEncrypt(), config.getAuthCookieName());
 		if ( jsonToken == null || "".equals(jsonToken) ) {
 			logger.info("jsonToken is null.");
 			return null;
 		} else {
-			/**
+			/*
 			 * 校验 IP 合法返回 AuthToken
 			 */
 			AuthToken at = JSON.parseObject(jsonToken, AuthToken.class);

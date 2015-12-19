@@ -33,11 +33,12 @@ public class SSOToken extends Token {
 	private int type = 0;
 	
 	public SSOToken() {
-		
+		this.setApp(SSOConfig.getInstance().getRole());
 	}
 
 	public SSOToken(HttpServletRequest request) {
 		this.setIp(IpHelper.getIpAddr(request));
+		this.setApp(SSOConfig.getInstance().getRole());
 	}
 	
 	public int getType() {
