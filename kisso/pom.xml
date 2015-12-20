@@ -36,6 +36,7 @@
 		<fastjson.version>1.2.6</fastjson.version>
 		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
 		<spring.version>4.1.4.RELEASE</spring.version>
+		<cglib.version>3.2.0</cglib.version>
 	</properties>
 
 	<dependencies>
@@ -54,7 +55,7 @@
 			<version>${fastjson.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Encryption library -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
@@ -68,6 +69,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>${cglib.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

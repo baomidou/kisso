@@ -91,8 +91,6 @@ public interface KissoService {
 	 * </p>
 	 */
 	AuthToken replyCiphertext(HttpServletRequest request, String askTxt);
-	// AuthToken replyCiphertext( HttpServletRequest request, String userId,
-	// String askTxt, String tokenPk, String ssoPrk );
 
 	/**
 	 * 验证跨域回复密文，成功!
