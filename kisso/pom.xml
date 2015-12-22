@@ -20,7 +20,7 @@
 	<developers>
 		<developer>
 			<name>hubin</name>
-			<email>243194995@qq.com</email>
+			<email>jobob@qq.com</email>
 		</developer>
 	</developers>
 
@@ -36,7 +36,6 @@
 		<fastjson.version>1.2.6</fastjson.version>
 		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
 		<spring.version>4.1.4.RELEASE</spring.version>
-		<cglib.version>3.2.0</cglib.version>
 	</properties>
 
 	<dependencies>
@@ -72,12 +71,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>${cglib.version}</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 	<profiles>

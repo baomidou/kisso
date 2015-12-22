@@ -119,10 +119,10 @@ sso.logout.url_dev_mode			开发模式，退出地址：http://localhost:8080/lo
 
 sso.param.returl				重定向地址参数配置，默认：ReturnURL
 
-------  跨域 cookie 设置部分 ------
+------  跨域 cookie 设置部分，不开启跨域功能可不设置 ------
+sso.app							应用名（ 用户获取对应RSA秘钥使用 ）
 sso.authcookie.name				名称pid，请不要与登录 cookie 名称一致
 sso.authcookie.maxage			过期时间，默认 -1 关闭浏览器失效
-
 -----------------------------------------------------------------
 
 
