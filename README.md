@@ -109,9 +109,9 @@ Futures
 1、欢迎提出更好的意见，帮助完善 KISSO 
 
 
-开源赞助我(支付宝)
+捐赠 kisso
 ====================
-![赞助 kisso](http://git.oschina.net/uploads/images/2015/1208/101534_761146da_12260.png "开源赞助我(支付宝)")
+![捐赠 kisso](http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png "支持一下kisso")
 
 copyright
 ====================
