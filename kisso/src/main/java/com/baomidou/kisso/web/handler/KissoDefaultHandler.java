@@ -44,12 +44,16 @@ public class KissoDefaultHandler implements SSOHandlerInterceptor {
 		return handler;
 	}
 
+	/**
+	 * 未登录时，处理 AJAX 请求。
+	 * <p>
+	 * 返回 HTTP 状态码 401（未授权） 请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应。
+	 * </p>
+	 */
 	public boolean preTokenIsNullAjax(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			/*
-			 * 未登录时，处理 AJAX 请求。
-			 */
 			response.setContentType("text/html;charset=" + SSOConfig.getSSOEncoding());
+			response.setStatus(401);/* 401 未登录授权访问提示 */
 			PrintWriter out = response.getWriter();
 			out.print("prompt login exception, please login again.");
 			out.flush();
