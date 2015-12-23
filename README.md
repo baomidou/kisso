@@ -3,10 +3,6 @@ kisso  =  cookie sso
 基于 Cookie 的 SSO 中间件，欢迎大家使用 kisso !! 
 
 
-捐赠 kisso
-====================
-<img src="http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png" width="400" height="250" alt="支持 kisso"/>
-
 > 技术讨论 QQ 群 492238239 
 
 http://baomidou.com/
@@ -43,6 +39,11 @@ Usage
 [kisso_SpringMvc 演示 demo](http://git.oschina.net/juapk/kisso_springmvc)
 
 [kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)
+
+捐赠 kisso
+-====================
+
+![捐赠 kisso](http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png "支持一下kisso")
 
 
 说明文档
