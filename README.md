@@ -5,7 +5,7 @@ kisso  =  cookie sso
 
 捐赠 kisso
 ====================
-<img src="http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png" width="200" height="200" alt="支持 kisso"/>
+<img src="http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png" width="400" height="250" alt="支持 kisso"/>
 
 > 技术讨论 QQ 群 492238239 
 
