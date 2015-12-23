@@ -1,9 +1,7 @@
 
+![kisso图标](http://git.oschina.net/uploads/images/2015/1122/122054_3b6813fa_12260.png "爱心萝卜 kisso")
 
-### kisso  =  cookie sso
-
-
-基于 Cookie 的 SSO 中间件，欢迎大家使用 kisso !! 
+kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 java Web 登录系统（SSO）的瑞士军刀。
 
 
 > 技术讨论 QQ 群 492238239 
