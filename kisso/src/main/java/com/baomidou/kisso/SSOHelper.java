@@ -194,18 +194,59 @@ public class SSOHelper {
 	/**
 	 * ------------------------------- 跨域相关方法 -------------------------------
 	 */
+	/**
+	 * <p>
+	 * 生成跨域询问票据
+	 * </p>
+	 * 
+	 * @param request
+	 * @param response
+	 * @param privateKey
+	 *            RSA 私钥（业务系统私钥，用于签名）
+	 * @return AuthToken {@link AuthToken}
+	 */
 	public static AuthToken askCiphertext( HttpServletRequest request, HttpServletResponse response, String privateKey ) {
 		return getKissoService().askCiphertext(request, response, privateKey);
 	}
 
-	public static AuthToken replyCiphertext( HttpServletRequest request, String askTxt) {
-		return getKissoService().replyCiphertext(request, askTxt);
+	/**
+	 * <p>
+	 * 生成跨域回复票据
+	 * </p>
+	 * 
+	 * @param authToken
+	 *            跨域信任 Token
+	 * @param userId
+	 *            用户ID
+	 * @param askTxt
+	 *            询问密文
+	 * @return AuthToken {@link AuthToken}
+	 */
+	public static AuthToken replyCiphertext( HttpServletRequest request, String askData) {
+		return getKissoService().replyCiphertext(request, askData);
 	}
 
 
-	public static AuthToken ok( HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk,
+	/**
+	 * <p>
+	 * 验证回复密文，成功! 返回 绑定用户ID 等信息
+	 * </p>
+	 * 
+	 * @param request
+	 * @param response
+	 * @param authToken
+	 *            跨域信任 Token
+	 * @param replyTxt
+	 *            回复密文
+	 * @param atPk
+	 *            RSA 公钥 (业务系统公钥，验证authToken签名)
+	 * @param ssoPrk
+	 *            RSA 公钥 (SSO 回复密文公钥验证签名)
+	 * @return AuthToken {@link AuthToken}
+	 */
+	public static AuthToken ok( HttpServletRequest request, HttpServletResponse response, String replyData, String atPk,
 			String ssoPrk ) {
-		return getKissoService().ok(request, response, replyTxt, atPk, ssoPrk);
+		return getKissoService().ok(request, response, replyData, atPk, ssoPrk);
 	}
 
 }

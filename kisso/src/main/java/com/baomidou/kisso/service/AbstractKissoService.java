@@ -161,7 +161,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * @param response
 	 * @param privateKey
 	 *            RSA 私钥（业务系统私钥，用于签名）
-	 * @@return AuthToken {@link AuthToken}
+	 * @return AuthToken {@link AuthToken}
 	 */
 	public AuthToken askCiphertext( HttpServletRequest request, HttpServletResponse response, String privateKey ) {
 		/*
@@ -186,10 +186,10 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 *            询问密文
 	 * @return AuthToken {@link AuthToken}
 	 */
-	public AuthToken replyCiphertext( HttpServletRequest request, String askTxt) {
+	public AuthToken replyCiphertext( HttpServletRequest request, String askData) {
 		String str = null;
 		try {
-			str = config.getEncrypt().decrypt(askTxt, config.getSecretkey());
+			str = config.getEncrypt().decrypt(askData, config.getSecretkey());
 		} catch ( Exception e ) {
 			logger.severe("replyCiphertext AES decrypt error.");
 			e.printStackTrace();

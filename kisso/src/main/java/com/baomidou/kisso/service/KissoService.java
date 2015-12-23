@@ -90,7 +90,7 @@ public interface KissoService {
 	 * 跨域
 	 * </p>
 	 */
-	AuthToken replyCiphertext(HttpServletRequest request, String askTxt);
+	AuthToken replyCiphertext(HttpServletRequest request, String askData);
 
 	/**
 	 * 验证跨域回复密文，成功!
@@ -102,5 +102,5 @@ public interface KissoService {
 	 * 跨域
 	 * </p>
 	 */
-	AuthToken ok(HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk, String ssoPrk);
+	AuthToken ok(HttpServletRequest request, HttpServletResponse response, String replyData, String atPk, String ssoPrk);
 }

@@ -30,7 +30,7 @@ import com.baomidou.kisso.common.IpHelper;
 public class SSOToken extends Token {
 
 	/* 登录类型 */
-	private int type = 0;
+	private String type;
 	
 	public SSOToken() {
 		this.setApp(SSOConfig.getInstance().getRole());
@@ -41,11 +41,21 @@ public class SSOToken extends Token {
 		this.setApp(SSOConfig.getInstance().getRole());
 	}
 	
-	public int getType() {
+	public SSOToken(HttpServletRequest request, String uid) {
+		this(request);
+		this.setUid(uid);
+	}
+	
+	public SSOToken(HttpServletRequest request, String uid, String type) {
+		this(request, uid);
+		this.setType(type);
+	}
+	
+	public String getType() {
 		return type;
 	}
 	
-	public void setType( int type ) {
+	public void setType( String type ) {
 		this.type = type;
 	}
 

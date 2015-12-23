@@ -28,7 +28,7 @@ public class KissoException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public KissoException(String message) {
-		super(kissMessage(message));
+		super(message);
 	}
 
 	public KissoException(Throwable throwable) {
@@ -36,12 +36,7 @@ public class KissoException extends RuntimeException {
 	}
 
 	public KissoException(String message, Throwable throwable) {
-		super(kissMessage(message), throwable);
+		super(message, throwable);
 	}
 
-	private static String kissMessage(String message) {
-		StringBuffer msg = new StringBuffer(" kisso exception ");
-		msg.append(message);
-		return msg.toString();
-	}
 }
