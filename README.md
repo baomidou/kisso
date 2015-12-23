@@ -41,7 +41,7 @@ Usage
 [kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)
 
 捐赠 kisso
--====================
+====================
 
 ![捐赠 kisso](http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png "支持一下kisso")
 
