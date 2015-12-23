@@ -2,7 +2,11 @@ kisso  =  cookie sso
 
 基于 Cookie 的 SSO 中间件，欢迎大家使用 kisso !! 
 
-![kisso图标](http://git.oschina.net/uploads/images/2015/1122/122054_3b6813fa_12260.png "爱心萝卜 kisso")
+
+捐赠 kisso
+====================
+![捐赠 kisso](http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png =200x200)
+
 
 > 技术讨论 QQ 群 492238239 
 
@@ -107,11 +111,6 @@ Supports
 Futures
 ====================
 1、欢迎提出更好的意见，帮助完善 KISSO 
-
-
-捐赠 kisso
-====================
-![捐赠 kisso](http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png "支持一下kisso")
 
 copyright
 ====================
