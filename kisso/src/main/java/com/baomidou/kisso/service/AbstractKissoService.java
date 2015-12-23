@@ -46,7 +46,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * 
 	 * @param request
 	 * @return
-	 * @return Token
+	 * @return Token {@link Token}
 	 */
 	public Token getToken( HttpServletRequest request ) {
 		return getToken(request, config.getEncrypt(), config.getCache());
@@ -153,13 +153,15 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 */
 	
 	/**
+	 * <p>
 	 * 生成跨域询问票据
+	 * </p>
 	 * 
 	 * @param request
 	 * @param response
 	 * @param privateKey
 	 *            RSA 私钥（业务系统私钥，用于签名）
-	 * @return
+	 * @@return AuthToken {@link AuthToken}
 	 */
 	public AuthToken askCiphertext( HttpServletRequest request, HttpServletResponse response, String privateKey ) {
 		/*
@@ -172,7 +174,9 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 
 	
 	/**
+	 * <p>
 	 * 生成跨域回复票据
+	 * </p>
 	 * 
 	 * @param authToken
 	 *            跨域信任 Token
@@ -180,6 +184,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 *            用户ID
 	 * @param askTxt
 	 *            询问密文
+	 * @return AuthToken {@link AuthToken}
 	 */
 	public AuthToken replyCiphertext( HttpServletRequest request, String askTxt) {
 		String str = null;
@@ -207,7 +212,9 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	}
 
 	/**
+	 * <p>
 	 * 验证回复密文，成功! 返回 绑定用户ID 等信息
+	 * </p>
 	 * 
 	 * @param request
 	 * @param response
@@ -219,6 +226,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 *            RSA 公钥 (业务系统公钥，验证authToken签名)
 	 * @param ssoPrk
 	 *            RSA 公钥 (SSO 回复密文公钥验证签名)
+	 * @return AuthToken {@link AuthToken}
 	 */
 	public AuthToken ok( HttpServletRequest request, HttpServletResponse response, String replyTxt, String atPk,
 			String ssoPrk ) {
@@ -276,7 +284,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * @param request
 	 * @param publicKey
 	 *            RSA 公钥（业务系统公钥验证签名合法）
-	 * @return
+	 * @return AuthToken {@link AuthToken}
 	 */
 	private AuthToken getAuthCookie( HttpServletRequest request, String publicKey ) {
 		String jsonToken = getJsonToken(request, config.getEncrypt(), config.getAuthCookieName());

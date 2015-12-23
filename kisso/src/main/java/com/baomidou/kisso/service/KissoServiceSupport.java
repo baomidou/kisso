@@ -65,20 +65,21 @@ public class KissoServiceSupport {
 	 * 
 	 * @param request
 	 * @return
-	 * @return Token
+	 * @return Token {@link Token}
 	 */
 	public Token attrToken( HttpServletRequest request ) {
 		return (Token) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
 	}
 
 	/**
-	 * 获取当前请求 Token
 	 * <p>
+	 * 获取当前请求 Token
+	 * </p>
 	 * 
 	 * @param request
 	 * @param encrypt
 	 *            对称加密算法类
-	 * @return Token
+	 * @return Token {@link Token}
 	 */
 	protected Token getToken( HttpServletRequest request, SSOEncrypt encrypt, SSOCache cache ) {
 		if ( encrypt == null ) {
@@ -100,7 +101,7 @@ public class KissoServiceSupport {
 	 * @param request
 	 * @param encrypt
 	 *            对称加密算法类
-	 * @return Token
+	 * @return Token {@link Token}
 	 */
 	private Token cacheToken( HttpServletRequest request, SSOEncrypt encrypt, SSOCache cache ) {
 		/**
@@ -138,8 +139,9 @@ public class KissoServiceSupport {
 	}
 	
 	/**
-	 * 获取当前请求 JsonToken
 	 * <p>
+	 * 获取当前请求 JsonToken
+	 * </p>
 	 * 
 	 * @param request
 	 * @param encrypt
@@ -184,13 +186,14 @@ public class KissoServiceSupport {
 	}
 	
 	/**
-	 * 校验Token IP 与登录 IP 是否一致
 	 * <p>
+	 * 校验Token IP 与登录 IP 是否一致
+	 * </p>
 	 * 
 	 * @param request
 	 * @param token
 	 *            登录票据
-	 * @return Token
+	 * @return Token {@link Token}
 	 */
 	protected Token checkIp( HttpServletRequest request, Token token ) {
 		/**
@@ -244,13 +247,16 @@ public class KissoServiceSupport {
 	 */
 
 	/**
-	 * @Description 根据Token生成登录信息Cookie
+	 * <p>
+	 * 根据Token生成登录信息Cookie
+	 * </p>
+	 * 
 	 * @param request
 	 * @param token
 	 *            SSO 登录信息票据
 	 * @param encrypt
 	 *            对称加密算法类
-	 * @return Cookie 登录信息Cookie
+	 * @return Cookie 登录信息Cookie {@link Cookie}
 	 */
 	private Cookie generateCookie( HttpServletRequest request, Token token, SSOEncrypt encrypt ) {
 		try {
@@ -285,13 +291,16 @@ public class KissoServiceSupport {
 	}
 	
 	/**
-	 * @Description 加密Token信息
+	 * <p>
+	 * 加密Token信息
+	 * </p>
+	 * 
 	 * @param request
 	 * @param token
 	 *            SSO 登录信息票据
 	 * @param encrypt
 	 *            对称加密算法类
-	 * @return Cookie 登录信息Cookie
+	 * @return Cookie 登录信息Cookie {@link Cookie}
 	 */
 	protected String encryptCookie( HttpServletRequest request, Token token, SSOEncrypt encrypt ) throws Exception {
 		if ( token == null ) {
@@ -316,7 +325,10 @@ public class KissoServiceSupport {
 	}
 	
 	/**
-	 * @Description 当前访问域下设置登录Cookie
+	 * <p>
+	 * 当前访问域下设置登录Cookie
+	 * </p>
+	 * 
 	 * @param request
 	 * @param response
 	 * @param encrypt
@@ -373,7 +385,9 @@ public class KissoServiceSupport {
 	}
 
 	/**
+	 * <p>
 	 * 退出当前登录状态
+	 * </p>
 	 * 
 	 * @param request
 	 * @param response

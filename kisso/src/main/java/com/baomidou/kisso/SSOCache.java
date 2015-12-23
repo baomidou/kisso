@@ -49,7 +49,7 @@ public interface SSOCache {
 	 * @param expires
 	 *            过期时间
 	 */
-	boolean set(String key, Token token, long expires);
+	boolean set(String key, Token token, int expires);
 
 	/**
 	 * 删除SSO票据
