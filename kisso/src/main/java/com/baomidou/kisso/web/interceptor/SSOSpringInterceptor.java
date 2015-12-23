@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.web.spring;
+package com.baomidou.kisso.web.interceptor;
 
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
@@ -35,13 +35,13 @@ import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
 /**
  * 登录权限验证
  * <p>
- * spring 拦截器，Controller 方法调用前处理。
+ * kisso spring 拦截器，Controller 方法调用前处理。
  * </p>
  * 
  * @author hubin
  * @Date 2015-11-10
  */
-public class SSOInterceptor extends HandlerInterceptorAdapter {
+public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
 	private static final Logger logger = Logger.getLogger("SSOInterceptor");
 	private SSOHandlerInterceptor handlerInterceptor;
 
