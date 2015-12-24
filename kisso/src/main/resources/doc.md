@@ -1,6 +1,6 @@
 
 -----------------------------------------------------------------
-kisso 启动  web.xml 配置
+kisso 启动  web.xml 配置, spring 支持 bean注入启动， jfinal 支持插件启动。 具体查看具体 Demo
 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 
 <!-- SSO 配置 -->
@@ -120,7 +120,7 @@ sso.logout.url_dev_mode			开发模式，退出地址：http://localhost:8080/lo
 sso.param.returl				重定向地址参数配置，默认：ReturnURL
 
 ------  跨域 cookie 设置部分，不开启跨域功能可不设置 ------
-sso.app							应用名（ 用户获取对应RSA秘钥使用 ）
+sso.role						应用角色名（根据该值判断对应系统 RSA 公钥私钥 ）
 sso.authcookie.name				名称pid，请不要与登录 cookie 名称一致
 sso.authcookie.maxage			过期时间，默认 -1 关闭浏览器失效
 -----------------------------------------------------------------
