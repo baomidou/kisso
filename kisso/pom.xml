@@ -33,10 +33,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<servlet-api.version>2.5</servlet-api.version>
-		<fastjson.version>1.2.6</fastjson.version>
+		<fastjson.version>1.2.7</fastjson.version>
 		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
-		<spring.version>4.1.4.RELEASE</spring.version>
-		<jfinal.version>2.0</jfinal.version>
+		<spring.version>4.2.3.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -70,15 +69,30 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-expression</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
-		<!-- jfinal -->
-		<dependency>
-		    <groupId>com.jfinal</groupId>
-		    <artifactId>jfinal</artifactId>
-		    <version>${jfinal.version}</version>
-		    <scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -143,4 +157,3 @@
 		</profile>
 	</profiles>
 </project>
-  

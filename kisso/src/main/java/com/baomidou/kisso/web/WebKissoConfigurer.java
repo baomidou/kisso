@@ -47,6 +47,10 @@ public class WebKissoConfigurer {
 	protected WebKissoConfigurer() {
 		/* 保护 */
 	}
+	
+	public WebKissoConfigurer(String ssoPropPath) {
+		this.ssoPropPath = ssoPropPath;
+	}
 
 	/**
 	 * 

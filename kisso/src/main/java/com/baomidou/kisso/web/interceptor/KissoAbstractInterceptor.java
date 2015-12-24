@@ -13,45 +13,35 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.web;
+package com.baomidou.kisso.web.interceptor;
 
-import com.jfinal.plugin.IPlugin;
+import com.baomidou.kisso.web.handler.KissoDefaultHandler;
+import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
 
 /**
+ * 登录权限验证
  * <p>
- * Kisso jfinal 插件形式初始化
+ * kisso 拦截器接口
  * </p>
  * 
  * @author hubin
- * @Date 2015-02-06
+ * @Date 2015-12-23
  */
-public class KissoJfinalPlugin implements IPlugin {
-	
-	private String ssoPropPath = "sso.properties";
+public abstract class KissoAbstractInterceptor {
 
-	public KissoJfinalPlugin() {
-		
-	}
-	
-	public KissoJfinalPlugin(String ssoPropPath) {
-		this.ssoPropPath = ssoPropPath;
-	}
-	
-	/**
-	 * 初始化
-	 */
-	public boolean start() {
-		WebKissoConfigurer kc = new WebKissoConfigurer(); 
-		kc.setSsoPropPath(ssoPropPath);
-		kc.initKisso();
-		return false;
+	/* SSO 拦截控制器 */
+	private SSOHandlerInterceptor handlerInterceptor;
+
+
+	public SSOHandlerInterceptor getHandlerInterceptor() {
+		if (handlerInterceptor == null) {
+			return KissoDefaultHandler.getInstance();
+		}
+		return handlerInterceptor;
 	}
 
-	/**
-	 * 销毁
-	 */
-	public boolean stop() {
-		return false;
-	}
 
+	public void setHandlerInterceptor(SSOHandlerInterceptor handlerInterceptor) {
+		this.handlerInterceptor = handlerInterceptor;
+	}
 }
