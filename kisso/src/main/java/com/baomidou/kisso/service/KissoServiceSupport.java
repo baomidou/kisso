@@ -108,7 +108,7 @@ public class KissoServiceSupport {
 		 * 如果缓存不存退出登录
 		 */
 		if ( cache != null ) {
-			Token tk = cache.get(tokenCacheKey(request, null));
+			Token tk = cache.get(this.tokenCacheKey(request, null));
 			if ( tk == null ) {
 				/* 开启缓存且失效，返回 null 清除 Cookie 退出 */
 				logger.fine("cacheToken token is null.");
@@ -124,18 +124,32 @@ public class KissoServiceSupport {
 		/**
 		 * Token 为 null 执行以下逻辑
 		 */
-		Token token = null;
-		String jsonToken = getJsonToken(request, encrypt, config.getCookieName());
+		return getToken(request, encrypt, config.getCookieName());
+	}
+	
+	/**
+	 * <p>
+	 * 获取当前请求 Token
+	 * </p>
+	 * 
+	 * @param request
+	 * @param encrypt
+	 *            对称加密算法类
+	 * @param cookieName
+	 *            Cookie名称
+	 * @return Token ${Token}
+	 */
+	protected Token getToken( HttpServletRequest request, SSOEncrypt encrypt, String cookieName ) {
+		String jsonToken = this.getJsonToken(request, encrypt, cookieName);
 		if ( jsonToken == null || "".equals(jsonToken) ) {
 			/**
 			 * 未登录请求
 			 */
 			logger.fine("jsonToken is null.");
+			return null;
 		} else {
-			token = config.getToken();
-			token = token.parseToken(jsonToken);
+			return config.getToken().parseToken(jsonToken);
 		}
-		return token;
 	}
 	
 	/**
@@ -235,10 +249,10 @@ public class KissoServiceSupport {
 		if ( tk == null ) {
 			tk = this.attrToken(request);
 			if ( tk == null ) {
-				tk = this.getToken(request, config.getEncrypt(), config.getCache());
+				tk = this.getToken(request, config.getEncrypt(), config.getCookieName());
 			}
 		}
-		return token.toCacheKey();
+		return tk.toCacheKey();
 	}
 	
 	
