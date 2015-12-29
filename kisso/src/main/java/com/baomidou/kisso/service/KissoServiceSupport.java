@@ -67,8 +67,9 @@ public class KissoServiceSupport {
 	 * @return
 	 * @return Token {@link Token}
 	 */
-	public Token attrToken( HttpServletRequest request ) {
-		return (Token) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
+	@SuppressWarnings("unchecked")
+	public <T extends Token> T attrToken( HttpServletRequest request ) {
+		return (T) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
 	}
 
 	/**

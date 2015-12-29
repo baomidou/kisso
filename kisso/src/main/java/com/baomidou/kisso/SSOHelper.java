@@ -133,7 +133,7 @@ public class SSOHelper {
 	 * 				访问请求
 	 * @return
 	 */
-	public static Token attrToken( HttpServletRequest request ) {
+	public static <T extends Token> T attrToken( HttpServletRequest request ) {
 		return getKissoService().attrToken(request);
 	}
 
