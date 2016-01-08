@@ -123,9 +123,12 @@ public class WebKissoConfigurer {
 		}
 	}
 
-	
 	public static void shutdownKisso(ServletContext servletContext) {
-		servletContext.log("Uninstalling Kisso ");
+		shutdownKisso();
+	}
+
+	public static void shutdownKisso() {
+		logger.info("Uninstalling Kisso ");
 	}
 
 

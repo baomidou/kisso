@@ -245,13 +245,17 @@ public class KissoServiceSupport {
 	 * 				SSO 票据
 	 * @return
 	 */
-	public String tokenCacheKey( HttpServletRequest request, Token token ) {
+	public String tokenCacheKey(HttpServletRequest request, Token token) {
 		Token tk = token;
-		if ( tk == null ) {
+		if (tk == null) {
 			tk = this.attrToken(request);
-			if ( tk == null ) {
-				tk = this.getToken(request, config.getEncrypt(), config.getCookieName());
-			}
+		}
+		if (tk == null) {
+			tk = this.getToken(request, config.getEncrypt(), config.getCookieName());
+		}
+		if (tk == null) {
+			logger.severe("please login to use.");
+			return null;
 		}
 		return tk.toCacheKey();
 	}
