@@ -80,6 +80,14 @@ public class SSOConfig {
 	public final static String SSO_TOKEN_ATTR = "ssotoken_attr";
 	
 	/**
+	 * SSO 动态设置 Cookie 参数
+	 * <p>
+	 * -1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
+	 * </p>
+	 */
+	public static final String SSO_COOKIE_MAXAGE = "sso_cookie_maxage";
+	
+	/**
 	 * 运行模式
 	 */
 	private static final String SSO_RUN_MODE = "sso.run.mode";

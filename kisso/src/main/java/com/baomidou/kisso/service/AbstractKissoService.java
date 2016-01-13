@@ -73,6 +73,12 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * 
 	 * 当前访问域下设置登录Cookie
 	 * 
+	 * <p>
+	 * request.setAttribute(SSOConfig.SSO_COOKIE_MAXAGE, -1);
+	 * 可以设置 Cookie 超时时间 ，默认读取配置文件数据 。
+	 * -1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
+	 * </p>
+	 * 
 	 * @param request
 	 * @param response
 	 */

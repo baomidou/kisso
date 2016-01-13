@@ -304,6 +304,10 @@ public class KissoServiceSupport {
 			 * 设置Cookie超时时间
 			 */
 			int maxAge = config.getCookieMaxage();
+			Integer attrMaxAge = (Integer) request.getAttribute(SSOConfig.SSO_COOKIE_MAXAGE);
+			if (attrMaxAge != null) {
+				maxAge = attrMaxAge;
+			}
 			if ( maxAge >= 0 ) {
 				cookie.setMaxAge(maxAge);
 			}
