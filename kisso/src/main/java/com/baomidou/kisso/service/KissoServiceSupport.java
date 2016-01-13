@@ -109,7 +109,13 @@ public class KissoServiceSupport {
 		 * 如果缓存不存退出登录
 		 */
 		if ( cache != null ) {
-			Token tk = cache.get(this.tokenCacheKey(request, null));
+			String cacheKey = this.tokenCacheKey(request, null);
+			if ( cacheKey == null ) {
+				/* 未登录 */
+				return null;
+			}
+			
+			Token tk = cache.get(cacheKey);
 			if ( tk == null ) {
 				/* 开启缓存且失效，返回 null 清除 Cookie 退出 */
 				logger.fine("cacheToken token is null.");
@@ -418,9 +424,12 @@ public class KissoServiceSupport {
 		 * Token 如果开启了缓存，删除缓存记录
 		 */
 		if ( cache != null ) {
-			boolean rlt = cache.delete(tokenCacheKey(request, null));
-			if ( !rlt ) {
-				cache.delete(tokenCacheKey(request, null));
+			String cacheKey = tokenCacheKey(request, null);
+			if ( cacheKey != null ) {
+				boolean rlt = cache.delete(cacheKey);
+				if ( !rlt ) {
+					cache.delete(cacheKey);
+				}
 			}
 		}
 
