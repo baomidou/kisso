@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso;
 
+import java.nio.charset.Charset;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -77,7 +78,7 @@ public class SSOConfig {
 	 * 使用获取方式： SSOHelper.attrToken(request)
 	 * </p>
 	 */
-	public final static String SSO_TOKEN_ATTR = "ssotoken_attr";
+	public static final String SSO_TOKEN_ATTR = "ssotoken_attr";
 	
 	/**
 	 * SSO 动态设置 Cookie 参数
@@ -86,6 +87,11 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public static final String SSO_COOKIE_MAXAGE = "sso_cookie_maxage";
+	
+	/**
+	 * Charset 类型编码格式
+	 */
+	public static final Charset CHARSET_ENCODING = Charset.forName(getSSOEncoding());
 	
 	/**
 	 * 运行模式
