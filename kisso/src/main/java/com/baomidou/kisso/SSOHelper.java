@@ -64,7 +64,7 @@ public class SSOHelper {
 	 * @param request
 	 * @return
 	 */
-	public String getLoginCount( HttpServletRequest request ) {
+	public static String getLoginCount( HttpServletRequest request ) {
 		return getKissoService().getLoginCount(request);
 	}
 
