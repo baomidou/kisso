@@ -25,21 +25,39 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.baomidou.kisso.common.encrypt.AseMsgCrypt;
+import com.baomidou.kisso.common.encrypt.AESMsgCrypt;
 
 /**
  * <p>
- * 测试  AseMsgCrypt 消息加密类（采用微信公众平台API请求方式）
+ * 测试  AESMsgCrypt 消息加密类（采用微信公众平台API请求方式）
  * </p>
  * 
  * @author hubin
  * @Date 2015-01-09
  */
-public class TestAseMsgCrypt {
+public class TestAESMsgCrypt {
 
 	
 	/**
+	 * 
 	 * 测试
+	 * 
+	 * <p>
+	 * 使用AES加密时，当密钥大于128时，代码会抛出异常：
+	 * java.security.InvalidKeyException: Illegal key size
+	 * 
+	 * 是指密钥长度是受限制的，java运行时环境读到的是受限的policy文件。文件位于${java_home}/jre/lib/security 
+	 * 这种限制是因为美国对软件出口的控制。 
+	 * 
+	 * 解决办法：http://www.oracle.com/technetwork/java/javaseproducts/downloads/index.html
+	 * 
+	 * 进入 Oracle JDK 下载 Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files
+	 * for JDK/JRE 8 【下载对应 JDK 版本的 Policy 文件】
+	 * 
+	 * JDK8 下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
+	 * 
+	 * 下载包的readme.txt 有安装说明。就是替换${java_home}/jre/lib/security/ 下面的local_policy.jar和US_export_policy.jar 
+	 * </p>
 	 */
 	public static void main( String[] args ) throws Exception {
 
@@ -51,7 +69,7 @@ public class TestAseMsgCrypt {
 		String appId = "wxb11529c136998cb6";
 		String replyMsg = " 中文<xml><ToUserName><![CDATA[oia2TjjewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
 
-		AseMsgCrypt pc = new AseMsgCrypt(token, encodingAesKey, appId);
+		AESMsgCrypt pc = new AESMsgCrypt(token, encodingAesKey, appId);
 		String mingwen = pc.encryptMsg(replyMsg, timestamp, nonce);
 		System.out.println("加密后: " + mingwen);
 

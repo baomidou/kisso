@@ -31,13 +31,13 @@ import com.baomidou.kisso.exception.AesException;
 
 /**
  * <p>
- * 	ASE 消息加解密
+ * 	AES 消息加解密
  * </p>
  * 
  * @author hubin
  * @Date 2015-01-09
  */
-public class AseMsgCrypt {
+public class AESMsgCrypt {
 	private static final Logger logger = Logger.getLogger("AseMsgCrypt");
 	private byte[] aesKey;
 	private String token;
@@ -57,7 +57,7 @@ public class AseMsgCrypt {
 	 * 				API 平台 appid
 	 * @throws AesException {@link AesException}
 	 */
-	public AseMsgCrypt(String token, String encodingAesKey, String appId) throws AesException {
+	public AESMsgCrypt(String token, String encodingAesKey, String appId) throws AesException {
 		if (encodingAesKey.length() != 43) {
 			throw new AesException(AesException.ERROR_ILLEGAL_AESKEY);
 		}
