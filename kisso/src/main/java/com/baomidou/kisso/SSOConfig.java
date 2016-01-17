@@ -93,6 +93,8 @@ public class SSOConfig {
 	 */
 	public static final Charset CHARSET_ENCODING = Charset.forName(getSSOEncoding());
 	
+	public static final String CUT_SYMBOL = "#";
+	
 	/**
 	 * 运行模式
 	 */

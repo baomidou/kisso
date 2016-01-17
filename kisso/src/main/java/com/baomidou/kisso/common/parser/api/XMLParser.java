@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.kisso.common.parser;
+package com.baomidou.kisso.common.parser.api;
 
 import java.io.StringReader;
 
@@ -25,7 +25,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.baomidou.kisso.exception.AesException;
+import com.baomidou.kisso.exception.AESException;
 
 /**
  * <p>
@@ -40,16 +40,16 @@ public class XMLParser {
 	/**
 	 * 
 	 * <p>
-	 * 提取出xml数据包中的加密消息
+	 * 提取出XML数据包中的加密消息
 	 * </p>
 	 * 
 	 * @param xmltext
-	 * 				待提取的xml字符串
+	 *            待提取的XML字符串
 	 * @return 提取出的加密消息字符串
-	 * @throws AesException {@link AesException}
+	 * @throws AESException
+	 *             {@link AESException}
 	 */
-	public static Object[] extract( String xmltext ) throws AesException {
-		Object[] result = new Object[3];
+	public static EncryptMsg extract(String xmltext) throws AESException {
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -58,34 +58,38 @@ public class XMLParser {
 			Document document = db.parse(is);
 			Element root = document.getDocumentElement();
 			NodeList nodelist1 = root.getElementsByTagName("Encrypt");
-			NodeList nodelist2 = root.getElementsByTagName("ToUserName");
-			result[0] = 0;
-			result[1] = nodelist1.item(0).getTextContent();
-			result[2] = nodelist2.item(0).getTextContent();
-			return result;
-		} catch ( Exception e ) {
-			throw new AesException(AesException.ERROR_PARSE_XML, e);
+			NodeList nodelist2 = root.getElementsByTagName("MsgSignature");
+			NodeList nodelist3 = root.getElementsByTagName("TimeStamp");
+			NodeList nodelist4 = root.getElementsByTagName("Nonce");
+
+			/* 解析XML内容 */
+			String encrypt = nodelist1.item(0).getTextContent();
+			String signature = nodelist2.item(0).getTextContent();
+			String timestamp = nodelist3.item(0).getTextContent();
+			String nonce = nodelist4.item(0).getTextContent();
+			return new EncryptMsg(encrypt, signature, timestamp, nonce);
+		} catch (Exception e) {
+			throw new AESException(AESException.ERROR_PARSE_XML, e);
 		}
 	}
-
 
 	/**
 	 * 
 	 * <p>
-	 * 生成 xml 消息
+	 * 生成 XML 消息
 	 * </p>
 	 * 
 	 * @param encrypt
-	 * 					加密后的消息密文
+	 *            加密后的消息密文
 	 * @param signature
-	 * 					安全签名
-	 * @param timestamp
-	 * 					时间戳
+	 *            安全签名
+	 * @param timeStamp
+	 *            时间戳
 	 * @param nonce
-	 * 					随机字符串
-	 * @return 生成的xml字符串
+	 *            随机字符串
+	 * @return 生成的XML字符串
 	 */
-	public static String generate( String encrypt, String signature, String timestamp, String nonce ) {
+	public static String generate(String encrypt, String signature, String timeStamp, String nonce) {
 		StringBuffer format = new StringBuffer();
 		format.append("<xml>\n");
 		format.append("<Encrypt><![CDATA[%1$s]]></Encrypt>\n");
@@ -93,7 +97,7 @@ public class XMLParser {
 		format.append("<TimeStamp>%3$s</TimeStamp>\n");
 		format.append("<Nonce><![CDATA[%4$s]]></Nonce>\n");
 		format.append("</xml>");
-		return String.format(format.toString(), encrypt, signature, timestamp, nonce);
+		return String.format(format.toString(), encrypt, signature, timeStamp, nonce);
 	}
 
 }

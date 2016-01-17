@@ -16,7 +16,6 @@
 package com.baomidou.kisso.common.parser;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.kisso.Token;
 
 /**
  * <p>
@@ -28,12 +27,13 @@ import com.baomidou.kisso.Token;
  */
 public class FastJsonParser implements SSOParser {
 
-	public String toJson( Token token ) {
+	public String toJson(Object token) {
 		return JSON.toJSONString(token);
 	}
 
-
-	public Token parseToken( String text, Class<? extends Token> clazz ) {
+	@Override
+	public <T> T parseObject(String text, Class<? extends T> clazz) {
 		return JSON.parseObject(text, clazz);
 	}
+	
 }

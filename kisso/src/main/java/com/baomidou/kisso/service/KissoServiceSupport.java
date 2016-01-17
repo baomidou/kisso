@@ -42,7 +42,6 @@ import com.baomidou.kisso.exception.KissoException;
  */
 public class KissoServiceSupport {
 	protected final Logger logger = Logger.getLogger("KissoServiceSupport");
-	protected final static String CUT_SYMBOL = "#";
 	protected SSOConfig config;
 	
 	public SSOConfig getConfig() {
@@ -178,7 +177,7 @@ public class KissoServiceSupport {
 			String[] tokenAttr = new String[2];
 			try {
 				jsonToken = encrypt.decrypt(jsonToken, config.getSecretkey());
-				tokenAttr = jsonToken.split(CUT_SYMBOL);
+				tokenAttr = jsonToken.split(SSOConfig.CUT_SYMBOL);
 			} catch ( Exception e ) {
 				logger.severe("jsonToken decrypt error.");
 				e.printStackTrace();
@@ -341,7 +340,7 @@ public class KissoServiceSupport {
 		String jt = token.jsonToken();
 		StringBuffer sf = new StringBuffer();
 		sf.append(jt);
-		sf.append(CUT_SYMBOL);
+		sf.append(SSOConfig.CUT_SYMBOL);
 		/**
 		 * 判断是否认证浏览器信息 否取8位随机数混淆
 		 */

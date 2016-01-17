@@ -15,21 +15,15 @@
  */
 package com.baomidou.kisso;
 
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
 import com.baomidou.kisso.common.encrypt.AESMsgCrypt;
+import com.baomidou.kisso.common.encrypt.SHA1;
+import com.baomidou.kisso.common.parser.api.EncryptMsg;
+import com.baomidou.kisso.common.parser.api.JSONParser;
+import com.baomidou.kisso.common.parser.api.XMLParser;
 
 /**
  * <p>
- * 测试  AESMsgCrypt 消息加密类（采用微信公众平台API请求方式）
+ * 测试 AESMsgCrypt 消息加密类（采用微信公众平台API请求方式）
  * </p>
  * 
  * @author hubin
@@ -37,29 +31,31 @@ import com.baomidou.kisso.common.encrypt.AESMsgCrypt;
  */
 public class TestAESMsgCrypt {
 
-	
 	/**
 	 * 
 	 * 测试
 	 * 
 	 * <p>
-	 * 使用AES加密时，当密钥大于128时，代码会抛出异常：
-	 * java.security.InvalidKeyException: Illegal key size
+	 * 使用AES加密时，当密钥大于128时，代码会抛出异常： java.security.InvalidKeyException: Illegal
+	 * key size
 	 * 
-	 * 是指密钥长度是受限制的，java运行时环境读到的是受限的policy文件。文件位于${java_home}/jre/lib/security 
-	 * 这种限制是因为美国对软件出口的控制。 
+	 * 是指密钥长度是受限制的，java运行时环境读到的是受限的policy文件。文件位于${java_home}/jre/lib/security
+	 * 这种限制是因为美国对软件出口的控制。
 	 * 
-	 * 解决办法：http://www.oracle.com/technetwork/java/javaseproducts/downloads/index.html
+	 * 解决办法：http://www.oracle.com/technetwork/java/javaseproducts/downloads/
+	 * index.html
 	 * 
-	 * 进入 Oracle JDK 下载 Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files
-	 * for JDK/JRE 8 【下载对应 JDK 版本的 Policy 文件】
+	 * 进入 Oracle JDK 下载 Java Cryptography Extension (JCE) Unlimited Strength
+	 * Jurisdiction Policy Files for JDK/JRE 8 【下载对应 JDK 版本的 Policy 文件】
 	 * 
-	 * JDK8 下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
+	 * JDK8 下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jce8-
+	 * download-2133166.html
 	 * 
-	 * 下载包的readme.txt 有安装说明。就是替换${java_home}/jre/lib/security/ 下面的local_policy.jar和US_export_policy.jar 
+	 * 下载包的readme.txt 有安装说明。就是替换${java_home}/jre/lib/security/
+	 * 下面的local_policy.jar和US_export_policy.jar
 	 * </p>
 	 */
-	public static void main( String[] args ) throws Exception {
+	public static void main(String[] args) throws Exception {
 
 		// 需要加密的明文
 		String encodingAesKey = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG";
@@ -67,34 +63,32 @@ public class TestAESMsgCrypt {
 		String timestamp = "1409304348";
 		String nonce = "xxxxxx";
 		String appId = "wxb11529c136998cb6";
-		String replyMsg = " 中文<xml><ToUserName><![CDATA[oia2TjjewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
+		String replyXMLMsg = " 中文<xml><ToUserName><![CDATA[oia2TjjewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
+		String replyJSONMsg = " 中文{\"Description\":\"testCallBackReplyVideo\",\"MediaId\":\"eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0\",\"CreateTime\":\"1407743423\",\"Title\":\"testCallBackReplyVideo\",\"ToUserName\":\"oia2TjjewbmiOUlr6X-1crbLOvLw\",\"FromUserName\":\"gh_7f083739789a\",\"MsgType\":\"video\"}";
 
 		AESMsgCrypt pc = new AESMsgCrypt(token, encodingAesKey, appId);
-		String mingwen = pc.encryptMsg(replyMsg, timestamp, nonce);
-		System.out.println("加密后: " + mingwen);
 
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
-		StringReader sr = new StringReader(mingwen);
-		InputSource is = new InputSource(sr);
-		Document document = db.parse(is);
+		// 解密JSON消息
+		String jsonEncrypt = pc.encryptXMLMsg(replyJSONMsg, timestamp, nonce);
+		System.out.println("\n JSON 加密后: " + jsonEncrypt);
+		EncryptMsg jsonEncryptMsg = XMLParser.extract(jsonEncrypt);
+		String resultJson = pc.decryptMsg(jsonEncryptMsg.getMsgSignature(), timestamp, nonce,
+				jsonEncryptMsg.getEncrypt());
+		System.out.println("\n JSON 解密后明文: " + resultJson);
 
-		Element root = document.getDocumentElement();
-		NodeList nodelist1 = root.getElementsByTagName("Encrypt");
-		NodeList nodelist2 = root.getElementsByTagName("MsgSignature");
+		// 解密XML消息
+		String xmlEncrypt = pc.encryptJSONMsg(replyXMLMsg, timestamp, nonce);
+		System.out.println("\n XML 加密后: " + xmlEncrypt);
+		EncryptMsg xmlEncryptMsg = JSONParser.extract(xmlEncrypt);
+		String resultXml = pc.decryptMsg(xmlEncryptMsg.getMsgSignature(), timestamp, nonce, xmlEncryptMsg.getEncrypt());
+		System.out.println("\n XML 解密后明文: " + resultXml);
 
-		String encrypt = nodelist1.item(0).getTextContent();
-		String msgSignature = nodelist2.item(0).getTextContent();
-
-		String format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%1$s]]></Encrypt></xml>";
-		String fromXML = String.format(format, encrypt);
-
-		//
-		// 公众平台发送消息给第三方，第三方处理
-		//
-		// 第三方收到公众号平台发送的消息
-		String result2 = pc.decryptMsg(msgSignature, timestamp, nonce, fromXML);
-		System.out.println("解密后明文: " + result2);
-		//pc.verifyUrl(null, null, null, null);
+		// URL地址验证
+		String echoStr = pc.encrypt("测试URL地址签名test-url");
+		String signature = SHA1.getSHA1(token, timestamp, nonce, echoStr);
+		System.out.println("\n URL 参数加密后：" + echoStr);
+		String resultEchoStr = pc.verifyUrl(signature, timestamp, nonce, echoStr);
+		System.out.println("\n URL 参数解密后明文: " + resultEchoStr);
 	}
+
 }

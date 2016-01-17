@@ -15,8 +15,6 @@
  */
 package com.baomidou.kisso.common.parser;
 
-import com.baomidou.kisso.Token;
-
 /**
  * <p>
  * SSO Token 解析接口
@@ -28,21 +26,25 @@ import com.baomidou.kisso.Token;
 public interface SSOParser {
 
 	/**
-	 * Token 转换为 json 字符串
-	 * @param token
-	 * 			SSO Token
+	 * Object 对象转换为 json 字符串
+	 * 
+	 * @param obj
+	 *            转换对象
 	 * @return
 	 */
-	String toJson( Token token );
-
+	String toJson(Object obj);
 
 	/**
-	 * json 格式字符串转换为 Token 对象
+	 * json 格式字符串转换为 T 对象
+	 * 
+	 * @param <T>
+	 * 
+	 * @param <T>
 	 * @param text
-	 * 				json 字符串
-	 * @param class1
-	 *				Token 对象类
+	 *            json 字符串
+	 * @param clazz
+	 *            Object 对象类
 	 * @return
 	 */
-	Token parseToken( String text, Class<? extends Token> clazz );
+	<T> T parseObject(String text, Class<? extends T> clazz);
 }

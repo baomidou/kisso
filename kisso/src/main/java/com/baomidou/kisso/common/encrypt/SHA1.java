@@ -18,7 +18,7 @@ package com.baomidou.kisso.common.encrypt;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
-import com.baomidou.kisso.exception.AesException;
+import com.baomidou.kisso.exception.AESException;
 
 /**
  * <p>
@@ -45,9 +45,9 @@ public class SHA1 {
 	 * 				密文
 	 * @return 安全签名
 	 * 
-	 * @throws AesException {@link AesException}
+	 * @throws AESException {@link AESException}
 	 */
-	public static String getSHA1(String token, String timestamp, String nonce, String encrypt) throws AesException
+	public static String getSHA1(String token, String timestamp, String nonce, String encrypt) throws AESException
 			  {
 		try {
 			String[] array = new String[] { token, timestamp, nonce, encrypt };
@@ -76,7 +76,7 @@ public class SHA1 {
 			
 			return hexstr.toString();
 		} catch (Exception e) {
-			throw new AesException(AesException.ERROR_COMPUTE_SIGNATURE, e);
+			throw new AESException(AESException.ERROR_COMPUTE_SIGNATURE, e);
 		}
 	}
 	

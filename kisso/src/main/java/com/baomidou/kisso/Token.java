@@ -115,7 +115,7 @@ public class Token {
 	 * @return Token对象
 	 */
 	public Token parseToken(String jsonToken) {
-		return SSOConfig.getInstance().getParser().parseToken(jsonToken, this.getClass());
+		return SSOConfig.getInstance().getParser().parseObject(jsonToken, this.getClass());
 	}
 	
 	/**
