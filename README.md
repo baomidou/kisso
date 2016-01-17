@@ -36,9 +36,13 @@ Usage
 
 [kisso_ApiServer 移动端 演示 demo](http://git.oschina.net/juapk/kisso_apiserver)
 
+  第一种、同一个根域名不同子域名，比如 my.baomidou.com 、  sso.baomidou.com  、other.baomidou.com 此时配置  domain 只需要配置   .baomidou.com  即可。 查看普通 demo ：
+
 [kisso_Jfinal 演示 demo](http://git.oschina.net/juapk/kisso_jfinal)
 
 [kisso_SpringMvc 演示 demo](http://git.oschina.net/juapk/kisso_springmvc)
+
+第二种、完全不同的域名，比如  sso.baomidou.com     git.oschina.net 此时比较复杂 kisso 采用的是 rsa 加密询问验证（较复杂） 查看跨域 demo:
 
 [kisso_crossdomain 跨域演示 demo](http://git.oschina.net/juapk/kisso_crossdomain)
 
