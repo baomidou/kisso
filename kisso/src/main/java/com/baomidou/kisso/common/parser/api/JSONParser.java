@@ -34,15 +34,15 @@ public class JSONParser {
 	 * 提取出 JSON 数据包中的加密消息
 	 * </p>
 	 * 
-	 * @param xmltext
+	 * @param jsontext
 	 * 				待提取的JSON字符串
 	 * @return 提取出的加密消息字符串
 	 * @throws AESException {@link AESException}
 	 */
-	public static EncryptMsg extract( String xmltext ) throws AESException {
+	public static EncryptMsg extract( String jsontext ) throws AESException {
 		try {
 			SSOConfig config = SSOConfig.getInstance();
-			return config.getParser().parseObject(xmltext, EncryptMsg.class);
+			return config.getParser().parseObject(jsontext, EncryptMsg.class);
 		} catch (Exception e) {
 			throw new AESException(AESException.ERROR_PARSE_JSON, e);
 		}

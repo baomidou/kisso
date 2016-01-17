@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso;
 
+import com.baomidou.kisso.common.util.RandomUtil;
 import com.baomidou.kisso.exception.KissoException;
 
 /**
@@ -41,14 +42,14 @@ public class ApiToken {
 	 */
 	private String aesKey;
 
-	public ApiToken() {
-		/* 自定义处理方式 */
+	protected ApiToken() {
+		/* 保护 */
 	}
 
-	public ApiToken(String token, String accessToken, String aesKey) {
+	public ApiToken(String token, String accessToken) {
 		this.token = token;
 		this.accessToken = generateAccessToken(accessToken);
-		this.aesKey = aesKey;
+		this.aesKey = RandomUtil.getCharacterAndNumber(43);
 	}
 
 	/**
@@ -56,13 +57,30 @@ public class ApiToken {
 	 * 生成访问票据
 	 * 
 	 * @param accessToken
-	 *            		访问票据
+	 *            访问票据
 	 * @return
 	 */
 	private String generateAccessToken(String accessToken) {
 		try {
 			SSOConfig config = SSOConfig.getInstance();
 			return config.getEncrypt().encrypt(accessToken, config.getSecretkey());
+		} catch (Exception e) {
+			throw new KissoException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * 解密访问票据 accessToken
+	 * 
+	 * @param accessToken
+	 *            访问票据
+	 * @return
+	 */
+	public static String decryptAccessToken(String accessToken) {
+		try {
+			SSOConfig config = SSOConfig.getInstance();
+			return config.getEncrypt().decrypt(accessToken, config.getSecretkey());
 		} catch (Exception e) {
 			throw new KissoException(e);
 		}
@@ -81,7 +99,7 @@ public class ApiToken {
 	}
 
 	public void setAccessToken(String accessToken) {
-		this.accessToken = generateAccessToken(accessToken);
+		this.accessToken = accessToken;
 	}
 
 	public String getAesKey() {

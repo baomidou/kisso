@@ -69,17 +69,17 @@ public class TestAESMsgCrypt {
 		AESMsgCrypt pc = new AESMsgCrypt(token, encodingAesKey, appId);
 
 		// 解密JSON消息
-		String jsonEncrypt = pc.encryptXMLMsg(replyJSONMsg, timestamp, nonce);
+		String jsonEncrypt = pc.encryptJSONMsg(replyJSONMsg, timestamp, nonce);
 		System.out.println("\n JSON 加密后: " + jsonEncrypt);
-		EncryptMsg jsonEncryptMsg = XMLParser.extract(jsonEncrypt);
+		EncryptMsg jsonEncryptMsg = JSONParser.extract(jsonEncrypt);
 		String resultJson = pc.decryptMsg(jsonEncryptMsg.getMsgSignature(), timestamp, nonce,
 				jsonEncryptMsg.getEncrypt());
 		System.out.println("\n JSON 解密后明文: " + resultJson);
 
 		// 解密XML消息
-		String xmlEncrypt = pc.encryptJSONMsg(replyXMLMsg, timestamp, nonce);
+		String xmlEncrypt = pc.encryptXMLMsg(replyXMLMsg, timestamp, nonce);
 		System.out.println("\n XML 加密后: " + xmlEncrypt);
-		EncryptMsg xmlEncryptMsg = JSONParser.extract(xmlEncrypt);
+		EncryptMsg xmlEncryptMsg = XMLParser.extract(xmlEncrypt);
 		String resultXml = pc.decryptMsg(xmlEncryptMsg.getMsgSignature(), timestamp, nonce, xmlEncryptMsg.getEncrypt());
 		System.out.println("\n XML 解密后明文: " + resultXml);
 
