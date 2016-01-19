@@ -36,11 +36,11 @@ public class TestAES {
 	public static void main( String[] args ) throws Exception {
 		String txt = "落霞与孤鹜齐飞，秋水共长天一色。";
 		String key = "kisso2015014082159";
-		AES pbe = new AES();
-		String enc = pbe.encrypt(txt, key);
+		AES aes = new AES();
+		String enc = aes.encrypt(txt, key);
 		System.out.println("加密前：" + txt);
 		System.out.println("加密：" + enc);
-		System.out.println("解密后：" + pbe.decrypt(enc, key));
+		System.out.println("解密后：" + aes.decrypt(enc, key));
 	}
 
 }

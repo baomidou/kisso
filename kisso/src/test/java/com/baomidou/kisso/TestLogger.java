@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * @Date	 2015-11-24
  */
 public class TestLogger {
-	private static final Logger logger = Logger.getLogger("TestJson");
+	private static final Logger logger = Logger.getLogger("TestLogger");
 
 	public static void main( String[] args ) {
 		logger.severe("严重信息");

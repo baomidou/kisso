@@ -31,7 +31,6 @@ public class FastJsonParser implements SSOParser {
 		return JSON.toJSONString(token);
 	}
 
-	@Override
 	public <T> T parseObject(String text, Class<? extends T> clazz) {
 		return JSON.parseObject(text, clazz);
 	}
