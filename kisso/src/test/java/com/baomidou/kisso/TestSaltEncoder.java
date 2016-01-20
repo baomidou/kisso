@@ -34,7 +34,7 @@ public class TestSaltEncoder {
 	 */
 	public static void main( String[] args ) {
 		
-		/* 生成 10 位随机盐值，生产环境盐值为固定值 */
+		/* 生成 10 位随机盐值，生产环境盐值为固定值，您也可以使用  “ 登录用户名  ” 作为盐值，这样好处是每个用户加密的盐都不一样。 */
 		String salt = RandomUtil.getCharacterAndNumber(10);
 		System.err.println("盐值 salt=" + salt);
 		

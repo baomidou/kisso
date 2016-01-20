@@ -68,7 +68,7 @@ public class SaltEncoder {
 			//加密后的字符串  
 			return Byte2Hex.byte2Hex(md.digest(mergeRawTextAndSalt(rawText).getBytes(SSOConfig.getSSOEncoding())));
 		} catch ( Exception e ) {
-			logger.severe(" PasswordEncoder encode exception.");
+			logger.severe(" SaltEncoder encode exception.");
 			e.printStackTrace();
 		}
 		return null;
