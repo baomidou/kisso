@@ -26,13 +26,16 @@ Maven 坐标
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>xxx</version>
+  <version>最新版本 maven 为准</version>
 </dependency>
 ```
 
 Usage
 ===========
 [kisso 依赖 jars](http://git.oschina.net/juapk/kisso/wikis/kisso-%E4%BE%9D%E8%B5%96%E5%8C%85-jars)
+
+[kisso-oauth2-demo 演示 demo](http://git.oschina.net/juapk/kisso-oauth2-demo)
+由于 apache-oltu-oauth2 很灵活 kisso 只做辅助支持，不重新造轮子。
 
 [kisso_ApiServer 移动端 演示 demo](http://git.oschina.net/juapk/kisso_apiserver)
 
@@ -113,6 +116,8 @@ Supports
 8、支持在线人数统计
 
 9、支持生成动态图片验证码
+
+10、支持 app 移动端 api 服务验证，采用微信公众平台 api 验证机制认证
 
 Futures
 ====================
