@@ -15,7 +15,10 @@
  */
 package com.baomidou.kisso;
 
+import org.bouncycastle.util.encoders.Base64;
+
 import com.baomidou.kisso.common.encrypt.PBE;
+import com.baomidou.kisso.common.util.Base64Util;
 
 /**
  * <p>
@@ -41,6 +44,27 @@ public class TestPBE {
 		System.out.println("加密前：" + txt);
 		System.out.println("加密：" + enc);
 		System.out.println("解密后：" + pbe.decrypt(enc, key));
+		
+		testPBE();
 	}
 
+	/**
+	 * 测试 PBE 加密算法
+	 */
+	public static void testPBE() throws Exception {
+		String str = "kisso";// 加密内容
+		String password = "iloveu";// 加密口令
+
+		System.out.println("原文：" + str);
+		System.out.println("密码：" + password);
+
+		byte[] salt = PBE.initSalt();// 初始化盐
+		System.out.println("盐：" + Base64.encode(salt));
+
+		byte[] data = PBE.encrypt(str.getBytes(), password, salt);// 加密
+		System.out.println("加密后：" + Base64Util.encryptBASE64(data));
+
+		data = PBE.decrypt(data, password, salt);// 解密
+		System.out.println("解密后：" + new String(data));
+	}
 }

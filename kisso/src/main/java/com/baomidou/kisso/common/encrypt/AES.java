@@ -130,15 +130,4 @@ public class AES implements SSOEncrypt {
 		return decryptAES(value);
 	}
 
-	/**
-	 * test
-	 */
-	public static void main(String[] args) {
-		String password = "100010\n1w#E#测试\nssAASASSC\n127.0.0.1\nlif123gsjkdsgvjxeh\n";
-		AES en = new AES("lifgnfdfg216958134gsjkdsgvjxeh");
-		String encryptPwd = en.encryptAES(password);
-		System.out.println(encryptPwd);
-		String decryptPwd = en.decryptAES(encryptPwd);
-		System.out.println(decryptPwd);
-	}
 }

@@ -1,0 +1,59 @@
+/**
+ * Copyright (c) 2011-2014, hubin (jobob@qq.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package com.baomidou.kisso;
+
+import com.baomidou.kisso.common.encrypt.Algorithm;
+import com.baomidou.kisso.common.encrypt.SaltEncoder;
+import com.baomidou.kisso.common.util.RandomUtil;
+
+/**
+ * <p>
+ * 测试盐值加密工具类
+ * </p>
+ * 
+ * @author hubin
+ * @Date 2016-01-20
+ */
+public class TestSaltEncoder {
+
+	/**
+	 * 测试
+	 */
+	public static void main( String[] args ) {
+		
+		/* 生成 10 位随机盐值，生产环境盐值为固定值 */
+		String salt = RandomUtil.getCharacterAndNumber(10);
+		System.err.println("盐值 salt=" + salt);
+		
+		/* 登录密码 */
+		String pwd = "1q2=3e!$-Qde";
+		
+		/* MD5 盐加密 */
+		SaltEncoder md5 = new SaltEncoder(salt, Algorithm.MD5);
+		String et1 = md5.encode(pwd);
+		System.out.println(et1);
+		boolean passwordValid = md5.isValid(et1, pwd);
+		System.err.println(passwordValid);
+
+		/* SHA 盐加密 */
+		SaltEncoder sha = new SaltEncoder(salt, Algorithm.SHA);
+		String et2 = sha.encode(pwd);
+		System.out.println(et2);
+		boolean passwordValid2 = sha.isValid(et2, pwd);
+		System.err.println(passwordValid2);
+	
+	}
+}

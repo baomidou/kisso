@@ -18,7 +18,6 @@ package com.baomidou.kisso.common.encrypt;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -97,7 +96,7 @@ public class MD5 {
 	public static byte[] md5Raw(byte[] data) {
 		byte[] md5buf = null;
 		try {
-			MessageDigest md5 = MessageDigest.getInstance("md5");
+			MessageDigest md5 = MessageDigest.getInstance(Algorithm.MD5.getKey());
 			md5buf = md5.digest(data);
 		} catch (Exception e) {
 			md5buf = null;
@@ -108,13 +107,12 @@ public class MD5 {
 	}
 
 	public static String md5String(byte[] data) {
-		String md5Str = null;
+		String md5Str = "";
 		try {
-			MessageDigest md5 = MessageDigest.getInstance("md5");
-			md5Str = "";
+			MessageDigest md5 = MessageDigest.getInstance(Algorithm.MD5.getKey());
 			byte[] buf = md5.digest(data);
 			for (int i = 0; i < buf.length; i++) {
-				md5Str += byte2Hex(buf[i]);
+				md5Str += Byte2Hex.byte2Hex(buf[i]);
 			}
 		} catch (Exception e) {
 			md5Str = null;
@@ -124,24 +122,4 @@ public class MD5 {
 		return md5Str;
 	}
 
-	public static String byte2Hex(byte b) {
-		String hex = Integer.toHexString(b);
-		if (hex.length() > 2) {
-			hex = hex.substring(hex.length() - 2);
-		}
-		while (hex.length() < 2) {
-			hex = "0" + hex;
-		}
-		return hex;
-	}
-
-	public static String byte2Hex(byte[] bytes) {
-		Formatter formatter = new Formatter();
-		for (byte b : bytes) {
-			formatter.format("%02x", b);
-		}
-		String hash = formatter.toString();
-		formatter.close();
-		return hash;
-	}
 }

@@ -24,8 +24,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import org.bouncycastle.util.encoders.Base64;
-
 import com.baomidou.kisso.common.util.Base64Util;
 import com.baomidou.kisso.exception.KissoException;
 
@@ -39,6 +37,7 @@ import com.baomidou.kisso.exception.KissoException;
  */
 public class PBE implements SSOEncrypt {
 	public static final String ALGORITHM = "PBEWITHMD5andDES";
+	
 	/** 迭代次数 */
 	public static final int ITERATION_COUNT = 100;
 	
@@ -149,23 +148,4 @@ public class PBE implements SSOEncrypt {
 		return decryptPBE(value, key);
 	}
 
-	/**
-	 * 测试 PBE 加密算法
-	 */
-	public static void main(String[] args) throws Exception {
-		String str = "kisso";// 加密内容
-		String password = "iloveu";// 加密口令
-
-		System.out.println("原文：" + str);
-		System.out.println("密码：" + password);
-
-		byte[] salt = PBE.initSalt();// 初始化盐
-		System.out.println("盐：" + Base64.encode(salt));
-
-		byte[] data = PBE.encrypt(str.getBytes(), password, salt);// 加密
-		System.out.println("加密后：" + Base64Util.encryptBASE64(data));
-
-		data = PBE.decrypt(data, password, salt);// 解密
-		System.out.println("解密后：" + new String(data));
-	}
 }
