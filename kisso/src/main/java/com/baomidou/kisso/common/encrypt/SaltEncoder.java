@@ -53,10 +53,45 @@ public class SaltEncoder {
 		this.algorithm = algorithm.getKey();
 	}
 
+	/**
+	 * 
+	 * <p>
+	 * md5 盐值加密字符串
+	 * </p>
+	 * 
+	 * @param salt
+	 * 				盐值
+	 * @param rawText
+	 *				需要加密的字符串
+	 * @return
+	 */
+	public static String md5SaltEncode( String salt, String rawText ) {
+		return new SaltEncoder(salt, Algorithm.MD5).encode(rawText);
+	}
+	
+	/**
+	 * 
+	 * <p>
+	 * 判断md5 盐值加密内容是否正确
+	 * </p>
+	 * 
+	 * @param salt
+	 * 				盐值
+	 * @param encodeText
+	 * 				加密后的文本内容
+	 * @param rawText
+	 * 				加密前的文本内容
+	 * @return
+	 */
+	public boolean md5SaltValid( String salt, String encodeText, String rawText ) {
+		return new SaltEncoder(salt, Algorithm.MD5).isValid(encodeText, rawText);
+	}
 
 	/**
 	 * 
+	 * <p>
 	 * 字符串盐值加密
+	 * </p>
 	 * 
 	 * @param rawText
 	 *            需要加密的字符串
@@ -77,7 +112,9 @@ public class SaltEncoder {
 
 	/**
 	 * 
+	 * <p>
 	 * 判断加密内容是否正确
+	 * </p>
 	 * 
 	 * @param encodeText
 	 * 				加密后的文本内容
@@ -89,16 +126,29 @@ public class SaltEncoder {
 		return this.encode(rawText).equals(encodeText);
 	}
 
-
+	/**
+	 * 
+	 * <p>
+	 * 合并混淆盐值至加密内容
+	 * </p>
+	 * 
+	 * @param rawText
+	 * 				需要加密的字符串
+	 * @return
+	 */
 	private String mergeRawTextAndSalt( String rawText ) {
 		if ( rawText == null ) {
 			rawText = "";
 		}
 
-		if ( salt == null || "".equals(salt) ) {
+		if ( this.salt == null || "".equals(this.salt) ) {
 			return rawText;
 		} else {
-			return rawText + "#" + salt;
+			StringBuffer mt = new StringBuffer();
+			mt.append(rawText);
+			mt.append(SSOConfig.CUT_SYMBOL);
+			mt.append(this.salt);
+			return mt.toString();
 		}
 	}
 

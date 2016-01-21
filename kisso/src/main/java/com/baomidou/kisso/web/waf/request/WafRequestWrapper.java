@@ -15,6 +15,9 @@
  */
 package com.baomidou.kisso.web.waf.request;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -68,6 +71,24 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 		return encodedValues;
 	}
 
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Map getParameterMap() {
+		Map<String, String[]> primary = super.getParameterMap();
+		Map<String, String[]> result = new HashMap<String, String[]>(primary.size());
+		for ( Map.Entry<String, String[]> entry : primary.entrySet() ) {
+			result.put(entry.getKey(), filterEntryString(entry.getValue()));
+		}
+		return result;
+
+	}
+	
+	protected String[] filterEntryString( String[] rawValue ) {
+		for ( int i = 0 ; i < rawValue.length ; i++ ) {
+			rawValue[i] = filterParamString(rawValue[i]);
+		}
+		return rawValue;
+	}
 
 	/**
 	 * @Description 参数过滤
@@ -108,7 +129,6 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 		}
 		return existingCookies;
 	}
-
 
 	/**
 	 * @Description 过滤字符串内容

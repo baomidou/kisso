@@ -30,7 +30,7 @@ import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
  * </p>
  * 
  * @author hubin
- * @Date 2015-12-05
+ * @Date 2016-01-21
  */
 public class SSOHelper {
 
@@ -38,9 +38,9 @@ public class SSOHelper {
 	protected static ConfigurableAbstractKissoService kissService = null;
 
 	/**
-	 * 创建 Kisso 服务
+	 * Kisso 服务初始化
 	 */
-	private static ConfigurableAbstractKissoService getKissoService() {
+	public static ConfigurableAbstractKissoService getKissoService() {
 		if ( kissService == null ) {
 			kissService = new ConfigurableAbstractKissoService();
 		}

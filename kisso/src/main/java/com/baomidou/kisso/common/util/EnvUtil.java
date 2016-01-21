@@ -82,15 +82,4 @@ public class EnvUtil {
 		return prop;
 	}
 
-	/**
-	 * LINUX 编辑用法： ############################################# vi /etc/profile
-	 * --------------------------------------------- SSO_LOGIN=0 export
-	 * SSO_LOGIN --------------------------------------------- source
-	 * /etc/profile ############################################# 程序输入结果：0
-	 */
-	public static void main(String[] args) {
-		// 注意大小写，比如读取PATH，Linux下为PATH；Windows为Path。
-		Properties p = EnvUtil.getEnv();
-		System.out.println(p.getProperty("SSO_LOGIN"));
-	}
 }

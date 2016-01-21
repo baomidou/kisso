@@ -66,5 +66,14 @@ public class RandomUtil {
 	public static String get32UUID() {
 		return UUID.randomUUID().toString().replace("-", "");
 	}
+	
+	/**
+	 * <p>
+	 * 获取唯一 UUID
+	 * </p>
+	 */
+	public static String getUUID() {
+		return UUID.randomUUID().toString();
+	}
 
 }
