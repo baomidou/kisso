@@ -83,7 +83,7 @@ public class SaltEncoder {
 	 * 				加密前的文本内容
 	 * @return
 	 */
-	public boolean md5SaltValid( String salt, String encodeText, String rawText ) {
+	public static boolean md5SaltValid( String salt, String encodeText, String rawText ) {
 		return new SaltEncoder(salt, Algorithm.MD5).isValid(encodeText, rawText);
 	}
 
