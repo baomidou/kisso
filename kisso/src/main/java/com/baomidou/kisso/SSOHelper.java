@@ -84,9 +84,9 @@ public class SSOHelper {
 	 * </p>
 	 * 
 	 * <p>
-	 * request.setAttribute(SSOConfig.SSO_COOKIE_MAXAGE, -1);
-	 * 可以设置 Cookie 超时时间 ，默认读取配置文件数据 。
-	 * -1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
+	 * request.setAttribute(SSOConfig.SSO_COOKIE_MAXAGE, maxAge);<br>
+	 * 可以动态设置 Cookie maxAge 超时时间 ，优先于配置文件的设置，无该参数 - 默认读取配置文件数据 。<br>
+	 * maxAge 定义：-1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
 	 * </p>
 	 * 
 	 * @param request
@@ -122,8 +122,9 @@ public class SSOHelper {
 	 * @param request
 	 * @return
 	 */
-	public static Token getToken( HttpServletRequest request ) {
-		return getKissoService().getToken(request);
+	@SuppressWarnings("unchecked")
+	public static <T extends Token> T getToken( HttpServletRequest request ) {
+		return (T) getKissoService().getToken(request);
 	}
 	
 
