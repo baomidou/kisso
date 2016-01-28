@@ -141,10 +141,8 @@ public class Token {
 	 */
 	public String toCacheKey() {
 		StringBuffer ck = new StringBuffer();
-		ck.append("ssoToken_");
+		ck.append("ssoTokenKey_");
 		ck.append(this.getUid());
-		ck.append("_");
-		ck.append(this.getTime());
 		return ck.toString();
 	}
 	
