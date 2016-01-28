@@ -174,7 +174,9 @@ public class SSOHelper {
 
 	/**
 	 * 
+	 * <p>
 	 * 退出重定向登录页，跳至 sso.properties 配置的属性 sso.login.url 地址
+	 * </p>
 	 * 
 	 * @param request
 	 * @param response
@@ -186,7 +188,9 @@ public class SSOHelper {
 
 	/**
 	 * 
+	 * <p>
 	 * 获取 token 的缓存主键
+	 * </p>
 	 * 
 	 * @param request
 	 * 				当前请求
@@ -194,6 +198,20 @@ public class SSOHelper {
 	 */
 	public static String getTokenCacheKey( HttpServletRequest request ) {
 		return getKissoService().tokenCacheKey(request, null);
+	}
+	
+	/**
+	 * 
+	 * <p>
+	 * 获取 token 的缓存主键
+	 * </p>
+	 * 
+	 * @param uid
+	 * 			用户主键ID
+	 * @return
+	 */
+	public static String getTokenCacheKey( String uid ) {
+		return SSOConfig.toCacheKey(uid);
 	}
 
 	

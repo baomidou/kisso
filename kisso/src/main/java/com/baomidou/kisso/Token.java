@@ -140,10 +140,7 @@ public class Token {
 	 * 生成 Token 缓存主键
 	 */
 	public String toCacheKey() {
-		StringBuffer ck = new StringBuffer();
-		ck.append("ssoTokenKey_");
-		ck.append(this.getUid());
-		return ck.toString();
+		return SSOConfig.toCacheKey(this.getUid());
 	}
 	
 }

@@ -452,4 +452,20 @@ public class SSOConfig {
 		this.statistic = statistic;
 	}
 	
+	/**
+	 * 
+	 * <p>
+	 * 生成 Token 缓存主键
+	 * </p>
+	 * 
+	 * @param uid
+	 * 			用户主键ID
+	 * @return
+	 */
+	public static String toCacheKey(String uid) {
+		StringBuffer ck = new StringBuffer();
+		ck.append("ssoTokenKey_");
+		ck.append(uid);
+		return ck.toString();
+	}
 }
