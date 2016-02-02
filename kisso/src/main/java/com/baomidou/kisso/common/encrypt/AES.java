@@ -35,7 +35,6 @@ import com.baomidou.kisso.exception.KissoException;
  */
 public class AES implements SSOEncrypt {
 	private static final Logger logger = Logger.getLogger("AES");
-	private static final String ALGORITHM = "AES";
 	private SecretKeySpec secretKey;
 	private static AES aes;
 
@@ -64,7 +63,7 @@ public class AES implements SSOEncrypt {
 	public void setKey(String strKey) {
 		try {
 			byte[] bk = MD5.md5Raw(strKey.getBytes(SSOConfig.getSSOEncoding()));
-			this.secretKey = new SecretKeySpec(bk, ALGORITHM);
+			this.secretKey = new SecretKeySpec(bk, Algorithm.AES.getKey());
 		} catch (Exception e) {
 			logger.severe("Encrypt setKey is exception.");
 			e.printStackTrace();
@@ -80,7 +79,7 @@ public class AES implements SSOEncrypt {
 		byte[] encryptBytes = null;
 		String encryptStr = null;
 		try {
-			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			Cipher cipher = Cipher.getInstance(Algorithm.AES.getKey());
 			cipher.init(Cipher.ENCRYPT_MODE, getSecretKey());
 			encryptBytes = cipher.doFinal(str.getBytes());
 			if (encryptBytes != null) {
@@ -101,7 +100,7 @@ public class AES implements SSOEncrypt {
 		byte[] decryptBytes = null;
 		String decryptStr = null;
 		try {
-			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			Cipher cipher = Cipher.getInstance(Algorithm.AES.getKey());
 			cipher.init(Cipher.DECRYPT_MODE, getSecretKey());
 			byte[] scrBytes = Base64Util.decryptBASE64(str);
 			decryptBytes = cipher.doFinal(scrBytes);

@@ -25,7 +25,8 @@ package com.baomidou.kisso.common.encrypt;
  */
 public enum Algorithm {
 	MD5("MD5", "md5 encrypt"),
-	SHA("SHA", "has encrypt");
+	SHA("SHA", "has encrypt"),
+	AES("AES", "aes encrypt");
 
 	/** 主键 */
 	private final String key;
