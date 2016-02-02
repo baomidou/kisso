@@ -48,6 +48,17 @@ public interface KissoService {
 	String getLoginCount(HttpServletRequest request);
 
 	/**
+	 * <p>
+	 * 踢出 指定用户 ID 的登录用户，退出当前系统。
+	 * </p>
+	 * 
+	 * @param uid
+	 * 用户 ID
+	 * @return
+	 */
+	boolean kickLogin(String uid);
+
+	/**
 	 * 设置登录 Cookie
 	 * 
 	 * <p>

@@ -214,7 +214,18 @@ public class SSOHelper {
 		return SSOConfig.toCacheKey(uid);
 	}
 
-	
+	/**
+	 * <p>
+	 * 踢出 指定用户 ID 的登录用户，退出当前系统。
+	 * </p>
+	 * 
+	 * @param uid
+	 * 			用户 ID
+	 * @return
+	 */
+	public boolean kickLogin( String uid ) {
+		return getKissoService().kickLogin(uid);
+	}
 
 	/**
 	 * ------------------------------- 跨域相关方法 -------------------------------

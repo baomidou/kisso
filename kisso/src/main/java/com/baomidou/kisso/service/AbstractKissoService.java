@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.kisso.AuthToken;
+import com.baomidou.kisso.SSOCache;
+import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.Token;
 import com.baomidou.kisso.common.CookieHelper;
@@ -67,6 +69,25 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 			logger.warning("please instanceof SSOStatistic.");
 		}
 		return null;
+	}
+	
+	/**
+	 * <p>
+	 * 踢出 指定用户 ID 的登录用户，退出当前系统。
+	 * </p>
+	 * 
+	 * @param uid
+	 * 			用户 ID
+	 * @return
+	 */
+	public boolean kickLogin( String uid ) {
+		SSOCache cache = config.getCache();
+		if ( cache != null ) {
+			return cache.delete(SSOConfig.toCacheKey(uid));
+		} else {
+			logger.info(" kickLogin! please implements SSOCache class.");
+		}
+		return false;
 	}
 	
 	/**
