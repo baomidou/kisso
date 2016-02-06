@@ -108,21 +108,34 @@ public class KissoServiceSupport {
 		 * 如果缓存不存退出登录
 		 */
 		if ( cache != null ) {
-			String cacheKey = this.tokenCacheKey(request, null);
-			if ( cacheKey == null ) {
+			Token cookieToken = getTokenFromCookie(request);
+			if ( cookieToken == null ) {
 				/* 未登录 */
 				return null;
 			}
 			
-			Token tk = cache.get(cacheKey);
-			if ( tk == null ) {
+			Token cacheToken = cache.get(cookieToken.toCacheKey());
+			if ( cacheToken == null ) {
 				/* 开启缓存且失效，返回 null 清除 Cookie 退出 */
 				logger.fine("cacheToken token is null.");
 				return null;
 			} else {
-				/* 开启缓存 1、缓存正常，返回 tk 2、缓存宕机，执行读取 Cookie 逻辑 */
-				if ( tk.getFlag() != Token.FLAG_CACHE_SHUT ) {
-					return tk;
+				/*
+				 * 开启缓存，判断是否宕机：
+				 * 1、缓存正常，返回 tk
+				 * 2、缓存宕机，执行读取 Cookie 逻辑
+				 */
+				if ( cacheToken.getFlag() != Token.FLAG_CACHE_SHUT ) {
+					/*
+					 * 验证 cookie 与 cache 中 token 登录时间是否<br>
+					 * 不一致返回 null
+					 */
+					if(cookieToken.getTime() == cacheToken.getTime()){
+						return cacheToken;
+					} else {
+						logger.severe("Login time is not consistent.");
+						return null;
+					}
 				}
 			}
 		}
@@ -236,7 +249,7 @@ public class KissoServiceSupport {
 
 	/**
 	 * 
-	 * Token 缓存主键
+	 * cookie 中获取 Token, 该方法未验证 IP 等其他信息。
 	 * 
 	 * <p>
 	 * 1、自动设置
@@ -250,11 +263,8 @@ public class KissoServiceSupport {
 	 * 				SSO 票据
 	 * @return
 	 */
-	public String tokenCacheKey(HttpServletRequest request, Token token) {
-		Token tk = token;
-		if (tk == null) {
-			tk = this.attrToken(request);
-		}
+	public Token getTokenFromCookie(HttpServletRequest request) {
+		Token tk = this.attrToken(request);
 		if (tk == null) {
 			tk = this.getToken(request, config.getEncrypt(), config.getCookieName());
 		}
@@ -262,7 +272,7 @@ public class KissoServiceSupport {
 			logger.severe("please login to use.");
 			return null;
 		}
-		return tk.toCacheKey();
+		return tk;
 	}
 	
 	
@@ -381,7 +391,7 @@ public class KissoServiceSupport {
 			 */
 			SSOCache cache = config.getCache();
 			if ( cache != null ) {
-				boolean rlt = cache.set(tokenCacheKey(request, token), token, config.getCacheExpires());
+				boolean rlt = cache.set(token.toCacheKey(), token, config.getCacheExpires());
 				if ( !rlt ) {
 					token.setFlag(Token.FLAG_CACHE_SHUT);
 				}
@@ -427,11 +437,11 @@ public class KissoServiceSupport {
 		 * Token 如果开启了缓存，删除缓存记录
 		 */
 		if ( cache != null ) {
-			String cacheKey = tokenCacheKey(request, null);
-			if ( cacheKey != null ) {
-				boolean rlt = cache.delete(cacheKey);
+			Token tk = getTokenFromCookie(request);
+			if ( tk != null ) {
+				boolean rlt = cache.delete(tk.toCacheKey());
 				if ( !rlt ) {
-					cache.delete(cacheKey);
+					cache.delete(tk.toCacheKey());
 				}
 			}
 		}

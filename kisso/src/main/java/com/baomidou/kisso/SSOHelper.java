@@ -197,7 +197,7 @@ public class SSOHelper {
 	 * @return
 	 */
 	public static String getTokenCacheKey( HttpServletRequest request ) {
-		return getKissoService().tokenCacheKey(request, null);
+		return getToken(request).toCacheKey();
 	}
 	
 	/**
