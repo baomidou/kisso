@@ -27,21 +27,18 @@ import com.baomidou.kisso.exception.KissoException;
  * @Date 2016-01-16
  */
 public class ApiToken {
-	/*
-	 * 一次性票据
-	 */
+	/* 一次性票据 */
 	private String token;
 
-	/*
-	 * 访问票据
-	 */
+	/* 访问票据 */
 	private String accessToken;
 
-	/*
-	 * AES密钥
-	 */
+	/* AES密钥 */
 	private String aesKey;
-
+	
+	/* 预留 */
+	private String data;
+	
 	protected ApiToken() {
 		/* 保护 */
 	}
@@ -109,5 +106,14 @@ public class ApiToken {
 	public void setAesKey(String aesKey) {
 		this.aesKey = aesKey;
 	}
+	
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
 
 }
+

@@ -32,6 +32,9 @@ public class SSOToken extends Token {
 	/* 登录类型 */
 	private String type;
 	
+	/* 预留 */
+	private String data;
+	
 	public SSOToken() {
 		this.setApp(SSOConfig.getInstance().getRole());
 	}
@@ -57,6 +60,14 @@ public class SSOToken extends Token {
 	
 	public void setType( String type ) {
 		this.type = type;
+	}
+	
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	}
 
 }
