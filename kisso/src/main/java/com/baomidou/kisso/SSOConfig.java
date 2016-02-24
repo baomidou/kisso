@@ -69,7 +69,11 @@ public class SSOConfig {
 	private SSOCache cache = null;
 	private int cacheExpires = -1;
 	private SSOStatistic statistic = null;
-	private List<SSOPlugin> pluginList = null;
+	
+	/**
+	 * 插件列表
+	 */
+	private static List<SSOPlugin> SSO_PLUGIN_LIST = null;
 	
 	/**
 	 * <p>
@@ -458,11 +462,11 @@ public class SSOConfig {
 	 * 自定义插件列表
 	 */
 	public List<SSOPlugin> getPluginList() {
-		return pluginList;
+		return SSO_PLUGIN_LIST;
 	}
 
 	public void setPluginList( List<SSOPlugin> pluginList ) {
-		this.pluginList = pluginList;
+		SSO_PLUGIN_LIST = pluginList;
 	}
 
 	/**
