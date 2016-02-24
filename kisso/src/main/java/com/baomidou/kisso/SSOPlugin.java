@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author hubin
  * @Date 2016-02-24
  */
-public interface SSOPlugin {
+public abstract class SSOPlugin {
 
 	/**
 	 * <p>
@@ -37,7 +37,7 @@ public interface SSOPlugin {
 	 * @param response
 	 * @return
 	 */
-	boolean login( HttpServletRequest request, HttpServletResponse response );
+	public abstract boolean login( HttpServletRequest request, HttpServletResponse response );
 
 
 	/**
@@ -47,11 +47,14 @@ public interface SSOPlugin {
 	 * <p>
 	 * 用来验证 Token 合法性（例如 time 超时验证）
 	 * </p>
+	 * 
 	 * @param token
 	 * 				登录票据
-	 * @return 合法返回 token 非法返回 null {@link Token}
+	 * @return
 	 */
-	Token validateToken( Token token );
+	public boolean validateToken( Token token ) {
+		return true;
+	}
 
 
 	/**
@@ -63,6 +66,6 @@ public interface SSOPlugin {
 	 * @param response
 	 * @return
 	 */
-	boolean logout( HttpServletRequest request, HttpServletResponse response );
+	public abstract boolean logout( HttpServletRequest request, HttpServletResponse response );
 
 }

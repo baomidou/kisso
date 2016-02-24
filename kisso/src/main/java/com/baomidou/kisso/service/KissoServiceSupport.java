@@ -94,7 +94,10 @@ public class KissoServiceSupport {
 		List<SSOPlugin> pluginList = config.getPluginList();
 		if ( pluginList != null ) {
 			for ( SSOPlugin plugin : pluginList ) {
-				tk = plugin.validateToken(tk);
+				boolean valid = plugin.validateToken(tk);
+				if (!valid) {
+					return null;
+				}
 			}
 		}
 		return tk;
