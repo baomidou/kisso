@@ -4,6 +4,9 @@
 kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 java Web 登录系统（SSO）的瑞士军刀。
 
 
+[kisso 帮助文档下载](http://git.oschina.net/juapk/kisso/attach_files)
+
+
 > 技术讨论 QQ 群 492238239 
 
 http://baomidou.com/
@@ -131,4 +134,3 @@ Apache License, Version 2.0
 关注我
 ====================
 ![程序员日记](http://git.oschina.net/uploads/images/2016/0121/093728_1bc1658f_12260.png "程序员日记")
-
