@@ -87,7 +87,17 @@ public class KissoServiceSupport {
 		if ( encrypt == null ) {
 			throw new KissoException(" Encrypt not for null.");
 		}
-		return checkIp(request, cacheToken(request, encrypt, cache));
+		Token tk = checkIp(request, cacheToken(request, encrypt, cache));
+		/**
+		 * 执行插件逻辑
+		 */
+		List<SSOPlugin> pluginList = config.getPluginList();
+		if ( pluginList != null ) {
+			for ( SSOPlugin plugin : pluginList ) {
+				tk = plugin.validateToken(tk);
+			}
+		}
+		return tk;
 	}
 	
 
