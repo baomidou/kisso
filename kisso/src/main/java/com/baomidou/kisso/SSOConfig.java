@@ -16,6 +16,7 @@
 package com.baomidou.kisso;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -68,6 +69,7 @@ public class SSOConfig {
 	private SSOCache cache = null;
 	private int cacheExpires = -1;
 	private SSOStatistic statistic = null;
+	private List<SSOPlugin> pluginList = null;
 	
 	/**
 	 * <p>
@@ -452,6 +454,17 @@ public class SSOConfig {
 		this.statistic = statistic;
 	}
 	
+	/**
+	 * 自定义插件列表
+	 */
+	public List<SSOPlugin> getPluginList() {
+		return pluginList;
+	}
+
+	public void setPluginList( List<SSOPlugin> pluginList ) {
+		this.pluginList = pluginList;
+	}
+
 	/**
 	 * 
 	 * <p>

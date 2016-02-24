@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso.service;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.SSOPlugin;
 import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.Token;
 import com.baomidou.kisso.common.Browser;
@@ -407,6 +409,19 @@ public class KissoServiceSupport {
 					statistic.increase(request);
 				}
 			}
+			
+			/**
+			 * 执行插件逻辑
+			 */
+			List<SSOPlugin> pluginList = config.getPluginList();
+			if ( pluginList != null ) {
+				for ( SSOPlugin plugin : pluginList ) {
+					boolean login = plugin.login(request, response);
+					if ( !login ) {
+						plugin.login(request, response);
+					}
+				}
+			}
 
 			/**
 			 * Cookie设置HttpOnly
@@ -454,6 +469,19 @@ public class KissoServiceSupport {
 			boolean rlt = statistic.decrease(request);
 			if ( !rlt ) {
 				statistic.decrease(request);
+			}
+		}
+		
+		/**
+		 * 执行插件逻辑
+		 */
+		List<SSOPlugin> pluginList = config.getPluginList();
+		if ( pluginList != null ) {
+			for ( SSOPlugin plugin : pluginList ) {
+				boolean logout = plugin.logout(request, response);
+				if ( !logout ) {
+					plugin.logout(request, response);
+				}
 			}
 		}
 
