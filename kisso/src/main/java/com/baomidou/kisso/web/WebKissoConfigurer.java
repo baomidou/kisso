@@ -35,7 +35,7 @@ import com.baomidou.kisso.exception.KissoException;
  * @author hubin
  * @Date 2015-02-06
  */
-public class WebKissoConfigurer {
+public class WebKissoConfigurer extends SSOConfig {
 
 	/**
 	 * Parameter specifying the location of the kisso config file
@@ -66,13 +66,13 @@ public class WebKissoConfigurer {
 				String[] cfg = location.split(":");
 				if (cfg.length == 2) {
 					/* 初始化配置 */
-					SSOConfig.init(getInputStream(cfg[1]));
+					init(getInputStream(cfg[1]));
 				}
 			} else {
 				File file = new File(location);
 				if (file.isFile()) {
 					try {
-						SSOConfig.init(getInputStream(new FileInputStream(file)));
+						init(getInputStream(new FileInputStream(file)));
 					} catch (FileNotFoundException e) {
 						throw new KissoException(location);
 					}
@@ -117,7 +117,7 @@ public class WebKissoConfigurer {
 		 * 初始化
 		 */
 		if ( prop != null ) {
-			SSOConfig.init(prop);
+			init(prop);
 		} else {
 			logger.severe("Initializing is not available kissoConfigLocation on the classpath");
 		}
