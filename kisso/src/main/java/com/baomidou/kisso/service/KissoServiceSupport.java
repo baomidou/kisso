@@ -70,11 +70,7 @@ public class KissoServiceSupport {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Token> T attrToken( HttpServletRequest request ) {
-		Object obj = request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
-		if ( obj == null ) {
-			return (T) getToken(request, config.getEncrypt(), config.getCache());
-		}
-		return (T) obj;
+		return (T) this.getTokenFromCookie(request);
 	}
 
 	/**
@@ -283,7 +279,10 @@ public class KissoServiceSupport {
 	 * @return
 	 */
 	public Token getTokenFromCookie(HttpServletRequest request) {
-		Token tk = this.attrToken(request);
+		Token tk = (Token) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
+		if (tk == null) {
+			tk = this.getToken(request, config.getEncrypt(), config.getCookieName());
+		}
 		if (tk == null) {
 			logger.severe("please login to use.");
 			return null;
