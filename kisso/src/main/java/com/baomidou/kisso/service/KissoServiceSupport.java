@@ -70,7 +70,11 @@ public class KissoServiceSupport {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Token> T attrToken( HttpServletRequest request ) {
-		return (T) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
+		Object obj = request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
+		if ( obj == null ) {
+			return (T) getToken(request, config.getEncrypt(), config.getCache());
+		}
+		return (T) obj;
 	}
 
 	/**
