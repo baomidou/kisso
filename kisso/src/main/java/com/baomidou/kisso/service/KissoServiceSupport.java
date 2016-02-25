@@ -70,7 +70,7 @@ public class KissoServiceSupport {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Token> T attrToken( HttpServletRequest request ) {
-		return (T) this.getTokenFromCookie(request);
+		return (T) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class KissoServiceSupport {
 	 * @return
 	 */
 	public Token getTokenFromCookie(HttpServletRequest request) {
-		Token tk = (Token) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
+		Token tk = this.attrToken(request);
 		if (tk == null) {
 			tk = this.getToken(request, config.getEncrypt(), config.getCookieName());
 		}
