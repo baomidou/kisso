@@ -134,9 +134,9 @@ public class SSOConfig {
 	/**
 	 * SSO 资源文件初始化
 	 */
-	public static void init(Properties props) {
+	public void initProperties(Properties props) {
 		if (props != null) {
-			prop = new PropertiesUtil(props, SSO_RUN_MODE);
+			prop = new PropertiesUtil(props, SSO_RUN_MODE, this.getRunMode());
 			logger.config("loading kisso config.");
 			logger.info("kisso init success.");
 		} else {
@@ -173,6 +173,9 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public String getRunMode() {
+		if ( prop == null ) {
+			return runMode;
+		}
 		return prop.get(SSO_RUN_MODE, runMode);
 	}
 	

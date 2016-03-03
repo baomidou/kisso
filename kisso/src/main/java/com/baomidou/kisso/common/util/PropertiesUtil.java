@@ -41,6 +41,10 @@ public class PropertiesUtil {
 	public PropertiesUtil(Properties mergeProperties, String runMode) {
 		this.properties = extractRunMode(mergeProperties, runMode);
 	}
+	
+	public PropertiesUtil(Properties mergeProperties, String runMode, String currentMode) {
+		this.properties = extractRunMode(mergeProperties, runMode, currentMode);
+	}
 
 	public String get(String key) {
 		return properties.getProperty(key);

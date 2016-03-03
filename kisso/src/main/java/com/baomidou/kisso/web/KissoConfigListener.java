@@ -15,6 +15,8 @@
  */
 package com.baomidou.kisso.web;
 
+import java.util.logging.Logger;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -28,18 +30,22 @@ import javax.servlet.ServletContextListener;
  */
 public class KissoConfigListener implements ServletContextListener {
 
+	protected static final Logger logger = Logger.getLogger("KissoConfigListener");
+
+
 	/**
 	 * 初始化
 	 */
-	public void contextInitialized(ServletContextEvent sce) {
-		WebKissoConfigurer.initKisso(sce.getServletContext());
+	public void contextInitialized( ServletContextEvent sce ) {
+		new WebKissoConfigurer().initKisso(sce.getServletContext());
 	}
+
 
 	/**
 	 * 销毁
 	 */
-	public void contextDestroyed(ServletContextEvent sce) {
-		WebKissoConfigurer.shutdownKisso(sce.getServletContext());
+	public void contextDestroyed( ServletContextEvent sce ) {
+		logger.info("Uninstalling Kisso ");
 	}
 
 }

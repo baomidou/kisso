@@ -15,38 +15,36 @@
  */
 package com.baomidou.kisso.annotation;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import com.baomidou.kisso.annotation.Action;
+
 /**
  * <p>
- * SSO 执行状态
+ * kisso 权限注解
  * </p>
  * 
  * @author hubin
- * @Date 2015-11-10
+ * @Date 2016-03-07
  */
-public enum Action {
-	/** 正常（默认） */
-	Normal("0", "执行权限验证"),
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Permission {
 	
-	/** 跳过 */
-	Skip("1", "跳过权限验证");
+	/**
+	 * 权限内容
+	 */
+	String value() default "";
 
-	/** 主键 */
-	private final String key;
-
-	/** 描述 */
-	private final String desc;
-
-	Action(final String key, final String desc) {
-		this.key = key;
-		this.desc = desc;
-	}
-
-	public String getKey() {
-		return this.key;
-	}
-
-	public String getDesc() {
-		return this.desc;
-	}
+	/**
+	 * 执行动作
+	 * {@link Action}
+	 */
+	Action action() default Action.Normal;
 
 }

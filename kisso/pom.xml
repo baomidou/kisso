@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.baomidou</groupId>
 	<artifactId>kisso</artifactId>
-	<version>3.6</version>
+	<version>3.6.1</version>
 	<packaging>jar</packaging>
 
 	<name>kisso</name>
@@ -33,9 +33,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<servlet-api.version>2.5</servlet-api.version>
-		<fastjson.version>1.2.7</fastjson.version>
+		<fastjson.version>1.2.8</fastjson.version>
 		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
 		<spring.version>4.2.3.RELEASE</spring.version>
+		<shiro.version>1.2.4</shiro.version>
 	</properties>
 
 	<dependencies>
@@ -55,7 +56,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Encryption library -->
+		<!-- Encryption  -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk14</artifactId>
@@ -93,6 +94,13 @@
 			</exclusions>
 		</dependency>
 		
+		<!-- shiro -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>${shiro.version}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<profiles>

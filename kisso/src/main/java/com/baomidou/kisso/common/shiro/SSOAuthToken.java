@@ -13,40 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.kisso.annotation;
+package com.baomidou.kisso.common.shiro;
+
+import org.apache.shiro.authc.AuthenticationToken;
+
+import com.baomidou.kisso.Token;
 
 /**
  * <p>
- * SSO 执行状态
+ * kisso 票据凭证
  * </p>
  * 
  * @author hubin
- * @Date 2015-11-10
+ * @Date 2016-03-07
  */
-public enum Action {
-	/** 正常（默认） */
-	Normal("0", "执行权限验证"),
-	
-	/** 跳过 */
-	Skip("1", "跳过权限验证");
+public class SSOAuthToken implements AuthenticationToken {
 
-	/** 主键 */
-	private final String key;
+	private static final long serialVersionUID = 1L;
 
-	/** 描述 */
-	private final String desc;
+	/**
+	 * userId
+	 */
+	private final String uid;
 
-	Action(final String key, final String desc) {
-		this.key = key;
-		this.desc = desc;
+	/**
+	 * Kisso_Token
+	 */
+	private final Token token;
+
+
+	public SSOAuthToken( String uid, Token token ) {
+		this.uid = uid;
+		this.token = token;
 	}
 
-	public String getKey() {
-		return this.key;
+	/**
+	 * 实现父类方式
+	 */
+	public Object getPrincipal() {
+		return uid;
 	}
 
-	public String getDesc() {
-		return this.desc;
+
+	/**
+	 * 实现父类方式
+	 */
+	public Object getCredentials() {
+		return token;
 	}
 
 }

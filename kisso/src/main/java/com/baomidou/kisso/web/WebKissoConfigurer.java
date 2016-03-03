@@ -59,20 +59,19 @@ public class WebKissoConfigurer extends SSOConfig {
 	 * @param servletContext
 	 * 
 	 */
-	public static void initKisso(ServletContext servletContext) {
+	public void initKisso(ServletContext servletContext) {
 		String location = servletContext.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (location != null) {
 			if (location.indexOf("classpath") >= 0) {
 				String[] cfg = location.split(":");
 				if (cfg.length == 2) {
-					/* 初始化配置 */
-					init(getInputStream(cfg[1]));
+					this.initProperties(getInputStream(cfg[1]));
 				}
 			} else {
 				File file = new File(location);
 				if (file.isFile()) {
 					try {
-						init(getInputStream(new FileInputStream(file)));
+						this.initProperties(getInputStream(new FileInputStream(file)));
 					} catch (FileNotFoundException e) {
 						throw new KissoException(location);
 					}
@@ -117,27 +116,23 @@ public class WebKissoConfigurer extends SSOConfig {
 		 * 初始化
 		 */
 		if ( prop != null ) {
-			init(prop);
+			this.initProperties(prop);
 		} else {
 			logger.severe("Initializing is not available kissoConfigLocation on the classpath");
 		}
 	}
 
-	public static void shutdownKisso(ServletContext servletContext) {
-		shutdownKisso();
-	}
-
-	public static void shutdownKisso() {
+	public void shutdownKisso() {
 		logger.info("Uninstalling Kisso ");
 	}
 
 
-	private static Properties getInputStream( String cfg ) {
+	private Properties getInputStream( String cfg ) {
 		return getInputStream(WebKissoConfigurer.class.getClassLoader().getResourceAsStream(cfg));
 	}
 
 
-	private static Properties getInputStream( InputStream in ) {
+	private Properties getInputStream( InputStream in ) {
 		Properties p = null;
 		try {
 			p = new Properties();
