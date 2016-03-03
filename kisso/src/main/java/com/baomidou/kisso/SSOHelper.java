@@ -223,7 +223,7 @@ public class SSOHelper {
 	 * 			用户 ID
 	 * @return
 	 */
-	public boolean kickLogin( String uid ) {
+	public static boolean kickLogin( String uid ) {
 		return getKissoService().kickLogin(uid);
 	}
 
