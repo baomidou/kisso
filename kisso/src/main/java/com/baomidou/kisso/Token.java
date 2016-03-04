@@ -36,7 +36,10 @@ public class Token {
 	/* 系统名称  */
 	private String app;
 
-	/* 用户 ID */
+	/* 用户 ID（长整型） */
+	private Long id;
+	
+	/* 用户 ID（字符串类型，默认 fastjson 无值该参数不参与 json 序列化） */
 	private String uid;
 
 	/* 登录 IP */
@@ -62,6 +65,16 @@ public class Token {
 		this.app = app;
 	}
 	
+	
+	public Long getId() {
+		return id;
+	}
+
+	
+	public void setId( Long id ) {
+		this.id = id;
+	}
+
 	public String getUid() {
 		return uid;
 	}

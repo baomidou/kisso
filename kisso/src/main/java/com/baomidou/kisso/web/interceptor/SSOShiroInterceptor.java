@@ -73,7 +73,7 @@ public class SSOShiroInterceptor extends HandlerInterceptorAdapter {
 			 * shiro 登录认证
 			 */
 			if ( !currentUser.isAuthenticated() ) {
-				currentUser.login(new SSOAuthToken(token.getUid(), token));
+				currentUser.login(new SSOAuthToken(token));
 				logger.fine(" shiro login success. ");
 			}
 

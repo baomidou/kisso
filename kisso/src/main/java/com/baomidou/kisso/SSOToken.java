@@ -17,6 +17,7 @@ package com.baomidou.kisso;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.kisso.common.IpHelper;
 
 /**
@@ -30,10 +31,14 @@ import com.baomidou.kisso.common.IpHelper;
 public class SSOToken extends Token {
 
 	/* 登录类型 */
-	private String type;
+	private Integer type;
 	
 	/* 预留 */
 	private String data;
+	
+	/* 预留对象，默认 fastjson 不参与序列化 */
+	@JSONField(serialize = false)
+	private Object object;
 	
 	public SSOToken() {
 		this.setApp(SSOConfig.getInstance().getRole());
@@ -49,16 +54,16 @@ public class SSOToken extends Token {
 		this.setUid(uid);
 	}
 	
-	public SSOToken(HttpServletRequest request, String uid, String type) {
+	public SSOToken(HttpServletRequest request, String uid, Integer type) {
 		this(request, uid);
 		this.setType(type);
 	}
 	
-	public String getType() {
+	public Integer getType() {
 		return type;
 	}
 	
-	public void setType( String type ) {
+	public void setType( Integer type ) {
 		this.type = type;
 	}
 	
@@ -70,4 +75,11 @@ public class SSOToken extends Token {
 		this.data = data;
 	}
 
+	public Object getObject() {
+		return object;
+	}
+	
+	public void setObject( Object object ) {
+		this.object = object;
+	}
 }

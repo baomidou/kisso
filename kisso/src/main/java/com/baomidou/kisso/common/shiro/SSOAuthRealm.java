@@ -27,6 +27,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
+import com.baomidou.kisso.Token;
+
 /**
  * <p>
  * kisso 信任票据域
@@ -48,9 +50,9 @@ public class SSOAuthRealm extends AuthorizingRealm {
 		if ( principals == null ) {
 			throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
 		}
-		String uid = (String) getAvailablePrincipal(principals);
+		Token token = (Token) getAvailablePrincipal(principals);
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-		List<String> permissions = shiroPermission.getPermissions(uid);
+		List<String> permissions = shiroPermission.getPermissions(token);
 		if ( permissions != null ) {
 			authorizationInfo.addStringPermissions(permissions);
 		}

@@ -17,6 +17,8 @@ package com.baomidou.kisso.common.shiro;
 
 import java.util.List;
 
+import com.baomidou.kisso.Token;
+
 /**
  * <p>
  * shiro 权限接口类
@@ -31,9 +33,9 @@ public interface ShiroPermission {
 	 * <p>
 	 * 字符串类型权限列表
 	 * <p>
-	 * @param uid
-	 *			用户ID
+	 * @param token
+	 *			kisso Token 票据
 	 * @return
 	 */
-	public List<String> getPermissions( String uid );
+	public List<String> getPermissions( Token token );
 }

@@ -36,8 +36,22 @@ public class TestJsonToken {
 	public static void main( String[] args ) {
 		SSOToken st = new SSOToken();
 		st.setApp("sso");
-		st.setUid("123");
+		
+		//长整型、用户ID
+		st.setId(123L);
+		
+		//字符串类型、用户ID，这里不设置将不序列化
+		//st.setUid("123");
 		st.setIp("127.0.0.1");
+		
+		/**
+		 * object 对象不参与序列化
+		 */
+		Token token = new Token();
+		token.setApp("test");
+		token.setTime(System.currentTimeMillis());
+		st.setObject(token);
+		
 		String jsonObj = st.jsonToken();
 		System.out.println("==jsonObj=" + jsonObj);
 		String md5 = MD5.toMD5(jsonObj);
