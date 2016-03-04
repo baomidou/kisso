@@ -51,7 +51,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * @return Token {@link Token}
 	 */
 	public Token getToken( HttpServletRequest request ) {
-		return getToken(request, config.getEncrypt(), config.getCache());
+		return getToken(request, null, config.getEncrypt(), config.getCache());
 	}
 
 	/**
@@ -314,7 +314,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * @return AuthToken {@link AuthToken}
 	 */
 	private AuthToken getAuthCookie( HttpServletRequest request, String publicKey ) {
-		String jsonToken = getJsonToken(request, config.getEncrypt(), config.getAuthCookieName());
+		String jsonToken = getJsonToken(request, null, config.getEncrypt(), config.getAuthCookieName());
 		if ( jsonToken == null || "".equals(jsonToken) ) {
 			logger.info("jsonToken is null.");
 			return null;
