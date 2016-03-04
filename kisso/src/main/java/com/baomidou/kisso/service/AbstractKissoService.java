@@ -218,8 +218,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		try {
 			str = config.getEncrypt().decrypt(askData, config.getSecretkey());
 		} catch ( Exception e ) {
-			logger.severe("replyCiphertext AES decrypt error.");
-			e.printStackTrace();
+			logger.severe("replyCiphertext AES decrypt error.\n" + e.toString());
 		}
 		if ( str != null ) {
 			/*
@@ -295,8 +294,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 				config.getAuthCookieName(), encryptCookie(request, authToken, config.getEncrypt()),
 				config.getAuthCookieMaxage(), true, config.getCookieSecure());
 		} catch ( Exception e ) {
-			logger.severe("AuthToken encryptCookie error.");
-			e.printStackTrace();
+			logger.severe("AuthToken encryptCookie error.\n" + e.toString());
 		}
 	}
 	
