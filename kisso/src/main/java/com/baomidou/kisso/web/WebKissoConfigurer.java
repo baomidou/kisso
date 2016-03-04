@@ -73,7 +73,7 @@ public class WebKissoConfigurer extends SSOConfig {
 					try {
 						this.initProperties(getInputStream(new FileInputStream(file)));
 					} catch (FileNotFoundException e) {
-						throw new KissoException(location);
+						throw new KissoException(location, e);
 					}
 				} else {
 					throw new KissoException(location);
@@ -106,7 +106,7 @@ public class WebKissoConfigurer extends SSOConfig {
 			try {
 				prop = getInputStream(new FileInputStream(file));
 			} catch ( FileNotFoundException e ) {
-				throw new KissoException(this.getSsoPropPath());
+				throw new KissoException(this.getSsoPropPath(), e);
 			}
 		} else {
 			prop = getInputStream(this.getSsoPropPath());
@@ -138,8 +138,7 @@ public class WebKissoConfigurer extends SSOConfig {
 			p = new Properties();
 			p.load(in);
 		} catch ( Exception e ) {
-			logger.severe(" kisso read config file error. ");
-			e.printStackTrace();
+			logger.severe(" kisso read config file error. \n" + e.toString());
 		}
 		return p;
 	}
