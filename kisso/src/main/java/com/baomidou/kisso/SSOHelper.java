@@ -219,12 +219,12 @@ public class SSOHelper {
 	 * 踢出 指定用户 ID 的登录用户，退出当前系统。
 	 * </p>
 	 * 
-	 * @param uid
-	 * 			用户 ID
+	 * @param userId
+	 * 				用户ID
 	 * @return
 	 */
-	public static boolean kickLogin( String uid ) {
-		return getKissoService().kickLogin(uid);
+	public static boolean kickLogin( Object userId ) {
+		return getKissoService().kickLogin(userId);
 	}
 
 	/**
