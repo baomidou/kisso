@@ -76,14 +76,14 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * 踢出 指定用户 ID 的登录用户，退出当前系统。
 	 * </p>
 	 * 
-	 * @param uid
-	 * 			用户 ID
+	 * @param userId
+	 * 				用户ID
 	 * @return
 	 */
-	public boolean kickLogin( String uid ) {
+	public boolean kickLogin( Object userId ) {
 		SSOCache cache = config.getCache();
 		if ( cache != null ) {
-			return cache.delete(SSOConfig.toCacheKey(uid));
+			return cache.delete(SSOConfig.toCacheKey(userId));
 		} else {
 			logger.info(" kickLogin! please implements SSOCache class.");
 		}

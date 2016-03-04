@@ -478,14 +478,14 @@ public class SSOConfig {
 	 * 生成 Token 缓存主键
 	 * </p>
 	 * 
-	 * @param uid
-	 * 			用户主键ID
+	 * @param userId
+	 * 				用户ID
 	 * @return
 	 */
-	public static String toCacheKey(String uid) {
+	public static String toCacheKey(Object userId) {
 		StringBuffer ck = new StringBuffer();
 		ck.append("ssoTokenKey_");
-		ck.append(uid);
+		ck.append(userId);
 		return ck.toString();
 	}
 }

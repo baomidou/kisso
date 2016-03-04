@@ -153,6 +153,9 @@ public class Token {
 	 * 生成 Token 缓存主键
 	 */
 	public String toCacheKey() {
+		if (this.getId() != null) {
+			return SSOConfig.toCacheKey(this.getId());
+		}
 		return SSOConfig.toCacheKey(this.getUid());
 	}
 	

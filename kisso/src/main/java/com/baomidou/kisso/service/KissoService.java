@@ -52,11 +52,11 @@ public interface KissoService {
 	 * 踢出 指定用户 ID 的登录用户，退出当前系统。
 	 * </p>
 	 * 
-	 * @param uid
-	 * 用户 ID
+	 * @param userId
+	 * 				用户ID
 	 * @return
 	 */
-	boolean kickLogin(String uid);
+	boolean kickLogin(Object userId);
 
 	/**
 	 * 设置登录 Cookie

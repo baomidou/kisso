@@ -206,12 +206,12 @@ public class SSOHelper {
 	 * 获取 token 的缓存主键
 	 * </p>
 	 * 
-	 * @param uid
-	 * 			用户主键ID
+	 * @param userId
+	 * 				用户ID
 	 * @return
 	 */
-	public static String getTokenCacheKey( String uid ) {
-		return SSOConfig.toCacheKey(uid);
+	public static String getTokenCacheKey( Object userId ) {
+		return SSOConfig.toCacheKey(userId);
 	}
 
 	/**
