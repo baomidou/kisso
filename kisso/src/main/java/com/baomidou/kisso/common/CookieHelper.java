@@ -172,8 +172,7 @@ public class CookieHelper {
 			logger.fine("clear cookie " + cookieName);
 			result = true;
 		} catch (Exception e) {
-			logger.severe("clear cookie " + cookieName + " is exception!");
-			e.printStackTrace();
+			logger.severe("clear cookie " + cookieName + " is exception!\n" + e.toString());
 		}
 		return result;
 	}

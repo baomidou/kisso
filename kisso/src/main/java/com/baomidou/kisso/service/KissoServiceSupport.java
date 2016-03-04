@@ -15,7 +15,6 @@
  */
 package com.baomidou.kisso.service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -80,13 +79,11 @@ public class KissoServiceSupport {
 	 * </p>
 	 * 
 	 * @param request
-	 * @param response
 	 * @param encrypt
 	 *            对称加密算法类
 	 * @return Token {@link Token}
 	 */
-	protected Token getToken( HttpServletRequest request, HttpServletResponse response, SSOEncrypt encrypt,
-			SSOCache cache ) {
+	protected Token getToken( HttpServletRequest request, SSOEncrypt encrypt, SSOCache cache ) {
 		if ( encrypt == null ) {
 			throw new KissoException(" Encrypt not for null.");
 		}
@@ -177,7 +174,7 @@ public class KissoServiceSupport {
 	 * @return Token ${Token}
 	 */
 	protected Token getToken( HttpServletRequest request, SSOEncrypt encrypt, String cookieName ) {
-		String jsonToken = this.getJsonToken(request, null, encrypt, cookieName);
+		String jsonToken = this.getJsonToken(request, encrypt, cookieName);
 		if ( jsonToken == null || "".equals(jsonToken) ) {
 			/**
 			 * 未登录请求
@@ -195,15 +192,13 @@ public class KissoServiceSupport {
 	 * </p>
 	 * 
 	 * @param request
-	 * @param response
 	 * @param encrypt
 	 *            对称加密算法类
 	 * @param cookieName
 	 *            Cookie名称
 	 * @return String 当前Token的json格式值
 	 */
-	protected String getJsonToken( HttpServletRequest request, HttpServletResponse response, SSOEncrypt encrypt,
-			String cookieName ) {
+	protected String getJsonToken( HttpServletRequest request, SSOEncrypt encrypt, String cookieName ) {
 		Cookie uid = CookieHelper.findCookieByName(request, cookieName);
 		if ( uid != null ) {
 			String jsonToken = uid.getValue();
@@ -212,16 +207,7 @@ public class KissoServiceSupport {
 				jsonToken = encrypt.decrypt(jsonToken, config.getSecretkey());
 				tokenAttr = jsonToken.split(SSOConfig.CUT_SYMBOL);
 			} catch ( Exception e ) {
-				logger.severe("jsonToken decrypt error." + e.toString());
-				//此处可能是伪造 Cookie 清理，返回 403
-				CookieHelper.clearCookieByName(request, response, config.getCookieName(), config.getCookieDomain(),
-					config.getCookiePath());
-				try {
-					response.sendError(403, "Forbidden");
-				} catch (Exception ex) {
-					//to do
-				}
-				
+				logger.severe("jsonToken decrypt error, may be fake login. IP = " + IpHelper.getIpAddr(request));
 			}
 			/**
 			 * 判断是否认证浏览器 混淆信息
@@ -350,8 +336,7 @@ public class KissoServiceSupport {
 			}
 			return cookie;
 		} catch ( Exception e ) {
-			logger.severe("generateCookie is exception!");
-			e.printStackTrace();
+			logger.severe("generateCookie is exception!" + e.toString());
 			return null;
 		}
 	}
@@ -458,8 +443,7 @@ public class KissoServiceSupport {
 				response.addCookie(ck);
 			}
 		} catch ( Exception e ) {
-			logger.severe("set HTTPOnly cookie createAUID is exception! ");
-			e.printStackTrace();
+			logger.severe("set HTTPOnly cookie createAUID is exception! " + e.toString());
 		}
 	}
 
