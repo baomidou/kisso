@@ -27,6 +27,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.annotation.Action;
@@ -78,11 +79,13 @@ public class SSOShiroInterceptor extends HandlerInterceptorAdapter {
 			}
 
 			/**
-			 * URI权限认证
+			 * URL 权限认证
 			 */
-			String uri = request.getRequestURI();
-			if ( uri == null || currentUser.isPermitted(uri) ) {
-				return true;
+			if ( SSOConfig.getInstance().isPermissionUri() ) {
+				String uri = request.getRequestURI();
+				if ( uri == null || currentUser.isPermitted(uri) ) {
+					return true;
+				}
 			}
 
 			/**
@@ -108,7 +111,7 @@ public class SSOShiroInterceptor extends HandlerInterceptorAdapter {
 			/**
 			 * 无权限 403
 			 */
-			logger.fine(" request 403 url: " + uri);
+			logger.fine(" request 403 url: " + request.getRequestURI());
 			response.sendError(403, "Forbidden");
 			return false;
 		}

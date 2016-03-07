@@ -71,6 +71,11 @@ public class SSOConfig {
 	private SSOStatistic statistic = null;
 	
 	/**
+	 * 权限认证
+	 */
+	private boolean permissionUri = true;
+	
+	/**
 	 * 插件列表
 	 */
 	private static List<SSOPlugin> SSO_PLUGIN_LIST = null;
@@ -461,6 +466,17 @@ public class SSOConfig {
 		this.statistic = statistic;
 	}
 	
+	/**
+	 * 权限是否验证 URI 地址
+	 */
+	public boolean isPermissionUri() {
+		return prop.getBoolean("sso.permission.uri", permissionUri);
+	}
+	
+	public void setPermissionUri( boolean permissionUri ) {
+		this.permissionUri = permissionUri;
+	}
+
 	/**
 	 * 自定义插件列表
 	 */
