@@ -61,6 +61,7 @@ public class SSOConfig {
 	private String loginUrl = "";
 	private String logoutUrl = "";
 	private String paramReturl = "ReturnURL";
+	private String authCookieSecretkey = "Lg8V51188n0709i5l81";
 	private String authCookieName = "pid";
 	private int authCookieMaxage = 180;
 	private Token token = null;
@@ -354,6 +355,17 @@ public class SSOConfig {
 		this.paramReturl = paramReturl;
 	}
 	
+	/**
+	 * 跨域 AuthCookie 密钥
+	 */
+	public String getAuthCookieSecretkey() {
+		return prop.get("sso.authcookie.secretkey", authCookieSecretkey);
+	}
+	
+	public void setAuthCookieSecretkey( String authCookieSecretkey ) {
+		this.authCookieSecretkey = authCookieSecretkey;
+	}
+
 	/**
 	 * 跨域 AuthCookie 名称
 	 */

@@ -133,15 +133,15 @@ public class Token {
 	
 	/**
 	 * <p>
-	 * Token 转为字符串密文
+	 * AuthToken 转为字符串密文
 	 * </p>
 	 * 
-	 * @return Token 密文信息
+	 * @return AuthToken 密文信息 {@link AuthToken}
 	 */
-	public String encryptToken() {
+	public String encryptAuthToken() {
 		try {
 			SSOConfig sc = SSOConfig.getInstance();
-			return sc.getEncrypt().encrypt(jsonToken(), sc.getSecretkey());
+			return sc.getEncrypt().encrypt(jsonToken(), sc.getAuthCookieSecretkey());
 		} catch (Exception e) {
 			logger.severe("replyCiphertext AES encrypt error.");
 			e.printStackTrace();

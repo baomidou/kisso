@@ -195,7 +195,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		 * 签名 Token, 设置跨域临时信任 Cookie
 		 */
 		AuthToken at = new AuthToken(request, privateKey);
-		setAuthCookie(request, response, at);
+		this.setAuthCookie(request, response, at);
 		return at;
 	}
 
@@ -216,7 +216,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	public AuthToken replyCiphertext( HttpServletRequest request, String askData) {
 		String str = null;
 		try {
-			str = config.getEncrypt().decrypt(askData, config.getSecretkey());
+			str = config.getEncrypt().decrypt(askData, config.getAuthCookieSecretkey());
 		} catch ( Exception e ) {
 			logger.severe("replyCiphertext AES decrypt error.\n" + e.toString());
 		}
@@ -260,7 +260,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		if ( token != null ) {
 			String rt = null;
 			try {
-				rt = config.getEncrypt().decrypt(replyTxt, config.getSecretkey());
+				rt = config.getEncrypt().decrypt(replyTxt, config.getAuthCookieSecretkey());
 			} catch ( Exception e ) {
 				logger.severe("kisso AES decrypt error.");
 				e.printStackTrace();
