@@ -282,10 +282,6 @@ public class KissoServiceSupport {
 		if (tk == null) {
 			tk = this.getToken(request, config.getEncrypt(), config.getCookieName());
 		}
-		if (tk == null) {
-			logger.severe("please login to use.");
-			return null;
-		}
 		return tk;
 	}
 	
