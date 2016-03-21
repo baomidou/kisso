@@ -28,6 +28,7 @@ import com.baomidou.kisso.common.IpHelper;
  * @author hubin
  * @Date 2014-5-8
  */
+@SuppressWarnings("serial")
 public class SSOToken extends Token {
 
 	/* 登录类型 */

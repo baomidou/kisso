@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +26,8 @@ import java.util.logging.Logger;
  * @author hubin
  * @Date 2015-12-29
  */
-public class Token {
+@SuppressWarnings("serial")
+public class Token implements Serializable {
 	protected final Logger logger = Logger.getLogger("Token");
 	/* 正常 */
 	public final static int FLAG_NORMAL = 0;

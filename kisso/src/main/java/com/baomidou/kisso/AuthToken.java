@@ -32,6 +32,7 @@ import com.baomidou.kisso.exception.KissoException;
  * @author hubin
  * @Date 2015-11-30
  */
+@SuppressWarnings("serial")
 public class AuthToken extends Token {
 	
 	private static final Logger logger = Logger.getLogger("AuthToken");
