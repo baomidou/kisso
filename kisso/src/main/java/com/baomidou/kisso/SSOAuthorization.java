@@ -13,21 +13,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.common.security;
-
-import java.io.Serializable;
-import java.util.Collection;
+package com.baomidou.kisso;
 
 /**
  * <p>
- * SSO 安全授权接口
+ * SSO 权限授权接口
  * </p>
  * 
  * @author hubin
- * @Date 2016-03-30
+ * @Date 2016-04-03
  */
-public interface SSOAuthorization extends Serializable {
+public interface SSOAuthorization {
 
-	Collection<String> getStringPermissions();
+	boolean isPermitted(Token token, String permission);
 
 }
