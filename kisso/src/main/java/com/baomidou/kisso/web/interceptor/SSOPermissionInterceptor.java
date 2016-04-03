@@ -40,7 +40,7 @@ import com.baomidou.kisso.annotation.Permission;
  */
 public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 
-	private static final Logger logger = Logger.getLogger("SSOSecurityInterceptor");
+	private static final Logger logger = Logger.getLogger("SSOPermissionInterceptor");
 
 	/**
 	 * SSO 权限授权接口
