@@ -25,6 +25,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.baomidou.kisso.SSOAuthorization;
+import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.annotation.Action;
@@ -70,33 +71,65 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 				return true;
 			}
 
-			/**
-			 * 注解权限认证
+			/*
+			 * 权限验证合法
 			 */
-			HandlerMethod handlerMethod = (HandlerMethod) handler;
-			Method method = handlerMethod.getMethod();
-			Permission pm = method.getAnnotation(Permission.class);
-			if ( pm != null ) {
-				if ( pm.action() == Action.Skip ) {
-					/**
-					 * 忽略拦截
-					 */
-					return true;
-				} else if ( !"".equals(pm.value()) && authorization.isPermitted(token, pm.value()) ) {
-					/**
-					 * 权限合法
-					 */
-					return true;
-				}
+			if ( isVerification(request, handler, token) ) {
+				return true;
 			}
 
-			/**
+			/*
 			 * 无权限访问
 			 */
 			return unauthorizedAccess(request, response);
 		}
 
 		return true;
+	}
+
+
+	/**
+	 * <p>
+	 * 判断权限是否合法，支持 1、请求地址 2、注解编码
+	 * </p>
+	 * @param request
+	 * @param handler
+	 * @param token
+	 * @return
+	 */
+	protected boolean isVerification( HttpServletRequest request, Object handler, SSOToken token ) {
+		/*
+		 * URL 权限认证
+		 */
+		if ( SSOConfig.getInstance().isPermissionUri() ) {
+			String uri = request.getRequestURI();
+			if ( uri == null || authorization.isPermitted(token, uri) ) {
+				return true;
+			}
+		}
+		/*
+		 * 注解权限认证
+		 */
+		HandlerMethod handlerMethod = (HandlerMethod) handler;
+		Method method = handlerMethod.getMethod();
+		Permission pm = method.getAnnotation(Permission.class);
+		if ( pm != null ) {
+			if ( pm.action() == Action.Skip ) {
+				/**
+				 * 忽略拦截
+				 */
+				return true;
+			} else if ( !"".equals(pm.value()) && authorization.isPermitted(token, pm.value()) ) {
+				/**
+				 * 权限合法
+				 */
+				return true;
+			}
+		}
+		/*
+		 * 非法访问
+		 */
+		return false;
 	}
 
 

@@ -72,9 +72,9 @@ public class SSOConfig {
 	private SSOStatistic statistic = null;
 	
 	/**
-	 * 权限认证
+	 * 权限认证（默认 false）
 	 */
-	private boolean permissionUri = true;
+	private boolean permissionUri = false;
 	
 	/**
 	 * 插件列表
