@@ -75,6 +75,20 @@ public class HttpUtil {
 	/**
 	 * 
 	 * <p>
+	 * 判断请求是否为 ajax
+	 * </p>
+	 * 
+	 * @param request
+	 * 				当前请求
+	 * @return
+	 */
+	public static boolean isAjax( HttpServletRequest request ) {
+		return "XMLHttpRequest".equals(request.getHeader("X-Requested-With")) ? true : false;
+	}
+
+	/**
+	 * 
+	 * <p>
 	 * 获取当前 URL 包含查询条件
 	 * </p>
 	 * 

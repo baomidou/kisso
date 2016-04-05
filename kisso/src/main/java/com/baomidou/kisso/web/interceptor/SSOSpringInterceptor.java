@@ -29,6 +29,7 @@ import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.Token;
 import com.baomidou.kisso.annotation.Action;
 import com.baomidou.kisso.annotation.Login;
+import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.web.handler.KissoDefaultHandler;
 import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
 
@@ -77,7 +78,7 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
 			 */
 			Token token = SSOHelper.getToken(request);
 			if (token == null) {
-				if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+				if ( HttpUtil.isAjax(request) ) {
 					/*
 					 * Handler 处理 AJAX 请求
 					 */
