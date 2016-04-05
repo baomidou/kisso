@@ -42,10 +42,16 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 
 	private static final Logger logger = Logger.getLogger("SSOPermissionInterceptor");
 
-	/**
-	 * SSO 权限授权接口
+	/*
+	 * 系统权限授权接口
 	 */
 	private SSOAuthorization authorization;
+
+	/*
+	 * 非法请求提示 URL
+	 */
+	private String illegalUrl;
+
 
 	/**
 	 * <p>
@@ -55,11 +61,11 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 	 * 方法拦截 Controller 处理之前进行调用。
 	 * </p>
 	 */
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-		if (handler instanceof HandlerMethod) {
+	public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler )
+		throws Exception {
+		if ( handler instanceof HandlerMethod ) {
 			SSOToken token = SSOHelper.attrToken(request);
-			if (token == null) {
+			if ( token == null ) {
 				return true;
 			}
 
@@ -69,13 +75,13 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			Method method = handlerMethod.getMethod();
 			Permission pm = method.getAnnotation(Permission.class);
-			if (pm != null) {
-				if (pm.action() == Action.Skip) {
+			if ( pm != null ) {
+				if ( pm.action() == Action.Skip ) {
 					/**
 					 * 忽略拦截
 					 */
 					return true;
-				} else if (!"".equals(pm.value()) && authorization.isPermitted(token, pm.value())) {
+				} else if ( !"".equals(pm.value()) && authorization.isPermitted(token, pm.value()) ) {
 					/**
 					 * 权限合法
 					 */
@@ -87,17 +93,34 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 			 * 无权限 403
 			 */
 			logger.fine(" request 403 url: " + request.getRequestURI());
-			response.sendError(403, "Forbidden");
+			if ( illegalUrl == null || "".equals(illegalUrl) ) {
+				response.sendError(403, "Forbidden");
+			} else {
+				response.sendRedirect(illegalUrl);
+			}
 			return false;
 		}
 		return true;
 	}
 
+
 	public SSOAuthorization getAuthorization() {
 		return authorization;
 	}
 
-	public void setAuthorization(SSOAuthorization authorization) {
+
+	public void setAuthorization( SSOAuthorization authorization ) {
 		this.authorization = authorization;
 	}
+
+
+	public String getIllegalUrl() {
+		return illegalUrl;
+	}
+
+
+	public void setIllegalUrl( String illegalUrl ) {
+		this.illegalUrl = illegalUrl;
+	}
+
 }
