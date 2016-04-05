@@ -91,23 +91,40 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 			}
 
 			/**
-			 * 无权限 403
+			 * 无权限访问
 			 */
-			logger.fine(" request 403 url: " + request.getRequestURI());
-			if ( HttpUtil.isAjax(request) ) {
-				/* AJAX 请求 403 未授权访问提示 */
-				HttpUtil.ajaxStatus(response, 403, "ajax Unauthorized access.");
-			} else {
-				/* 正常 HTTP 请求 */
-				if ( illegalUrl == null || "".equals(illegalUrl) ) {
-					response.sendError(403, "Forbidden");
-				} else {
-					response.sendRedirect(illegalUrl);
-				}
-			}
-			return false;
+			return unauthorizedAccess(request, response);
 		}
+
 		return true;
+	}
+
+
+	/**
+	 * 
+	 * <p>
+	 * 无权限访问处理，默认返回 403  ，illegalUrl 非空重定向至该地址
+	 * </p>
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	protected boolean unauthorizedAccess( HttpServletRequest request, HttpServletResponse response ) throws Exception {
+		logger.fine(" request 403 url: " + request.getRequestURI());
+		if ( HttpUtil.isAjax(request) ) {
+			/* AJAX 请求 403 未授权访问提示 */
+			HttpUtil.ajaxStatus(response, 403, "ajax Unauthorized access.");
+		} else {
+			/* 正常 HTTP 请求 */
+			if ( illegalUrl == null || "".equals(illegalUrl) ) {
+				response.sendError(403, "Forbidden");
+			} else {
+				response.sendRedirect(illegalUrl);
+			}
+		}
+		return false;
 	}
 
 

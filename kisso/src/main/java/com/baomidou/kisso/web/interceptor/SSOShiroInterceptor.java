@@ -25,7 +25,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
@@ -42,7 +41,7 @@ import com.baomidou.kisso.common.shiro.SSOAuthToken;
  * @author hubin
  * @Date 2016-03-07
  */
-public class SSOShiroInterceptor extends HandlerInterceptorAdapter {
+public class SSOShiroInterceptor extends SSOPermissionInterceptor {
 
 	private static final Logger logger = Logger.getLogger("SSOShiroInterceptor");
 
@@ -109,12 +108,11 @@ public class SSOShiroInterceptor extends HandlerInterceptorAdapter {
 			}
 
 			/**
-			 * 无权限 403
+			 * 无权限访问
 			 */
-			logger.fine(" request 403 url: " + request.getRequestURI());
-			response.sendError(403, "Forbidden");
-			return false;
+			return unauthorizedAccess(request, response);
 		}
+
 		return true;
 	}
 
