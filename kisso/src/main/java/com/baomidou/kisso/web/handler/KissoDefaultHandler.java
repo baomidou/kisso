@@ -15,14 +15,10 @@
  */
 package com.baomidou.kisso.web.handler;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.common.util.HttpUtil;
 
 /**
  * <p>
@@ -33,7 +29,6 @@ import com.baomidou.kisso.SSOConfig;
  * @Date 2015-12-19
  */
 public class KissoDefaultHandler implements SSOHandlerInterceptor {
-	private static final Logger logger = Logger.getLogger("KissoDefaultHandler");
 	private static KissoDefaultHandler handler;
 
 	/**
@@ -53,15 +48,7 @@ public class KissoDefaultHandler implements SSOHandlerInterceptor {
 	 * </p>
 	 */
 	public boolean preTokenIsNullAjax(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			response.setContentType("text/html;charset=" + SSOConfig.getSSOEncoding());
-			response.setStatus(401);/* 401 未登录授权访问提示 */
-			PrintWriter out = response.getWriter();
-			out.print("prompt login exception, please login again.");
-			out.flush();
-		} catch (IOException e) {
-			logger.severe("preTokenIsNullAjax error.\n" + e.toString());
-		}
+		HttpUtil.ajaxStatus(response, 401, "prompt login exception, please login again.");
 		return false;
 	}
 

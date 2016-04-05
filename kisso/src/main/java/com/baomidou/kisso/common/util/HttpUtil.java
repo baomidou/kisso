@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -75,7 +76,7 @@ public class HttpUtil {
 	/**
 	 * 
 	 * <p>
-	 * 判断请求是否为 ajax
+	 * 判断请求是否为 AJAX
 	 * </p>
 	 * 
 	 * @param request
@@ -84,6 +85,29 @@ public class HttpUtil {
 	 */
 	public static boolean isAjax( HttpServletRequest request ) {
 		return "XMLHttpRequest".equals(request.getHeader("X-Requested-With")) ? true : false;
+	}
+	
+	/**
+	 * 
+	 * <p>
+	 * AJAX 设置 response 返回状态
+	 * </p>
+	 * 
+	 * @param response
+	 * @param status
+	 * 				HTTP 状态码
+	 * @param tip
+	 */
+	public static void ajaxStatus( HttpServletResponse response, int status, String tip ) {
+		try {
+			response.setContentType("text/html;charset=" + SSOConfig.getSSOEncoding());
+			response.setStatus(status);
+			PrintWriter out = response.getWriter();
+			out.print(tip);
+			out.flush();
+		} catch ( IOException e ) {
+			logger.severe(e.toString());
+		}
 	}
 
 	/**

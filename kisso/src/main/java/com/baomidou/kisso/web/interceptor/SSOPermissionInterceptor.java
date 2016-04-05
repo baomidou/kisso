@@ -15,8 +15,6 @@
  */
 package com.baomidou.kisso.web.interceptor;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
@@ -27,7 +25,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.baomidou.kisso.SSOAuthorization;
-import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.annotation.Action;
@@ -98,16 +95,8 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 			 */
 			logger.fine(" request 403 url: " + request.getRequestURI());
 			if ( HttpUtil.isAjax(request) ) {
-				/* AJAX 请求 */
-				try {
-					response.setContentType("text/html;charset=" + SSOConfig.getSSOEncoding());
-					response.setStatus(403);/* 403 未授权访问提示 */
-					PrintWriter out = response.getWriter();
-					out.print("ajax Unauthorized access.");
-					out.flush();
-				} catch (IOException e) {
-					logger.severe("ajax Unauthorized access error.\n" + e.toString());
-				}
+				/* AJAX 请求 403 未授权访问提示 */
+				HttpUtil.ajaxStatus(response, 403, "ajax Unauthorized access.");
 			} else {
 				/* 正常 HTTP 请求 */
 				if ( illegalUrl == null || "".equals(illegalUrl) ) {
