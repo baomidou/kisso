@@ -129,7 +129,7 @@ public class KissoServiceSupport {
 				return null;
 			}
 			
-			Token cacheToken = cache.get(cookieToken.toCacheKey());
+			Token cacheToken = cache.get(cookieToken.toCacheKey(), config.getCacheExpires());
 			if ( cacheToken == null ) {
 				/* 开启缓存且失效，返回 null 清除 Cookie 退出 */
 				logger.fine("cacheToken token is null.");

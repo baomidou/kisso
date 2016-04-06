@@ -35,9 +35,11 @@ public interface SSOCache {
 	 * 
 	 * @param key
 	 *            关键词
+	 * @param expires
+	 *            过期时间（延时心跳时间）
 	 * @return Token SSO票据
 	 */
-	Token get(String key);
+	Token get(String key, int expires);
 
 	/**
 	 * 设置SSO票据
