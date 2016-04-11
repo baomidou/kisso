@@ -149,6 +149,7 @@ public class KissoServiceSupport {
 						return cacheToken;
 					} else {
 						logger.severe("Login time is not consistent.");
+						request.setAttribute(SSOConfig.SSO_KICK_FLAG, SSOConfig.SSO_KICK_USER);
 						return null;
 					}
 				}
@@ -457,7 +458,7 @@ public class KissoServiceSupport {
 		/**
 		 * Token 如果开启了缓存，删除缓存记录
 		 */
-		if ( cache != null ) {
+		if ( cache != null && !SSOConfig.SSO_KICK_USER.equals(request.getAttribute(SSOConfig.SSO_KICK_FLAG)) ) {
 			Token tk = getTokenFromCookie(request);
 			if ( tk != null ) {
 				boolean rlt = cache.delete(tk.toCacheKey());

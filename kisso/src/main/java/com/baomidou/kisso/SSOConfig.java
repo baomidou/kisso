@@ -90,7 +90,13 @@ public class SSOConfig {
 	 * 使用获取方式： SSOHelper.attrToken(request)
 	 * </p>
 	 */
-	public static final String SSO_TOKEN_ATTR = "ssotoken_attr";
+	public static final String SSO_TOKEN_ATTR = "SSOTokenAttr";
+	
+	/**
+	 * 踢出用户逻辑标记
+	 */
+	public static final String SSO_KICK_FLAG = "SSOKickFlag";
+	public static final String SSO_KICK_USER = "SSOKickUser";
 	
 	/**
 	 * SSO 动态设置 Cookie 参数
