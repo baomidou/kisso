@@ -148,7 +148,7 @@ public class KissoServiceSupport {
 					if(cookieToken.getTime() == cacheToken.getTime()){
 						return cacheToken;
 					} else {
-						logger.severe("Login time is not consistent.");
+						logger.severe("Login time is not consistent or kicked out.");
 						request.setAttribute(SSOConfig.SSO_KICK_FLAG, SSOConfig.SSO_KICK_USER);
 						return null;
 					}
