@@ -16,7 +16,6 @@
 package com.baomidou.kisso;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 /**
  * <p>
@@ -28,7 +27,6 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class Token implements Serializable {
-	protected final Logger logger = Logger.getLogger("Token");
 	/* 正常 */
 	public final static int FLAG_NORMAL = 0;
 
@@ -145,7 +143,6 @@ public class Token implements Serializable {
 			SSOConfig sc = SSOConfig.getInstance();
 			return sc.getEncrypt().encrypt(jsonToken(), sc.getAuthCookieSecretkey());
 		} catch (Exception e) {
-			logger.severe("replyCiphertext AES encrypt error.");
 			e.printStackTrace();
 		}
 		return null;
