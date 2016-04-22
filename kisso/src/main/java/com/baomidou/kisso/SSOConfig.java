@@ -422,7 +422,9 @@ public class SSOConfig {
 	}
 	
 	public void setParser( SSOParser parser ) {
-		this.parser = parser;
+		if ( parser != null ) {
+			SSOReflectHelper.setConfigParser(parser);
+		}
 	}
 	
 	/**
@@ -436,7 +438,9 @@ public class SSOConfig {
 	}
 	
 	public void setEncrypt( SSOEncrypt encrypt ) {
-		this.encrypt = encrypt;
+		if ( encrypt != null ) {
+			SSOReflectHelper.setConfigEncrypt(encrypt);
+		}
 	}
 	
 	/**
@@ -450,7 +454,9 @@ public class SSOConfig {
 	}
 	
 	public void setCache( SSOCache cache ) {
-		this.cache = cache;
+		if ( cache != null ) {
+			SSOReflectHelper.setConfigCache(cache);
+		}
 	}
 	
 	/**
@@ -481,7 +487,9 @@ public class SSOConfig {
 	}
 	
 	public void setStatistic( SSOStatistic statistic ) {
-		this.statistic = statistic;
+		if ( statistic != null ) {
+			SSOReflectHelper.setConfigStatistic(statistic);
+		}
 	}
 	
 	/**

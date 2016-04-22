@@ -34,150 +34,179 @@ import com.baomidou.kisso.exception.KissoException;
  * @Date 2015-12-05
  */
 public class SSOReflectHelper {
+
 	private static SSOEncrypt encrypt = null;
+
 	private static SSOCache cache = null;
+
 	private static SSOStatistic statistic = null;
+
 	private static SSOParser parser = null;
-	
+
+
 	/**
 	 * 反射获取自定义Token
 	 * 
 	 * @return {@link Token}
 	 */
-	public static Token getConfigToken(String tokenClass) {
+	public static Token getConfigToken( String tokenClass ) {
 		/**
 		 * 判断是否自定义 Token 默认 SSOToken
 		 */
 		Token token = null;
-		if ("".equals(tokenClass)) {
+		if ( "".equals(tokenClass) ) {
 			token = new SSOToken();
 		} else {
 			try {
 				Class<?> tc = Class.forName(tokenClass);
-				if (tc.newInstance() instanceof Token) {
+				if ( tc.newInstance() instanceof Token ) {
 					token = (Token) tc.newInstance();
 				}
-			} catch (Exception e) {
+			} catch ( Exception e ) {
 				throw new KissoException(e);
 			}
 		}
-		
+
 		return token;
 	}
-	
+
+
 	/**
 	 * 反射获取自定义SSOParser
 	 * 
 	 * @return {@link Token}
 	 */
-	public static SSOParser getConfigParser(String parserClass) {
-		
-		if (parser != null) {
+	public static SSOParser getConfigParser( String parserClass ) {
+
+		if ( parser != null ) {
 			return parser;
 		}
-		
+
 		/**
 		 * 获取自定义 SSOParser
 		 */
-		if ("".equals(parserClass)) {
+		if ( "".equals(parserClass) ) {
 			parser = new FastJsonParser();
 		} else {
 			try {
 				Class<?> tc = Class.forName(parserClass);
-				if (tc.newInstance() instanceof SSOParser) {
+				if ( tc.newInstance() instanceof SSOParser ) {
 					parser = (SSOParser) tc.newInstance();
 				}
-			} catch (Exception e) {
+			} catch ( Exception e ) {
 				throw new KissoException(" kisso Config 【 sso.parser.class 】 not find. or not instanceof SSOParser", e);
 			}
 		}
-		
+
 		return parser;
 	}
+
+
+	public static void setConfigParser( SSOParser configParser ) {
+		parser = configParser;
+	}
+
 
 	/**
 	 * 反射获取自定义Encrypt
 	 * 
 	 * @return {@link Encrypt}
 	 */
-	public static SSOEncrypt getConfigEncrypt(String encryptClass) {
+	public static SSOEncrypt getConfigEncrypt( String encryptClass ) {
 
-		if (encrypt != null) {
+		if ( encrypt != null ) {
 			return encrypt;
 		}
 
 		/**
 		 * 判断是否自定义 Encrypt 默认 AES
 		 */
-		if ("".equals(encryptClass)) {
+		if ( "".equals(encryptClass) ) {
 			encrypt = new AES();
 		} else {
 			try {
 				Class<?> tc = Class.forName(encryptClass);
-				if (tc.newInstance() instanceof SSOEncrypt) {
+				if ( tc.newInstance() instanceof SSOEncrypt ) {
 					encrypt = (SSOEncrypt) tc.newInstance();
 				}
-			} catch (Exception e) {
+			} catch ( Exception e ) {
 				throw new KissoException(e);
 			}
 		}
-		
+
 		return encrypt;
 	}
+
+
+	public static void setConfigEncrypt( SSOEncrypt configEncrypt ) {
+		encrypt = configEncrypt;
+	}
+
 
 	/**
 	 * 反射获取自定义SSOCache
 	 * 
 	 * @return {@link SSOCache}
 	 */
-	public static SSOCache getConfigCache(String cacheClass) {
+	public static SSOCache getConfigCache( String cacheClass ) {
 
-		if (cache != null) {
+		if ( cache != null ) {
 			return cache;
 		}
 
 		/**
 		 * 反射获得缓存类
 		 */
-		if (!"".equals(cacheClass)) {
+		if ( !"".equals(cacheClass) ) {
 			try {
 				Class<?> tc = Class.forName(cacheClass);
-				if (tc.newInstance() instanceof SSOCache) {
+				if ( tc.newInstance() instanceof SSOCache ) {
 					cache = (SSOCache) tc.newInstance();
 				}
-			} catch (Exception e) {
+			} catch ( Exception e ) {
 				throw new KissoException(e);
 			}
 		}
 		return cache;
 	}
-	
+
+
+	public static void setConfigCache( SSOCache configcache ) {
+		cache = configcache;
+	}
+
+
 	/**
 	 * 反射获取自定义SSOStatistic
 	 * 
 	 * @return {@link SSOStatistic}
 	 */
-	public static SSOStatistic getConfigStatistic(String encryptClass) {
-		
-		if (statistic != null) {
+	public static SSOStatistic getConfigStatistic( String encryptClass ) {
+
+		if ( statistic != null ) {
 			return statistic;
 		}
-		
+
 		/**
 		 * 反射获得统计类
 		 */
-		if (!"".equals(encryptClass)) {
+		if ( !"".equals(encryptClass) ) {
 			try {
 				Class<?> tc = Class.forName(encryptClass);
-				if (tc.newInstance() instanceof SSOStatistic) {
+				if ( tc.newInstance() instanceof SSOStatistic ) {
 					statistic = (SSOStatistic) tc.newInstance();
 				}
-			} catch (Exception e) {
+			} catch ( Exception e ) {
 				throw new KissoException(e);
 			}
 		}
-		
+
 		return statistic;
+	}
+
+
+	public static void setConfigStatistic( SSOStatistic configStatistic ) {
+		statistic = configStatistic;
 	}
 
 }
