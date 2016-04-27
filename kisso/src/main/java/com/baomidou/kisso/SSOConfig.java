@@ -65,11 +65,7 @@ public class SSOConfig {
 	private String authCookieName = "pid";
 	private int authCookieMaxage = 180;
 	private Token token = null;
-	private SSOParser parser = null;
-	private SSOEncrypt encrypt = null;
-	private SSOCache cache = null;
 	private int cacheExpires = -1;
-	private SSOStatistic statistic = null;
 	
 	/**
 	 * 权限认证（默认 false）
@@ -415,9 +411,6 @@ public class SSOConfig {
 	 * 自定义 SSOParser Class
 	 */
 	public SSOParser getParser() {
-		if ( parser != null ) {
-			return parser;
-		}
 		return SSOReflectHelper.getConfigParser(prop.get("sso.parser.class", ""));
 	}
 	
@@ -431,9 +424,6 @@ public class SSOConfig {
 	 * 自定义 SSOEncrypt Class
 	 */
 	public SSOEncrypt getEncrypt() {
-		if ( encrypt != null ) {
-			return encrypt;
-		}
 		return SSOReflectHelper.getConfigEncrypt(prop.get("sso.encrypt.class", ""));
 	}
 	
@@ -447,9 +437,6 @@ public class SSOConfig {
 	 * 自定义 SSOCache Class
 	 */
 	public SSOCache getCache() {
-		if ( cache != null ) {
-			return cache;
-		}
 		return SSOReflectHelper.getConfigCache(prop.get("sso.cache.class", ""));
 	}
 	
@@ -480,9 +467,6 @@ public class SSOConfig {
 	 * 自定义 SSOStatistic Class
 	 */
 	public SSOStatistic getStatistic() {
-		if ( statistic != null ) {
-			return statistic;
-		}
 		return SSOReflectHelper.getConfigStatistic(prop.get("sso.statistic.class", ""));
 	}
 	

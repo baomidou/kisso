@@ -28,27 +28,27 @@ import java.util.logging.Logger;
  * @author hubin
  * @Date 2014-5-12
  */
-public class PropertiesUtil {
+public class PropertiesUtil extends Properties {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("PropertiesUtil");
 
-	private final Properties properties;
 
-	public PropertiesUtil(Properties properties) {
-		this.properties = properties;
-	}
-
-	public PropertiesUtil(Properties mergeProperties, String runMode) {
-		this.properties = extractRunMode(mergeProperties, runMode);
-	}
-	
-	public PropertiesUtil(Properties mergeProperties, String runMode, String currentMode) {
-		this.properties = extractRunMode(mergeProperties, runMode, currentMode);
+	public PropertiesUtil( Properties properties ) {
+		super(properties);
 	}
 
-	public String get(String key) {
-		return properties.getProperty(key);
+
+	public PropertiesUtil( Properties mergeProperties, String runMode ) {
+		super(extractRunMode(mergeProperties, runMode));
 	}
+
+
+	public PropertiesUtil( Properties mergeProperties, String runMode, String currentMode ) {
+		super(extractRunMode(mergeProperties, runMode, currentMode));
+	}
+
 
 	/**
 	 * properties 提取当前模式配置 
@@ -60,9 +60,10 @@ public class PropertiesUtil {
 	 * eclipse 开发模式配置，启动参数 Arguments 属性 VM
 	 * arguments 设置 -Dsso.run.mode=dev_mode
 	 */
-	public static Properties extractRunMode(Properties prop, String runMode) {
+	public static Properties extractRunMode( Properties prop, String runMode ) {
 		return extractRunMode(prop, runMode, "online_mode");
 	}
+
 
 	/**
 	 * <p>
@@ -77,8 +78,8 @@ public class PropertiesUtil {
 	 *            默认模式
 	 * @return
 	 */
-	public static Properties extractRunMode(Properties prop, String runMode, String defaultMode) {
-		if (prop == null || runMode == null || defaultMode == null) {
+	public static Properties extractRunMode( Properties prop, String runMode, String defaultMode ) {
+		if ( prop == null || runMode == null || defaultMode == null ) {
 			return null;
 		}
 
@@ -87,32 +88,32 @@ public class PropertiesUtil {
 		 */
 		Properties properties = new Properties();
 		String mode = System.getProperty(runMode);
-		if (mode == null) {
+		if ( mode == null ) {
 			String str = prop.getProperty(runMode);
 			mode = (str != null) ? str : defaultMode;
 		}
 		logger.info("sso.run.mode=" + mode);
 		properties.put(runMode, mode);
 		Set<Entry<Object, Object>> es = prop.entrySet();
-		for (Entry<Object, Object> entry : es) {
+		for ( Entry<Object, Object> entry : es ) {
 			String key = (String) entry.getKey();
 			int idx = key.lastIndexOf("_mode");
 			String realKey = key;
-			if (idx > 0) {
-				if (key.contains(mode)) {
+			if ( idx > 0 ) {
+				if ( key.contains(mode) ) {
 					realKey = key.substring(0, key.lastIndexOf("_" + mode));
 				} else {
 					realKey = null;
 				}
 			}
-			if (realKey != null && !properties.containsKey(realKey)) {
+			if ( realKey != null && !properties.containsKey(realKey) ) {
 				Object value = null;
-				if (idx > 0) {
+				if ( idx > 0 ) {
 					value = prop.get(realKey + "_" + mode);
 				} else {
 					value = prop.get(realKey);
 				}
-				if (value != null) {
+				if ( value != null ) {
 					properties.put(realKey, value);
 				} else {
 					throw new RuntimeException("impossible empty property for " + realKey);
@@ -122,42 +123,50 @@ public class PropertiesUtil {
 		return properties;
 	}
 
-	public String get(String key, String defaultVal) {
-		String val = get(key);
+
+	public String get( String key, String defaultVal ) {
+		String val = this.getProperty(key);
 		return val == null ? defaultVal : val;
 	}
 
-	public String findValue(String... keys) {
-		for (String key : keys) {
-			String value = get(key);
-			if (value != null) {
+
+	public String findValue( String... keys ) {
+		for ( String key : keys ) {
+			String value = this.getProperty(key);
+			if ( value != null ) {
 				return value;
 			}
 		}
 		return null;
 	}
 
-	public boolean getBoolean(String key, boolean defaultVal) {
-		String val = get(key);
+
+	public boolean getBoolean( String key, boolean defaultVal ) {
+		String val = this.getProperty(key);
 		return val == null ? defaultVal : Boolean.parseBoolean(val);
 	}
 
-	public long getLong(String key, long defaultVal) {
-		String val = get(key);
+
+	public long getLong( String key, long defaultVal ) {
+		String val = this.getProperty(key);
 		return val == null ? defaultVal : Long.parseLong(val);
 	}
 
-	public int getInt(String key, int defaultVal) {
+
+	public int getInt( String key, int defaultVal ) {
 		return (int) getLong(key, defaultVal);
 	}
 
-	public double getDouble(String key, double defaultVal) {
-		String val = get(key);
+
+	public double getDouble( String key, double defaultVal ) {
+		String val = this.getProperty(key);
 		return val == null ? defaultVal : Double.parseDouble(val);
 	}
 
-	public <T extends Enum<T>> T getEnum(String key, Class<T> type, T defaultValue) {
-		String val = get(key);
+
+	public <T extends Enum<T>> T getEnum( String key, Class<T> type, T defaultValue ) {
+		String val = this.getProperty(key);
 		return val == null ? defaultValue : Enum.valueOf(type, val);
 	}
+
 }
