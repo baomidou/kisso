@@ -44,8 +44,8 @@ public class WebKissoConfigurer extends SSOConfig {
 	public static final String CONFIG_LOCATION_PARAM = "kissoConfigLocation";
 	private String ssoPropPath = "sso.properties";
 
-	protected WebKissoConfigurer() {
-		/* 保护 */
+	public WebKissoConfigurer() {
+		/* 支持无参构造函数 */
 	}
 	
 	public WebKissoConfigurer(String ssoPropPath) {
