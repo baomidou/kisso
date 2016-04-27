@@ -117,7 +117,7 @@ public class SSOConfig {
 	private static SSOConfig SSO_CONFIG = null;
 	
 	public SSOConfig() {
-		/* 支持设置初始化 */
+		/* 支持 setInstance 设置初始化 */
 	}
 	
 	/**
@@ -140,12 +140,10 @@ public class SSOConfig {
 	}
 	
 	/**
-	 * 设置初始化
+	 * 设置初始化（可动态修改配置内容）
 	 */
 	public synchronized static void setInstance(SSOConfig ssoConfig) {
-		if ( SSO_CONFIG == null ) {
-			SSO_CONFIG = ssoConfig;
-		}
+		SSO_CONFIG = ssoConfig;
 	}
 
 	/**
