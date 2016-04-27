@@ -210,6 +210,9 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public String getRole() {
+		if ( prop == null ) {
+			return role;
+		}
 		return prop.get("sso.role", role);
 	}
 
@@ -221,6 +224,9 @@ public class SSOConfig {
 	 * 编码格式默认 UTF-8
 	 */
 	public String getEncoding() {
+		if ( prop == null ) {
+			return encoding;
+		}
 		return prop.get("sso.encoding", encoding);
 	}
 	
@@ -232,6 +238,9 @@ public class SSOConfig {
 	 * 密钥
 	 */
 	public String getSecretkey() {
+		if ( prop == null ) {
+			return secretkey;
+		}
 		return prop.get("sso.secretkey", secretkey);
 	}
 	
@@ -243,6 +252,9 @@ public class SSOConfig {
 	 * Cookie 名称
 	 */
 	public String getCookieName() {
+		if ( prop == null ) {
+			return cookieName;
+		}
 		return prop.get("sso.cookie.name", cookieName);
 	}
 	
@@ -254,6 +266,9 @@ public class SSOConfig {
 	 * Cookie 所在域
 	 */
 	public String getCookieDomain() {
+		if ( prop == null ) {
+			return cookieDomain;
+		}
 		return prop.get("sso.cookie.domain", cookieDomain);
 	}
 	
@@ -265,6 +280,9 @@ public class SSOConfig {
 	 * Cookie 域路径
 	 */
 	public String getCookiePath() {
+		if ( prop == null ) {
+			return cookiePath;
+		}
 		return prop.get("sso.cookie.path", cookiePath);
 	}
 	
@@ -276,6 +294,9 @@ public class SSOConfig {
 	 * Cookie 只允许https协议传输
 	 */
 	public boolean getCookieSecure() {
+		if ( prop == null ) {
+			return cookieSecure;
+		}
 		return prop.getBoolean("sso.cookie.secure", cookieSecure);
 	}
 	
@@ -287,6 +308,9 @@ public class SSOConfig {
 	 * Cookie 只读, 不允许 Js访问
 	 */
 	public boolean getCookieHttponly() {
+		if ( prop == null ) {
+			return cookieHttponly;
+		}
 		return prop.getBoolean("sso.cookie.httponly", cookieHttponly);
 	}
 	
@@ -301,6 +325,9 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getCookieMaxage() {
+		if ( prop == null ) {
+			return cookieMaxage;
+		}
 		return prop.getInt("sso.cookie.maxage", cookieMaxage);
 	}
 	
@@ -312,6 +339,9 @@ public class SSOConfig {
 	 * Cookie 开启浏览器版本校验
 	 */
 	public boolean getCookieBrowser() {
+		if ( prop == null ) {
+			return cookieBrowser;
+		}
 		return prop.getBoolean("sso.cookie.browser", cookieBrowser);
 	}
 	
@@ -323,6 +353,9 @@ public class SSOConfig {
 	 * Cookie 开启IP校验
 	 */
 	public boolean getCookieCheckip() {
+		if ( prop == null ) {
+			return cookieCheckip;
+		}
 		return prop.getBoolean("sso.cookie.checkip", cookieCheckip);
 	}
 	
@@ -334,6 +367,9 @@ public class SSOConfig {
 	 * SSO 登录地址
 	 */
 	public String getLoginUrl() {
+		if ( prop == null ) {
+			return loginUrl;
+		}
 		return prop.get("sso.login.url", loginUrl);
 	}
 	
@@ -345,6 +381,9 @@ public class SSOConfig {
 	 * SSO 退出地址
 	 */
 	public String getLogoutUrl() {
+		if ( prop == null ) {
+			return logoutUrl;
+		}
 		return prop.get("sso.logout.url", logoutUrl);
 	}
 	
@@ -359,6 +398,9 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public String getParamReturl() {
+		if ( prop == null ) {
+			return paramReturl;
+		}
 		return prop.get("sso.param.returl", paramReturl);
 	}
 	
@@ -370,6 +412,9 @@ public class SSOConfig {
 	 * 跨域 AuthCookie 密钥
 	 */
 	public String getAuthCookieSecretkey() {
+		if ( prop == null ) {
+			return authCookieSecretkey;
+		}
 		return prop.get("sso.authcookie.secretkey", authCookieSecretkey);
 	}
 	
@@ -381,6 +426,9 @@ public class SSOConfig {
 	 * 跨域 AuthCookie 名称
 	 */
 	public String getAuthCookieName() {
+		if ( prop == null ) {
+			return authCookieName;
+		}
 		return prop.get("sso.authcookie.name", authCookieName);
 	}
 	
@@ -395,6 +443,9 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getAuthCookieMaxage() {
+		if ( prop == null ) {
+			return authCookieMaxage;
+		}
 		return prop.getInt("sso.authcookie.maxage", authCookieMaxage);
 	}
 	
@@ -405,6 +456,7 @@ public class SSOConfig {
 	/**
 	 * 自定义 Token Class
 	 */
+	//TODO
 	public Token getToken() {
 		if ( token != null ) {
 			return token;
@@ -465,6 +517,9 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getCacheExpires() {
+		if ( prop == null ) {
+			return cacheExpires;
+		}
 		return prop.getInt("sso.cache.expires", cacheExpires);
 	}
 	
@@ -489,6 +544,9 @@ public class SSOConfig {
 	 * 权限是否验证 URI 地址
 	 */
 	public boolean isPermissionUri() {
+		if ( prop == null ) {
+			return permissionUri;
+		}
 		return prop.getBoolean("sso.permission.uri", permissionUri);
 	}
 	
