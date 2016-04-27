@@ -114,17 +114,17 @@ public class SSOConfig {
 	 */
 	private static final String SSO_RUN_MODE = "sso.run.mode";
 	private static PropertiesUtil prop = null;
-	private static SSOConfig ssoConfig = null;
+	private static SSOConfig SSO_CONFIG = null;
 	
-	protected SSOConfig() {
-		/* 保护 */
+	public SSOConfig() {
+		/* 支持设置初始化 */
 	}
 	
 	/**
 	 * new 当前对象
 	 */
 	public static SSOConfig getInstance() {
-		if ( ssoConfig == null ) {
+		if ( SSO_CONFIG == null ) {
 			if ( prop == null ) {
 				/*
 				 * 如果不是配置文件启动
@@ -134,15 +134,24 @@ public class SSOConfig {
 				 */
 				prop = new PropertiesUtil(new Properties());
 			}
-			ssoConfig = new SSOConfig();
+			SSO_CONFIG = new SSOConfig();
 		}
-		return ssoConfig;
+		return SSO_CONFIG;
+	}
+	
+	/**
+	 * 设置初始化
+	 */
+	public synchronized static void setInstance(SSOConfig ssoConfig) {
+		if ( SSO_CONFIG == null ) {
+			SSO_CONFIG = ssoConfig;
+		}
 	}
 
 	/**
 	 * SSO 资源文件初始化
 	 */
-	public void initProperties(Properties props) {
+	public synchronized void initProperties(Properties props) {
 		if (props != null) {
 			prop = new PropertiesUtil(props, SSO_RUN_MODE, this.getRunMode());
 			logger.config("loading kisso config.");
