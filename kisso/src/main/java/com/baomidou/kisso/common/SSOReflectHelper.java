@@ -54,7 +54,7 @@ public class SSOReflectHelper {
 		 * 判断是否自定义 Token 默认 SSOToken
 		 */
 		Token token = null;
-		if ( "".equals(tokenClass) ) {
+		if ( tokenClass == null || "".equals(tokenClass) ) {
 			token = new SSOToken();
 		} else {
 			try {
@@ -85,7 +85,7 @@ public class SSOReflectHelper {
 		/**
 		 * 获取自定义 SSOParser
 		 */
-		if ( "".equals(parserClass) ) {
+		if ( parserClass == null || "".equals(parserClass) ) {
 			parser = new FastJsonParser();
 		} else {
 			try {
@@ -121,7 +121,7 @@ public class SSOReflectHelper {
 		/**
 		 * 判断是否自定义 Encrypt 默认 AES
 		 */
-		if ( "".equals(encryptClass) ) {
+		if ( encryptClass == null || "".equals(encryptClass) ) {
 			encrypt = new AES();
 		} else {
 			try {
@@ -157,7 +157,7 @@ public class SSOReflectHelper {
 		/**
 		 * 反射获得缓存类
 		 */
-		if ( !"".equals(cacheClass) ) {
+		if ( cacheClass != null && !"".equals(cacheClass) ) {
 			try {
 				Class<?> tc = Class.forName(cacheClass);
 				if ( tc.newInstance() instanceof SSOCache ) {
@@ -190,7 +190,7 @@ public class SSOReflectHelper {
 		/**
 		 * 反射获得统计类
 		 */
-		if ( !"".equals(encryptClass) ) {
+		if ( encryptClass != null && !"".equals(encryptClass) ) {
 			try {
 				Class<?> tc = Class.forName(encryptClass);
 				if ( tc.newInstance() instanceof SSOStatistic ) {

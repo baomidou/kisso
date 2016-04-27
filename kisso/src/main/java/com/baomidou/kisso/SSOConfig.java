@@ -64,7 +64,7 @@ public class SSOConfig {
 	private String authCookieSecretkey = "Lg8V51188n0709i5l81";
 	private String authCookieName = "pid";
 	private int authCookieMaxage = 180;
-	private Token token = null;
+	private String tokenClass = null;
 	private int cacheExpires = -1;
 	
 	/**
@@ -456,22 +456,24 @@ public class SSOConfig {
 	/**
 	 * 自定义 Token Class
 	 */
-	//TODO
 	public Token getToken() {
-		if ( token != null ) {
-			return token;
+		if ( prop == null ) {
+			return SSOReflectHelper.getConfigToken(tokenClass);
 		}
 		return SSOReflectHelper.getConfigToken(prop.get("sso.token.class", ""));
 	}
 	
-	public void setToken( Token token ) {
-		this.token = token;
+	public void setTokenClass( String tokenClass ) {
+		this.tokenClass = tokenClass;
 	}
 	
 	/**
 	 * 自定义 SSOParser Class
 	 */
 	public SSOParser getParser() {
+		if ( prop == null ) {
+			return SSOReflectHelper.getConfigParser(null);
+		}
 		return SSOReflectHelper.getConfigParser(prop.get("sso.parser.class", ""));
 	}
 	
@@ -485,6 +487,9 @@ public class SSOConfig {
 	 * 自定义 SSOEncrypt Class
 	 */
 	public SSOEncrypt getEncrypt() {
+		if ( prop == null ) {
+			return SSOReflectHelper.getConfigEncrypt(null);
+		}
 		return SSOReflectHelper.getConfigEncrypt(prop.get("sso.encrypt.class", ""));
 	}
 	
@@ -498,6 +503,9 @@ public class SSOConfig {
 	 * 自定义 SSOCache Class
 	 */
 	public SSOCache getCache() {
+		if ( prop == null ) {
+			return SSOReflectHelper.getConfigCache(null);
+		}
 		return SSOReflectHelper.getConfigCache(prop.get("sso.cache.class", ""));
 	}
 	
@@ -531,6 +539,9 @@ public class SSOConfig {
 	 * 自定义 SSOStatistic Class
 	 */
 	public SSOStatistic getStatistic() {
+		if ( prop == null ) {
+			return SSOReflectHelper.getConfigStatistic(null);
+		}
 		return SSOReflectHelper.getConfigStatistic(prop.get("sso.statistic.class", ""));
 	}
 	
