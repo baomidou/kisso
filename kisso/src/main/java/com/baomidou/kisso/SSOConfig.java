@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import com.baomidou.kisso.common.SSOProperties;
 import com.baomidou.kisso.common.SSOReflectHelper;
 import com.baomidou.kisso.common.encrypt.SSOEncrypt;
 import com.baomidou.kisso.common.parser.SSOParser;
-import com.baomidou.kisso.common.util.PropertiesUtil;
 import com.baomidou.kisso.exception.KissoException;
 
 /**
@@ -113,11 +113,19 @@ public class SSOConfig {
 	 * 运行模式
 	 */
 	private static final String SSO_RUN_MODE = "sso.run.mode";
-	private static PropertiesUtil prop = null;
+	
+	/**
+	 * Properties 配置文件
+	 */
+	private SSOProperties properties = null;
 	private static SSOConfig SSO_CONFIG = null;
 	
 	public SSOConfig() {
 		/* 支持 setInstance 设置初始化 */
+	}
+	
+	public SSOConfig(SSOProperties properties) {
+		this.properties = properties;
 	}
 	
 	/**
@@ -125,15 +133,6 @@ public class SSOConfig {
 	 */
 	public static SSOConfig getInstance() {
 		if ( SSO_CONFIG == null ) {
-			if ( prop == null ) {
-				/*
-				 * 如果不是配置文件启动
-				 * <p>
-				 * 初始化空 Properties
-				 * </p>
-				 */
-				prop = new PropertiesUtil(new Properties());
-			}
 			SSO_CONFIG = new SSOConfig();
 		}
 		return SSO_CONFIG;
@@ -151,7 +150,7 @@ public class SSOConfig {
 	 */
 	public synchronized void initProperties(Properties props) {
 		if (props != null) {
-			prop = new PropertiesUtil(props, SSO_RUN_MODE, this.getRunMode());
+			setInstance(new SSOConfig(new SSOProperties(props, SSO_RUN_MODE, this.getRunMode())));
 			logger.config("loading kisso config.");
 			logger.info("kisso init success.");
 		} else {
@@ -163,20 +162,28 @@ public class SSOConfig {
 	 * SSO 配置工具类
 	 * @return {@link PropertiesUtil}
 	 */
-	public static PropertiesUtil getSSOProperties() {
-		return prop;
+	public static SSOProperties getSSOProperties() {
+		return SSO_CONFIG.getProperties();
 	}
 	
 	/**
 	 * SSO 当前编码格式
 	 */
 	public static String getSSOEncoding() {
-		if ( prop == null ) {
+		if ( SSO_CONFIG == null ) {
 			return SSO_ENCODING;
 		}
 		return getInstance().getEncoding();
 	}
 	
+	public SSOProperties getProperties() {
+		return properties;
+	}
+	
+	public void setProperties( SSOProperties properties ) {
+		this.properties = properties;
+	}
+
 	/**
 	 * SSO 配置模式 
 	 * <p>
@@ -188,10 +195,10 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public String getRunMode() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return runMode;
 		}
-		return prop.get(SSO_RUN_MODE, runMode);
+		return properties.get(SSO_RUN_MODE, runMode);
 	}
 	
 	public void setRunMode( String runMode ) {
@@ -208,10 +215,10 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public String getRole() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return role;
 		}
-		return prop.get("sso.role", role);
+		return properties.get("sso.role", role);
 	}
 
 	public void setRole(String role) {
@@ -222,10 +229,10 @@ public class SSOConfig {
 	 * 编码格式默认 UTF-8
 	 */
 	public String getEncoding() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return encoding;
 		}
-		return prop.get("sso.encoding", encoding);
+		return properties.get("sso.encoding", encoding);
 	}
 	
 	public void setEncoding( String encoding ) {
@@ -236,10 +243,10 @@ public class SSOConfig {
 	 * 密钥
 	 */
 	public String getSecretkey() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return secretkey;
 		}
-		return prop.get("sso.secretkey", secretkey);
+		return properties.get("sso.secretkey", secretkey);
 	}
 	
 	public void setSecretkey( String secretkey ) {
@@ -250,10 +257,10 @@ public class SSOConfig {
 	 * Cookie 名称
 	 */
 	public String getCookieName() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cookieName;
 		}
-		return prop.get("sso.cookie.name", cookieName);
+		return properties.get("sso.cookie.name", cookieName);
 	}
 	
 	public void setCookieName( String cookieName ) {
@@ -264,10 +271,10 @@ public class SSOConfig {
 	 * Cookie 所在域
 	 */
 	public String getCookieDomain() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cookieDomain;
 		}
-		return prop.get("sso.cookie.domain", cookieDomain);
+		return properties.get("sso.cookie.domain", cookieDomain);
 	}
 	
 	public void setCookieDomain( String cookieDomain ) {
@@ -278,10 +285,10 @@ public class SSOConfig {
 	 * Cookie 域路径
 	 */
 	public String getCookiePath() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cookiePath;
 		}
-		return prop.get("sso.cookie.path", cookiePath);
+		return properties.get("sso.cookie.path", cookiePath);
 	}
 	
 	public void setCookiePath( String cookiePath ) {
@@ -292,10 +299,10 @@ public class SSOConfig {
 	 * Cookie 只允许https协议传输
 	 */
 	public boolean getCookieSecure() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cookieSecure;
 		}
-		return prop.getBoolean("sso.cookie.secure", cookieSecure);
+		return properties.getBoolean("sso.cookie.secure", cookieSecure);
 	}
 	
 	public void setCookieSecure( boolean cookieSecure ) {
@@ -306,10 +313,10 @@ public class SSOConfig {
 	 * Cookie 只读, 不允许 Js访问
 	 */
 	public boolean getCookieHttponly() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cookieHttponly;
 		}
-		return prop.getBoolean("sso.cookie.httponly", cookieHttponly);
+		return properties.getBoolean("sso.cookie.httponly", cookieHttponly);
 	}
 	
 	public void setCookieHttponly( boolean cookieHttponly ) {
@@ -323,10 +330,10 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getCookieMaxage() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cookieMaxage;
 		}
-		return prop.getInt("sso.cookie.maxage", cookieMaxage);
+		return properties.getInt("sso.cookie.maxage", cookieMaxage);
 	}
 	
 	public void setCookieMaxage( int cookieMaxage ) {
@@ -337,10 +344,10 @@ public class SSOConfig {
 	 * Cookie 开启浏览器版本校验
 	 */
 	public boolean getCookieBrowser() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cookieBrowser;
 		}
-		return prop.getBoolean("sso.cookie.browser", cookieBrowser);
+		return properties.getBoolean("sso.cookie.browser", cookieBrowser);
 	}
 	
 	public void setCookieBrowser( boolean cookieBrowser ) {
@@ -351,10 +358,10 @@ public class SSOConfig {
 	 * Cookie 开启IP校验
 	 */
 	public boolean getCookieCheckip() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cookieCheckip;
 		}
-		return prop.getBoolean("sso.cookie.checkip", cookieCheckip);
+		return properties.getBoolean("sso.cookie.checkip", cookieCheckip);
 	}
 	
 	public void setCookieCheckip( boolean cookieCheckip ) {
@@ -365,10 +372,10 @@ public class SSOConfig {
 	 * SSO 登录地址
 	 */
 	public String getLoginUrl() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return loginUrl;
 		}
-		return prop.get("sso.login.url", loginUrl);
+		return properties.get("sso.login.url", loginUrl);
 	}
 	
 	public void setLoginUrl( String loginUrl ) {
@@ -379,10 +386,10 @@ public class SSOConfig {
 	 * SSO 退出地址
 	 */
 	public String getLogoutUrl() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return logoutUrl;
 		}
-		return prop.get("sso.logout.url", logoutUrl);
+		return properties.get("sso.logout.url", logoutUrl);
 	}
 	
 	public void setLogoutUrl( String logoutUrl ) {
@@ -396,10 +403,10 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public String getParamReturl() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return paramReturl;
 		}
-		return prop.get("sso.param.returl", paramReturl);
+		return properties.get("sso.param.returl", paramReturl);
 	}
 	
 	public void setParamReturl( String paramReturl ) {
@@ -410,10 +417,10 @@ public class SSOConfig {
 	 * 跨域 AuthCookie 密钥
 	 */
 	public String getAuthCookieSecretkey() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return authCookieSecretkey;
 		}
-		return prop.get("sso.authcookie.secretkey", authCookieSecretkey);
+		return properties.get("sso.authcookie.secretkey", authCookieSecretkey);
 	}
 	
 	public void setAuthCookieSecretkey( String authCookieSecretkey ) {
@@ -424,10 +431,10 @@ public class SSOConfig {
 	 * 跨域 AuthCookie 名称
 	 */
 	public String getAuthCookieName() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return authCookieName;
 		}
-		return prop.get("sso.authcookie.name", authCookieName);
+		return properties.get("sso.authcookie.name", authCookieName);
 	}
 	
 	public void setAuthCookieName( String authCookieName ) {
@@ -441,10 +448,10 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getAuthCookieMaxage() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return authCookieMaxage;
 		}
-		return prop.getInt("sso.authcookie.maxage", authCookieMaxage);
+		return properties.getInt("sso.authcookie.maxage", authCookieMaxage);
 	}
 	
 	public void setAuthCookieMaxage( int authCookieMaxage ) {
@@ -455,10 +462,10 @@ public class SSOConfig {
 	 * 自定义 Token Class
 	 */
 	public Token getToken() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return SSOReflectHelper.getConfigToken(tokenClass);
 		}
-		return SSOReflectHelper.getConfigToken(prop.get("sso.token.class", ""));
+		return SSOReflectHelper.getConfigToken(properties.get("sso.token.class", ""));
 	}
 	
 	public void setTokenClass( String tokenClass ) {
@@ -469,10 +476,10 @@ public class SSOConfig {
 	 * 自定义 SSOParser Class
 	 */
 	public SSOParser getParser() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return SSOReflectHelper.getConfigParser(null);
 		}
-		return SSOReflectHelper.getConfigParser(prop.get("sso.parser.class", ""));
+		return SSOReflectHelper.getConfigParser(properties.get("sso.parser.class", ""));
 	}
 	
 	public void setParser( SSOParser parser ) {
@@ -485,10 +492,10 @@ public class SSOConfig {
 	 * 自定义 SSOEncrypt Class
 	 */
 	public SSOEncrypt getEncrypt() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return SSOReflectHelper.getConfigEncrypt(null);
 		}
-		return SSOReflectHelper.getConfigEncrypt(prop.get("sso.encrypt.class", ""));
+		return SSOReflectHelper.getConfigEncrypt(properties.get("sso.encrypt.class", ""));
 	}
 	
 	public void setEncrypt( SSOEncrypt encrypt ) {
@@ -501,10 +508,10 @@ public class SSOConfig {
 	 * 自定义 SSOCache Class
 	 */
 	public SSOCache getCache() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return SSOReflectHelper.getConfigCache(null);
 		}
-		return SSOReflectHelper.getConfigCache(prop.get("sso.cache.class", ""));
+		return SSOReflectHelper.getConfigCache(properties.get("sso.cache.class", ""));
 	}
 	
 	public void setCache( SSOCache cache ) {
@@ -523,10 +530,10 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getCacheExpires() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return cacheExpires;
 		}
-		return prop.getInt("sso.cache.expires", cacheExpires);
+		return properties.getInt("sso.cache.expires", cacheExpires);
 	}
 	
 	public void setCacheExpires( int cacheExpires ) {
@@ -537,10 +544,10 @@ public class SSOConfig {
 	 * 自定义 SSOStatistic Class
 	 */
 	public SSOStatistic getStatistic() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return SSOReflectHelper.getConfigStatistic(null);
 		}
-		return SSOReflectHelper.getConfigStatistic(prop.get("sso.statistic.class", ""));
+		return SSOReflectHelper.getConfigStatistic(properties.get("sso.statistic.class", ""));
 	}
 	
 	public void setStatistic( SSOStatistic statistic ) {
@@ -553,10 +560,10 @@ public class SSOConfig {
 	 * 权限是否验证 URI 地址
 	 */
 	public boolean isPermissionUri() {
-		if ( prop == null ) {
+		if ( properties == null ) {
 			return permissionUri;
 		}
-		return prop.getBoolean("sso.permission.uri", permissionUri);
+		return properties.getBoolean("sso.permission.uri", permissionUri);
 	}
 	
 	public void setPermissionUri( boolean permissionUri ) {

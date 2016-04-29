@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.common.util;
+package com.baomidou.kisso.common;
 
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -28,25 +28,26 @@ import java.util.logging.Logger;
  * @author hubin
  * @Date 2014-5-12
  */
-public class PropertiesUtil extends Properties {
-
-	private static final long serialVersionUID = 1L;
+public class SSOProperties {
 
 	private static final Logger logger = Logger.getLogger("PropertiesUtil");
 
+	private final Properties properties;
 
-	public PropertiesUtil( Properties properties ) {
-		super(properties);
+	public SSOProperties(Properties properties) {
+		this.properties = properties;
 	}
 
-
-	public PropertiesUtil( Properties mergeProperties, String runMode ) {
-		super(extractRunMode(mergeProperties, runMode));
+	public SSOProperties(Properties mergeProperties, String runMode) {
+		this.properties = extractRunMode(mergeProperties, runMode);
+	}
+	
+	public SSOProperties(Properties mergeProperties, String runMode, String currentMode) {
+		this.properties = extractRunMode(mergeProperties, runMode, currentMode);
 	}
 
-
-	public PropertiesUtil( Properties mergeProperties, String runMode, String currentMode ) {
-		super(extractRunMode(mergeProperties, runMode, currentMode));
+	public String get(String key) {
+		return properties.getProperty(key);
 	}
 
 
@@ -125,14 +126,14 @@ public class PropertiesUtil extends Properties {
 
 
 	public String get( String key, String defaultVal ) {
-		String val = this.getProperty(key);
+		String val = this.get(key);
 		return val == null ? defaultVal : val;
 	}
 
 
 	public String findValue( String... keys ) {
 		for ( String key : keys ) {
-			String value = this.getProperty(key);
+			String value = this.get(key);
 			if ( value != null ) {
 				return value;
 			}
@@ -142,13 +143,13 @@ public class PropertiesUtil extends Properties {
 
 
 	public boolean getBoolean( String key, boolean defaultVal ) {
-		String val = this.getProperty(key);
+		String val = this.get(key);
 		return val == null ? defaultVal : Boolean.parseBoolean(val);
 	}
 
 
 	public long getLong( String key, long defaultVal ) {
-		String val = this.getProperty(key);
+		String val = this.get(key);
 		return val == null ? defaultVal : Long.parseLong(val);
 	}
 
@@ -159,13 +160,13 @@ public class PropertiesUtil extends Properties {
 
 
 	public double getDouble( String key, double defaultVal ) {
-		String val = this.getProperty(key);
+		String val = this.get(key);
 		return val == null ? defaultVal : Double.parseDouble(val);
 	}
 
 
 	public <T extends Enum<T>> T getEnum( String key, Class<T> type, T defaultValue ) {
-		String val = this.getProperty(key);
+		String val = this.get(key);
 		return val == null ? defaultValue : Enum.valueOf(type, val);
 	}
 
