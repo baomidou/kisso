@@ -142,7 +142,13 @@ public class SSOConfig {
 	 * 设置初始化（可动态修改配置内容）
 	 */
 	public synchronized static void setInstance(SSOConfig ssoConfig) {
-		SSO_CONFIG = ssoConfig;
+		if (ssoConfig == null) {
+			throw new KissoException(" setInstance error, ssoConfig is null.");
+		} else {
+			SSO_CONFIG = ssoConfig;
+			logger.config("loading kisso config.");
+			logger.info("kisso init success.");
+		}
 	}
 
 	/**
@@ -151,8 +157,6 @@ public class SSOConfig {
 	public synchronized void initProperties(Properties props) {
 		if (props != null) {
 			setInstance(new SSOConfig(new SSOProperties(props, SSO_RUN_MODE, this.getRunMode())));
-			logger.config("loading kisso config.");
-			logger.info("kisso init success.");
 		} else {
 			throw new KissoException(" cannot load kisso config. ");
 		}

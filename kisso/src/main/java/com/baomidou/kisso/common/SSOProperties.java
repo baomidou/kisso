@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 /**
  * <p>
- * Properties 工具类
+ * Properties 辅助工具类
  * </p>
  * 
  * @author hubin
@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  */
 public class SSOProperties {
 
-	private static final Logger logger = Logger.getLogger("PropertiesUtil");
+	private static final Logger logger = Logger.getLogger("SSOProperties");
 
 	private final Properties properties;
 
