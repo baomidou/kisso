@@ -6,6 +6,8 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 
 [kisso 帮助文档下载](http://git.oschina.net/juapk/kisso/attach_files)
 
+[实战 DEMO](http://git.oschina.net/juapk/SpringWind)
+
 
 > 技术讨论 QQ 群 235079513 
 
