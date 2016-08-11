@@ -17,8 +17,8 @@ package com.baomidou.kisso;
 
 import java.util.logging.Logger;
 
-import com.baomidou.kisso.common.encrypt.AES;
 import com.baomidou.kisso.common.encrypt.MD5;
+import com.baomidou.kisso.common.encrypt.SSOSymmetrical;
 
 /**
  * <p>
@@ -57,7 +57,7 @@ public class TestJsonToken {
 		String md5 = MD5.toMD5(jsonObj);
 		System.out.println("====toMD5===" + md5);
 		try {
-			System.out.println("=====AESDecrypt=====" + new AES().encrypt(jsonObj + "-" + md5, "123154456565546"));
+			System.out.println("=====AESDecrypt=====" + new SSOSymmetrical().encrypt(jsonObj + "-" + md5, "123154456565546"));
 		} catch ( Exception e ) {
 			logger.severe(" TestJsonToken AESDecrypt error.");
 			e.printStackTrace();

@@ -24,9 +24,11 @@ package com.baomidou.kisso.common.encrypt;
  * @Date 2016-01-20
  */
 public enum Algorithm {
-	MD5("MD5", "md5 encrypt"),
-	SHA("SHA", "has encrypt"),
-	AES("AES", "aes encrypt");
+	DES("DES", "DES encrypt"),
+	AES("AES", "AES encrypt"),
+	BLOWFISH("Blowfish", "Blowfish encrypt"),
+	RC2("RC2", "RC2 encrypt"),
+	RC4("RC4", "RC4 encrypt");
 
 	/** 主键 */
 	private final String key;

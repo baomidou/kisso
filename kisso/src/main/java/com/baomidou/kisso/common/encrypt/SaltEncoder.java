@@ -48,9 +48,9 @@ public class SaltEncoder {
 	}
 
 
-	public SaltEncoder( String salt, Algorithm algorithm ) {
+	public SaltEncoder( String salt, String algorithm ) {
 		this.salt = salt;
-		this.algorithm = algorithm.getKey();
+		this.algorithm = algorithm;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class SaltEncoder {
 	 * @return
 	 */
 	public static String md5SaltEncode( String salt, String rawText ) {
-		return new SaltEncoder(salt, Algorithm.MD5).encode(rawText);
+		return new SaltEncoder(salt, MD5.ALGORITHM).encode(rawText);
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public class SaltEncoder {
 	 * @return
 	 */
 	public static boolean md5SaltValid( String salt, String encodeText, String rawText ) {
-		return new SaltEncoder(salt, Algorithm.MD5).isValid(encodeText, rawText);
+		return new SaltEncoder(salt, MD5.ALGORITHM).isValid(encodeText, rawText);
 	}
 
 	/**

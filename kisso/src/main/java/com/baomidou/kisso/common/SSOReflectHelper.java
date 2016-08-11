@@ -19,8 +19,8 @@ import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.Token;
-import com.baomidou.kisso.common.encrypt.AES;
 import com.baomidou.kisso.common.encrypt.SSOEncrypt;
+import com.baomidou.kisso.common.encrypt.SSOSymmetrical;
 import com.baomidou.kisso.common.parser.FastJsonParser;
 import com.baomidou.kisso.common.parser.SSOParser;
 import com.baomidou.kisso.exception.KissoException;
@@ -119,10 +119,10 @@ public class SSOReflectHelper {
 		}
 
 		/**
-		 * 判断是否自定义 Encrypt 默认 AES
+		 * 判断是否自定义 Encrypt 默认 RC4
 		 */
 		if ( encryptClass == null || "".equals(encryptClass) ) {
-			encrypt = new AES();
+			encrypt = new SSOSymmetrical();
 		} else {
 			try {
 				Class<?> tc = Class.forName(encryptClass);

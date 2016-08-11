@@ -15,28 +15,31 @@
  */
 package com.baomidou.kisso;
 
-import com.baomidou.kisso.common.encrypt.AES;
+import com.baomidou.kisso.common.encrypt.Algorithm;
+import com.baomidou.kisso.common.encrypt.SSOSymmetrical;
 
 /**
  * <p>
  * 测试 AES 加密
  * </p>
  * 
- * @author   hubin
- * @Date	 2014-5-12
+ * @author hubin
+ * @Date 2016-08-11
  */
-public class TestAES {
+public class TestSSOSymmetrical {
 
 	/**
-	 * 测试
-	 * blgXhbGmmno-qiVk6epGkeVYFM4EeXKS_O0O5mLWLeCoGVvpeFAAaUs6tmirfCNF35RfBaNI5bf97g7Jc9gTOg..
+	 * AES 测试 blgXhbGmmno-qiVk6epGkeVYFM4EeXKS_O0O5mLWLeCoGVvpeFAAaUs6tmirfCNF35RfBaNI5bf97g7Jc9gTOg..
+	 * 
+	 * RC4 测试 _uEtJ00ry44qFGPbom3-7I4IAei3G3MCGGWB7N-HFxNVGOsXSSe-nBBGNWRroOz1
+	 * 
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main( String[] args ) throws Exception {
+	public static void main(String[] args) throws Exception {
 		String txt = "落霞与孤鹜齐飞，秋水共长天一色。";
 		String key = "kisso2015014082159";
-		AES aes = new AES();
+		SSOSymmetrical aes = new SSOSymmetrical(Algorithm.AES);
 		String enc = aes.encrypt(txt, key);
 		System.out.println("加密前：" + txt);
 		System.out.println("加密：" + enc);

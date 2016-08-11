@@ -34,7 +34,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<servlet-api.version>2.5</servlet-api.version>
 		<fastjson.version>1.2.14</fastjson.version>
-		<bcprov-jdk14.version>1.50</bcprov-jdk14.version>
 		<spring.version>4.2.5.RELEASE</spring.version>
 		<shiro.version>1.2.4</shiro.version>
 	</properties>
@@ -53,14 +52,6 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- Encryption  -->
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk14</artifactId>
-			<version>${bcprov-jdk14.version}</version>
 			<scope>provided</scope>
 		</dependency>
 

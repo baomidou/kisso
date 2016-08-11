@@ -22,9 +22,8 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.bouncycastle.util.encoders.Base64;
-
 import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.common.encrypt.base64.Base64;
 import com.baomidou.kisso.common.parser.api.JSONParser;
 import com.baomidou.kisso.common.parser.api.XMLParser;
 import com.baomidou.kisso.common.util.RandomUtil;

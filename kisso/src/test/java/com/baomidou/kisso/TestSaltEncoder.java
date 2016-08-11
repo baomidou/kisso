@@ -15,7 +15,6 @@
  */
 package com.baomidou.kisso;
 
-import com.baomidou.kisso.common.encrypt.Algorithm;
 import com.baomidou.kisso.common.encrypt.SaltEncoder;
 import com.baomidou.kisso.common.util.RandomUtil;
 
@@ -42,14 +41,14 @@ public class TestSaltEncoder {
 		String pwd = "1q2=3e!$-Qde";
 		
 		/* MD5 盐加密 */
-		SaltEncoder md5 = new SaltEncoder(salt, Algorithm.MD5);
+		SaltEncoder md5 = new SaltEncoder(salt, "MD5");
 		String et1 = md5.encode(pwd);
 		System.out.println(et1);
 		boolean passwordValid = md5.isValid(et1, pwd);
 		System.err.println(passwordValid);
 
 		/* SHA 盐加密 */
-		SaltEncoder sha = new SaltEncoder(salt, Algorithm.SHA);
+		SaltEncoder sha = new SaltEncoder(salt, "SHA");
 		String et2 = sha.encode(pwd);
 		System.out.println(et2);
 		boolean passwordValid2 = sha.isValid(et2, pwd);
