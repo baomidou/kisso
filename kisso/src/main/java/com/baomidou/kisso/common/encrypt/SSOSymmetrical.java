@@ -72,6 +72,7 @@ public class SSOSymmetrical implements SSOEncrypt {
 
 	public SSOSymmetrical(Algorithm algorithm) {
 		this.algorithm = algorithm;
+		System.err.println("Your current encryption algorithm is " + algorithm.getKey());
 	}
 
 	public String encrypt(String value, String key) throws Exception {

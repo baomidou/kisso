@@ -19,6 +19,7 @@ import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.Token;
+import com.baomidou.kisso.common.encrypt.Algorithm;
 import com.baomidou.kisso.common.encrypt.SSOEncrypt;
 import com.baomidou.kisso.common.encrypt.SSOSymmetrical;
 import com.baomidou.kisso.common.parser.FastJsonParser;
@@ -45,7 +46,9 @@ public class SSOReflectHelper {
 
 
 	/**
+	 * <p>
 	 * 反射获取自定义Token
+	 * </p>
 	 * 
 	 * @return {@link Token}
 	 */
@@ -72,7 +75,9 @@ public class SSOReflectHelper {
 
 
 	/**
+	 * <p>
 	 * 反射获取自定义SSOParser
+	 * </p>
 	 * 
 	 * @return {@link Token}
 	 */
@@ -108,11 +113,13 @@ public class SSOReflectHelper {
 
 
 	/**
+	 * <p>
 	 * 反射获取自定义Encrypt
+	 * </p>
 	 * 
 	 * @return {@link Encrypt}
 	 */
-	public static SSOEncrypt getConfigEncrypt( String encryptClass ) {
+	public static SSOEncrypt getConfigEncrypt( String encryptClass, String encryptAlgorithm) {
 
 		if ( encrypt != null ) {
 			return encrypt;
@@ -122,7 +129,7 @@ public class SSOReflectHelper {
 		 * 判断是否自定义 Encrypt 默认 RC4
 		 */
 		if ( encryptClass == null || "".equals(encryptClass) ) {
-			encrypt = new SSOSymmetrical();
+			encrypt = new SSOSymmetrical(Algorithm.convert(encryptAlgorithm));
 		} else {
 			try {
 				Class<?> tc = Class.forName(encryptClass);
@@ -144,7 +151,9 @@ public class SSOReflectHelper {
 
 
 	/**
+	 * <p>
 	 * 反射获取自定义SSOCache
+	 * </p>
 	 * 
 	 * @return {@link SSOCache}
 	 */

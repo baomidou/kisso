@@ -31,8 +31,8 @@ import com.baomidou.kisso.exception.KissoException;
  * SSO 配置文件解析
  * </p>
  * <p>
- * 按照不同的运行模式启用相应的配置 默认开发环境， 调试方式 Eclipse 环境的 VM 参数中加上
- * -Dsso.run.mode=dev_mode 例如：
+ * 按照不同的运行模式启用相应的配置 默认开发环境， 调试方式 Eclipse 环境的 VM 参数中加上 -Dsso.run.mode=dev_mode
+ * 例如： 
  * ------------------------------------------------------------------
  * sso.login.url_online_mode=http://sso.online.com/login.html
  * sso.login.url_test_mode=http://sso.test.com/login.html
@@ -66,34 +66,39 @@ public class SSOConfig {
 	private int authCookieMaxage = 180;
 	private String tokenClass = null;
 	private int cacheExpires = -1;
-	
+
+	/**
+	 * 对称加密算法（默认 RC4）
+	 */
+	private String encryptAlgorithm = null;
+
 	/**
 	 * 权限认证（默认 false）
 	 */
 	private boolean permissionUri = false;
-	
+
 	/**
 	 * 插件列表
 	 */
 	private static List<SSOPlugin> SSO_PLUGIN_LIST = null;
-	
+
 	/**
 	 * <p>
-	 * 拦截器判断后设置 Token至当前请求，减少Token解密次数：
-	 * request.setAttribute("ssotoken_attr", token)
+	 * 拦截器判断后设置 Token至当前请求，减少Token解密次数： request.setAttribute("ssotoken_attr",
+	 * token)
 	 * </p>
 	 * <p>
 	 * 使用获取方式： SSOHelper.attrToken(request)
 	 * </p>
 	 */
 	public static final String SSO_TOKEN_ATTR = "SSOTokenAttr";
-	
+
 	/**
 	 * 踢出用户逻辑标记
 	 */
 	public static final String SSO_KICK_FLAG = "SSOKickFlag";
 	public static final String SSO_KICK_USER = "SSOKickUser";
-	
+
 	/**
 	 * SSO 动态设置 Cookie 参数
 	 * <p>
@@ -101,43 +106,43 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public static final String SSO_COOKIE_MAXAGE = "sso_cookie_maxage";
-	
+
 	/**
 	 * Charset 类型编码格式
 	 */
 	public static final Charset CHARSET_ENCODING = Charset.forName(getSSOEncoding());
-	
+
 	public static final String CUT_SYMBOL = "#";
-	
+
 	/**
 	 * 运行模式
 	 */
 	private static final String SSO_RUN_MODE = "sso.run.mode";
-	
+
 	/**
 	 * Properties 配置文件
 	 */
 	private SSOProperties properties = null;
 	private static SSOConfig SSO_CONFIG = null;
-	
+
 	public SSOConfig() {
 		/* 支持 setInstance 设置初始化 */
 	}
-	
+
 	public SSOConfig(SSOProperties properties) {
 		this.properties = properties;
 	}
-	
+
 	/**
 	 * new 当前对象
 	 */
 	public static SSOConfig getInstance() {
-		if ( SSO_CONFIG == null ) {
+		if (SSO_CONFIG == null) {
 			SSO_CONFIG = new SSOConfig();
 		}
 		return SSO_CONFIG;
 	}
-	
+
 	/**
 	 * 设置初始化（可动态修改配置内容）
 	 */
@@ -161,54 +166,53 @@ public class SSOConfig {
 			throw new KissoException(" cannot load kisso config. ");
 		}
 	}
-	
+
 	/**
 	 * SSO 配置工具类
+	 * 
 	 * @return {@link PropertiesUtil}
 	 */
 	public static SSOProperties getSSOProperties() {
 		return SSO_CONFIG.getProperties();
 	}
-	
+
 	/**
 	 * SSO 当前编码格式
 	 */
 	public static String getSSOEncoding() {
-		if ( SSO_CONFIG == null ) {
+		if (SSO_CONFIG == null) {
 			return SSO_ENCODING;
 		}
 		return getInstance().getEncoding();
 	}
-	
+
 	public SSOProperties getProperties() {
 		return properties;
 	}
-	
-	public void setProperties( SSOProperties properties ) {
+
+	public void setProperties(SSOProperties properties) {
 		this.properties = properties;
 	}
 
 	/**
-	 * SSO 配置模式 
+	 * SSO 配置模式
 	 * <p>
-	 * -------------------- 
-	 * dev_mode 开发模式
-	 * test_mode 测试模式 
-	 * online_mode 生产模式 
+	 * --------------------
+	 * dev_mode 开发模式 test_mode 测试模式 online_mode 生产模式
 	 * --------------------
 	 * </p>
 	 */
 	public String getRunMode() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return runMode;
 		}
 		return properties.get(SSO_RUN_MODE, runMode);
 	}
-	
-	public void setRunMode( String runMode ) {
+
+	public void setRunMode(String runMode) {
 		this.runMode = runMode;
 	}
-	
+
 	/**
 	 * 系统角色（默认 空）
 	 * <p>
@@ -219,7 +223,7 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public String getRole() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return role;
 		}
 		return properties.get("sso.role", role);
@@ -233,100 +237,100 @@ public class SSOConfig {
 	 * 编码格式默认 UTF-8
 	 */
 	public String getEncoding() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return encoding;
 		}
 		return properties.get("sso.encoding", encoding);
 	}
-	
-	public void setEncoding( String encoding ) {
+
+	public void setEncoding(String encoding) {
 		this.encoding = encoding;
 	}
-	
+
 	/**
 	 * 密钥
 	 */
 	public String getSecretkey() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return secretkey;
 		}
 		return properties.get("sso.secretkey", secretkey);
 	}
-	
-	public void setSecretkey( String secretkey ) {
+
+	public void setSecretkey(String secretkey) {
 		this.secretkey = secretkey;
 	}
-	
+
 	/**
 	 * Cookie 名称
 	 */
 	public String getCookieName() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cookieName;
 		}
 		return properties.get("sso.cookie.name", cookieName);
 	}
-	
-	public void setCookieName( String cookieName ) {
+
+	public void setCookieName(String cookieName) {
 		this.cookieName = cookieName;
 	}
-	
+
 	/**
 	 * Cookie 所在域
 	 */
 	public String getCookieDomain() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cookieDomain;
 		}
 		return properties.get("sso.cookie.domain", cookieDomain);
 	}
-	
-	public void setCookieDomain( String cookieDomain ) {
+
+	public void setCookieDomain(String cookieDomain) {
 		this.cookieDomain = cookieDomain;
 	}
-	
+
 	/**
 	 * Cookie 域路径
 	 */
 	public String getCookiePath() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cookiePath;
 		}
 		return properties.get("sso.cookie.path", cookiePath);
 	}
-	
-	public void setCookiePath( String cookiePath ) {
+
+	public void setCookiePath(String cookiePath) {
 		this.cookiePath = cookiePath;
 	}
-	
+
 	/**
 	 * Cookie 只允许https协议传输
 	 */
 	public boolean getCookieSecure() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cookieSecure;
 		}
 		return properties.getBoolean("sso.cookie.secure", cookieSecure);
 	}
-	
-	public void setCookieSecure( boolean cookieSecure ) {
+
+	public void setCookieSecure(boolean cookieSecure) {
 		this.cookieSecure = cookieSecure;
 	}
-	
+
 	/**
 	 * Cookie 只读, 不允许 Js访问
 	 */
 	public boolean getCookieHttponly() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cookieHttponly;
 		}
 		return properties.getBoolean("sso.cookie.httponly", cookieHttponly);
 	}
-	
-	public void setCookieHttponly( boolean cookieHttponly ) {
+
+	public void setCookieHttponly(boolean cookieHttponly) {
 		this.cookieHttponly = cookieHttponly;
 	}
-	
+
 	/**
 	 * Cookie 超时时间
 	 * <p>
@@ -334,72 +338,72 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getCookieMaxage() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cookieMaxage;
 		}
 		return properties.getInt("sso.cookie.maxage", cookieMaxage);
 	}
-	
-	public void setCookieMaxage( int cookieMaxage ) {
+
+	public void setCookieMaxage(int cookieMaxage) {
 		this.cookieMaxage = cookieMaxage;
 	}
-	
+
 	/**
 	 * Cookie 开启浏览器版本校验
 	 */
 	public boolean getCookieBrowser() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cookieBrowser;
 		}
 		return properties.getBoolean("sso.cookie.browser", cookieBrowser);
 	}
-	
-	public void setCookieBrowser( boolean cookieBrowser ) {
+
+	public void setCookieBrowser(boolean cookieBrowser) {
 		this.cookieBrowser = cookieBrowser;
 	}
-	
+
 	/**
 	 * Cookie 开启IP校验
 	 */
 	public boolean getCookieCheckip() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cookieCheckip;
 		}
 		return properties.getBoolean("sso.cookie.checkip", cookieCheckip);
 	}
-	
-	public void setCookieCheckip( boolean cookieCheckip ) {
+
+	public void setCookieCheckip(boolean cookieCheckip) {
 		this.cookieCheckip = cookieCheckip;
 	}
-	
+
 	/**
 	 * SSO 登录地址
 	 */
 	public String getLoginUrl() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return loginUrl;
 		}
 		return properties.get("sso.login.url", loginUrl);
 	}
-	
-	public void setLoginUrl( String loginUrl ) {
+
+	public void setLoginUrl(String loginUrl) {
 		this.loginUrl = loginUrl;
 	}
-	
+
 	/**
 	 * SSO 退出地址
 	 */
 	public String getLogoutUrl() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return logoutUrl;
 		}
 		return properties.get("sso.logout.url", logoutUrl);
 	}
-	
-	public void setLogoutUrl( String logoutUrl ) {
+
+	public void setLogoutUrl(String logoutUrl) {
 		this.logoutUrl = logoutUrl;
 	}
-	
+
 	/**
 	 * SSO 跳转参数命名
 	 * <p>
@@ -407,27 +411,27 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public String getParamReturl() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return paramReturl;
 		}
 		return properties.get("sso.param.returl", paramReturl);
 	}
-	
-	public void setParamReturl( String paramReturl ) {
+
+	public void setParamReturl(String paramReturl) {
 		this.paramReturl = paramReturl;
 	}
-	
+
 	/**
 	 * 跨域 AuthCookie 密钥
 	 */
 	public String getAuthCookieSecretkey() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return authCookieSecretkey;
 		}
 		return properties.get("sso.authcookie.secretkey", authCookieSecretkey);
 	}
-	
-	public void setAuthCookieSecretkey( String authCookieSecretkey ) {
+
+	public void setAuthCookieSecretkey(String authCookieSecretkey) {
 		this.authCookieSecretkey = authCookieSecretkey;
 	}
 
@@ -435,16 +439,16 @@ public class SSOConfig {
 	 * 跨域 AuthCookie 名称
 	 */
 	public String getAuthCookieName() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return authCookieName;
 		}
 		return properties.get("sso.authcookie.name", authCookieName);
 	}
-	
-	public void setAuthCookieName( String authCookieName ) {
+
+	public void setAuthCookieName(String authCookieName) {
 		this.authCookieName = authCookieName;
 	}
-	
+
 	/**
 	 * 跨域 AuthCookie 超时时间
 	 * <p>
@@ -452,78 +456,78 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getAuthCookieMaxage() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return authCookieMaxage;
 		}
 		return properties.getInt("sso.authcookie.maxage", authCookieMaxage);
 	}
-	
-	public void setAuthCookieMaxage( int authCookieMaxage ) {
+
+	public void setAuthCookieMaxage(int authCookieMaxage) {
 		this.authCookieMaxage = authCookieMaxage;
 	}
-	
+
 	/**
 	 * 自定义 Token Class
 	 */
 	public Token getToken() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return SSOReflectHelper.getConfigToken(tokenClass);
 		}
 		return SSOReflectHelper.getConfigToken(properties.get("sso.token.class", ""));
 	}
-	
-	public void setTokenClass( String tokenClass ) {
+
+	public void setTokenClass(String tokenClass) {
 		this.tokenClass = tokenClass;
 	}
-	
+
 	/**
 	 * 自定义 SSOParser Class
 	 */
 	public SSOParser getParser() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return SSOReflectHelper.getConfigParser(null);
 		}
 		return SSOReflectHelper.getConfigParser(properties.get("sso.parser.class", ""));
 	}
-	
-	public void setParser( SSOParser parser ) {
-		if ( parser != null ) {
+
+	public void setParser(SSOParser parser) {
+		if (parser != null) {
 			SSOReflectHelper.setConfigParser(parser);
 		}
 	}
-	
+
 	/**
 	 * 自定义 SSOEncrypt Class
 	 */
 	public SSOEncrypt getEncrypt() {
-		if ( properties == null ) {
-			return SSOReflectHelper.getConfigEncrypt(null);
+		if (properties == null) {
+			return SSOReflectHelper.getConfigEncrypt(null, this.getEncryptAlgorithm());
 		}
-		return SSOReflectHelper.getConfigEncrypt(properties.get("sso.encrypt.class", ""));
+		return SSOReflectHelper.getConfigEncrypt(properties.get("sso.encrypt.class", ""), this.getEncryptAlgorithm());
 	}
-	
-	public void setEncrypt( SSOEncrypt encrypt ) {
-		if ( encrypt != null ) {
+
+	public void setEncrypt(SSOEncrypt encrypt) {
+		if (encrypt != null) {
 			SSOReflectHelper.setConfigEncrypt(encrypt);
 		}
 	}
-	
+
 	/**
 	 * 自定义 SSOCache Class
 	 */
 	public SSOCache getCache() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return SSOReflectHelper.getConfigCache(null);
 		}
 		return SSOReflectHelper.getConfigCache(properties.get("sso.cache.class", ""));
 	}
-	
-	public void setCache( SSOCache cache ) {
-		if ( cache != null ) {
+
+	public void setCache(SSOCache cache) {
+		if (cache != null) {
 			SSOReflectHelper.setConfigCache(cache);
 		}
 	}
-	
+
 	/**
 	 * 自定义SSOCache Expires
 	 * <P>
@@ -534,43 +538,54 @@ public class SSOConfig {
 	 * </p>
 	 */
 	public int getCacheExpires() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return cacheExpires;
 		}
 		return properties.getInt("sso.cache.expires", cacheExpires);
 	}
-	
-	public void setCacheExpires( int cacheExpires ) {
+
+	public void setCacheExpires(int cacheExpires) {
 		this.cacheExpires = cacheExpires;
 	}
-	
+
 	/**
 	 * 自定义 SSOStatistic Class
 	 */
 	public SSOStatistic getStatistic() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return SSOReflectHelper.getConfigStatistic(null);
 		}
 		return SSOReflectHelper.getConfigStatistic(properties.get("sso.statistic.class", ""));
 	}
-	
-	public void setStatistic( SSOStatistic statistic ) {
-		if ( statistic != null ) {
+
+	public void setStatistic(SSOStatistic statistic) {
+		if (statistic != null) {
 			SSOReflectHelper.setConfigStatistic(statistic);
 		}
 	}
-	
+
+	public String getEncryptAlgorithm() {
+		if (properties == null) {
+			return encryptAlgorithm;
+		}
+		return properties.get("sso.encrypt.algorithm", encryptAlgorithm);
+	}
+
+	public void setEncryptAlgorithm(String encryptAlgorithm) {
+		this.encryptAlgorithm = encryptAlgorithm;
+	}
+
 	/**
 	 * 权限是否验证 URI 地址
 	 */
 	public boolean isPermissionUri() {
-		if ( properties == null ) {
+		if (properties == null) {
 			return permissionUri;
 		}
 		return properties.getBoolean("sso.permission.uri", permissionUri);
 	}
-	
-	public void setPermissionUri( boolean permissionUri ) {
+
+	public void setPermissionUri(boolean permissionUri) {
 		this.permissionUri = permissionUri;
 	}
 
@@ -581,7 +596,7 @@ public class SSOConfig {
 		return SSO_PLUGIN_LIST;
 	}
 
-	public void setPluginList( List<SSOPlugin> pluginList ) {
+	public void setPluginList(List<SSOPlugin> pluginList) {
 		SSO_PLUGIN_LIST = pluginList;
 	}
 
@@ -592,7 +607,7 @@ public class SSOConfig {
 	 * </p>
 	 * 
 	 * @param userId
-	 * 				用户ID
+	 *            用户ID
 	 * @return
 	 */
 	public static String toCacheKey(Object userId) {
