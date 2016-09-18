@@ -4,7 +4,7 @@
 kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 java Web 登录系统（SSO）的瑞士军刀。
 
 
-[kisso 帮助文档下载](http://git.oschina.net/juapk/kisso/attach_files)
+[kisso 帮助文档下载](http://git.oschina.net/baomidou/kisso/attach_files)
 
 [实战 DEMO](http://git.oschina.net/juapk/SpringWind)
 
@@ -17,11 +17,11 @@ http://baomidou.com/
 
 http://www.oschina.net/p/kisso
 
-[mybatis 增强工具包，简化 CURD 操作](http://git.oschina.net/juapk/mybatis-plus)
+[mybatis 增强工具包，简化 CURD 操作](http://git.oschina.net/baomidou/mybatis-plus)
 
-[kisso 升级日志](http://git.oschina.net/juapk/kisso/wikis/kisso---%E5%8D%87%E7%BA%A7%E6%97%A5%E5%BF%97)
+[kisso 升级日志](http://git.oschina.net/baomidou/kisso/wikis/kisso---%E5%8D%87%E7%BA%A7%E6%97%A5%E5%BF%97)
 
-[kisso捐赠记录,感谢你们的支持！](http://git.oschina.net/juapk/kisso/wikis/%E6%8D%90%E8%B5%A0%E8%AE%B0%E5%BD%95)
+[kisso捐赠记录,感谢你们的支持！](http://git.oschina.net/baomidou/kisso/wikis/%E6%8D%90%E8%B5%A0%E8%AE%B0%E5%BD%95)
 
 ki﻿sso
 ===
@@ -41,7 +41,7 @@ Maven 坐标
 
 Usage
 ===========
-[kisso 依赖 jars](http://git.oschina.net/juapk/kisso/wikis/kisso-%E4%BE%9D%E8%B5%96%E5%8C%85-jars)
+[kisso 依赖 jars](http://git.oschina.net/baomidou/kisso/wikis/kisso-%E4%BE%9D%E8%B5%96%E5%8C%85-jars)
 
 [kisso-oauth2-demo 演示 demo](http://git.oschina.net/juapk/kisso-oauth2-demo)
 由于 apache-oltu-oauth2 很灵活 kisso 只做辅助支持，不重新造轮子。
@@ -66,9 +66,9 @@ Usage
 
 说明文档
 ===========
-[sso.properties 配置说明](http://git.oschina.net/juapk/kisso/blob/master/kisso/src/main/resources/doc.md/?dir=0&filepath=kisso/src/main/resources/doc.md&oid=6376fee85d0184f0cb4957f928f47508f7140e0f&sha=47f98ea6f97eb195b6fe01459b665cb1f5d1f6d9)
+[sso.properties 配置说明](http://git.oschina.net/baomidou/kisso/blob/master/kisso/src/main/resources/doc.md/?dir=0&filepath=kisso/src/main/resources/doc.md&oid=6376fee85d0184f0cb4957f928f47508f7140e0f&sha=47f98ea6f97eb195b6fe01459b665cb1f5d1f6d9)
 
-[SSO 跨域登录实现方案](http://git.oschina.net/juapk/kisso/blob/master/kisso/src/main/resources/crossdomain.md/?dir=0&filepath=kisso/src/main/resources/crossdomain.md&oid=e6a5e090f661fafa8a6b739152bdd3b4bb1cd248&sha=47f98ea6f97eb195b6fe01459b665cb1f5d1f6d9)
+[SSO 跨域登录实现方案](http://git.oschina.net/baomidou/kisso/blob/master/kisso/src/main/resources/crossdomain.md/?dir=0&filepath=kisso/src/main/resources/crossdomain.md&oid=e6a5e090f661fafa8a6b739152bdd3b4bb1cd248&sha=47f98ea6f97eb195b6fe01459b665cb1f5d1f6d9)
 
 
 （1）sso 登录状态
