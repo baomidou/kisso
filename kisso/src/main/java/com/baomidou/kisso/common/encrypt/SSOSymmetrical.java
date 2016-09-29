@@ -76,12 +76,12 @@ public class SSOSymmetrical implements SSOEncrypt {
 	}
 
 	public String encrypt(String value, String key) throws Exception {
-		byte[] b = UrlBase64.encode(encrypt(algorithm, value.getBytes(), key));
+		byte[] b = UrlBase64.encode(encrypt(algorithm, value.getBytes(SSOConfig.getSSOEncoding()), key));
 		return new String(b, SSOConfig.getSSOEncoding());
 	}
 
 	public String decrypt(String value, String key) throws Exception {
-		byte[] b = decrypt(algorithm, UrlBase64.decode(value.getBytes()), key);
+		byte[] b = decrypt(algorithm, UrlBase64.decode(value.getBytes(SSOConfig.getSSOEncoding())), key);
 		return new String(b, SSOConfig.getSSOEncoding());
 	}
 
