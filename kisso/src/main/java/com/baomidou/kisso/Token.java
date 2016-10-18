@@ -32,13 +32,13 @@ public class Token implements Serializable {
 
 	/* 缓存宕机 */
 	public final static int FLAG_CACHE_SHUT = 1;
-	
+
 	/* 系统名称  */
 	private String app;
 
-	/* 用户 ID（长整型） */
-	private Long id;
-	
+	/* 主键 ID */
+	private Serializable id;
+
 	/* 用户 ID（字符串类型，默认 fastjson 无值该参数不参与 json 序列化） */
 	private String uid;
 
@@ -66,12 +66,12 @@ public class Token implements Serializable {
 	}
 	
 	
-	public Long getId() {
+	public Serializable getId() {
 		return id;
 	}
 
 	
-	public void setId( Long id ) {
+	public void setId( Serializable id ) {
 		this.id = id;
 	}
 
