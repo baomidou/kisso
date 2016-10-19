@@ -317,7 +317,7 @@ public class KissoServiceSupport {
 			String domain = config.getCookieDomain();
 			cookie.setDomain(domain);
 			if ( "".equals(domain) || domain.contains("localhost") ) {
-				logger.warning("if you can't login, please enter normal domain. instead:" + domain);
+				logger.fine("if you can't login, please enter normal domain. instead:" + domain);
 			}
 
 			/**
