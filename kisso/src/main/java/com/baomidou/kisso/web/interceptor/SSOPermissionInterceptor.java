@@ -113,7 +113,10 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 		Method method = handlerMethod.getMethod();
 		Permission pm = method.getAnnotation(Permission.class);
-		if ( pm != null ) {
+		if ( pm == null ) {
+			//不打注解， 忽略拦截
+			return true;
+		} else {
 			if ( pm.action() == Action.Skip ) {
 				/**
 				 * 忽略拦截

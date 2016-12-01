@@ -564,6 +564,23 @@ public class SSOConfig {
 		}
 	}
 
+	
+	/**
+	 * 自定义 SSOAuthorization Class
+	 */
+	public SSOAuthorization getAuthorization() {
+		if (properties == null) { 
+			return SSOReflectHelper.getAuthorization(null);
+		} 
+		return SSOReflectHelper.getAuthorization(properties.get("sso.authorization.class", ""));
+	}
+
+	public void setAuthorization(SSOAuthorization statistic) {
+		if (statistic != null) {
+			SSOReflectHelper.setAuthorization(statistic);
+		}
+	}
+	
 	public String getEncryptAlgorithm() {
 		if (properties == null) {
 			return encryptAlgorithm;

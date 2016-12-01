@@ -15,10 +15,12 @@
  */
 package com.baomidou.kisso.common;
 
+import com.baomidou.kisso.SSOAuthorization;
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOStatistic;
 import com.baomidou.kisso.SSOToken;
 import com.baomidou.kisso.Token;
+import com.baomidou.kisso.common.auth.AuthDefaultImpl;
 import com.baomidou.kisso.common.encrypt.Algorithm;
 import com.baomidou.kisso.common.encrypt.SSOEncrypt;
 import com.baomidou.kisso.common.encrypt.SSOSymmetrical;
@@ -44,7 +46,8 @@ public class SSOReflectHelper {
 
 	private static SSOParser parser = null;
 
-
+    private static SSOAuthorization authorization = null;
+    
 	/**
 	 * <p>
 	 * 反射获取自定义Token
@@ -218,4 +221,38 @@ public class SSOReflectHelper {
 		statistic = configStatistic;
 	}
 
+
+	/**
+	 * 反射获取自定义SSOAuthorization
+	 * 
+	 * @return {@link SSOAuthorization}
+	 */
+	public static SSOAuthorization getAuthorization(String authorizationClass) {
+		if ( authorization != null ) {
+			return authorization;
+		}
+
+		/**
+		 * 反射获得权限类
+		 */
+		if ( authorizationClass != null && !"".equals(authorizationClass) ) {
+			try {
+				Class<?> tc = Class.forName(authorizationClass);
+				if ( tc.newInstance() instanceof SSOAuthorization ) {
+					authorization = (SSOAuthorization) tc.newInstance();
+				}
+			} catch ( Exception e ) {
+				throw new KissoException(e);
+			}
+		} else {
+			authorization = new AuthDefaultImpl();
+		}
+
+		return authorization;
+	}
+
+	public static void setAuthorization(SSOAuthorization authorization) {
+		SSOReflectHelper.authorization = authorization;
+	}
+	
 }
