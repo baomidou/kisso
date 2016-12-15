@@ -54,14 +54,6 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
 	 */
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		Token token = SSOHelper.getToken(request);
-		if (token != null) {
-			/*
-			 * 正常请求，request 设置 token 减少二次解密
-			 */
-			request.setAttribute(SSOConfig.SSO_TOKEN_ATTR, token);
-		}
-		
 		/**
 		 * 处理 Controller 方法
 		 * <p>
@@ -84,6 +76,7 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
 			/**
 			 * 正常执行
 			 */
+			Token token = SSOHelper.getToken(request);
 			if (token == null) {
 				if ( HttpUtil.isAjax(request) ) {
 					/*
@@ -102,6 +95,11 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
 					}
 					return false;
 				}
+			} else {
+				/*
+				 * 正常请求，request 设置 token 减少二次解密
+				 */
+				request.setAttribute(SSOConfig.SSO_TOKEN_ATTR, token);
 			}
 		}
 
