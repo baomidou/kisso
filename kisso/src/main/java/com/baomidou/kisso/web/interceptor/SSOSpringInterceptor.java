@@ -72,10 +72,7 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			Method method = handlerMethod.getMethod();
 			Login login = method.getAnnotation(Login.class);
-			if (login == null) {
-				// 如果没有 Login 注解，代表该方法不需要拦截
-				return true;
-			} else {
+			if (login != null) {
 				if (login.action() == Action.Skip) {
 					/**
 					 * 忽略拦截

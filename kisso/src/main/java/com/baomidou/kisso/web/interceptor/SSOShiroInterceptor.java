@@ -93,10 +93,7 @@ public class SSOShiroInterceptor extends SSOPermissionInterceptor {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			Method method = handlerMethod.getMethod();
 			Permission pm = method.getAnnotation(Permission.class);
-			if ( pm == null ) {
-				//不打注解， 忽略拦截
-				return true;
-			} else {
+			if ( pm != null ) {
 				if ( pm.action() == Action.Skip ) {
 					/**
 					 * 忽略拦截
