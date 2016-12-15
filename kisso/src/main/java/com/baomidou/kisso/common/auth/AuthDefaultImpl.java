@@ -10,7 +10,6 @@ import com.baomidou.kisso.Token;
  */
 public class AuthDefaultImpl implements SSOAuthorization {
 
-	@Override
 	public boolean isPermitted(Token token, String permission) {
 		return true;
 	}
