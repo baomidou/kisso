@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.baomidou</groupId>
 	<artifactId>kisso</artifactId>
-	<version>3.6.12</version>
+	<version>3.6.14</version>
 	<packaging>jar</packaging>
 
 	<name>kisso</name>
@@ -47,6 +47,13 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency> 
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -84,7 +91,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- shiro -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
