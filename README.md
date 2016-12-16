@@ -13,6 +13,11 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 > 技术讨论 QQ 群 492238239[（有钱的捧个钱场【点击捐赠】, 没钱的捧个人场）](http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png)
 
 
+# 其他开源项目 | Other Project
+
+- [Mybatis-Plus CRUD 快速开发框架](http://git.oschina.net/baomidou/mybatis-plus)
+- [基于Hibernate扩展 Hibernate-Plus](http://git.oschina.net/baomidou/hibernate-plus)
+
 http://baomidou.com/
 
 http://www.oschina.net/p/kisso
