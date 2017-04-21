@@ -54,6 +54,10 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 	 */
 	private String illegalUrl;
 
+	/**
+	 * 无注解情况下，设置为true，不进行期限验证
+	 */
+	private boolean nothingAnnotationPass = false;
 
 	/**
 	 * <p>
@@ -125,6 +129,13 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 				 */
 				return true;
 			}
+		} else {
+			if (nothingAnnotationPass) {
+				/**
+				 * 无注解情况下，设置为true，不进行期限验证
+				 */
+				return true;
+			}
 		}
 		/*
 		 * 非法访问
@@ -168,6 +179,7 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 
 	public void setAuthorization( SSOAuthorization authorization ) {
 		this.authorization = authorization;
+		SSOConfig.getInstance().setAuthorization(authorization);
 	}
 
 
@@ -178,6 +190,16 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 
 	public void setIllegalUrl( String illegalUrl ) {
 		this.illegalUrl = illegalUrl;
+	}
+
+
+	public boolean isNothingAnnotationPass() {
+		return nothingAnnotationPass;
+	}
+
+
+	public void setNothingAnnotationPass(boolean nothingAnnotationPass) {
+		this.nothingAnnotationPass = nothingAnnotationPass;
 	}
 
 }
