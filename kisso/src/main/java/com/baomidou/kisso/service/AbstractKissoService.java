@@ -34,7 +34,7 @@ import com.baomidou.kisso.common.util.RandomUtil;
  * <p>
  * SSO 单点登录服务抽象实现类
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2015-12-03
  */
@@ -45,7 +45,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * <p>
 	 * 从 Cookie 解密 token 使用场景，拦截器，非拦截器建议使用 attrToken 减少二次解密
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 * @return Token {@link Token}
@@ -56,7 +56,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 
 	/**
 	 * 在线人数（总数）
-	 * 
+	 *
 	 * @param request
 	 *            查询请求
 	 * @return
@@ -70,12 +70,12 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		}
 		return null;
 	}
-	
+
 	/**
 	 * <p>
 	 * 踢出 指定用户 ID 的登录用户，退出当前系统。
 	 * </p>
-	 * 
+	 *
 	 * @param userId
 	 * 				用户ID
 	 * @return
@@ -89,17 +89,17 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * 当前访问域下设置登录Cookie
-	 * 
+	 *
 	 * <p>
 	 * request.setAttribute(SSOConfig.SSO_COOKIE_MAXAGE, -1);
 	 * 可以设置 Cookie 超时时间 ，默认读取配置文件数据 。
 	 * -1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 */
@@ -108,9 +108,9 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	}
 
 	/**
-	 * 
+	 *
 	 * 当前访问域下设置登录Cookie 设置防止伪造SESSIONID攻击
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 */
@@ -121,7 +121,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 
 	/**
 	 * 清除登录状态
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return boolean true 成功, false 失败
@@ -129,17 +129,17 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	public boolean clearLogin( HttpServletRequest request, HttpServletResponse response ) {
 		return logout(request, response, config.getCache());
 	}
-	
+
 	/**
 	 * <p>
 	 * 重新登录 退出当前登录状态、重定向至登录页.
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 */
 	public void clearRedirectLogin( HttpServletRequest request, HttpServletResponse response ) throws IOException {
-		
+
 		/* 清理当前登录状态 */
 		clearLogin(request, response);
 
@@ -148,12 +148,17 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		if ( "".equals(loginUrl) ) {
 			response.getWriter().write("sso.properties Must include: sso.login.url");
 		} else {
+			// 通知浏览器重定向到登录入口
 			String retUrl = HttpUtil.getQueryString(request, config.getEncoding());
 			logger.fine("loginAgain redirect pageUrl.." + retUrl);
-			response.sendRedirect(HttpUtil.encodeRetURL(loginUrl, config.getParamReturl(), retUrl));
+			StringBuilder login = new StringBuilder();
+			login.append("<script>");
+			login.append("parent.location.href='").append(HttpUtil.encodeRetURL(loginUrl, config.getParamReturl(), retUrl)).append("';");
+			login.append("</script>");
+			response.getWriter().append(login.toString());
 		}
 	}
-	
+
 	/**
 	 * SSO 退出登录
 	 */
@@ -178,12 +183,12 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * userId 查询绑定关系进行登录，通知代理页面重定向到访问页面。
 	 * </p>
 	 */
-	
+
 	/**
 	 * <p>
 	 * 生成跨域询问票据
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param privateKey
@@ -199,17 +204,15 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		return at;
 	}
 
-	
+
 	/**
 	 * <p>
 	 * 生成跨域回复票据
 	 * </p>
-	 * 
-	 * @param authToken
-	 *            跨域信任 Token
-	 * @param userId
-	 *            用户ID
-	 * @param askTxt
+	 *
+	 * @param request
+	 *            当前请求
+	 * @param askData
 	 *            询问密文
 	 * @return AuthToken {@link AuthToken}
 	 */
@@ -241,11 +244,9 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * <p>
 	 * 验证回复密文，成功! 返回 绑定用户ID 等信息
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
-	 * @param authToken
-	 *            跨域信任 Token
 	 * @param replyTxt
 	 *            回复密文
 	 * @param atPk
@@ -281,10 +282,10 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 设置跨域信任 Cookie
-	 * 
+	 *
 	 * @param authToken
 	 *            跨域信任 Token
 	 */
@@ -297,7 +298,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 			logger.severe("AuthToken encryptCookie error.\n" + e.toString());
 		}
 	}
-	
+
 	/**
 	 * <p>
 	 * 获取跨域信任临时 Cookie 保存的 AuthToken 票据
@@ -305,7 +306,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 	 * <p>
 	 * 验证存在并且 IP 地址正确，签名合法
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param publicKey
 	 *            RSA 公钥（业务系统公钥验证签名合法）
