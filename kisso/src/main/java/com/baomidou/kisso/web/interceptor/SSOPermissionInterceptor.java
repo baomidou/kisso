@@ -36,7 +36,7 @@ import com.baomidou.kisso.common.util.HttpUtil;
  * <p>
  * kisso 权限拦截器（必须在 kisso 拦截器之后执行）
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2016-04-03
  */
@@ -55,7 +55,7 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 	private String illegalUrl;
 
 	/**
-	 * 无注解情况下，设置为true，不进行期限验证
+	 * 无注解情况下，设置为true，不进行权限验证
 	 */
 	private boolean nothingAnnotationPass = false;
 
@@ -107,7 +107,7 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 		 */
 		if ( SSOConfig.getInstance().isPermissionUri() ) {
 			String uri = request.getRequestURI();
-			if ( uri == null || authorization.isPermitted(token, uri) ) {
+			if ( uri == null || this.getAuthorization().isPermitted(token, uri) ) {
 				return true;
 			}
 		}
@@ -123,19 +123,17 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 				 * 忽略拦截
 				 */
 				return true;
-			} else if ( !"".equals(pm.value()) && authorization.isPermitted(token, pm.value()) ) {
+			} else if ( !"".equals(pm.value()) && this.getAuthorization().isPermitted(token, pm.value()) ) {
 				/**
 				 * 权限合法
 				 */
 				return true;
 			}
-		} else {
-			if (nothingAnnotationPass) {
-				/**
-				 * 无注解情况下，设置为true，不进行期限验证
-				 */
-				return true;
-			}
+		} else if (this.isNothingAnnotationPass()) {
+			/**
+			 * 无注解情况下，设置为true，不进行期限验证
+			 */
+			return true;
 		}
 		/*
 		 * 非法访问
@@ -145,11 +143,11 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 无权限访问处理，默认返回 403  ，illegalUrl 非空重定向至该地址
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
@@ -162,10 +160,10 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
 			HttpUtil.ajaxStatus(response, 403, "ajax Unauthorized access.");
 		} else {
 			/* 正常 HTTP 请求 */
-			if ( illegalUrl == null || "".equals(illegalUrl) ) {
+			if ( this.getIllegalUrl() == null || "".equals(this.getIllegalUrl()) ) {
 				response.sendError(403, "Forbidden");
 			} else {
-				response.sendRedirect(illegalUrl);
+				response.sendRedirect(this.getIllegalUrl());
 			}
 		}
 		return false;
