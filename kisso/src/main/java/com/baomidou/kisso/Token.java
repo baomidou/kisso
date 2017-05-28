@@ -21,7 +21,7 @@ import java.io.Serializable;
  * <p>
  * SSO 票据顶级父类
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2015-12-29
  */
@@ -47,7 +47,7 @@ public class Token implements Serializable {
 
 	/* 创建 token 当前系统时间 */
 	private long time = System.currentTimeMillis();
-	
+
 	/**
 	 * Token 状态标示
 	 * <p>
@@ -56,21 +56,21 @@ public class Token implements Serializable {
 	 */
 	private int flag = FLAG_NORMAL;
 
-	
+
 	public String getApp() {
 		return app;
 	}
-	
+
 	public void setApp( String app ) {
 		this.app = app;
 	}
-	
-	
+
+
 	public Serializable getId() {
 		return id;
 	}
 
-	
+
 	public void setId( Serializable id ) {
 		this.id = id;
 	}
@@ -98,7 +98,7 @@ public class Token implements Serializable {
 	public void setFlag(int flag) {
 		this.flag = flag;
 	}
-	
+
 	public long getTime() {
 		return time;
 	}
@@ -106,12 +106,12 @@ public class Token implements Serializable {
 	public void setTime( long time ) {
 		this.time = time;
 	}
-	
+
 	/**
 	 * <p>
 	 * Token转为JSON格式
 	 * </p>
-	 * 
+	 *
 	 * @return JSON格式Token值
 	 */
 	public String jsonToken() {
@@ -122,7 +122,7 @@ public class Token implements Serializable {
 	 * <p>
 	 * JSON格式Token值转为Token对象
 	 * </p>
-	 * 
+	 *
 	 * @param jsonToken
 	 *            JSON格式Token值
 	 * @return Token对象
@@ -130,12 +130,12 @@ public class Token implements Serializable {
 	public Token parseToken(String jsonToken) {
 		return SSOConfig.getInstance().getParser().parseObject(jsonToken, this.getClass());
 	}
-	
+
 	/**
 	 * <p>
 	 * AuthToken 转为字符串密文
 	 * </p>
-	 * 
+	 *
 	 * @return AuthToken 密文信息 {@link AuthToken}
 	 */
 	public String encryptAuthToken() {
@@ -147,7 +147,7 @@ public class Token implements Serializable {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 生成 Token 缓存主键
 	 */
@@ -157,5 +157,4 @@ public class Token implements Serializable {
 		}
 		return SSOConfig.toCacheKey(this.getUid());
 	}
-	
 }

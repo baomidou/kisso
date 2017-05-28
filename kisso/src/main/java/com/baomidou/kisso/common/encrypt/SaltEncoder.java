@@ -24,7 +24,7 @@ import com.baomidou.kisso.SSOConfig;
  * <p>
  * 盐值加密工具类（常用登录密码加密）
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2016-01-20
  */
@@ -54,11 +54,11 @@ public class SaltEncoder {
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * md5 盐值加密字符串
 	 * </p>
-	 * 
+	 *
 	 * @param salt
 	 * 				盐值
 	 * @param rawText
@@ -68,13 +68,13 @@ public class SaltEncoder {
 	public static String md5SaltEncode( String salt, String rawText ) {
 		return new SaltEncoder(salt, MD5.ALGORITHM).encode(rawText);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 判断md5 盐值加密内容是否正确
 	 * </p>
-	 * 
+	 *
 	 * @param salt
 	 * 				盐值
 	 * @param encodeText
@@ -88,19 +88,19 @@ public class SaltEncoder {
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 字符串盐值加密
 	 * </p>
-	 * 
+	 *
 	 * @param rawText
 	 *            需要加密的字符串
 	 * @return
 	 */
 	public String encode( String rawText ) {
 		try {
-			MessageDigest md = MessageDigest.getInstance(algorithm);
-			//加密后的字符串  
+			MessageDigest md = MessageDigest.getInstance(this.getAlgorithm());
+			//加密后的字符串
 			return Byte2Hex.byte2Hex(md.digest(mergeRawTextAndSalt(rawText).getBytes(SSOConfig.getSSOEncoding())));
 		} catch ( Exception e ) {
 			logger.severe(" SaltEncoder encode exception.");
@@ -111,11 +111,11 @@ public class SaltEncoder {
 
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 判断加密内容是否正确
 	 * </p>
-	 * 
+	 *
 	 * @param encodeText
 	 * 				加密后的文本内容
 	 * @param rawText
@@ -127,11 +127,11 @@ public class SaltEncoder {
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 合并混淆盐值至加密内容
 	 * </p>
-	 * 
+	 *
 	 * @param rawText
 	 * 				需要加密的字符串
 	 * @return
@@ -141,13 +141,13 @@ public class SaltEncoder {
 			rawText = "";
 		}
 
-		if ( this.salt == null || "".equals(this.salt) ) {
+		if ( this.getSalt() == null || "".equals(this.getSalt()) ) {
 			return rawText;
 		} else {
 			StringBuffer mt = new StringBuffer();
 			mt.append(rawText);
 			mt.append(SSOConfig.CUT_SYMBOL);
-			mt.append(this.salt);
+			mt.append(this.getSalt());
 			return mt.toString();
 		}
 	}

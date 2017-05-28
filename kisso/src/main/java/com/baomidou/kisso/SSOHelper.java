@@ -28,7 +28,7 @@ import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
  * <p>
  * SSO 帮助类
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2016-01-21
  */
@@ -58,9 +58,9 @@ public class SSOHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * 当前登录人总数（合计多少个）
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -73,22 +73,22 @@ public class SSOHelper {
 	 * ------------------------------- 登录相关方法 -------------------------------
 	 */
 	/**
-	 * 
-	 * 设置加密 Cookie（登录验证成功） 
-	 * 
+	 *
+	 * 设置加密 Cookie（登录验证成功）
+	 *
 	 * <p>
 	 * 最后一个参数 true 销毁当前JSESSIONID. 创建可信的 JSESSIONID 防止伪造 SESSIONID 攻击
 	 * </p>
 	 * <p>
-	 * 最后一个参数 false 只设置 cookie 
+	 * 最后一个参数 false 只设置 cookie
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * request.setAttribute(SSOConfig.SSO_COOKIE_MAXAGE, maxAge);<br>
 	 * 可以动态设置 Cookie maxAge 超时时间 ，优先于配置文件的设置，无该参数 - 默认读取配置文件数据 。<br>
 	 * maxAge 定义：-1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param token
@@ -104,21 +104,21 @@ public class SSOHelper {
 		}
 	}
 
-	
+
 	/**
 	 * ------------------------------- 客户端相关方法 -------------------------------
 	 */
 	/**
-	 * 
+	 *
 	 * 获取当前请求 token
-	 * 
+	 *
 	 * <p>
 	 * 该方法直接从 cookie 中解密获取 token, 常使用在登录系统及拦截器中使用 getToken(request)
 	 * </p>
 	 * <p>
 	 * 如果该请求在登录拦截器之后请使用 attrToken(request) 防止二次解密
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -126,16 +126,16 @@ public class SSOHelper {
 	public static <T extends Token> T getToken( HttpServletRequest request ) {
 		return (T) getKissoService().getToken(request);
 	}
-	
+
 
 	/**
-	 * 
+	 *
 	 * 从请求中获取 token 通过登录拦截器之后使用
-	 * 
+	 *
 	 * <p>
 	 * 该数据为登录拦截器放入 request 中，防止二次解密
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * 				访问请求
 	 * @return
@@ -145,9 +145,9 @@ public class SSOHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * 退出登录， 并且跳至 sso.properties 配置的属性 sso.logout.url 地址
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @throws IOException
@@ -157,13 +157,13 @@ public class SSOHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * 清理当前登录状态
-	 * 
+	 *
 	 * <p>
 	 * 清理 Cookie、缓存、统计、等数据
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
@@ -173,11 +173,11 @@ public class SSOHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 退出重定向登录页，跳至 sso.properties 配置的属性 sso.login.url 地址
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @throws IOException
@@ -187,11 +187,11 @@ public class SSOHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 获取 token 的缓存主键
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * 				当前请求
 	 * @return
@@ -199,13 +199,13 @@ public class SSOHelper {
 	public static String getTokenCacheKey( HttpServletRequest request ) {
 		return getToken(request).toCacheKey();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 获取 token 的缓存主键
 	 * </p>
-	 * 
+	 *
 	 * @param userId
 	 * 				用户ID
 	 * @return
@@ -218,7 +218,7 @@ public class SSOHelper {
 	 * <p>
 	 * 踢出 指定用户 ID 的登录用户，退出当前系统。
 	 * </p>
-	 * 
+	 *
 	 * @param userId
 	 * 				用户ID
 	 * @return
@@ -234,7 +234,7 @@ public class SSOHelper {
 	 * <p>
 	 * 生成跨域询问票据
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param privateKey
@@ -249,12 +249,9 @@ public class SSOHelper {
 	 * <p>
 	 * 生成跨域回复票据
 	 * </p>
-	 * 
-	 * @param authToken
-	 *            跨域信任 Token
-	 * @param userId
-	 *            用户ID
-	 * @param askTxt
+	 *
+	 * @param request
+	 * @param askData
 	 *            询问密文
 	 * @return AuthToken {@link AuthToken}
 	 */
@@ -267,12 +264,10 @@ public class SSOHelper {
 	 * <p>
 	 * 验证回复密文，成功! 返回 绑定用户ID 等信息
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
-	 * @param authToken
-	 *            跨域信任 Token
-	 * @param replyTxt
+	 * @param replyData
 	 *            回复密文
 	 * @param atPk
 	 *            RSA 公钥 (业务系统公钥，验证authToken签名)

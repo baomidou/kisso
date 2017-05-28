@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>
  * SSO 插件接口
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2016-02-24
  */
@@ -32,7 +32,7 @@ public abstract class SSOPlugin {
 	 * <p>
 	 * 登录时调用该方法
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
@@ -47,7 +47,7 @@ public abstract class SSOPlugin {
 	 * <p>
 	 * 用来验证 Token 合法性（例如 time 超时验证）
 	 * </p>
-	 * 
+	 *
 	 * @param token
 	 * 				登录票据
 	 * @return
@@ -61,11 +61,10 @@ public abstract class SSOPlugin {
 	 * <p>
 	 * 退出时调用该方法
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
 	 */
 	public abstract boolean logout( HttpServletRequest request, HttpServletResponse response );
-
 }

@@ -31,7 +31,7 @@ import com.baomidou.kisso.SSOToken;
  * 使用 JSP 引用：<%@ taglib prefix="kisso" uri="http://kisso.baomidou.com/tags"%><br>
  * <kisso:hasPermission name="需要验证的内容">判断内容<kisso:hasPermission><br>
  * </p>
- * 
+ *
  * @author 441558032@qq.com
  * @Date 2016-12-15
  */
@@ -55,8 +55,8 @@ public class HasPermissionTag extends BodyTagSupport {
 		HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 		SSOToken token = SSOHelper.getToken(request);
 		// 如果 token 或者 name 为空
-		if (token != null && name != null && !"".equals(name.trim())) {
-			boolean result = SSOConfig.getInstance().getAuthorization().isPermitted(token, name);
+		if (token != null && this.getName() != null && !"".equals(this.getName().trim())) {
+			boolean result = SSOConfig.getInstance().getAuthorization().isPermitted(token, this.getName());
 			if (result) {
 				// 权限验证通过
 				// 返回此则执行标签body中内容，SKIP_BODY则不执行

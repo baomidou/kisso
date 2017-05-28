@@ -35,34 +35,34 @@ import com.baomidou.kisso.SSOConfig;
  * <p>
  * HTTP工具类
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2014-5-8
  */
 public class HttpUtil {
 
 	private static final Logger logger = Logger.getLogger("HttpUtil");
-	
+
 	/**
-	 * 
+	 *
 	 * 允许 JS 跨域设置
-	 * 
+	 *
 	 * <p>
 	 * <!-- 使用 nginx 注意在 nginx.conf 中配置 -->
-	 * 
+	 *
 	 * http {
   	 * 	......
      * 	 add_header Access-Control-Allow-Origin *;
      *  ......
-  	 * } 
+  	 * }
 	 * </p>
-	 * 
+	 *
 	 * <p>
-	 * 非 ngnix 下，如果该方法设置不管用、可以尝试增加下行代码。 
-	 * 
+	 * 非 ngnix 下，如果该方法设置不管用、可以尝试增加下行代码。
+	 *
 	 * response.setHeader("Access-Control-Allow-Origin", "*");
 	 * </p>
-	 * 
+	 *
 	 * @param response
 	 * 				响应请求
 	 */
@@ -74,11 +74,11 @@ public class HttpUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 判断请求是否为 AJAX
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * 				当前请求
 	 * @return
@@ -86,13 +86,13 @@ public class HttpUtil {
 	public static boolean isAjax( HttpServletRequest request ) {
 		return "XMLHttpRequest".equals(request.getHeader("X-Requested-With")) ? true : false;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * <p>
 	 * AJAX 设置 response 返回状态
 	 * </p>
-	 * 
+	 *
 	 * @param response
 	 * @param status
 	 * 				HTTP 状态码
@@ -111,11 +111,11 @@ public class HttpUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 获取当前 URL 包含查询条件
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param encode
 	 *            URLEncoder编码格式
@@ -132,11 +132,11 @@ public class HttpUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * getRequestURL是否包含在URL之内
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @param url
 	 *            参数为以';'分割的URL字符串
@@ -161,7 +161,7 @@ public class HttpUtil {
 	 * <p>
 	 * URLEncoder 返回地址
 	 * </p>
-	 * 
+	 *
 	 * @param url
 	 *            跳转地址
 	 * @param retParam
@@ -178,14 +178,14 @@ public class HttpUtil {
 	 * <p>
 	 * URLEncoder 返回地址
 	 * </p>
-	 * 
+	 *
 	 * @param url
 	 *            跳转地址
 	 * @param retParam
 	 *            返回地址参数名
 	 * @param retUrl
 	 *            返回地址
-	 * @param Map
+	 * @param data
 	 *            携带参数
 	 * @return
 	 */
@@ -204,7 +204,7 @@ public class HttpUtil {
 			logger.severe("encodeRetURL error." + url);
 			e.printStackTrace();
 		}
-		
+
 		if (data != null) {
 			for (Map.Entry<String, String> entry : data.entrySet()) {
 				retStr.append("&").append(entry.getKey()).append("=").append(entry.getValue());
@@ -213,12 +213,12 @@ public class HttpUtil {
 
 		return retStr.toString();
 	}
-	
+
 	/**
 	 * <p>
 	 * URLDecoder 解码地址
 	 * </p>
-	 * 
+	 *
 	 * @param url
 	 *            解码地址
 	 * @return
@@ -228,7 +228,7 @@ public class HttpUtil {
 			return null;
 		}
 		String retUrl = "";
-		
+
 		try {
 			retUrl = URLDecoder.decode(url, SSOConfig.getSSOEncoding());
 		} catch (UnsupportedEncodingException e) {
@@ -243,7 +243,7 @@ public class HttpUtil {
 	 * <p>
 	 * GET 请求
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @return boolean
 	 */
@@ -258,7 +258,7 @@ public class HttpUtil {
 	 * <p>
 	 * POST 请求
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @return boolean
 	 */
@@ -268,13 +268,13 @@ public class HttpUtil {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 请求重定向至地址 location
 	 * </p>
-	 * 
+	 *
 	 * @param response
 	 * 				请求响应
 	 * @param location
@@ -293,7 +293,7 @@ public class HttpUtil {
 	 * <p>
 	 * 获取Request Playload 内容
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @return Request Playload 内容
 	 */
@@ -330,7 +330,7 @@ public class HttpUtil {
 	 * <p>
 	 * 获取当前完整请求地址
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 * @return 请求地址
 	 */

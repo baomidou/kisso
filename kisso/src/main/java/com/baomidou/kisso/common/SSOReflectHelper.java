@@ -32,7 +32,7 @@ import com.baomidou.kisso.exception.KissoException;
  * <p>
  * SSO 反射辅助类
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2015-12-05
  */
@@ -47,12 +47,12 @@ public class SSOReflectHelper {
 	private static SSOParser parser = null;
 
     private static SSOAuthorization authorization = null;
-    
+
 	/**
 	 * <p>
 	 * 反射获取自定义Token
 	 * </p>
-	 * 
+	 *
 	 * @return {@link Token}
 	 */
 	public static Token getConfigToken( String tokenClass ) {
@@ -81,7 +81,7 @@ public class SSOReflectHelper {
 	 * <p>
 	 * 反射获取自定义SSOParser
 	 * </p>
-	 * 
+	 *
 	 * @return {@link Token}
 	 */
 	public static SSOParser getConfigParser( String parserClass ) {
@@ -119,8 +119,8 @@ public class SSOReflectHelper {
 	 * <p>
 	 * 反射获取自定义Encrypt
 	 * </p>
-	 * 
-	 * @return {@link Encrypt}
+	 *
+	 * @return {@link SSOEncrypt}
 	 */
 	public static SSOEncrypt getConfigEncrypt( String encryptClass, String encryptAlgorithm) {
 
@@ -157,7 +157,7 @@ public class SSOReflectHelper {
 	 * <p>
 	 * 反射获取自定义SSOCache
 	 * </p>
-	 * 
+	 *
 	 * @return {@link SSOCache}
 	 */
 	public static SSOCache getConfigCache( String cacheClass ) {
@@ -190,7 +190,7 @@ public class SSOReflectHelper {
 
 	/**
 	 * 反射获取自定义SSOStatistic
-	 * 
+	 *
 	 * @return {@link SSOStatistic}
 	 */
 	public static SSOStatistic getConfigStatistic( String encryptClass ) {
@@ -224,7 +224,7 @@ public class SSOReflectHelper {
 
 	/**
 	 * 反射获取自定义SSOAuthorization
-	 * 
+	 *
 	 * @return {@link SSOAuthorization}
 	 */
 	public static SSOAuthorization getAuthorization(String authorizationClass) {
@@ -254,5 +254,5 @@ public class SSOReflectHelper {
 	public static void setAuthorization(SSOAuthorization authorization) {
 		SSOReflectHelper.authorization = authorization;
 	}
-	
+
 }

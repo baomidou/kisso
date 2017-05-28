@@ -22,18 +22,18 @@ import java.util.UUID;
  * <p>
  * 随机数工具类
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2014-5-9
  */
 public class RandomUtil {
 
 	/**
-	 * 
+	 *
 	 * <p>
 	 * 生产长度为length的随机字母数字混合字符串
 	 * </p>
-	 * 
+	 *
 	 * @param length
 	 *            指定字符串长度
 	 * @return
@@ -64,9 +64,9 @@ public class RandomUtil {
 	 * </p>
 	 */
 	public static String get32UUID() {
-		return UUID.randomUUID().toString().replace("-", "");
+		return getUUID().replace("-", "");
 	}
-	
+
 	/**
 	 * <p>
 	 * 获取唯一 UUID
@@ -75,5 +75,4 @@ public class RandomUtil {
 	public static String getUUID() {
 		return UUID.randomUUID().toString();
 	}
-
 }

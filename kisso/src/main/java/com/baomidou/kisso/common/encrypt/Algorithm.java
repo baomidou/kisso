@@ -19,13 +19,16 @@ package com.baomidou.kisso.common.encrypt;
  * <p>
  * 算法类型枚举类
  * </p>
- * 
+ *
  * @author hubin
  * @Date 2016-01-20
  */
 public enum Algorithm {
-	DES("DES", "DES encrypt"), AES("AES", "AES encrypt"), BLOWFISH("BLOWFISH", "Blowfish encrypt"), RC2("RC2",
-			"RC2 encrypt"), RC4("RC4", "RC4 encrypt");
+	DES("DES", "DES encrypt"),
+	AES("AES", "AES encrypt"),
+	BLOWFISH("BLOWFISH", "Blowfish encrypt"),
+	RC2("RC2", "RC2 encrypt"),
+	RC4("RC4", "RC4 encrypt");
 
 	/** 主键 */
 	private final String key;
