@@ -152,7 +152,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 			String retUrl = HttpUtil.getQueryString(request, config.getEncoding());
 			logger.fine("loginAgain redirect pageUrl.." + retUrl);
 			StringBuilder login = new StringBuilder();
-			login.append("<script>");
+			login.append("<script type='text/javascript'>");
 			login.append("parent.location.href='").append(HttpUtil.encodeRetURL(loginUrl, config.getParamReturl(), retUrl)).append("';");
 			login.append("</script>");
 			response.getWriter().append(login.toString());
