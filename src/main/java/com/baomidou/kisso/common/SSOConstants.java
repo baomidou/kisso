@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2017-2020, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,19 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso;
-
-import com.baomidou.kisso.security.token.Token;
+package com.baomidou.kisso.common;
 
 /**
  * <p>
- * SSO 权限授权接口
+ * SSO 定义常量
  * </p>
  *
  * @author hubin
- * @Date 2017-07-17
+ * @since 2017-07-17
  */
-public interface SSOAuthorization {
+public interface SSOConstants {
 
-    boolean isPermitted(Token token, String permission);
+    String TOKEN_USER_ID = "id";
+    String TOKEN_USER_IP = "ip";
+    String TOKEN_USER_AGENT = "ua";
+    String TOKEN_CREATE_TIME = "ct";
+    String SCOPES = "scopes";
+    int TOKEN_FLAG_NORMAL = 0; // 正常
+    int TOKEN_FLAG_CACHE_SHUT = 1; // 缓存宕机
+
+
 }

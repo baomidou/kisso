@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.web.filter;
+package com.baomidou.kisso.web.waf;
 
 import java.io.IOException;
 import java.util.logging.Logger;

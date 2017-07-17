@@ -31,7 +31,7 @@ public class JwtHeaderTokenExtractor implements SSOTokenExtractor {
 
     @Override
     public String extract(String header) {
-        if (null != header && !"".equals(header)) {
+        if (null == header || "".equals(header)) {
             throw new KissoException("Authorization header cannot be blank!");
         }
 

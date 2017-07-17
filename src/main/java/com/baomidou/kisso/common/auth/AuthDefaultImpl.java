@@ -16,7 +16,6 @@
 package com.baomidou.kisso.common.auth;
 
 import com.baomidou.kisso.SSOAuthorization;
-import com.baomidou.kisso.Token;
 
 /**
  * <p>

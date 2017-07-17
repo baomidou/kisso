@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2017-2020, hubin (jobob@qq.com).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -15,7 +15,7 @@
  */
 package com.baomidou.kisso.security.token;
 
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 
 /**
  * <p>
@@ -25,22 +25,24 @@ import io.jsonwebtoken.Claims;
  * @author hubin
  * @since 2017-07-17
  */
-public final class JwtAccessToken implements SSOToken {
+public class JwtAccessToken implements Token {
 
-    private final String rawToken;
-//    @JsonIgnore
-    private Claims claims;
+    private String token;
 
-    protected JwtAccessToken(final String token, Claims claims) {
-        this.rawToken = token;
-        this.claims = claims;
+    public JwtAccessToken() {
+        // TO DO NOTHING
     }
 
+    public JwtAccessToken(JwtBuilder jwtBuilder) {
+        this.token = jwtBuilder.compact();
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Override
     public String getToken() {
-        return this.rawToken;
-    }
-
-    public Claims getClaims() {
-        return claims;
+        return this.token;
     }
 }

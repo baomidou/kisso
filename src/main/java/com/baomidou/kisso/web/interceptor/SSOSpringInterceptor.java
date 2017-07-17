@@ -26,7 +26,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
-import com.baomidou.kisso.Token;
 import com.baomidou.kisso.annotation.Action;
 import com.baomidou.kisso.annotation.Login;
 import com.baomidou.kisso.common.util.HttpUtil;

@@ -27,6 +27,6 @@ public enum SSOScopes {
     REFRESH_TOKEN;
 
     public String authority() {
-        return "ROLE_" + this.name();
+        return "SSO_" + this.name();
     }
 }

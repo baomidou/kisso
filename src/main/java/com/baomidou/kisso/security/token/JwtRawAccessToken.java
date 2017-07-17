@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.baomidou.kisso.exception.KissoException;
-import com.baomidou.kisso.exception.SSOTokenExpiredException;
+import com.baomidou.kisso.exception.ExpiredTokenException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -37,7 +37,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
  * @author hubin
  * @since 2017-07-17
  */
-public class JwtRawAccessToken implements SSOToken {
+public class JwtRawAccessToken implements Token {
 
     private static Logger logger = LoggerFactory.getLogger(JwtRawAccessToken.class);
 
@@ -51,7 +51,7 @@ public class JwtRawAccessToken implements SSOToken {
      * Parses and validates JWT Token signature.
      *
      * @throws KissoException
-     * @throws SSOTokenExpiredException
+     * @throws ExpiredTokenException
      */
     public Jws<Claims> parseClaims(String signingKey) {
         try {
@@ -61,7 +61,7 @@ public class JwtRawAccessToken implements SSOToken {
             throw new KissoException("Invalid JWT token: ", ex);
         } catch (ExpiredJwtException expiredEx) {
             logger.info("JWT Token is expired", expiredEx);
-            throw new SSOTokenExpiredException(this, "JWT Token expired", expiredEx);
+            throw new ExpiredTokenException(this, "JWT Token expired", expiredEx);
         }
     }
 

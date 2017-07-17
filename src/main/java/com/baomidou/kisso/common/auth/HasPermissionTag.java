@@ -21,7 +21,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
-import com.baomidou.kisso.SSOToken;
 
 /**
  * <p>

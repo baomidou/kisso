@@ -15,7 +15,7 @@
  */
 package com.baomidou.kisso.exception;
 
-import com.baomidou.kisso.security.token.SSOToken;
+import com.baomidou.kisso.security.token.Token;
 
 /**
  * <p>
@@ -25,17 +25,17 @@ import com.baomidou.kisso.security.token.SSOToken;
  * @author hubin
  * @since 2017-07-17
  */
-public class SSOTokenExpiredException extends KissoException {
+public class ExpiredTokenException extends KissoException {
 
     private static final long serialVersionUID = -5959543783324224864L;
 
-    private SSOToken token;
+    private Token token;
 
-    public SSOTokenExpiredException(String msg) {
+    public ExpiredTokenException(String msg) {
         super(msg);
     }
 
-    public SSOTokenExpiredException(SSOToken token, String msg, Throwable t) {
+    public ExpiredTokenException(Token token, String msg, Throwable t) {
         super(msg, t);
         this.token = token;
     }

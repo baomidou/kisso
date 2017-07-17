@@ -25,6 +25,8 @@ import com.baomidou.kisso.common.SSOReflectHelper;
 import com.baomidou.kisso.common.encrypt.SSOEncrypt;
 import com.baomidou.kisso.common.parser.SSOParser;
 import com.baomidou.kisso.exception.KissoException;
+import com.baomidou.kisso.security.token.SSOToken;
+import com.baomidou.kisso.security.token.Token;
 
 /**
  * <p>
@@ -169,8 +171,6 @@ public class SSOConfig {
 
 	/**
 	 * SSO 配置工具类
-	 * 
-	 * @return {@link PropertiesUtil}
 	 */
 	public static SSOProperties getSSOProperties() {
 		return SSO_CONFIG.getProperties();
@@ -469,47 +469,15 @@ public class SSOConfig {
 	/**
 	 * 自定义 Token Class
 	 */
-	public Token getToken() {
+	public SSOToken getSSOToken() {
 		if (properties == null) {
-			return SSOReflectHelper.getConfigToken(tokenClass);
+			return SSOReflectHelper.getConfigSSOToken(tokenClass);
 		}
-		return SSOReflectHelper.getConfigToken(properties.get("sso.token.class", ""));
+		return SSOReflectHelper.getConfigSSOToken(properties.get("sso.token.class", ""));
 	}
 
 	public void setTokenClass(String tokenClass) {
 		this.tokenClass = tokenClass;
-	}
-
-	/**
-	 * 自定义 SSOParser Class
-	 */
-	public SSOParser getParser() {
-		if (properties == null) {
-			return SSOReflectHelper.getConfigParser(null);
-		}
-		return SSOReflectHelper.getConfigParser(properties.get("sso.parser.class", ""));
-	}
-
-	public void setParser(SSOParser parser) {
-		if (parser != null) {
-			SSOReflectHelper.setConfigParser(parser);
-		}
-	}
-
-	/**
-	 * 自定义 SSOEncrypt Class
-	 */
-	public SSOEncrypt getEncrypt() {
-		if (properties == null) {
-			return SSOReflectHelper.getConfigEncrypt(null, this.getEncryptAlgorithm());
-		}
-		return SSOReflectHelper.getConfigEncrypt(properties.get("sso.encrypt.class", ""), this.getEncryptAlgorithm());
-	}
-
-	public void setEncrypt(SSOEncrypt encrypt) {
-		if (encrypt != null) {
-			SSOReflectHelper.setConfigEncrypt(encrypt);
-		}
 	}
 
 	/**
@@ -546,22 +514,6 @@ public class SSOConfig {
 
 	public void setCacheExpires(int cacheExpires) {
 		this.cacheExpires = cacheExpires;
-	}
-
-	/**
-	 * 自定义 SSOStatistic Class
-	 */
-	public SSOStatistic getStatistic() {
-		if (properties == null) {
-			return SSOReflectHelper.getConfigStatistic(null);
-		}
-		return SSOReflectHelper.getConfigStatistic(properties.get("sso.statistic.class", ""));
-	}
-
-	public void setStatistic(SSOStatistic statistic) {
-		if (statistic != null) {
-			SSOReflectHelper.setConfigStatistic(statistic);
-		}
 	}
 
 	/**

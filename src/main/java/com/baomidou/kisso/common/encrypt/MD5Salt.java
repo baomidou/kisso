@@ -28,7 +28,7 @@ import com.baomidou.kisso.SSOConfig;
  * @author hubin
  * @Date 2016-01-20
  */
-public class SaltEncoder {
+public class MD5Salt {
 
 	private static final Logger logger = Logger.getLogger("PasswordEncoder");
 
@@ -43,12 +43,12 @@ public class SaltEncoder {
 	private String algorithm;
 
 
-	protected SaltEncoder() {
+	protected MD5Salt() {
 		/* 保护 */
 	}
 
 
-	public SaltEncoder( String salt, String algorithm ) {
+	public MD5Salt(String salt, String algorithm ) {
 		this.salt = salt;
 		this.algorithm = algorithm;
 	}
@@ -66,7 +66,7 @@ public class SaltEncoder {
 	 * @return
 	 */
 	public static String md5SaltEncode( String salt, String rawText ) {
-		return new SaltEncoder(salt, MD5.ALGORITHM).encode(rawText);
+		return new MD5Salt(salt, MD5.ALGORITHM).encode(rawText);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SaltEncoder {
 	 * @return
 	 */
 	public static boolean md5SaltValid( String salt, String encodeText, String rawText ) {
-		return new SaltEncoder(salt, MD5.ALGORITHM).isValid(encodeText, rawText);
+		return new MD5Salt(salt, MD5.ALGORITHM).isValid(encodeText, rawText);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class SaltEncoder {
 			//加密后的字符串
 			return Byte2Hex.byte2Hex(md.digest(mergeRawTextAndSalt(rawText).getBytes(SSOConfig.getSSOEncoding())));
 		} catch ( Exception e ) {
-			logger.severe(" SaltEncoder encode exception.");
+			logger.severe(" MD5Salt encode exception.");
 			e.printStackTrace();
 		}
 		return null;
