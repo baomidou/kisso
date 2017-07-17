@@ -25,10 +25,8 @@ package com.baomidou.kisso.common;
  */
 public interface SSOConstants {
 
-    String TOKEN_USER_ID = "id";
     String TOKEN_USER_IP = "ip";
     String TOKEN_USER_AGENT = "ua";
-    String TOKEN_CREATE_TIME = "ct";
     String SCOPES = "scopes";
     int TOKEN_FLAG_NORMAL = 0; // 正常
     int TOKEN_FLAG_CACHE_SHUT = 1; // 缓存宕机

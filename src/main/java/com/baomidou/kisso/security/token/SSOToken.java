@@ -15,8 +15,7 @@
  */
 package com.baomidou.kisso.security.token;
 
-import java.io.Serializable;
-import java.util.UUID;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,68 +40,194 @@ import io.jsonwebtoken.Jwts;
 public class SSOToken extends JwtAccessToken {
 
     private int flag = SSOConstants.TOKEN_FLAG_NORMAL; // 状态标记
-    private Serializable id; // 主键
+    private String id; // 主键
     private String ip; // IP 地址
-    private long time; // 创建 token 当前系统时间
+    private String userAgent; // 请求头信息
+    private String subject;
+    private String audience;
+    private String issuer;
+    private String payload;
+    private Date expiration;
+    private Date notBefore;
+    private Date issuedAt;
+    private JwtBuilder jwtBuilder;
 
 
     public SSOToken() {
         // TO DO NOTHING
     }
 
-    public static SSOToken create(HttpServletRequest request, Serializable id, Claims claims) {
+    public static SSOToken create(Claims claims) {
         SSOToken ssoToken = new SSOToken();
-        ssoToken.setIp(IpHelper.getIpAddr(request));
-        ssoToken.setId(id);
-        ssoToken.setTime(System.currentTimeMillis());
-        claims.put(SSOConstants.TOKEN_USER_IP, ssoToken.getIp());
-        claims.put(SSOConstants.TOKEN_USER_AGENT, Browser.getUserAgent(request));
-        claims.put(SSOConstants.TOKEN_CREATE_TIME, ssoToken.getTime());
-        JwtBuilder jwtBuilder = Jwts.builder()
-                .setClaims(claims)
+//        claims.put(SSOConstants.TOKEN_USER_IP, ssoToken.getIp());
+//        claims.put(SSOConstants., Browser.getUserAgent(request));
+//        LocalDate currentTime = LocalDate.now();
+//        Date.from(currentTime.atZone(ZoneId.systemDefault()).toInstant());
+//        this.jwtBuilder = Jwts.builder()
+        ssoToken.setJwtBuilder(Jwts.builder().setClaims(claims));
+        return ssoToken;
+    }
+
+    public void build() {
+        if (null != this.getId()) {
+            this.jwtBuilder.setId(this.getId());
+        }
+        if (null != this.getIp()) {
+            this.jwtBuilder.claim(SSOConstants.TOKEN_USER_IP, this.getIp());
+        }
+        if (null != this.getUserAgent()) {
+            this.jwtBuilder.claim(SSOConstants.TOKEN_USER_AGENT, this.getUserAgent());
+        }
+        if (null != this.getSubject()) {
+            this.jwtBuilder.setSubject(this.getSubject());
+        }
+        if (null != this.getAudience()) {
+            this.jwtBuilder.setAudience(this.getAudience());
+        }
+        if (null != this.getIssuer()) {
+            this.jwtBuilder.setIssuer(this.getIssuer());
+        }
+        if (null != this.getPayload()) {
+            this.jwtBuilder.setPayload(this.getPayload());
+        }
+        if (null != this.getExpiration()) {
+            this.jwtBuilder.setExpiration(this.getExpiration());
+        }
+        if (null != this.getNotBefore()) {
+            this.jwtBuilder.setNotBefore(this.getNotBefore());
+        }
+        if (null != this.getIssuedAt()) {
+            this.jwtBuilder.setIssuedAt(this.getIssuedAt());
+        }
+
 //                .setIssuer(settings.getTokenIssuer())
-                .setId(UUID.randomUUID().toString());
-//                .setIssuedAt(Date.from(currentTime.atZone(ZoneId.systemDefault()).toInstant()))
 //                .setExpiration(Date.from(currentTime
 //                        .plusMinutes(settings.getRefreshTokenExpTime())
 //                        .atZone(ZoneId.systemDefault()).toInstant()))
 //                .signWith(SignatureAlgorithm.HS512, settings.getTokenSigningKey())
-        ssoToken.setToken(jwtBuilder.compact());
-        return ssoToken;
+        this.setToken(this.jwtBuilder.compact());
     }
 
     public int getFlag() {
         return flag;
     }
 
-    public void setFlag(int flag) {
+    public SSOToken setFlag(int flag) {
         this.flag = flag;
+        return this;
     }
 
-    public Serializable getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Serializable id) {
+    public SSOToken setId(Object id) {
+        this.id = String.valueOf(id);
+        return this;
+    }
+
+    public SSOToken setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getIp() {
         return ip;
     }
 
-    public void setIp(String ip) {
+    public SSOToken setIp(HttpServletRequest request) {
+        this.ip = IpHelper.getIpAddr(request);
+        return this;
+    }
+
+
+    public SSOToken setIp(String ip) {
         this.ip = ip;
+        return this;
     }
 
-    public long getTime() {
-        return time;
+    public String getUserAgent() {
+        return userAgent;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public SSOToken setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+        return this;
     }
 
+    public SSOToken setUserAgent(HttpServletRequest request) {
+        this.userAgent = Browser.getUserAgent(request);
+        return this;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public SSOToken setSubject(String subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    public String getAudience() {
+        return audience;
+    }
+
+    public SSOToken setAudience(String audience) {
+        this.audience = audience;
+        return this;
+    }
+
+    public String getIssuer() {
+        return issuer;
+    }
+
+    public SSOToken setIssuer(String issuer) {
+        this.issuer = issuer;
+        return this;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public SSOToken setPayload(String payload) {
+        this.payload = payload;
+        return this;
+    }
+
+    public Date getExpiration() {
+        return expiration;
+    }
+
+    public SSOToken setExpiration(Date expiration) {
+        this.expiration = expiration;
+        return this;
+    }
+
+    public Date getNotBefore() {
+        return notBefore;
+    }
+
+    public SSOToken setNotBefore(Date notBefore) {
+        this.notBefore = notBefore;
+        return this;
+    }
+
+    public Date getIssuedAt() {
+        return issuedAt;
+    }
+
+    public SSOToken setIssuedAt(Date issuedAt) {
+        this.issuedAt = issuedAt;
+        return this;
+    }
+
+
+    public SSOToken setJwtBuilder(JwtBuilder jwtBuilder) {
+        this.jwtBuilder = jwtBuilder;
+        return this;
+    }
 
     public String toCacheKey() {
         return SSOConfig.toCacheKey(this.getId());
@@ -115,9 +240,15 @@ public class SSOToken extends JwtAccessToken {
             return null;
         }
         SSOToken ssoToken = new SSOToken();
-        ssoToken.setId((Serializable) claims.get(SSOConstants.TOKEN_USER_ID));
+        ssoToken.setId(claims.getId());
         ssoToken.setIp(String.valueOf(claims.get(SSOConstants.TOKEN_USER_IP)));
-        ssoToken.setTime(Long.valueOf(String.valueOf(claims.get(SSOConstants.TOKEN_CREATE_TIME))));
+//        ssoToken.setUserAgent(claims)
+        ssoToken.setSubject(claims.getSubject());
+        ssoToken.setAudience(claims.getAudience());
+        ssoToken.setIssuer(claims.getIssuer());
+        ssoToken.setExpiration(claims.getExpiration());
+        ssoToken.setNotBefore(claims.getNotBefore());
+        ssoToken.setIssuedAt(claims.getIssuedAt());
         return ssoToken;
     }
 }
