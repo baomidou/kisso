@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+ext {
+    configuration = [
+        javaVersion = JavaVersion.VERSION_1_7
+    ]
+
+    libraries = [
+            springVersion = '4.3.9.RELEASE',
+    ]
+}
+
+group = 'com.baomidou'
+version = '2.1.0'
+
+description = "kisso is a lightweight Java SSO Framework and reusable components."
+
+sourceCompatibility = "${javaVersion}"
+targetCompatibility = "${javaVersion}"
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenLocal()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    jcenter()
+}
+
+dependencies {
+    // 未完
+    testCompileOnly("javax.servlet:servlet-api:2.5")
+    testCompileOnly("javax.servlet:jsp-api:2.0")
+}
