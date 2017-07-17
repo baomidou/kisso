@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2017-2020, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,30 +13,34 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.exception;
+package com.baomidou.kisso.security.token;
+
+import io.jsonwebtoken.Claims;
 
 /**
  * <p>
- * SSO 异常
+ * JWT 访问票据
  * </p>
- * 
+ *
  * @author hubin
- * @Date 2014-5-9
+ * @since 2017-07-17
  */
-public class KissoException extends RuntimeException {
+public final class JwtAccessToken implements SSOToken {
 
-	private static final long serialVersionUID = 1L;
+    private final String rawToken;
+//    @JsonIgnore
+    private Claims claims;
 
-	public KissoException(String message) {
-		super(message);
-	}
+    protected JwtAccessToken(final String token, Claims claims) {
+        this.rawToken = token;
+        this.claims = claims;
+    }
 
-	public KissoException(Throwable throwable) {
-		super(throwable);
-	}
+    public String getToken() {
+        return this.rawToken;
+    }
 
-	public KissoException(String message, Throwable throwable) {
-		super(message, throwable);
-	}
-
+    public Claims getClaims() {
+        return claims;
+    }
 }

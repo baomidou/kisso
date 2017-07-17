@@ -4,6 +4,18 @@
 	<groupId>com.baomidou</groupId>
 	<artifactId>kisso</artifactId>
 	<version>3.7.0</version>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<packaging>jar</packaging>
 
 	<name>kisso</name>
@@ -32,13 +44,20 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<slf4j-api.version>1.7.25</slf4j-api.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<fastjson.version>1.2.35</fastjson.version>
 		<spring.version>4.3.9.RELEASE</spring.version>
 		<shiro.version>1.4.0</shiro.version>
+		<jjwt.version>0.7.0</jjwt.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-api.version}</version>
+		</dependency>
 		<!-- servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -52,6 +71,12 @@
 			<artifactId>jsp-api</artifactId>
 			<version>2.0</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt.version}</version>
 		</dependency>
 
 		<!-- fastjson -->

@@ -1,42 +1,32 @@
 /**
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
- *
+ * Copyright (c) 2017-2020, hubin (jobob@qq.com).
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.exception;
+package com.baomidou.kisso.security;
 
 /**
  * <p>
- * SSO 异常
+ * SSO 授权作用范围
  * </p>
- * 
+ *
  * @author hubin
- * @Date 2014-5-9
+ * @since 2017-07-17
  */
-public class KissoException extends RuntimeException {
+public enum SSOScopes {
+    REFRESH_TOKEN;
 
-	private static final long serialVersionUID = 1L;
-
-	public KissoException(String message) {
-		super(message);
-	}
-
-	public KissoException(Throwable throwable) {
-		super(throwable);
-	}
-
-	public KissoException(String message, Throwable throwable) {
-		super(message, throwable);
-	}
-
+    public String authority() {
+        return "ROLE_" + this.name();
+    }
 }

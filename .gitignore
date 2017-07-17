@@ -1,4 +1,5 @@
-/target/
+# .ignore files
 /.settings/
 /.project
 /.classpath
+.idea

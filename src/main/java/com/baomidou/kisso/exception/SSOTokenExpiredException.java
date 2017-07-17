@@ -15,28 +15,32 @@
  */
 package com.baomidou.kisso.exception;
 
+import com.baomidou.kisso.security.token.SSOToken;
+
 /**
  * <p>
- * SSO 异常
+ * SSO Token 失效异常
  * </p>
- * 
+ *
  * @author hubin
- * @Date 2014-5-9
+ * @since 2017-07-17
  */
-public class KissoException extends RuntimeException {
+public class SSOTokenExpiredException extends KissoException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5959543783324224864L;
 
-	public KissoException(String message) {
-		super(message);
-	}
+    private SSOToken token;
 
-	public KissoException(Throwable throwable) {
-		super(throwable);
-	}
+    public SSOTokenExpiredException(String msg) {
+        super(msg);
+    }
 
-	public KissoException(String message, Throwable throwable) {
-		super(message, throwable);
-	}
+    public SSOTokenExpiredException(SSOToken token, String msg, Throwable t) {
+        super(msg, t);
+        this.token = token;
+    }
 
+    public String token() {
+        return this.token.getToken();
+    }
 }
