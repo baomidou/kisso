@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.web.savedrequest.SavedRequest;
 
 import com.baomidou.kisso.SSOConfig;
 
@@ -40,43 +39,13 @@ import com.baomidou.kisso.SSOConfig;
  * </p>
  *
  * @author hubin
- * @Date 2014-5-8
+ * @Date 2017-07-17
  */
 public class HttpUtil {
 
     private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
     public static final String XML_HTTP_REQUEST = "XMLHttpRequest";
     public static final String X_REQUESTED_WITH = "X-Requested-With";
-    public static final String CONTENT_TYPE = "Content-type";
-    public static final String CONTENT_TYPE_JSON = "application/json";
-
-    /**
-     * 允许 JS 跨域设置
-     * <p>
-     * <p>
-     * <!-- 使用 nginx 注意在 nginx.conf 中配置 -->
-     * <p>
-     * http {
-     * ......
-     * add_header Access-Control-Allow-Origin *;
-     * ......
-     * }
-     * </p>
-     * <p>
-     * <p>
-     * 非 ngnix 下，如果该方法设置不管用、可以尝试增加下行代码。
-     * <p>
-     * response.setHeader("Access-Control-Allow-Origin", "*");
-     * </p>
-     *
-     * @param response 响应请求
-     */
-    public static void allowJsCrossDomain(HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT, DELETE");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        response.setHeader("Access-Control-Max-Age", "3600");
-    }
 
     /**
      * <p>
@@ -88,18 +57,6 @@ public class HttpUtil {
      */
     public static boolean isAjax(HttpServletRequest request) {
         return XML_HTTP_REQUEST.equals(request.getHeader(X_REQUESTED_WITH));
-    }
-
-    /**
-     * <p>
-     * 判断请求是否为 JSON 格式
-     * </p>
-     *
-     * @param request 当前请求
-     * @return
-     */
-    public static boolean isContentTypeJson(SavedRequest request) {
-        return request.getHeaderValues(CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
     }
 
     /**

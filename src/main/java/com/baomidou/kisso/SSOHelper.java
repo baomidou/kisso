@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (jobob@qq.com).
+ * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,14 +16,12 @@
 package com.baomidou.kisso;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.kisso.common.util.RandomUtil;
 import com.baomidou.kisso.security.token.SSOToken;
-import com.baomidou.kisso.security.token.Token;
 import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
 
 /**
@@ -36,8 +34,7 @@ import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
  */
 public class SSOHelper {
 
-    protected static final Logger logger = Logger.getLogger("SSOHelper");
-    protected static ConfigurableAbstractKissoService kissService = null;
+    protected static ConfigurableAbstractKissoService kissService;
 
     /**
      * Kisso 服务初始化
@@ -80,7 +77,7 @@ public class SSOHelper {
      *
      * @param request
      * @param response
-     * @param ssoToken      SSO 票据
+     * @param ssoToken   SSO 票据
      * @param invalidate 销毁当前 JSESSIONID
      */
     public static void setSSOCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken, boolean invalidate) {

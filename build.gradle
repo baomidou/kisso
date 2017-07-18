@@ -30,11 +30,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    compileOnly("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
-    compileOnly("io.jsonwebtoken:jjwt:0.7.0")
-    compileOnly("com.alibaba:fastjson:1.2.35")
     compileOnly("javax.servlet:servlet-api:2.5")
     compileOnly("javax.servlet:jsp-api:2.0")
+    compileOnly("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compileOnly("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+    compile("io.jsonwebtoken:jjwt:0.7.0")
 
 }

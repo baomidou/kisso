@@ -15,10 +15,10 @@
  */
 package com.baomidou.kisso.web.handler;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.baomidou.kisso.common.util.HttpUtil;
 
 /**
  * <p>
@@ -48,7 +48,11 @@ public class KissoDefaultHandler implements SSOHandlerInterceptor {
 	 * </p>
 	 */
 	public boolean preTokenIsNullAjax(HttpServletRequest request, HttpServletResponse response) {
-		HttpUtil.ajaxStatus(response, 401, "prompt login exception, please login again.");
+		try {
+			response.getWriter().write("{code:\"ssoLogout\", msg:\"Have logout\"}");
+		} catch (IOException e) {
+			// to do nothing
+		}
 		return false;
 	}
 

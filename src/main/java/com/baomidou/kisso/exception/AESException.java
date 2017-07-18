@@ -27,7 +27,6 @@ public class AESException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public final static int OK = 0;
 	public final static int ERROR_VALIDATE_SIGNATURE = -10001;
 	public final static int ERROR_PARSE_XML = -10002;
 	public final static int ERROR_PARSE_JSON = -10003;

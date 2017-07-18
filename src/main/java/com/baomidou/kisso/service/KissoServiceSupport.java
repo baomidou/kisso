@@ -16,11 +16,13 @@
 package com.baomidou.kisso.service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
@@ -41,16 +43,8 @@ import com.baomidou.kisso.security.token.SSOToken;
  */
 public class KissoServiceSupport {
 
-    protected final Logger logger = Logger.getLogger("KissoServiceSupport");
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
     protected SSOConfig config;
-
-    public SSOConfig getConfig() {
-        return config;
-    }
-
-    public void setConfig(SSOConfig config) {
-        this.config = config;
-    }
 
     /**
      * ------------------------------- 客户端相关方法 -------------------------------
@@ -95,7 +89,7 @@ public class KissoServiceSupport {
             SSOToken cacheSSOToken = cache.get(cookieSSOToken.toCacheKey(), config.getCacheExpires());
             if (cacheSSOToken == null) {
                 /* 开启缓存且失效，返回 null 清除 Cookie 退出 */
-                logger.fine("cacheSSOToken SSOToken is null.");
+                logger.debug("cacheSSOToken SSOToken is null.");
                 return null;
             } else {
                 /*
@@ -105,13 +99,13 @@ public class KissoServiceSupport {
 				 */
                 if (cacheSSOToken.getFlag() != SSOConstants.TOKEN_FLAG_CACHE_SHUT) {
                     /*
-					 * 验证 cookie 与 cache 中 SSOToken 登录时间是否<br>
+                     * 验证 cookie 与 cache 中 SSOToken 登录时间是否<br>
 					 * 不一致返回 null
 					 */
                     if (cookieSSOToken.getTime() == cacheSSOToken.getTime()) {
                         return cacheSSOToken;
                     } else {
-                        logger.severe("Login time is not consistent or kicked out.");
+                        logger.debug("Login time is not consistent or kicked out.");
                         request.setAttribute(SSOConstants.SSO_KICK_FLAG, SSOConstants.SSO_KICK_USER);
                         return null;
                     }
@@ -140,7 +134,7 @@ public class KissoServiceSupport {
             /**
              * 未登录请求
              */
-            logger.fine("jsonSSOToken is null.");
+            logger.debug("jsonSSOToken is null.");
             return null;
         } else {
             return SSOToken.parser(uid.getValue());
@@ -222,7 +216,7 @@ public class KissoServiceSupport {
             String domain = config.getCookieDomain();
             cookie.setDomain(domain);
             if ("".equals(domain) || domain.contains("localhost")) {
-                logger.warning("if you can't login, please enter normal domain. instead:" + domain);
+                logger.warn("if you can't login, please enter normal domain. instead:" + domain);
             }
 
             /**

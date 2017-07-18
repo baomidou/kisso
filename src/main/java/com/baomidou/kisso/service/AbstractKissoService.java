@@ -181,19 +181,14 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 		/* 清理当前登录状态 */
         clearLogin(request, response);
 
-		/* redirect login page */
+        /* redirect login page */
         String loginUrl = config.getLoginUrl();
-        if ("".equals(loginUrl)) {
-            response.getWriter().write("sso.properties Must include: sso.login.url");
+        if ( "".equals(loginUrl) ) {
+            response.getWriter().write("{code:\"ssoLogin\", msg:\"Login request\"}");
         } else {
-            // 通知浏览器重定向到登录入口
             String retUrl = HttpUtil.getQueryString(request, config.getEncoding());
-            logger.fine("loginAgain redirect pageUrl.." + retUrl);
-            StringBuilder login = new StringBuilder();
-            login.append("<script type='text/javascript'>");
-            login.append("parent.location.href='").append(HttpUtil.encodeRetURL(loginUrl, config.getParamReturl(), retUrl)).append("';");
-            login.append("</script>");
-            response.getWriter().append(login.toString());
+            logger.debug("loginAgain redirect pageUrl.." + retUrl);
+            response.sendRedirect(HttpUtil.encodeRetURL(loginUrl, config.getParamReturl(), retUrl));
         }
     }
 

@@ -18,7 +18,7 @@ package com.baomidou.kisso;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.baomidou.kisso.security.token.Token;
+import com.baomidou.kisso.security.token.SSOToken;
 
 /**
  * <p>
@@ -50,11 +50,10 @@ public abstract class SSOPlugin {
      * 用来验证 Token 合法性（例如 time 超时验证）
      * </p>
      *
-     * @param token
-     * 				登录票据
+     * @param ssoToken 登录票据
      * @return
      */
-    public boolean validateToken(Token token) {
+    public boolean validateToken(SSOToken ssoToken) {
         return true;
     }
 
