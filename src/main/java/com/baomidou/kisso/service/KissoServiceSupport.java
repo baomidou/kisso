@@ -25,11 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOPlugin;
-import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.SSOConstants;
-import com.baomidou.kisso.common.encrypt.SSOEncrypt;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
 
@@ -69,7 +67,7 @@ public class KissoServiceSupport {
      */
     @SuppressWarnings("unchecked")
     public <T extends SSOToken> T attrSSOToken(HttpServletRequest request) {
-        return (T) request.getAttribute(SSOConfig.SSO_TOKEN_ATTR);
+        return (T) request.getAttribute(SSOConstants.SSO_TOKEN_ATTR);
     }
 
     /**
@@ -81,10 +79,9 @@ public class KissoServiceSupport {
      * </p>
      *
      * @param request
-     * @param encrypt 对称加密算法类
      * @return SSOToken {@link SSOToken}
      */
-    protected SSOToken cacheSSOToken(HttpServletRequest request, SSOEncrypt encrypt, SSOCache cache) {
+    protected SSOToken cacheSSOToken(HttpServletRequest request, SSOCache cache) {
         /**
          * 如果缓存不存退出登录
          */
@@ -102,12 +99,12 @@ public class KissoServiceSupport {
                 return null;
             } else {
                 /*
-				 * 开启缓存，判断是否宕机：
+                 * 开启缓存，判断是否宕机：
 				 * 1、缓存正常，返回 tk
 				 * 2、缓存宕机，执行读取 Cookie 逻辑
 				 */
                 if (cacheSSOToken.getFlag() != SSOConstants.TOKEN_FLAG_CACHE_SHUT) {
-					/*
+                    /*
 					 * 验证 cookie 与 cache 中 SSOToken 登录时间是否<br>
 					 * 不一致返回 null
 					 */
@@ -115,7 +112,7 @@ public class KissoServiceSupport {
                         return cacheSSOToken;
                     } else {
                         logger.severe("Login time is not consistent or kicked out.");
-                        request.setAttribute(SSOConfig.SSO_KICK_FLAG, SSOConfig.SSO_KICK_USER);
+                        request.setAttribute(SSOConstants.SSO_KICK_FLAG, SSOConstants.SSO_KICK_USER);
                         return null;
                     }
                 }
@@ -125,7 +122,7 @@ public class KissoServiceSupport {
         /**
          * SSOToken 为 null 执行以下逻辑
          */
-        return getSSOToken(request, encrypt, config.getCookieName());
+        return getSSOToken(request, config.getCookieName());
     }
 
     /**
@@ -134,11 +131,10 @@ public class KissoServiceSupport {
      * </p>
      *
      * @param request
-     * @param encrypt    对称加密算法类
      * @param cookieName Cookie名称
      * @return SSOToken ${SSOToken}
      */
-    protected SSOToken getSSOToken(HttpServletRequest request, SSOEncrypt encrypt, String cookieName) {
+    protected SSOToken getSSOToken(HttpServletRequest request, String cookieName) {
         Cookie uid = CookieHelper.findCookieByName(request, cookieName);
         if (uid == null) {
             /**
@@ -147,44 +143,8 @@ public class KissoServiceSupport {
             logger.fine("jsonSSOToken is null.");
             return null;
         } else {
-            return config.getSSOToken().parseSSOToken(uid.getValue());
+            return SSOToken.parser(uid.getValue());
         }
-    }
-
-    /**
-     * <p>
-     * 获取当前请求 JsonSSOToken
-     * </p>
-     *
-     * @param request
-     * @param cookieName Cookie名称
-     * @return String 当前SSOToken的json格式值
-     */
-    protected String getJsonSSOToken(HttpServletRequest request, String cookieName) {
-        Cookie uid = CookieHelper.findCookieByName(request, cookieName);
-        if (uid != null) {
-            String jsonSSOToken = uid.getValue();
-            /**
-             * 判断是否认证浏览器 混淆信息
-             */
-            if (config.getCookieBrowser()) {
-                if (Browser.isLegalUserAgent(request, SSOTokenAttr[0], SSOTokenAttr[1])) {
-                    return SSOTokenAttr[0];
-                } else {
-                    /**
-                     * 签名验证码失败
-                     */
-                    logger.severe("SSOHelper getSSOToken, find Browser is illegal.");
-                }
-            } else {
-                /**
-                 * 不需要认证浏览器信息混淆 返回JsonSSOToken
-                 */
-                return SSOTokenAttr[0];
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -200,7 +160,7 @@ public class KissoServiceSupport {
         /**
          * 判断是否检查 IP 一致性
          */
-        if (config.getCookieCheckip()) {
+        if (config.isCookieCheckip()) {
             String ip = IpHelper.getIpAddr(request);
             if (SSOToken != null && ip != null && !ip.equals(SSOToken.getIp())) {
                 /**
@@ -230,7 +190,7 @@ public class KissoServiceSupport {
     public SSOToken getSSOTokenFromCookie(HttpServletRequest request) {
         SSOToken tk = this.attrSSOToken(request);
         if (tk == null) {
-            tk = this.getSSOToken(request, config.getEncrypt(), config.getCookieName());
+            tk = this.getSSOToken(request, config.getCookieName());
         }
         return tk;
     }
@@ -252,7 +212,7 @@ public class KissoServiceSupport {
         try {
             Cookie cookie = new Cookie(config.getCookieName(), ssoToken.getToken());
             cookie.setPath(config.getCookiePath());
-            cookie.setSecure(config.getCookieSecure());
+            cookie.setSecure(config.isCookieSecure());
             /**
              * domain 提示
              * <p>
@@ -269,7 +229,7 @@ public class KissoServiceSupport {
              * 设置Cookie超时时间
              */
             int maxAge = config.getCookieMaxage();
-            Integer attrMaxAge = (Integer) request.getAttribute(SSOConfig.SSO_COOKIE_MAXAGE);
+            Integer attrMaxAge = (Integer) request.getAttribute(SSOConstants.SSO_COOKIE_MAXAGE);
             if (attrMaxAge != null) {
                 maxAge = attrMaxAge;
             }
@@ -296,7 +256,7 @@ public class KissoServiceSupport {
         /**
          * SSOToken 如果开启了缓存，删除缓存记录
          */
-        if (cache != null && !SSOConfig.SSO_KICK_USER.equals(request.getAttribute(SSOConfig.SSO_KICK_FLAG))) {
+        if (cache != null && !SSOConstants.SSO_KICK_USER.equals(request.getAttribute(SSOConstants.SSO_KICK_FLAG))) {
             SSOToken tk = getSSOTokenFromCookie(request);
             if (tk != null) {
                 boolean rlt = cache.delete(tk.toCacheKey());

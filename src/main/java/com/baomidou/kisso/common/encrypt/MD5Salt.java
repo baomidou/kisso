@@ -19,6 +19,7 @@ import java.security.MessageDigest;
 import java.util.logging.Logger;
 
 import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.common.SSOConstants;
 
 /**
  * <p>
@@ -146,7 +147,7 @@ public class MD5Salt {
 		} else {
 			StringBuffer mt = new StringBuffer();
 			mt.append(rawText);
-			mt.append(SSOConfig.CUT_SYMBOL);
+			mt.append(SSOConstants.CUT_SYMBOL);
 			mt.append(this.getSalt());
 			return mt.toString();
 		}

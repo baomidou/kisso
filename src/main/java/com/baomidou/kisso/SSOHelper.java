@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.kisso.common.util.RandomUtil;
+import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.security.token.Token;
 import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
 
@@ -79,14 +80,14 @@ public class SSOHelper {
      *
      * @param request
      * @param response
-     * @param token      SSO 票据
+     * @param ssoToken      SSO 票据
      * @param invalidate 销毁当前 JSESSIONID
      */
-    public static void setSSOCookie(HttpServletRequest request, HttpServletResponse response, Token token, boolean invalidate) {
+    public static void setSSOCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken, boolean invalidate) {
         if (invalidate) {
-            getKissoService().authSSOCookie(request, response, token);
+            getKissoService().authSSOCookie(request, response, ssoToken);
         } else {
-            getKissoService().setSSOCookie(request, response, token);
+            getKissoService().setSSOCookie(request, response, ssoToken);
         }
     }
 
@@ -107,8 +108,8 @@ public class SSOHelper {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Token> T getToken(HttpServletRequest request) {
-        return (T) getKissoService().getToken(request);
+    public static <T extends SSOToken> T getSSOToken(HttpServletRequest request) {
+        return (T) getKissoService().getSSOToken(request);
     }
 
 
@@ -122,8 +123,8 @@ public class SSOHelper {
      * @param request 访问请求
      * @return
      */
-    public static <T extends Token> T attrToken(HttpServletRequest request) {
-        return getKissoService().attrToken(request);
+    public static <T extends SSOToken> T attrToken(HttpServletRequest request) {
+        return getKissoService().attrSSOToken(request);
     }
 
     /**
@@ -174,7 +175,7 @@ public class SSOHelper {
      * @return
      */
     public static String getTokenCacheKey(HttpServletRequest request) {
-        return getToken(request).toCacheKey();
+        return getSSOToken(request).toCacheKey();
     }
 
     /**

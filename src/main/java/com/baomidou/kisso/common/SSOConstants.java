@@ -15,6 +15,8 @@
  */
 package com.baomidou.kisso.common;
 
+import java.nio.charset.Charset;
+
 /**
  * <p>
  * SSO 定义常量
@@ -25,11 +27,44 @@ package com.baomidou.kisso.common;
  */
 public interface SSOConstants {
 
+    String ENCODING = "UTF-8";
     String TOKEN_USER_IP = "ip";
     String TOKEN_USER_AGENT = "ua";
     String SCOPES = "scopes";
     int TOKEN_FLAG_NORMAL = 0; // 正常
     int TOKEN_FLAG_CACHE_SHUT = 1; // 缓存宕机
+
+    /**
+     * <p>
+     * 拦截器判断后设置 Token至当前请求<br>
+     * 减少Token解密次数： request.setAttribute("ssotoken_attr", token)
+     * </p>
+     * <p>
+     * 使用获取方式： SSOHelper.attrToken(request)
+     * </p>
+     */
+    String SSO_TOKEN_ATTR = "SSOTokenAttr";
+
+    /**
+     * 踢出用户逻辑标记
+     */
+    String SSO_KICK_FLAG = "SSOKickFlag";
+    String SSO_KICK_USER = "SSOKickUser";
+
+    /**
+     * SSO 动态设置 Cookie 参数
+     * <p>
+     * -1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
+     * </p>
+     */
+    String SSO_COOKIE_MAXAGE = "sso_cookie_maxage";
+
+    /**
+     * Charset 类型编码格式
+     */
+    Charset CHARSET_ENCODING = Charset.forName(ENCODING);
+
+    String CUT_SYMBOL = "#";
 
 
 }

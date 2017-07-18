@@ -16,6 +16,7 @@
 package com.baomidou.kisso.common.auth;
 
 import com.baomidou.kisso.SSOAuthorization;
+import com.baomidou.kisso.security.token.SSOToken;
 
 /**
  * <p>
@@ -27,7 +28,7 @@ import com.baomidou.kisso.SSOAuthorization;
  */
 public class AuthDefaultImpl implements SSOAuthorization {
 
-	public boolean isPermitted(Token token, String permission) {
+	public boolean isPermitted(SSOToken token, String permission) {
 		return true;
 	}
 

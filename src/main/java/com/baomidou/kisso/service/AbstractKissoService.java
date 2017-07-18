@@ -53,10 +53,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
      */
     @Override
     public SSOToken getSSOToken(HttpServletRequest request) {
-        if (encrypt == null) {
-            throw new KissoException(" Encrypt not for null.");
-        }
-        SSOToken tk = checkIp(request, cacheSSOToken(request, encrypt, cache));
+        SSOToken tk = checkIp(request, cacheSSOToken(request, config.getCache()));
         /**
          * 执行插件逻辑
          */
@@ -140,7 +137,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         /**
          * Cookie设置HttpOnly
          */
-        if (config.getCookieHttponly()) {
+        if (config.isCookieHttponly()) {
             CookieHelper.addHttpOnlyCookie(response, ck);
         } else {
             response.addCookie(ck);

@@ -28,6 +28,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  * <p>
@@ -42,33 +43,21 @@ public class SSOToken extends JwtAccessToken {
     private int flag = SSOConstants.TOKEN_FLAG_NORMAL; // 状态标记
     private String id; // 主键
     private String ip; // IP 地址
+    private long time = System.currentTimeMillis(); // 创建日期
     private String userAgent; // 请求头信息
-    private String subject;
-    private String audience;
-    private String issuer;
-    private String payload;
-    private Date expiration;
-    private Date notBefore;
-    private Date issuedAt;
     private JwtBuilder jwtBuilder;
-
+    private Claims claims;
 
     public SSOToken() {
         // TO DO NOTHING
     }
 
-    public static SSOToken create(Claims claims) {
-        SSOToken ssoToken = new SSOToken();
-//        claims.put(SSOConstants.TOKEN_USER_IP, ssoToken.getIp());
-//        claims.put(SSOConstants., Browser.getUserAgent(request));
-//        LocalDate currentTime = LocalDate.now();
-//        Date.from(currentTime.atZone(ZoneId.systemDefault()).toInstant());
-//        this.jwtBuilder = Jwts.builder()
-        ssoToken.setJwtBuilder(Jwts.builder().setClaims(claims));
-        return ssoToken;
+    public static SSOToken create() {
+        return new SSOToken();
     }
 
-    public void build() {
+    @Override
+    public String getToken() {
         if (null != this.getId()) {
             this.jwtBuilder.setId(this.getId());
         }
@@ -78,34 +67,13 @@ public class SSOToken extends JwtAccessToken {
         if (null != this.getUserAgent()) {
             this.jwtBuilder.claim(SSOConstants.TOKEN_USER_AGENT, this.getUserAgent());
         }
-        if (null != this.getSubject()) {
-            this.jwtBuilder.setSubject(this.getSubject());
+        if (null != this.getClaims()) {
+            this.jwtBuilder.setClaims(this.getClaims());
         }
-        if (null != this.getAudience()) {
-            this.jwtBuilder.setAudience(this.getAudience());
-        }
-        if (null != this.getIssuer()) {
-            this.jwtBuilder.setIssuer(this.getIssuer());
-        }
-        if (null != this.getPayload()) {
-            this.jwtBuilder.setPayload(this.getPayload());
-        }
-        if (null != this.getExpiration()) {
-            this.jwtBuilder.setExpiration(this.getExpiration());
-        }
-        if (null != this.getNotBefore()) {
-            this.jwtBuilder.setNotBefore(this.getNotBefore());
-        }
-        if (null != this.getIssuedAt()) {
-            this.jwtBuilder.setIssuedAt(this.getIssuedAt());
-        }
-
-//                .setIssuer(settings.getTokenIssuer())
-//                .setExpiration(Date.from(currentTime
-//                        .plusMinutes(settings.getRefreshTokenExpTime())
-//                        .atZone(ZoneId.systemDefault()).toInstant()))
-//                .signWith(SignatureAlgorithm.HS512, settings.getTokenSigningKey())
-        this.setToken(this.jwtBuilder.compact());
+        SSOConfig config = SSOConfig.getInstance();
+        this.jwtBuilder.setIssuedAt(new Date(time));
+        this.jwtBuilder.signWith(SignatureAlgorithm.forName(config.getSignAlgorithm()), config.getSignkey());
+        return this.jwtBuilder.compact();
     }
 
     public int getFlag() {
@@ -140,7 +108,6 @@ public class SSOToken extends JwtAccessToken {
         return this;
     }
 
-
     public SSOToken setIp(String ip) {
         this.ip = ip;
         return this;
@@ -160,72 +127,30 @@ public class SSOToken extends JwtAccessToken {
         return this;
     }
 
-    public String getSubject() {
-        return subject;
+    public long getTime() {
+        return time;
     }
 
-    public SSOToken setSubject(String subject) {
-        this.subject = subject;
-        return this;
+    public void setTime(long time) {
+        this.time = time;
     }
 
-    public String getAudience() {
-        return audience;
+    public JwtBuilder getJwtBuilder() {
+        return jwtBuilder;
     }
 
-    public SSOToken setAudience(String audience) {
-        this.audience = audience;
-        return this;
-    }
-
-    public String getIssuer() {
-        return issuer;
-    }
-
-    public SSOToken setIssuer(String issuer) {
-        this.issuer = issuer;
-        return this;
-    }
-
-    public String getPayload() {
-        return payload;
-    }
-
-    public SSOToken setPayload(String payload) {
-        this.payload = payload;
-        return this;
-    }
-
-    public Date getExpiration() {
-        return expiration;
-    }
-
-    public SSOToken setExpiration(Date expiration) {
-        this.expiration = expiration;
-        return this;
-    }
-
-    public Date getNotBefore() {
-        return notBefore;
-    }
-
-    public SSOToken setNotBefore(Date notBefore) {
-        this.notBefore = notBefore;
-        return this;
-    }
-
-    public Date getIssuedAt() {
-        return issuedAt;
-    }
-
-    public SSOToken setIssuedAt(Date issuedAt) {
-        this.issuedAt = issuedAt;
-        return this;
-    }
-
-
+    // Jwts.builder()
     public SSOToken setJwtBuilder(JwtBuilder jwtBuilder) {
         this.jwtBuilder = jwtBuilder;
+        return this;
+    }
+
+    public Claims getClaims() {
+        return claims;
+    }
+
+    public SSOToken setClaims(Claims claims) {
+        this.claims = claims;
         return this;
     }
 
@@ -233,8 +158,9 @@ public class SSOToken extends JwtAccessToken {
         return SSOConfig.toCacheKey(this.getId());
     }
 
-    public SSOToken parseToken(String jwtToken) {
-        JwtParser jwtParser = Jwts.parser().setSigningKey(SECRET);
+    public static SSOToken parser(String jwtToken) {
+        SSOConfig config = SSOConfig.getInstance();
+        JwtParser jwtParser = Jwts.parser().setSigningKey(config.getSignkey());
         Claims claims = jwtParser.parseClaimsJws(jwtToken).getBody();
         if (null == claims) {
             return null;
@@ -242,13 +168,8 @@ public class SSOToken extends JwtAccessToken {
         SSOToken ssoToken = new SSOToken();
         ssoToken.setId(claims.getId());
         ssoToken.setIp(String.valueOf(claims.get(SSOConstants.TOKEN_USER_IP)));
-//        ssoToken.setUserAgent(claims)
-        ssoToken.setSubject(claims.getSubject());
-        ssoToken.setAudience(claims.getAudience());
-        ssoToken.setIssuer(claims.getIssuer());
-        ssoToken.setExpiration(claims.getExpiration());
-        ssoToken.setNotBefore(claims.getNotBefore());
-        ssoToken.setIssuedAt(claims.getIssuedAt());
+        ssoToken.setTime(claims.getIssuedAt().getTime());
+        ssoToken.setClaims(claims);
         return ssoToken;
     }
 }

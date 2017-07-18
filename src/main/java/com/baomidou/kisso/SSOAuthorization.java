@@ -15,7 +15,7 @@
  */
 package com.baomidou.kisso;
 
-import com.baomidou.kisso.security.token.Token;
+import com.baomidou.kisso.security.token.SSOToken;
 
 /**
  * <p>
@@ -27,5 +27,5 @@ import com.baomidou.kisso.security.token.Token;
  */
 public interface SSOAuthorization {
 
-    boolean isPermitted(Token token, String permission);
+    boolean isPermitted(SSOToken token, String permission);
 }

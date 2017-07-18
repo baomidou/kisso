@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (jobob@qq.com).
+ * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -28,7 +28,9 @@ import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.annotation.Action;
 import com.baomidou.kisso.annotation.Login;
+import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.common.util.HttpUtil;
+import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.web.handler.KissoDefaultHandler;
 import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
 
@@ -75,8 +77,8 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
 			/**
 			 * 正常执行
 			 */
-			Token token = SSOHelper.getToken(request);
-			if (token == null) {
+			SSOToken ssoToken = SSOHelper.getSSOToken(request);
+			if (ssoToken == null) {
 				if ( HttpUtil.isAjax(request) ) {
 					/*
 					 * Handler 处理 AJAX 请求
@@ -98,7 +100,7 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
 				/*
 				 * 正常请求，request 设置 token 减少二次解密
 				 */
-				request.setAttribute(SSOConfig.SSO_TOKEN_ATTR, token);
+				request.setAttribute(SSOConstants.SSO_TOKEN_ATTR, ssoToken);
 			}
 		}
 
