@@ -44,6 +44,7 @@ public class SSOToken extends JwtAccessToken {
     private String ip; // IP 地址
     private long time = System.currentTimeMillis(); // 创建日期
     private String userAgent; // 请求头信息
+    private Object data; // 预留扩展、配合缓存使用
     private JwtBuilder jwtBuilder;
     private Claims claims;
 
@@ -142,6 +143,15 @@ public class SSOToken extends JwtAccessToken {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public SSOToken setData(Object data) {
+        this.data = data;
+        return this;
     }
 
     public JwtBuilder getJwtBuilder() {
