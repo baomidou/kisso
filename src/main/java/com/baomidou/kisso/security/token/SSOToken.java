@@ -23,12 +23,10 @@ import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.SSOConstants;
+import com.baomidou.kisso.security.JwtHelper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  * <p>
@@ -42,6 +40,7 @@ public class SSOToken extends JwtAccessToken {
 
     private int flag = SSOConstants.TOKEN_FLAG_NORMAL; // 状态标记
     private String id; // 主键
+    private String issuer; // 发布者
     private String ip; // IP 地址
     private long time = System.currentTimeMillis(); // 创建日期
     private String userAgent; // 请求头信息
@@ -64,16 +63,17 @@ public class SSOToken extends JwtAccessToken {
         if (null != this.getIp()) {
             this.jwtBuilder.claim(SSOConstants.TOKEN_USER_IP, this.getIp());
         }
+        if (null != this.getIssuer()) {
+            this.jwtBuilder.setIssuer(this.getIssuer());
+        }
         if (null != this.getUserAgent()) {
             this.jwtBuilder.claim(SSOConstants.TOKEN_USER_AGENT, this.getUserAgent());
         }
         if (null != this.getClaims()) {
             this.jwtBuilder.setClaims(this.getClaims());
         }
-        SSOConfig config = SSOConfig.getInstance();
         this.jwtBuilder.setIssuedAt(new Date(time));
-        this.jwtBuilder.signWith(SignatureAlgorithm.forName(config.getSignAlgorithm()), config.getSignkey());
-        return this.jwtBuilder.compact();
+        return JwtHelper.signCompact(jwtBuilder);
     }
 
     public int getFlag() {
@@ -96,6 +96,15 @@ public class SSOToken extends JwtAccessToken {
 
     public SSOToken setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getIssuer() {
+        return issuer;
+    }
+
+    public SSOToken setIssuer(String issuer) {
+        this.issuer = issuer;
         return this;
     }
 
@@ -159,14 +168,13 @@ public class SSOToken extends JwtAccessToken {
     }
 
     public static SSOToken parser(String jwtToken) {
-        SSOConfig config = SSOConfig.getInstance();
-        JwtParser jwtParser = Jwts.parser().setSigningKey(config.getSignkey());
-        Claims claims = jwtParser.parseClaimsJws(jwtToken).getBody();
+        Claims claims = JwtHelper.verifyParser().parseClaimsJws(jwtToken).getBody();
         if (null == claims) {
             return null;
         }
         SSOToken ssoToken = new SSOToken();
         ssoToken.setId(claims.getId());
+        ssoToken.setIssuer(claims.getIssuer());
         ssoToken.setIp(String.valueOf(claims.get(SSOConstants.TOKEN_USER_IP)));
         ssoToken.setTime(claims.getIssuedAt().getTime());
         ssoToken.setClaims(claims);

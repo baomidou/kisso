@@ -31,6 +31,7 @@ public interface SSOConstants {
     String TOKEN_USER_IP = "ip";
     String TOKEN_USER_AGENT = "ua";
     String SCOPES = "scopes";
+    String SIGN_RSA = "RSA"; // RSA 签名算法
     int TOKEN_FLAG_NORMAL = 0; // 正常
     int TOKEN_FLAG_CACHE_SHUT = 1; // 缓存宕机
 

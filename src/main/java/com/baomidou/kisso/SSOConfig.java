@@ -18,6 +18,7 @@ package com.baomidou.kisso;
 import java.util.List;
 
 import com.baomidou.kisso.common.SSOConstants;
+import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
 
 /**
@@ -31,8 +32,13 @@ import com.baomidou.kisso.security.token.SSOToken;
 public class SSOConfig {
 
     private String encoding = SSOConstants.ENCODING;
-    private String signkey = "p00Tm071X992t3Eg05";
+    private String signkey = "3Q52j0B0s6Uj1jB8q8";
     private String signAlgorithm = "HS512";
+    private String rsaCertstore; // 公钥 public.cert
+    private String rsaKeystore; // 私钥 jwt.jks
+    private String rsaAlias = "jwtkey";
+    private String rsaKeypass = "keypassword";
+    private String rsaStorepass = "letkisso";
     private String cookieName = "uid";
     private String cookieDomain = "";
     private String cookiePath = "/";
@@ -110,6 +116,52 @@ public class SSOConfig {
     public SSOConfig setSignAlgorithm(String signAlgorithm) {
         this.signAlgorithm = signAlgorithm;
         return this;
+    }
+
+    public String getRsaCertstore() {
+        if (null == rsaCertstore) {
+            throw new KissoException("public.cert not found");
+        }
+        return rsaCertstore;
+    }
+
+    public void setRsaCertstore(String rsaCertstore) {
+        this.rsaCertstore = rsaCertstore;
+    }
+
+    public String getRsaKeystore() {
+        if (null == rsaKeystore) {
+            throw new KissoException("jwt.jks not found");
+        }
+        return rsaKeystore;
+    }
+
+    public void setRsaKeystore(String rsaKeystore) {
+        this.rsaKeystore = rsaKeystore;
+    }
+
+    public String getRsaAlias() {
+        return rsaAlias;
+    }
+
+    public void setRsaAlias(String rsaAlias) {
+        this.rsaAlias = rsaAlias;
+    }
+
+    public String getRsaKeypass() {
+        return rsaKeypass;
+    }
+
+    public void setRsaKeypass(String rsaKeypass) {
+        this.rsaKeypass = rsaKeypass;
+    }
+
+    public String getRsaStorepass() {
+        return rsaStorepass;
+    }
+
+    public void setRsaStorepass(String rsaStorepass) {
+        this.rsaStorepass = rsaStorepass;
     }
 
     public String getCookieName() {
