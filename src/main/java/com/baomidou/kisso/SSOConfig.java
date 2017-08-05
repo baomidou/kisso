@@ -45,7 +45,7 @@ public class SSOConfig {
     private boolean cookieSecure = false;
     private boolean cookieHttponly = true;
     private int cookieMaxage = -1;
-    private boolean cookieBrowser = true;
+    private boolean cookieBrowser = false;
     private boolean cookieCheckip = false;
     private String loginUrl = "";
     private String logoutUrl = "";

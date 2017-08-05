@@ -152,10 +152,13 @@ public class KissoServiceSupport {
      * @return SSOToken {@link SSOToken}
      */
     protected SSOToken checkIpBrowser(HttpServletRequest request, SSOToken ssoToken) {
+        if (null == ssoToken) {
+            return null;
+        }
         /**
          * 判断请求浏览器是否合法
          */
-        if(config.isCookieBrowser() && !Browser.isLegalUserAgent(request, ssoToken.getUserAgent())) {
+        if (config.isCookieBrowser() && !Browser.isLegalUserAgent(request, ssoToken.getUserAgent())) {
             logger.info("The request browser is inconsistent.");
             return null;
         }

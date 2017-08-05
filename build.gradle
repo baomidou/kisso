@@ -77,7 +77,6 @@ signing {
     sign configurations.archives
 }
 
-// gradle signArchives
 // gradle clean build uploadArchives -Dun=用户名 -Dps=密码
 uploadArchives {
     repositories {
