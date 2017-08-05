@@ -103,7 +103,7 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
      * @return
      */
     protected boolean isVerification(HttpServletRequest request, Object handler, SSOToken token) {
-		/*
+        /*
 		 * URL 权限认证
 		 */
         if (SSOConfig.getInstance().isPermissionUri()) {

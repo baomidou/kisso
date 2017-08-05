@@ -32,7 +32,7 @@ import com.baomidou.kisso.security.token.SSOToken;
 public class SSOConfig {
 
     private String encoding = SSOConstants.ENCODING;
-    private String signkey = "3Q52j0B0s6Uj1jB8q8";
+    private String signkey = "3QD2j1B1s6Uj1jx6q8";
     private String signAlgorithm = "HS512";
     private String rsaCertstore; // 公钥 public.cert
     private String rsaKeystore; // 私钥 jwt.jks

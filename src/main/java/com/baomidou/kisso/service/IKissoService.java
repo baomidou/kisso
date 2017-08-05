@@ -30,7 +30,7 @@ import com.baomidou.kisso.security.token.SSOToken;
  * @author hubin
  * @Date 2015-12-03
  */
-public interface KissoService {
+public interface IKissoService {
 
     /**
      * <p>
@@ -55,7 +55,7 @@ public interface KissoService {
      * 登录
      * </p>
      */
-    void setSSOCookie(HttpServletRequest request, HttpServletResponse response, SSOToken SSOToken);
+    void setCookie(HttpServletRequest request, HttpServletResponse response, SSOToken SSOToken);
 
     /**
      * 清理登录状态

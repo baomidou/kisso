@@ -31,5 +31,4 @@ public class AuthDefaultImpl implements SSOAuthorization {
 	public boolean isPermitted(SSOToken token, String permission) {
 		return true;
 	}
-
 }

@@ -186,6 +186,7 @@ public class SSOToken extends JwtAccessToken {
         ssoToken.setId(claims.getId());
         ssoToken.setIssuer(claims.getIssuer());
         ssoToken.setIp(String.valueOf(claims.get(SSOConstants.TOKEN_USER_IP)));
+        ssoToken.setUserAgent(String.valueOf(claims.get(SSOConstants.TOKEN_USER_AGENT)));
         ssoToken.setTime(claims.getIssuedAt().getTime());
         ssoToken.setClaims(claims);
         return ssoToken;

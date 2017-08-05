@@ -34,16 +34,16 @@ import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
  */
 public class SSOHelper {
 
-    protected static ConfigurableAbstractKissoService kissService;
+    protected static ConfigurableAbstractKissoService kissoService;
 
     /**
      * Kisso 服务初始化
      */
     public static ConfigurableAbstractKissoService getKissoService() {
-        if (kissService == null) {
-            kissService = new ConfigurableAbstractKissoService();
+        if (kissoService == null) {
+            kissoService = new ConfigurableAbstractKissoService();
         }
-        return kissService;
+        return kissoService;
     }
 
     /**
@@ -80,11 +80,11 @@ public class SSOHelper {
      * @param ssoToken   SSO 票据
      * @param invalidate 销毁当前 JSESSIONID
      */
-    public static void setSSOCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken, boolean invalidate) {
+    public static void setCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken, boolean invalidate) {
         if (invalidate) {
-            getKissoService().authSSOCookie(request, response, ssoToken);
+            getKissoService().authCookie(request, response, ssoToken);
         } else {
-            getKissoService().setSSOCookie(request, response, ssoToken);
+            getKissoService().setCookie(request, response, ssoToken);
         }
     }
 

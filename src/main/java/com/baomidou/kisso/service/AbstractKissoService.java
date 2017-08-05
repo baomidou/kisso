@@ -29,7 +29,6 @@ import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.common.util.RandomUtil;
-import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
 
 /**
@@ -40,7 +39,7 @@ import com.baomidou.kisso.security.token.SSOToken;
  * @author hubin
  * @Date 2015-12-03
  */
-public abstract class AbstractKissoService extends KissoServiceSupport implements KissoService {
+public abstract class AbstractKissoService extends KissoServiceSupport implements IKissoService {
 
     /**
      * 获取当前请求 SSOToken
@@ -53,7 +52,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
      */
     @Override
     public SSOToken getSSOToken(HttpServletRequest request) {
-        SSOToken tk = checkIp(request, cacheSSOToken(request, config.getCache()));
+        SSOToken tk = checkIpBrowser(request, cacheSSOToken(request, config.getCache()));
         /**
          * 执行插件逻辑
          */
@@ -101,7 +100,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
      * @param response
      */
     @Override
-    public void setSSOCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken) {
+    public void setCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken) {
         /**
          * 设置加密 Cookie
          */
@@ -150,9 +149,9 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
      * @param request
      * @param response
      */
-    public void authSSOCookie(HttpServletRequest request, HttpServletResponse response, SSOToken SSOToken) {
+    public void authCookie(HttpServletRequest request, HttpServletResponse response, SSOToken SSOToken) {
         CookieHelper.authJSESSIONID(request, RandomUtil.getCharacterAndNumber(8));
-        setSSOCookie(request, response, SSOToken);
+        this.setCookie(request, response, SSOToken);
     }
 
     /**
@@ -183,7 +182,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
 
         /* redirect login page */
         String loginUrl = config.getLoginUrl();
-        if ( "".equals(loginUrl) ) {
+        if ("".equals(loginUrl)) {
             response.getWriter().write("{code:\"ssoLogin\", msg:\"Login request\"}");
         } else {
             String retUrl = HttpUtil.getQueryString(request, config.getEncoding());

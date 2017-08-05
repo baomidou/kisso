@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOPlugin;
+import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.SSOConstants;
@@ -143,29 +144,33 @@ public class KissoServiceSupport {
 
     /**
      * <p>
-     * 校验SSOToken IP 与登录 IP 是否一致
+     * 校验SSOToken IP 浏览器 与登录一致
      * </p>
      *
      * @param request
-     * @param SSOToken 登录票据
+     * @param ssoToken 登录票据
      * @return SSOToken {@link SSOToken}
      */
-    protected SSOToken checkIp(HttpServletRequest request, SSOToken SSOToken) {
+    protected SSOToken checkIpBrowser(HttpServletRequest request, SSOToken ssoToken) {
         /**
-         * 判断是否检查 IP 一致性
+         * 判断请求浏览器是否合法
+         */
+        if(config.isCookieBrowser() && !Browser.isLegalUserAgent(request, ssoToken.getUserAgent())) {
+            logger.info("The request browser is inconsistent.");
+            return null;
+        }
+        /**
+         * 判断请求 IP 是否合法
          */
         if (config.isCookieCheckip()) {
             String ip = IpHelper.getIpAddr(request);
-            if (SSOToken != null && ip != null && !ip.equals(SSOToken.getIp())) {
-                /**
-                 * 检查 IP 与登录IP 不一致返回 null
-                 */
+            if (ssoToken != null && ip != null && !ip.equals(ssoToken.getIp())) {
                 logger.info(String.format("ip inconsistent! return SSOToken null, SSOToken userIp:%s, reqIp:%s",
-                        SSOToken.getIp(), ip));
+                        ssoToken.getIp(), ip));
                 return null;
             }
         }
-        return SSOToken;
+        return ssoToken;
     }
 
 

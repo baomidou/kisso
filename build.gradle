@@ -7,8 +7,9 @@ ext {
     ]
 
     libraries = [
-            springBootVersion = "1.5.4.RELEASE",
-            springSecurityJwtVersion = "1.0.8.RELEASE"
+            springBootVersion = "1.5.6.RELEASE",
+            springSecurityJwtVersion = "1.0.8.RELEASE",
+            jjwtVersion = "0.7.0"
     ]
 }
 
@@ -38,7 +39,7 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
     compile("org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}")
-    compile("io.jsonwebtoken:jjwt:0.7.0")
+    compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
     testCompile("junit:junit:4.12")
