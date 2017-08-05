@@ -15,12 +15,6 @@
  */
 package com.baomidou.kisso.security.token;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.baomidou.kisso.common.SSOConstants;
-import com.baomidou.kisso.security.SSOScopes;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 
@@ -40,22 +34,22 @@ public class JwtRefreshToken implements Token {
         this.claims = claims;
     }
 
-    /**
-     * Creates and validates Refresh token
-     *
-     * @param token
-     * @param signingKey
-     * @return
-     */
-    public static Optional<JwtRefreshToken> create(JwtRawAccessToken token, String signingKey) {
-        Jws<Claims> claims = token.parseClaims(signingKey);
-        List<String> scopes = claims.getBody().get(SSOConstants.SCOPES, List.class);
-        if (scopes == null || scopes.isEmpty()
-                || !scopes.stream().filter(scope -> SSOScopes.REFRESH_TOKEN.authority().equals(scope)).findFirst().isPresent()) {
-            return Optional.empty();
-        }
-        return Optional.of(new JwtRefreshToken(claims));
-    }
+//    /**
+//     * Creates and validates Refresh token
+//     *
+//     * @param token
+//     * @param signingKey
+//     * @return
+//     */
+//    public static Optional<JwtRefreshToken> create(JwtRawAccessToken token, String signingKey) {
+//        Jws<Claims> claims = token.parseClaims(signingKey);
+//        List<String> scopes = claims.getBody().get(SSOConstants.SCOPES, List.class);
+//        if (scopes == null || scopes.isEmpty()
+//                || !scopes.stream().filter(scope -> SSOScopes.REFRESH_TOKEN.authority().equals(scope)).findFirst().isPresent()) {
+//            return Optional.empty();
+//        }
+//        return Optional.of(new JwtRefreshToken(claims));
+//    }
 
     @Override
     public String getToken() {

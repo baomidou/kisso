@@ -25,20 +25,25 @@ import com.baomidou.kisso.common.encrypt.MD5;
  * </p>
  *
  * @author hubin
- * @since 2014-5-8
+ * @since 2017-08-05
  */
 public class Browser {
 
     /**
-     * 混淆浏览器版本信息
+     * <p>
+     * 混淆浏览器版本信息，取 MD5 中间部分字符
+     * </p>
      *
      * @param request
      * @return
      * @Description 获取浏览器客户端信息签名值
      */
     public static String getUserAgent(HttpServletRequest request) {
-        String userAgent = request.getHeader("user-agent");
-        return MD5.toMD5(userAgent).substring(3, 8);
+        String userAgent = MD5.toMD5(request.getHeader("user-agent"));
+        if (null == userAgent) {
+            return null;
+        }
+        return userAgent.substring(3, 8);
     }
 
     /**
@@ -51,7 +56,11 @@ public class Browser {
      * @return
      */
     public static boolean isLegalUserAgent(HttpServletRequest request, String userAgent) {
-        return getUserAgent(request).equalsIgnoreCase(userAgent);
+        String ua = getUserAgent(request);
+        if (null == ua) {
+            return false;
+        }
+        return ua.equals(userAgent);
     }
 
 }

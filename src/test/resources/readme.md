@@ -46,7 +46,10 @@ HG5aDfWXXSCXQ8BIsOup31GN2NyZJMLv4JA6DkWeMOxuZWTv8/ldCF0=
 -----END CERTIFICATE-----
 ```
 
-
-
+# 发布仓库
+http://central.sonatype.org/pages/gradle.html
+https://docs.gradle.org/current/userguide/maven_plugin.html
+https://docs.gradle.org/3.3/userguide/signing_plugin.html
+https://github.com/neurite/development-workflows/wiki/Gradle%2C-Travis-CI%2C-and-OSSRH
 
 
