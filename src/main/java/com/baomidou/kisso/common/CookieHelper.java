@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (jobob@qq.com).
+ * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * @author hubin
- * @Date 2014-5-8
+ * @since 2014-5-8
  */
 public class CookieHelper {
 

@@ -30,7 +30,7 @@ import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
  * </p>
  *
  * @author hubin
- * @Date 2016-01-21
+ * @since 2016-01-21
  */
 public class SSOHelper {
 

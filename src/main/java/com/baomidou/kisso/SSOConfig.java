@@ -27,7 +27,7 @@ import com.baomidou.kisso.security.token.SSOToken;
  * </p>
  *
  * @author hubin
- * @Date 2015-12-05
+ * @since 2015-12-05
  */
 public class SSOConfig {
 

@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * </p>
  * 
  * @author hubin
- * @Date 2016-08-13
+ * @since 2016-08-13
  */
 public abstract class AbstractCaptcha implements ICaptcha {
 

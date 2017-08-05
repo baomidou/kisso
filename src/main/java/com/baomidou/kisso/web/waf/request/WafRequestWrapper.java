@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (jobob@qq.com).
+ * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -28,7 +28,7 @@ import com.baomidou.kisso.web.waf.WafHelper;
  * Request请求过滤包装
  * <p>
  * @author   hubin
- * @Date	 2014-5-8 	 
+ * @since	 2014-5-8
  */
 public class WafRequestWrapper extends HttpServletRequestWrapper {
 

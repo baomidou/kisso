@@ -23,7 +23,7 @@ import com.baomidou.kisso.security.token.SSOToken;
  * </p>
  *
  * @author hubin
- * @Date 2017-07-17
+ * @since 2017-07-17
  */
 public interface SSOAuthorization {
 

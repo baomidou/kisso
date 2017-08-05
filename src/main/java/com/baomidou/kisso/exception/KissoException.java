@@ -21,7 +21,7 @@ package com.baomidou.kisso.exception;
  * </p>
  * 
  * @author hubin
- * @Date 2014-5-9
+ * @since 2014-5-9
  */
 public class KissoException extends RuntimeException {
 

@@ -40,7 +40,7 @@ import com.baomidou.kisso.security.token.SSOToken;
  * </p>
  *
  * @author hubin
- * @Date 2015-12-03
+ * @since 2015-12-03
  */
 public class KissoServiceSupport {
 

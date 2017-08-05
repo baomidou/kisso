@@ -21,7 +21,7 @@ package com.baomidou.kisso.common.captcha;
  * </p>
  * 
  * @author hubin
- * @Date 2016-08-13
+ * @since 2016-08-13
  */
 public interface ICaptchaStore {
 

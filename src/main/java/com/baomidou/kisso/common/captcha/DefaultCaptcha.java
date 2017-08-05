@@ -30,7 +30,7 @@ import com.baomidou.kisso.common.captcha.utils.encoder.EncoderHelper;
  * </p>
  * 
  * @author hubin
- * @Date 2016-08-13
+ * @since 2016-08-13
  */
 public class DefaultCaptcha extends AbstractCaptcha {
 

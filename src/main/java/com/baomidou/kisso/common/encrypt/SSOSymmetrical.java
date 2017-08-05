@@ -60,7 +60,7 @@ import com.baomidou.kisso.exception.KissoException;
  * </p>
  * 
  * @author hubin
- * @Date 2016-08-11
+ * @since 2016-08-11
  */
 public class SSOSymmetrical implements SSOEncrypt {
 	private static final Logger logger = Logger.getLogger("SSOSymmetrical");

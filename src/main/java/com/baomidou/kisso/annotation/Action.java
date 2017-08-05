@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (jobob@qq.com).
+ * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ package com.baomidou.kisso.annotation;
  * </p>
  * 
  * @author hubin
- * @Date 2015-11-10
+ * @since 2015-11-10
  */
 public enum Action {
 	/** 正常（默认） */

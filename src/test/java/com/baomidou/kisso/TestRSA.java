@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (jobob@qq.com).
+ * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -27,7 +27,7 @@ import com.baomidou.kisso.common.util.Base64Util;
  * </p>
  * 
  * @author   hubin
- * @Date	 2014-6-17
+ * @since	 2014-6-17
  */
 public class TestRSA {
 	protected static final Logger logger = Logger.getLogger("TestRSA");

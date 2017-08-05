@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, hubin (jobob@qq.com).
+ * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import com.baomidou.kisso.common.captcha.service.ConfigurableCaptchaService;
  * </p>
  * 
  * @author   hubin
- * @Date	 2015-12-01
+ * @since	 2015-12-01
  */
 public class TestPatchcaFilter extends Frame implements ActionListener {
 

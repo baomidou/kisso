@@ -33,7 +33,7 @@ import com.baomidou.kisso.security.token.SSOToken;
  * </p>
  *
  * @author 441558032@qq.com
- * @Date 2016-12-15
+ * @since 2016-12-15
  */
 public class HasPermissionTag extends BodyTagSupport {
 
