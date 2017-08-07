@@ -43,6 +43,7 @@ dependencies {
     compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompile("javax.servlet:servlet-api:2.5")
     testCompile("junit:junit:4.12")
 }
 

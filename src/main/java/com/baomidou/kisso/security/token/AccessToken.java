@@ -25,15 +25,15 @@ import io.jsonwebtoken.JwtBuilder;
  * @author hubin
  * @since 2017-07-17
  */
-public class JwtAccessToken implements Token {
+public class AccessToken implements Token {
 
     private String token;
 
-    public JwtAccessToken() {
+    public AccessToken() {
         // TO DO NOTHING
     }
 
-    public JwtAccessToken(JwtBuilder jwtBuilder) {
+    public AccessToken(JwtBuilder jwtBuilder) {
         this.token = jwtBuilder.compact();
     }
 

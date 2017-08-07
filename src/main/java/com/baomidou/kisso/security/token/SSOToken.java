@@ -27,6 +27,7 @@ import com.baomidou.kisso.security.JwtHelper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
 
 /**
  * <p>
@@ -36,7 +37,7 @@ import io.jsonwebtoken.JwtBuilder;
  * @author hubin
  * @since 2017-07-17
  */
-public class SSOToken extends JwtAccessToken {
+public class SSOToken extends AccessToken {
 
     private int flag = SSOConstants.TOKEN_FLAG_NORMAL; // 状态标记
     private String id; // 主键
@@ -52,12 +53,23 @@ public class SSOToken extends JwtAccessToken {
         // TO DO NOTHING
     }
 
+    public SSOToken(JwtBuilder jwtBuilder) {
+        this.jwtBuilder = jwtBuilder;
+    }
+
     public static SSOToken create() {
         return new SSOToken();
     }
 
+    public static SSOToken create(JwtBuilder jwtBuilder) {
+        return create().setJwtBuilder(jwtBuilder);
+    }
+
     @Override
     public String getToken() {
+        if (null == this.jwtBuilder) {
+            this.jwtBuilder = Jwts.builder();
+        }
         if (null != this.getId()) {
             this.jwtBuilder.setId(this.getId());
         }
@@ -72,6 +84,9 @@ public class SSOToken extends JwtAccessToken {
         }
         if (null != this.getClaims()) {
             this.jwtBuilder.setClaims(this.getClaims());
+        }
+        if (SSOConstants.TOKEN_FLAG_NORMAL != this.getFlag()) {
+            this.jwtBuilder.claim(SSOConstants.TOKEN_FLAG, this.getFlag());
         }
         this.jwtBuilder.setIssuedAt(new Date(time));
         return JwtHelper.signCompact(jwtBuilder);
@@ -141,8 +156,9 @@ public class SSOToken extends JwtAccessToken {
         return time;
     }
 
-    public void setTime(long time) {
+    public SSOToken setTime(long time) {
         this.time = time;
+        return this;
     }
 
     public Object getData() {
@@ -185,8 +201,18 @@ public class SSOToken extends JwtAccessToken {
         SSOToken ssoToken = new SSOToken();
         ssoToken.setId(claims.getId());
         ssoToken.setIssuer(claims.getIssuer());
-        ssoToken.setIp(String.valueOf(claims.get(SSOConstants.TOKEN_USER_IP)));
-        ssoToken.setUserAgent(String.valueOf(claims.get(SSOConstants.TOKEN_USER_AGENT)));
+        Object ip = claims.get(SSOConstants.TOKEN_USER_IP);
+        if (null != ip) {
+            ssoToken.setIp(String.valueOf(ip));
+        }
+        Object userAgent = claims.get(SSOConstants.TOKEN_USER_IP);
+        if (null != userAgent) {
+            ssoToken.setUserAgent(String.valueOf(userAgent));
+        }
+        Object flag = claims.get(SSOConstants.TOKEN_FLAG);
+        if (null != flag) {
+            ssoToken.setFlag(Integer.valueOf(String.valueOf(flag)));
+        }
         ssoToken.setTime(claims.getIssuedAt().getTime());
         ssoToken.setClaims(claims);
         return ssoToken;

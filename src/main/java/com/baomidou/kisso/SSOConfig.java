@@ -39,6 +39,7 @@ public class SSOConfig {
     private String rsaAlias = "jwtkey";
     private String rsaKeypass = "keypassword";
     private String rsaStorepass = "letkisso";
+    private String accessTokenName = "accessToken";
     private String cookieName = "uid";
     private String cookieDomain = "";
     private String cookiePath = "/";
@@ -166,6 +167,14 @@ public class SSOConfig {
 
     public String getCookieName() {
         return cookieName;
+    }
+
+    public String getAccessTokenName() {
+        return accessTokenName;
+    }
+
+    public void setAccessTokenName(String accessTokenName) {
+        this.accessTokenName = accessTokenName;
     }
 
     public SSOConfig setCookieName(String cookieName) {

@@ -33,6 +33,7 @@ import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
+import com.baomidou.kisso.security.token.Token;
 
 /**
  * <p>
@@ -127,19 +128,19 @@ public class KissoServiceSupport {
      *
      * @param request
      * @param cookieName Cookie名称
-     * @return SSOToken ${SSOToken}
+     * @return SSOToken
      */
     protected SSOToken getSSOToken(HttpServletRequest request, String cookieName) {
-        Cookie uid = CookieHelper.findCookieByName(request, cookieName);
-        if (uid == null) {
-            /**
-             * 未登录请求
-             */
-            logger.debug("jsonSSOToken is null.");
-            return null;
-        } else {
-            return SSOToken.parser(uid.getValue());
+        String accessToken = request.getHeader(config.getAccessTokenName());
+        if (null == accessToken || "".equals(accessToken)) {
+            Cookie uid = CookieHelper.findCookieByName(request, cookieName);
+            if (null == uid) {
+                logger.debug("Unauthorized login request, ip=" + IpHelper.getIpAddr(request));
+                return null;
+            }
+            accessToken = uid.getValue();
         }
+        return SSOToken.parser(accessToken);
     }
 
     /**
@@ -207,12 +208,12 @@ public class KissoServiceSupport {
      * </p>
      *
      * @param request
-     * @param ssoToken SSO 登录信息票据
+     * @param token   SSO 登录信息票据
      * @return Cookie 登录信息Cookie {@link Cookie}
      */
-    protected Cookie generateCookie(HttpServletRequest request, SSOToken ssoToken) {
+    protected Cookie generateCookie(HttpServletRequest request, Token token) {
         try {
-            Cookie cookie = new Cookie(config.getCookieName(), ssoToken.getToken());
+            Cookie cookie = new Cookie(config.getCookieName(), token.getToken());
             cookie.setPath(config.getCookiePath());
             cookie.setSecure(config.isCookieSecure());
             /**

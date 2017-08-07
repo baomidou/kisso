@@ -35,6 +35,7 @@ public interface IKissoService {
     /**
      * <p>
      * 获取登录 SSOToken
+     * </p>
      */
     SSOToken getSSOToken(HttpServletRequest request);
 
@@ -49,28 +50,22 @@ public interface IKissoService {
     boolean kickLogin(Object userId);
 
     /**
+     * <p>
      * 设置登录 Cookie
-     * <p>
-     * <p>
-     * 登录
      * </p>
      */
     void setCookie(HttpServletRequest request, HttpServletResponse response, SSOToken SSOToken);
 
     /**
+     * <p>
      * 清理登录状态
-     * <p>
-     * <p>
-     * 退出
      * </p>
      */
     boolean clearLogin(HttpServletRequest request, HttpServletResponse response);
 
     /**
+     * <p>
      * 退出并跳至登录页
-     * <p>
-     * <p>
-     * 退出
      * </p>
      */
     void clearRedirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException;

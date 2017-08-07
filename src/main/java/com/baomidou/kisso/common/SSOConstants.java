@@ -30,6 +30,7 @@ public interface SSOConstants {
     String ENCODING = "UTF-8";
     String TOKEN_USER_IP = "ip";
     String TOKEN_USER_AGENT = "ua";
+    String TOKEN_FLAG = "flag";
     String SCOPES = "scopes";
     String SIGN_RSA = "RSA"; // RSA 签名算法
     int TOKEN_FLAG_NORMAL = 0; // 正常
