@@ -19,10 +19,15 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.SSOConstants;
+import com.baomidou.kisso.enums.TokenFlag;
+import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.JwtHelper;
 
 import io.jsonwebtoken.Claims;
@@ -39,7 +44,9 @@ import io.jsonwebtoken.Jwts;
  */
 public class SSOToken extends AccessToken {
 
-    private int flag = SSOConstants.TOKEN_FLAG_NORMAL; // 状态标记
+    private static Logger logger = LoggerFactory.getLogger(SSOToken.class);
+    private TokenFlag flag = TokenFlag.NORMAL;
+    private TokenOrigin origin = TokenOrigin.COOKIE;
     private String id; // 主键
     private String issuer; // 发布者
     private String ip; // IP 地址
@@ -85,19 +92,31 @@ public class SSOToken extends AccessToken {
         if (null != this.getClaims()) {
             this.jwtBuilder.setClaims(this.getClaims());
         }
-        if (SSOConstants.TOKEN_FLAG_NORMAL != this.getFlag()) {
-            this.jwtBuilder.claim(SSOConstants.TOKEN_FLAG, this.getFlag());
+        if (TokenFlag.NORMAL != this.getFlag()) {
+            this.jwtBuilder.claim(SSOConstants.TOKEN_FLAG, this.getFlag().value());
+        }
+        if (TokenOrigin.COOKIE != this.getOrigin()) {
+            this.jwtBuilder.claim(SSOConstants.TOKEN_ORIGIN, this.getOrigin().value());
         }
         this.jwtBuilder.setIssuedAt(new Date(time));
         return JwtHelper.signCompact(jwtBuilder);
     }
 
-    public int getFlag() {
+    public TokenFlag getFlag() {
         return flag;
     }
 
-    public SSOToken setFlag(int flag) {
+    public SSOToken setFlag(TokenFlag flag) {
         this.flag = flag;
+        return this;
+    }
+
+    public TokenOrigin getOrigin() {
+        return origin;
+    }
+
+    public SSOToken setOrigin(TokenOrigin origin) {
+        this.origin = origin;
         return this;
     }
 
@@ -193,9 +212,14 @@ public class SSOToken extends AccessToken {
         return SSOConfig.toCacheKey(this.getId());
     }
 
-    public static SSOToken parser(String jwtToken) {
+    public static SSOToken parser(String jwtToken, boolean header) {
         Claims claims = JwtHelper.verifyParser().parseClaimsJws(jwtToken).getBody();
         if (null == claims) {
+            return null;
+        }
+        Object origin = claims.get(SSOConstants.TOKEN_ORIGIN);
+        if (header && null == origin) {
+            logger.warn("illegal token request orgin.");
             return null;
         }
         SSOToken ssoToken = new SSOToken();
@@ -211,7 +235,11 @@ public class SSOToken extends AccessToken {
         }
         Object flag = claims.get(SSOConstants.TOKEN_FLAG);
         if (null != flag) {
-            ssoToken.setFlag(Integer.valueOf(String.valueOf(flag)));
+            ssoToken.setFlag(TokenFlag.fromValue(String.valueOf(flag)));
+        }
+        // TOKEN 来源
+        if (null != origin) {
+            ssoToken.setOrigin(TokenOrigin.fromValue(String.valueOf(origin)));
         }
         ssoToken.setTime(claims.getIssuedAt().getTime());
         ssoToken.setClaims(claims);

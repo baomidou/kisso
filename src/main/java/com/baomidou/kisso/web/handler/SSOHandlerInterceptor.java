@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 public interface SSOHandlerInterceptor {
 
     /**
-     *
      * token 为空未登录, 拦截到 AJAX 方法时
      *
      * @param request
@@ -39,7 +38,6 @@ public interface SSOHandlerInterceptor {
     boolean preTokenIsNullAjax(HttpServletRequest request, HttpServletResponse response);
 
     /**
-     *
      * token 为空未登录, 自定义处理逻辑
      * <p>
      * 返回 true 继续执行（清理登录状态，重定向至登录界面），false 停止执行

@@ -104,7 +104,7 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
      */
     protected boolean isVerification(HttpServletRequest request, Object handler, SSOToken token) {
         /*
-		 * URL 权限认证
+         * URL 权限认证
 		 */
         if (SSOConfig.getInstance().isPermissionUri()) {
             String uri = request.getRequestURI();

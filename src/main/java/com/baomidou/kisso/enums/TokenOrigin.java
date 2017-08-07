@@ -13,39 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.kisso.annotation;
+package com.baomidou.kisso.enums;
 
 /**
  * <p>
- * SSO 执行状态
+ * Token 登录授权来源
  * </p>
  *
  * @author hubin
- * @since 2015-11-10
+ * @since 2017-08-07
  */
-public enum Action {
-    /** 正常（默认） */
-    Normal("0", "执行权限验证"),
+public enum TokenOrigin {
+    COOKIE("0", "cookie"),
+    HTML5("1", "html5"),
+    IOS("2", "apple ios"),
+    ANDROID("3", "google android");
 
-    /** 跳过 */
-    Skip("1", "跳过权限验证");
+    /**
+     * 主键
+     */
+    private final String value;
 
-    /** 主键 */
-    private final String key;
-
-    /** 描述 */
+    /**
+     * 描述
+     */
     private final String desc;
 
-    Action(final String key, final String desc) {
-        this.key = key;
+    TokenOrigin(final String value, final String desc) {
+        this.value = value;
         this.desc = desc;
     }
 
-    public String getKey() {
-        return this.key;
+    public static TokenOrigin fromValue(String value) {
+        TokenOrigin[] its = TokenOrigin.values();
+        for (TokenOrigin it : its) {
+            if (it.value() == value) {
+                return it;
+            }
+        }
+        return COOKIE;
     }
 
-    public String getDesc() {
+    public String value() {
+        return this.value;
+    }
+
+    public String desc() {
         return this.desc;
     }
 

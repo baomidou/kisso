@@ -59,7 +59,6 @@ public class TestRsakey {
                 .compact();
         System.out.println(jwtToken);
 
-
         ClassPathResource resourcePk = new ClassPathResource("public.cert");
         String publicKey;
         try {

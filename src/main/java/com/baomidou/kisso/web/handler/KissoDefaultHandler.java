@@ -50,7 +50,7 @@ public class KissoDefaultHandler implements SSOHandlerInterceptor {
      */
     public boolean preTokenIsNullAjax(HttpServletRequest request, HttpServletResponse response) {
         try {
-            response.getWriter().write("{code:\"ssoLogout\", msg:\"Have logout\"}");
+            response.getWriter().write("{code:\"logout\", msg:\"Have logout\"}");
         } catch (IOException e) {
             // to do nothing
         }

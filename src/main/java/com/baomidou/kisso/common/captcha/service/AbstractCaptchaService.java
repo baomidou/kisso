@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2011-2020, hubin (jobob@qq.com).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -29,112 +29,112 @@ import com.baomidou.kisso.common.captcha.word.WordFactory;
  */
 public abstract class AbstractCaptchaService implements CaptchaService {
 
-	protected FontFactory fontFactory;
+    protected FontFactory fontFactory;
 
-	protected WordFactory wordFactory;
+    protected WordFactory wordFactory;
 
-	protected ColorFactory colorFactory;
+    protected ColorFactory colorFactory;
 
-	protected BackgroundFactory backgroundFactory;
+    protected BackgroundFactory backgroundFactory;
 
-	protected TextRenderer textRenderer;
+    protected TextRenderer textRenderer;
 
-	protected FilterFactory filterFactory;
+    protected FilterFactory filterFactory;
 
-	/** 宽 */
-	protected int width;
+    /** 宽 */
+    protected int width;
 
-	/** 高 */
-	protected int height;
-
-
-	public void setFontFactory( FontFactory fontFactory ) {
-		this.fontFactory = fontFactory;
-	}
+    /** 高 */
+    protected int height;
 
 
-	public void setWordFactory( WordFactory wordFactory ) {
-		this.wordFactory = wordFactory;
-	}
+    public void setFontFactory(FontFactory fontFactory) {
+        this.fontFactory = fontFactory;
+    }
 
 
-	public void setColorFactory( ColorFactory colorFactory ) {
-		this.colorFactory = colorFactory;
-	}
+    public void setWordFactory(WordFactory wordFactory) {
+        this.wordFactory = wordFactory;
+    }
 
 
-	public void setBackgroundFactory( BackgroundFactory backgroundFactory ) {
-		this.backgroundFactory = backgroundFactory;
-	}
+    public void setColorFactory(ColorFactory colorFactory) {
+        this.colorFactory = colorFactory;
+    }
 
 
-	public void setTextRenderer( TextRenderer textRenderer ) {
-		this.textRenderer = textRenderer;
-	}
+    public void setBackgroundFactory(BackgroundFactory backgroundFactory) {
+        this.backgroundFactory = backgroundFactory;
+    }
 
 
-	public void setFilterFactory( FilterFactory filterFactory ) {
-		this.filterFactory = filterFactory;
-	}
+    public void setTextRenderer(TextRenderer textRenderer) {
+        this.textRenderer = textRenderer;
+    }
 
 
-	public FontFactory getFontFactory() {
-		return fontFactory;
-	}
+    public void setFilterFactory(FilterFactory filterFactory) {
+        this.filterFactory = filterFactory;
+    }
 
 
-	public WordFactory getWordFactory() {
-		return wordFactory;
-	}
+    public FontFactory getFontFactory() {
+        return fontFactory;
+    }
 
 
-	public ColorFactory getColorFactory() {
-		return colorFactory;
-	}
+    public WordFactory getWordFactory() {
+        return wordFactory;
+    }
 
 
-	public BackgroundFactory getBackgroundFactory() {
-		return backgroundFactory;
-	}
+    public ColorFactory getColorFactory() {
+        return colorFactory;
+    }
 
 
-	public TextRenderer getTextRenderer() {
-		return textRenderer;
-	}
+    public BackgroundFactory getBackgroundFactory() {
+        return backgroundFactory;
+    }
 
 
-	public FilterFactory getFilterFactory() {
-		return filterFactory;
-	}
+    public TextRenderer getTextRenderer() {
+        return textRenderer;
+    }
 
 
-	public int getWidth() {
-		return width;
-	}
+    public FilterFactory getFilterFactory() {
+        return filterFactory;
+    }
 
 
-	public int getHeight() {
-		return height;
-	}
+    public int getWidth() {
+        return width;
+    }
 
 
-	public void setWidth( int width ) {
-		this.width = width;
-	}
+    public int getHeight() {
+        return height;
+    }
 
 
-	public void setHeight( int height ) {
-		this.height = height;
-	}
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
 
-	public Captcha getCaptcha() {
-		BufferedImage bufImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		backgroundFactory.fillBackground(bufImage);
-		String word = wordFactory.getNextWord();
-		textRenderer.draw(word, bufImage, fontFactory, colorFactory);
-		bufImage = filterFactory.applyFilters(bufImage);
-		return new Captcha(word, bufImage);
-	}
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+
+    public Captcha getCaptcha() {
+        BufferedImage bufImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        backgroundFactory.fillBackground(bufImage);
+        String word = wordFactory.getNextWord();
+        textRenderer.draw(word, bufImage, fontFactory, colorFactory);
+        bufImage = filterFactory.applyFilters(bufImage);
+        return new Captcha(word, bufImage);
+    }
 
 }

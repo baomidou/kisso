@@ -47,8 +47,8 @@ public class SSOHelper {
     }
 
     /**
-     * 生成 18 位随机字符串密钥
      * <p>
+     * 生成 18 位随机字符串密钥<br>
      * 替换配置文件 sso.properties 属性 sso.secretkey=随机18位字符串
      * </p>
      */
@@ -60,16 +60,13 @@ public class SSOHelper {
      * ------------------------------- 登录相关方法 -------------------------------
      */
     /**
-     * 设置加密 Cookie（登录验证成功）
      * <p>
-     * <p>
+     * 设置加密 Cookie（登录验证成功）<br>
      * 最后一个参数 true 销毁当前JSESSIONID. 创建可信的 JSESSIONID 防止伪造 SESSIONID 攻击
      * </p>
      * <p>
      * 最后一个参数 false 只设置 cookie
      * </p>
-     * <p>
-     * <p>
      * request.setAttribute(SSOConfig.SSO_COOKIE_MAXAGE, maxAge);<br>
      * 可以动态设置 Cookie maxAge 超时时间 ，优先于配置文件的设置，无该参数 - 默认读取配置文件数据 。<br>
      * maxAge 定义：-1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
@@ -92,9 +89,8 @@ public class SSOHelper {
      * ------------------------------- 客户端相关方法 -------------------------------
      */
     /**
-     * 获取当前请求 token
      * <p>
-     * <p>
+     * 获取当前请求 token<br>
      * 该方法直接从 cookie 中解密获取 token, 常使用在登录系统及拦截器中使用 getToken(request)
      * </p>
      * <p>
@@ -111,9 +107,8 @@ public class SSOHelper {
 
 
     /**
-     * 从请求中获取 token 通过登录拦截器之后使用
      * <p>
-     * <p>
+     * 从请求中获取 token 通过登录拦截器之后使用<br>
      * 该数据为登录拦截器放入 request 中，防止二次解密
      * </p>
      *
@@ -125,7 +120,9 @@ public class SSOHelper {
     }
 
     /**
+     * <p>
      * 退出登录， 并且跳至 sso.properties 配置的属性 sso.logout.url 地址
+     * </p>
      *
      * @param request
      * @param response
@@ -136,9 +133,8 @@ public class SSOHelper {
     }
 
     /**
-     * 清理当前登录状态
      * <p>
-     * <p>
+     * 清理当前登录状态<br>
      * 清理 Cookie、缓存、统计、等数据
      * </p>
      *

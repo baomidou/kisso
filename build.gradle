@@ -15,7 +15,7 @@ ext {
 }
 
 group = 'com.baomidou'
-version = '3.7.0-SNAPSHOT'
+version = '3.7.0'
 
 description = "kisso is a lightweight Java SSO Framework and reusable components."
 

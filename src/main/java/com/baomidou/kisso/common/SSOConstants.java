@@ -30,11 +30,9 @@ public interface SSOConstants {
     String ENCODING = "UTF-8";
     String TOKEN_USER_IP = "ip";
     String TOKEN_USER_AGENT = "ua";
-    String TOKEN_FLAG = "flag";
-    String SCOPES = "scopes";
+    String TOKEN_FLAG = "fg";
+    String TOKEN_ORIGIN = "og";
     String SIGN_RSA = "RSA"; // RSA 签名算法
-    int TOKEN_FLAG_NORMAL = 0; // 正常
-    int TOKEN_FLAG_CACHE_SHUT = 1; // 缓存宕机
 
     /**
      * <p>
@@ -45,13 +43,13 @@ public interface SSOConstants {
      * 使用获取方式： SSOHelper.attrToken(request)
      * </p>
      */
-    String SSO_TOKEN_ATTR = "SSOTokenAttr";
+    String SSO_TOKEN_ATTR = "kissoTokenAttr";
 
     /**
      * 踢出用户逻辑标记
      */
-    String SSO_KICK_FLAG = "SSOKickFlag";
-    String SSO_KICK_USER = "SSOKickUser";
+    String SSO_KICK_FLAG = "kissoKickFlag";
+    String SSO_KICK_USER = "kissoKickUser";
 
     /**
      * SSO 动态设置 Cookie 参数
@@ -59,7 +57,7 @@ public interface SSOConstants {
      * -1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
      * </p>
      */
-    String SSO_COOKIE_MAXAGE = "sso_cookie_maxage";
+    String SSO_COOKIE_MAXAGE = "kisso_cookie_maxage";
 
     /**
      * Charset 类型编码格式

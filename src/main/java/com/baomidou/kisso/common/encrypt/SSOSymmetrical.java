@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2011-2020, hubin (jobob@qq.com).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,94 +58,95 @@ import com.baomidou.kisso.exception.KissoException;
  * 它的算法被发布在互联网上，也就不再有什么商业机密了。RC4也被叫做ARC4（Alleged
  * RC4——所谓的RC4），因为RSA从来就没有正式发布过这个算法。
  * </p>
- * 
+ *
  * @author hubin
  * @since 2016-08-11
  */
 public class SSOSymmetrical implements SSOEncrypt {
-	private static final Logger logger = Logger.getLogger("SSOSymmetrical");
-	private Algorithm algorithm = Algorithm.RC4;
 
-	public SSOSymmetrical() {
+    private static final Logger logger = Logger.getLogger("SSOSymmetrical");
+    private Algorithm algorithm = Algorithm.RC4;
 
-	}
+    public SSOSymmetrical() {
 
-	public SSOSymmetrical(Algorithm algorithm) {
-		this.algorithm = algorithm;
-		logger.info("Your current encryption algorithm is " + algorithm.getKey());
-	}
+    }
 
-	public String encrypt(String value, String key) throws Exception {
-		byte[] b = UrlBase64.encode(encrypt(algorithm, value.getBytes(SSOConfig.getSSOEncoding()), key));
-		return new String(b, SSOConfig.getSSOEncoding());
-	}
+    public SSOSymmetrical(Algorithm algorithm) {
+        this.algorithm = algorithm;
+        logger.info("Your current encryption algorithm is " + algorithm.getKey());
+    }
 
-	public String decrypt(String value, String key) throws Exception {
-		byte[] b = decrypt(algorithm, UrlBase64.decode(value.getBytes(SSOConfig.getSSOEncoding())), key);
-		return new String(b, SSOConfig.getSSOEncoding());
-	}
+    public String encrypt(String value, String key) throws Exception {
+        byte[] b = UrlBase64.encode(encrypt(algorithm, value.getBytes(SSOConfig.getSSOEncoding()), key));
+        return new String(b, SSOConfig.getSSOEncoding());
+    }
 
-	/**
-	 * generate KEY
-	 */
-	private Key toKey(Algorithm algorithm, String strKey) throws Exception {
-		/*
+    public String decrypt(String value, String key) throws Exception {
+        byte[] b = decrypt(algorithm, UrlBase64.decode(value.getBytes(SSOConfig.getSSOEncoding())), key);
+        return new String(b, SSOConfig.getSSOEncoding());
+    }
+
+    /**
+     * generate KEY
+     */
+    private Key toKey(Algorithm algorithm, String strKey) throws Exception {
+        /*
 		 * MD5 处理密钥
 		 */
-		byte[] key = MD5.md5Raw(strKey.getBytes(SSOConfig.getSSOEncoding()));
-		if (Algorithm.DES == algorithm) {
-			DESKeySpec dks = new DESKeySpec(key);
-			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm.getKey());
-			SecretKey secretKey = keyFactory.generateSecret(dks);
-			return secretKey;
-		}
-		return new SecretKeySpec(key, algorithm.getKey());
-	}
+        byte[] key = MD5.md5Raw(strKey.getBytes(SSOConfig.getSSOEncoding()));
+        if (Algorithm.DES == algorithm) {
+            DESKeySpec dks = new DESKeySpec(key);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm.getKey());
+            SecretKey secretKey = keyFactory.generateSecret(dks);
+            return secretKey;
+        }
+        return new SecretKeySpec(key, algorithm.getKey());
+    }
 
-	/**
-	 * 解密
-	 * 
-	 * @param algorithm
-	 * @param data
-	 * @param key
-	 * @return
-	 */
-	public byte[] decrypt(Algorithm algorithm, byte[] data, String key) {
-		try {
-			Cipher cipher = Cipher.getInstance(algorithm.toString());
-			cipher.init(Cipher.DECRYPT_MODE, this.toKey(algorithm, key));
-			return cipher.doFinal(data);
-		} catch (Exception e) {
-			logger.severe("Encrypt setKey is exception.");
-			throw new KissoException(e);
-		}
-	}
+    /**
+     * 解密
+     *
+     * @param algorithm
+     * @param data
+     * @param key
+     * @return
+     */
+    public byte[] decrypt(Algorithm algorithm, byte[] data, String key) {
+        try {
+            Cipher cipher = Cipher.getInstance(algorithm.toString());
+            cipher.init(Cipher.DECRYPT_MODE, this.toKey(algorithm, key));
+            return cipher.doFinal(data);
+        } catch (Exception e) {
+            logger.severe("Encrypt setKey is exception.");
+            throw new KissoException(e);
+        }
+    }
 
-	/**
-	 * 加密
-	 * 
-	 * @param algorithm
-	 * @param data
-	 * @param key
-	 * @return
-	 */
-	public byte[] encrypt(Algorithm algorithm, byte[] data, String key) {
-		try {
-			Cipher cipher = Cipher.getInstance(algorithm.toString());
-			cipher.init(Cipher.ENCRYPT_MODE, this.toKey(algorithm, key));
-			return cipher.doFinal(data);
-		} catch (Exception e) {
-			logger.severe("Encrypt setKey is exception.");
-			throw new KissoException(e);
-		}
-	}
+    /**
+     * 加密
+     *
+     * @param algorithm
+     * @param data
+     * @param key
+     * @return
+     */
+    public byte[] encrypt(Algorithm algorithm, byte[] data, String key) {
+        try {
+            Cipher cipher = Cipher.getInstance(algorithm.toString());
+            cipher.init(Cipher.ENCRYPT_MODE, this.toKey(algorithm, key));
+            return cipher.doFinal(data);
+        } catch (Exception e) {
+            logger.severe("Encrypt setKey is exception.");
+            throw new KissoException(e);
+        }
+    }
 
-	public Algorithm getAlgorithm() {
-		return algorithm;
-	}
+    public Algorithm getAlgorithm() {
+        return algorithm;
+    }
 
-	public void setAlgorithm(Algorithm algorithm) {
-		this.algorithm = algorithm;
-	}
+    public void setAlgorithm(Algorithm algorithm) {
+        this.algorithm = algorithm;
+    }
 
 }

@@ -18,32 +18,32 @@
   ~ under the License.
   -->
 <!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
-  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+        "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
 
 <taglib>
 
-  <tlib-version>1.1.2</tlib-version>
+    <tlib-version>1.1.2</tlib-version>
 
-  <jsp-version>1.2</jsp-version>
+    <jsp-version>1.2</jsp-version>
 
-  <short-name>kisso</short-name>
+    <short-name>kisso</short-name>
 
-  <uri>http://kisso.baomidou.com/tags</uri>
+    <uri>http://kisso.baomidou.com/tags</uri>
 
-  <description>kisso JSP Tag Library.</description>
+    <description>kisso JSP Tag Library.</description>
 
-  <tag>
-    <name>hasPermission</name>
-    <tag-class>com.baomidou.kisso.common.auth.HasPermissionTag</tag-class>
-    <body-content>JSP</body-content>
-    <description>Displays body content only if the current Subject (user)
-      'has' (implies) the specified permission (i.e the user has the specified ability).
-    </description>
-    <attribute>
-      <name>name</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-  </tag>
+    <tag>
+        <name>hasPermission</name>
+        <tag-class>com.baomidou.kisso.common.auth.HasPermissionTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>Displays body content only if the current Subject (user)
+            'has' (implies) the specified permission (i.e the user has the specified ability).
+        </description>
+        <attribute>
+            <name>name</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 
 </taglib>

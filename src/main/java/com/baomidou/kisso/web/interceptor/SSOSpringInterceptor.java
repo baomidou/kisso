@@ -81,7 +81,7 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
             if (ssoToken == null) {
                 if (HttpUtil.isAjax(request)) {
                     /*
-					 * Handler 处理 AJAX 请求
+                     * Handler 处理 AJAX 请求
 					 */
                     this.getHandlerInterceptor().preTokenIsNullAjax(request, response);
                     return false;

@@ -31,6 +31,7 @@ import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.SSOConstants;
+import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.security.token.Token;
@@ -99,7 +100,7 @@ public class KissoServiceSupport {
 				 * 1、缓存正常，返回 tk
 				 * 2、缓存宕机，执行读取 Cookie 逻辑
 				 */
-                if (cacheSSOToken.getFlag() != SSOConstants.TOKEN_FLAG_CACHE_SHUT) {
+                if (cacheSSOToken.getFlag() != TokenFlag.CACHE_SHUT) {
                     /*
                      * 验证 cookie 与 cache 中 SSOToken 登录时间是否<br>
 					 * 不一致返回 null
@@ -138,9 +139,9 @@ public class KissoServiceSupport {
                 logger.debug("Unauthorized login request, ip=" + IpHelper.getIpAddr(request));
                 return null;
             }
-            accessToken = uid.getValue();
+            return SSOToken.parser(uid.getValue(), false);
         }
-        return SSOToken.parser(accessToken);
+        return SSOToken.parser(accessToken, true);
     }
 
     /**

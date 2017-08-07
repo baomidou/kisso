@@ -26,9 +26,9 @@ import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOPlugin;
 import com.baomidou.kisso.common.CookieHelper;
-import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.common.util.RandomUtil;
+import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.security.token.SSOToken;
 
 /**
@@ -116,7 +116,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         if (cache != null) {
             boolean rlt = cache.set(ssoToken.toCacheKey(), ssoToken, config.getCacheExpires());
             if (!rlt) {
-                ssoToken.setFlag(SSOConstants.TOKEN_FLAG_CACHE_SHUT);
+                ssoToken.setFlag(TokenFlag.CACHE_SHUT);
             }
         }
 
@@ -183,7 +183,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         /* redirect login page */
         String loginUrl = config.getLoginUrl();
         if ("".equals(loginUrl)) {
-            response.getWriter().write("{code:\"ssoLogin\", msg:\"Login request\"}");
+            response.getWriter().write("{code:\"logout\", msg:\"Please login\"}");
         } else {
             String retUrl = HttpUtil.getQueryString(request, config.getEncoding());
             logger.debug("loginAgain redirect pageUrl.." + retUrl);
