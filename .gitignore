@@ -1,0 +1,6 @@
+# .ignore files
+/.settings/
+/build/
+/.project
+/.classpath
+.idea
