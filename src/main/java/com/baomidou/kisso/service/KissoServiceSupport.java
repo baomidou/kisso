@@ -224,9 +224,11 @@ public class KissoServiceSupport {
              * </p>
              */
             String domain = config.getCookieDomain();
-            cookie.setDomain(domain);
-            if ("".equals(domain) || domain.contains("localhost")) {
-                logger.warn("if you can't login, please enter normal domain. instead:" + domain);
+            if (null != domain) {
+                cookie.setDomain(domain);
+                if ("".equals(domain) || domain.contains("localhost")) {
+                    logger.warn("if you can't login, please enter normal domain. instead:" + domain);
+                }
             }
 
             /**

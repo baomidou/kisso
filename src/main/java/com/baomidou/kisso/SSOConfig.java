@@ -41,7 +41,7 @@ public class SSOConfig {
     private String rsaStorepass = "letkisso";
     private String accessTokenName = "accessToken";
     private String cookieName = "uid";
-    private String cookieDomain = "";
+    private String cookieDomain;
     private String cookiePath = "/";
     private boolean cookieSecure = false;
     private boolean cookieHttponly = true;
