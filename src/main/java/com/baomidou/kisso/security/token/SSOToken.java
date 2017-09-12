@@ -229,7 +229,7 @@ public class SSOToken extends AccessToken {
         if (null != ip) {
             ssoToken.setIp(String.valueOf(ip));
         }
-        Object userAgent = claims.get(SSOConstants.TOKEN_USER_IP);
+        Object userAgent = claims.get(SSOConstants.TOKEN_USER_AGENT);
         if (null != userAgent) {
             ssoToken.setUserAgent(String.valueOf(userAgent));
         }
