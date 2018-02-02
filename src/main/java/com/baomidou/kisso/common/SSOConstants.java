@@ -66,5 +66,14 @@ public interface SSOConstants {
 
     String CUT_SYMBOL = "#";
 
-
+    /**
+     * <p>
+     * 时间戳的截断位所用除数
+     * </p>
+     * <p>
+     * 用于 jwt中时间戳(例如iat,exp) 和 系统内System.currentTimeMillis()时间戳的值的比对<br/>
+     * 前者精确到秒级别,后者精确到毫秒级,相差3位<br/>
+     * </p>
+     */
+    Long JWT_TIMESTAMP_CUT = 1000L;
 }
