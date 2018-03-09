@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso;
 
+import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.encrypt.MD5;
 
 /**
@@ -31,6 +32,8 @@ public class TestMD5 {
      * 测试
      */
     public static void main(String[] args) {
+        System.out.println(IpHelper.LOCAL_IP);
+        System.out.println(IpHelper.HOST_NAME);
         System.out.println(MD5.toMD5("123"));
     }
 }
