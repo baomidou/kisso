@@ -33,43 +33,36 @@ public class IpHelper {
 
     private static final Logger logger = Logger.getLogger("IpHelper");
 
-    private static String LOCAL_IP_STAR_STR = "192.168.";
-
-    static {
-        String ip = null;
-        String hostName = null;
-        try {
-            hostName = InetAddress.getLocalHost().getHostName();
-            InetAddress ipAddr[] = InetAddress.getAllByName(hostName);
-            for (int i = 0; i < ipAddr.length; i++) {
-                ip = ipAddr[i].getHostAddress();
-                if (ip.startsWith(LOCAL_IP_STAR_STR)) {
-                    break;
-                }
-            }
-            if (ip == null) {
-                ip = ipAddr[0].getHostAddress();
-            }
-
-        } catch (UnknownHostException e) {
-            logger.severe("IpHelper error.");
-            e.printStackTrace();
-        }
-
-        LOCAL_IP = ip;
-        HOST_NAME = hostName;
-
-    }
-
     /**
      * 系统的本地IP地址
      */
-    public static final String LOCAL_IP;
+    public static String LOCAL_IP;
 
     /**
      * 系统的本地服务器名
      */
-    public static final String HOST_NAME;
+    public static String HOST_NAME;
+
+    static {
+        String ip = "";
+        try {
+            InetAddress inetAddr = InetAddress.getLocalHost();
+            HOST_NAME = inetAddr.getHostName();
+            byte[] addr = inetAddr.getAddress();
+            for (int i = 0; i < addr.length; i++) {
+                if (i > 0) {
+                    ip += ".";
+                }
+                ip += addr[i] & 0xFF;
+            }
+        } catch (UnknownHostException e) {
+            ip = "unknown";
+            logger.severe(e.getMessage());
+        } finally {
+            LOCAL_IP = ip;
+        }
+    }
+
 
     /**
      * <p>
@@ -81,8 +74,8 @@ public class IpHelper {
      * 192.168.1.130, 192.168.1.100 用户真实IP为： 192.168.1.110
      * </p>
      *
-     * @param request
-     * @return
+     * @param request 当前请求
+     * @return IP 地址
      */
     public static String getIpAddr(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
@@ -96,12 +89,10 @@ public class IpHelper {
             ip = request.getRemoteAddr();
             if (ip.equals("127.0.0.1")) {
                 /** 根据网卡取本机配置的IP */
-                InetAddress inet = null;
                 try {
-                    inet = InetAddress.getLocalHost();
-                    ip = inet.getHostAddress();
+                    ip = InetAddress.getLocalHost().getHostAddress();
                 } catch (UnknownHostException e) {
-                    logger.severe("IpHelper error." + e.toString());
+                    logger.severe("IpHelper error." + e.getMessage());
                 }
             }
         }
