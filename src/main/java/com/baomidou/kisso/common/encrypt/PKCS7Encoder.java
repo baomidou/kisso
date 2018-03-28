@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,7 @@ public class PKCS7Encoder {
         if (amountToPad == 0) {
             amountToPad = BLOCK_SIZE;
         }
-		
+
 		/* 获得补位所用的字符 */
         char padChr = chr(amountToPad);
         String tmp = new String();

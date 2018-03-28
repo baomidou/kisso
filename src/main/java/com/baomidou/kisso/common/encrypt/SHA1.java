@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,7 +57,7 @@ public class SHA1 {
             for (int i = 0; i < 4; i++) {
                 sb.append(array[i]);
             }
-			
+
 			/* SHA1签名生成 */
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             md.update(sb.toString().getBytes());

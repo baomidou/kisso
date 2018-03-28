@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -36,10 +36,10 @@ public class TestSaltEncoder {
 		/* 生成 10 位随机盐值，生产环境盐值为固定值，您也可以使用  “ 登录用户名  ” 作为盐值，这样好处是每个用户加密的盐都不一样。 */
         String salt = RandomUtil.getCharacterAndNumber(10);
         System.err.println("盐值 salt=" + salt);
-		
+
 		/* 登录密码 */
         String pwd = "1q2=3e!$-Qde";
-		
+
 		/* MD5 盐加密 */
         MD5Salt md5 = new MD5Salt(salt, "MD5");
         String et1 = md5.encode(pwd);
