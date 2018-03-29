@@ -29,5 +29,5 @@ public interface Istrip {
      * 				待处理内容
      * @return
      */
-    public String strip(String value);
+    String strip(String value);
 }

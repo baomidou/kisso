@@ -37,6 +37,8 @@ import com.baomidou.kisso.exception.LicenseException;
  */
 public class License {
 
+    public static final String CODE = "code";
+    public static final String SIGNATURE = "signature";
     public static final String EXPIRATION_DATE = "expirationDate";
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 

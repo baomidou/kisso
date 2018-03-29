@@ -29,6 +29,7 @@ public class SqlInjection implements Istrip {
      * 				待处理内容
      * @return
      */
+    @Override
     public String strip(String value) {
 
         //剥离SQL注入部分代码

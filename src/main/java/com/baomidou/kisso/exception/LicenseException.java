@@ -23,7 +23,7 @@ package com.baomidou.kisso.exception;
  * @author hubin
  * @since 2018-03-27
  */
-public class LicenseException extends RuntimeException {
+public class LicenseException extends KissoException {
 
     public LicenseException() {
         super("Invalid license");

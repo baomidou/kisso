@@ -56,9 +56,10 @@ public class LicenseGenerator {
             PrivateKey privateKey = readPrivateKey(privateKeyFile);
             String encoded = features.toString();
             String signature = sign(encoded.getBytes(), privateKey);
+            features.remove(License.CODE);
             Properties properties = new OrderedProperties();
             properties.putAll(features);
-            properties.setProperty(LicenseManager.SIGNATURE, signature);
+            properties.setProperty(License.SIGNATURE, signature);
             properties.store(output, "License file");
             return signature;
         } catch (Exception e) {

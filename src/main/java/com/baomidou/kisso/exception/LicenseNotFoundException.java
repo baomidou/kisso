@@ -23,7 +23,7 @@ package com.baomidou.kisso.exception;
  * @author hubin
  * @since 2018-03-27
  */
-public class LicenseNotFoundException extends Exception {
+public class LicenseNotFoundException extends LicenseException {
 
     public LicenseNotFoundException() {
         super("License file not found");

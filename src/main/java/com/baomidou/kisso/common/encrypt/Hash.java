@@ -38,6 +38,7 @@ public class Hash {
    * </p>
    * <p>
    * MD2 + MD5 + HASH1 -> 104
+   * https://venishjoe.net/post/serial-key-generation-and-validation-in-java/
    * </p>
    *
    * @param stringInput
@@ -45,11 +46,34 @@ public class Hash {
    */
   public static String getSerialKey(String stringInput) {
     try {
+      StringBuffer out = new StringBuffer();
       StringBuffer serialKey = new StringBuffer();
       serialKey.append(calculate(stringInput, "MD2"));
       serialKey.append(calculate(stringInput, "MD5"));
       serialKey.append(calculate(stringInput, "SHA1"));
-      return serialKey.toString();
+      String serialNumberEncoded = serialKey.toString();
+      out.append(serialNumberEncoded.charAt(32));
+      out.append(serialNumberEncoded.charAt(76));
+      out.append(serialNumberEncoded.charAt(100));
+      out.append(serialNumberEncoded.charAt(50));
+      out.append("-");
+      out.append(serialNumberEncoded.charAt(2));
+      out.append(serialNumberEncoded.charAt(91));
+      out.append(serialNumberEncoded.charAt(73));
+      out.append(serialNumberEncoded.charAt(72));
+      out.append(serialNumberEncoded.charAt(98));
+      out.append("-");
+      out.append(serialNumberEncoded.charAt(47));
+      out.append(serialNumberEncoded.charAt(65));
+      out.append(serialNumberEncoded.charAt(18));
+      out.append(serialNumberEncoded.charAt(85));
+      out.append("-");
+      out.append(serialNumberEncoded.charAt(27));
+      out.append(serialNumberEncoded.charAt(53));
+      out.append(serialNumberEncoded.charAt(102));
+      out.append(serialNumberEncoded.charAt(15));
+      out.append(serialNumberEncoded.charAt(99));
+      return out.toString();
     } catch (NoSuchAlgorithmException e) {
       throw new KissoException(e);
     }

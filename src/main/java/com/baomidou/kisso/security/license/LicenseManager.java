@@ -30,13 +30,17 @@ import com.baomidou.kisso.exception.LicenseException;
 import com.baomidou.kisso.exception.LicenseNotFoundException;
 
 /**
- * @author Decebal Suiu
+ * <p>
+ * License 许可证管理
+ * </p>
+ *
+ * @author hubin
+ * @since 2018-03-28
  */
 public class LicenseManager {
 
     public static final String LICENSE_FILE = "license.dat";
     public static final String PUBLIC_KEY_FILE = "license.pk";
-    public static final String SIGNATURE = "signature";
 
     private static LicenseManager licenseManager = new LicenseManager();
 
@@ -44,11 +48,26 @@ public class LicenseManager {
         return licenseManager;
     }
 
-    public boolean isValidLicense(License license) throws LicenseNotFoundException, LicenseException {
-        return !license.isExpired();
+
+    public boolean isValidLicense(License license) {
+        try {
+            return !license.isExpired();
+        } catch (Exception e) {
+            throw new LicenseException("License verification failed.");
+        }
     }
 
-    public License getLicense() throws LicenseNotFoundException, LicenseException {
+
+    public boolean isValidLicense(String licenseFile) {
+        try {
+            return !loadLicense(licenseFile).isExpired();
+        } catch (Exception e) {
+            throw new LicenseException("License verification failed.");
+        }
+    }
+
+
+    public License getLicense() throws LicenseException {
         if (!new File(LICENSE_FILE).exists()) {
             throw new LicenseNotFoundException();
         }
@@ -61,12 +80,18 @@ public class LicenseManager {
         return license;
     }
 
+
     private License loadLicense() throws Exception {
-        Properties features = PropertiesUtil.loadProperties(LICENSE_FILE);
-        if (!features.containsKey(SIGNATURE)) {
+        return loadLicense(LICENSE_FILE);
+    }
+
+
+    private License loadLicense(String licenseFile) throws Exception {
+        Properties features = PropertiesUtil.loadProperties(licenseFile);
+        if (!features.containsKey(License.SIGNATURE)) {
             throw new LicenseException("Missing signature");
         }
-        String signature = (String) features.remove(SIGNATURE);
+        String signature = (String) features.remove(License.SIGNATURE);
         String encoded = features.toString();
         PublicKey publicKey = readPublicKey(PUBLIC_KEY_FILE);
         if (!verify(encoded.getBytes(), signature, publicKey)) {
@@ -74,6 +99,7 @@ public class LicenseManager {
         }
         return new License(features);
     }
+
 
     private PublicKey readPublicKey(String uri) throws Exception {
         byte[] bytes;
@@ -87,6 +113,7 @@ public class LicenseManager {
         KeyFactory keyFactory = KeyFactory.getInstance("DSA");
         return keyFactory.generatePublic(keySpec);
     }
+
 
     private boolean verify(byte[] message, String signature, PublicKey publicKey) throws Exception {
         Signature dsa = Signature.getInstance("SHA/DSA");
