@@ -28,18 +28,17 @@ import java.util.UUID;
  */
 public class RandomUtil {
 
+
     /**
-     *
      * <p>
      * 生产长度为length的随机字母数字混合字符串
      * </p>
      *
-     * @param length
-     *            指定字符串长度
+     * @param length 指定字符串长度
      * @return
      */
     public static String getCharacterAndNumber(int length) {
-        String val = "";
+        StringBuffer out = new StringBuffer();
         Random random = new Random();
         for (int i = 0; i < length; i++) {
             // 输出字母还是数字
@@ -48,15 +47,34 @@ public class RandomUtil {
             if ("char".equalsIgnoreCase(charOrNum)) {
                 // 取得大写字母还是小写字母
                 int choice = random.nextInt(2) % 2 == 0 ? 65 : 97;
-                val += (char) (choice + random.nextInt(26));
+                out.append((char) (choice + random.nextInt(26)));
             }
             // 数字
             else if ("num".equalsIgnoreCase(charOrNum)) {
-                val += String.valueOf(random.nextInt(10));
+                out.append(random.nextInt(10));
             }
         }
-        return val;
+        return out.toString();
     }
+
+
+    /**
+     * <p>
+     * 生产长度为length的随机字母数字
+     * </p>
+     *
+     * @param length 指定字符串长度
+     * @return
+     */
+    public static String getNumber(int length) {
+        StringBuffer out = new StringBuffer();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            out.append(random.nextInt(10));
+        }
+        return out.toString();
+    }
+
 
     /**
      * <p>
@@ -66,6 +84,7 @@ public class RandomUtil {
     public static String get32UUID() {
         return getUUID().replace("-", "");
     }
+
 
     /**
      * <p>
