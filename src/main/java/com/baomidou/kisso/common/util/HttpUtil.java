@@ -91,10 +91,15 @@ public class HttpUtil {
      * @throws IOException
      */
     public static String getQueryString(HttpServletRequest request, String encode) throws IOException {
-        StringBuffer sb = new StringBuffer(request.getRequestURL());
+    	String url = request.getRequestURL().toString();
+        StringBuffer sb = new StringBuffer(url);
         String query = request.getQueryString();
         if (query != null && query.length() > 0) {
-            sb.append("?").append(query);
+        	if(url.indexOf("?") != -1){//解决xxcontroller.do?method&param=value这种多出?的问题
+        		sb.append("&").append(query);
+        	}else {
+        		sb.append("?").append(query);
+        	}
         }
         return URLEncoder.encode(sb.toString(), encode);
     }
@@ -154,7 +159,11 @@ public class HttpUtil {
         }
 
         StringBuffer retStr = new StringBuffer(url);
-        retStr.append("?");
+        if(url.indexOf("?") != -1){//解决xxcontroller.do?method&param=value这种多出?的问题
+        	retStr.append("&");
+    	}else {
+    		retStr.append("?");
+    	}
         retStr.append(retParam);
         retStr.append("=");
         try {
