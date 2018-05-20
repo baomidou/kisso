@@ -91,15 +91,11 @@ public class HttpUtil {
      * @throws IOException
      */
     public static String getQueryString(HttpServletRequest request, String encode) throws IOException {
-    	String url = request.getRequestURL().toString();
+        String url = request.getRequestURL().toString();
         StringBuffer sb = new StringBuffer(url);
         String query = request.getQueryString();
         if (query != null && query.length() > 0) {
-        	if(url.indexOf("?") != -1){//解决xxcontroller.do?method&param=value这种多出?的问题
-        		sb.append("&").append(query);
-        	}else {
-        		sb.append("?").append(query);
-        	}
+            sb.append(url.contains("?") ? "&" : "?").append(query);
         }
         return URLEncoder.encode(sb.toString(), encode);
     }
@@ -159,11 +155,7 @@ public class HttpUtil {
         }
 
         StringBuffer retStr = new StringBuffer(url);
-        if(url.indexOf("?") != -1){//解决xxcontroller.do?method&param=value这种多出?的问题
-        	retStr.append("&");
-    	}else {
-    		retStr.append("?");
-    	}
+        retStr.append(url.contains("?") ? "&" : "?");
         retStr.append(retParam);
         retStr.append("=");
         try {
@@ -300,8 +292,10 @@ public class HttpUtil {
         StringBuffer url = new StringBuffer(request.getScheme());
         // 请求协议 http,https
         url.append("://");
-        url.append(request.getHeader("host"));// 请求服务器
-        url.append(request.getRequestURI());// 工程名
+        // 请求服务器
+        url.append(request.getHeader("host"));
+        // 工程名
+        url.append(request.getRequestURI());
         if (request.getQueryString() != null) {
             // 请求参数
             url.append("?").append(request.getQueryString());
