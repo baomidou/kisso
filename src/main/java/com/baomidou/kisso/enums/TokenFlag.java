@@ -45,7 +45,7 @@ public enum TokenFlag {
     public static TokenFlag fromValue(String value) {
         TokenFlag[] its = TokenFlag.values();
         for (TokenFlag it : its) {
-            if (it.value() == value) {
+            if (it.value().equals(value)) {
                 return it;
             }
         }

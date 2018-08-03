@@ -47,7 +47,7 @@ public enum TokenOrigin {
     public static TokenOrigin fromValue(String value) {
         TokenOrigin[] its = TokenOrigin.values();
         for (TokenOrigin it : its) {
-            if (it.value() == value) {
+            if (it.value().equals(value)) {
                 return it;
             }
         }
