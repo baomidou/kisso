@@ -28,6 +28,7 @@ import com.baomidou.kisso.security.token.SSOToken;
  */
 public class AuthDefaultImpl implements SSOAuthorization {
 
+    @Override
     public boolean isPermitted(SSOToken token, String permission) {
         return true;
     }
