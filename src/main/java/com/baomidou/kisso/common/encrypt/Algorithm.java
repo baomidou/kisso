@@ -27,6 +27,8 @@ public enum Algorithm {
     DES("DES", "DES encrypt"),
     AES("AES", "AES encrypt"),
     BLOWFISH("BLOWFISH", "Blowfish encrypt"),
+    HMACSHA1("HmacSHA1", "HmacSHA1 encrypt"),
+    HMACSHA256("HmacSHA256", "HmacSHA256 encrypt"),
     RC2("RC2", "RC2 encrypt"),
     RC4("RC4", "RC4 encrypt");
 
