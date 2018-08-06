@@ -37,7 +37,10 @@ import com.baomidou.kisso.security.token.SSOToken;
  */
 public class HasPermissionTag extends BodyTagSupport {
 
-    private String name; // 权限码名称
+    /**
+     * 权限码名称
+     */
+    private String name;
 
     public String getName() {
         return name;

@@ -26,6 +26,7 @@ import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.SSOConstants;
+import com.baomidou.kisso.common.util.StringUtils;
 import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.JwtHelper;
@@ -217,29 +218,29 @@ public class SSOToken extends AccessToken {
         if (null == claims) {
             return null;
         }
-        Object origin = claims.get(SSOConstants.TOKEN_ORIGIN);
-        if (header && null == origin) {
+        String origin = claims.get(SSOConstants.TOKEN_ORIGIN,String.class);
+        if (header && StringUtils.isEmpty(origin)) {
             logger.warn("illegal token request orgin.");
             return null;
         }
         SSOToken ssoToken = new SSOToken();
         ssoToken.setId(claims.getId());
         ssoToken.setIssuer(claims.getIssuer());
-        Object ip = claims.get(SSOConstants.TOKEN_USER_IP);
-        if (null != ip) {
-            ssoToken.setIp(String.valueOf(ip));
+        String ip = claims.get(SSOConstants.TOKEN_USER_IP,String.class);
+        if (StringUtils.isNotEmpty(ip)) {
+            ssoToken.setIp(ip);
         }
-        Object userAgent = claims.get(SSOConstants.TOKEN_USER_AGENT);
-        if (null != userAgent) {
-            ssoToken.setUserAgent(String.valueOf(userAgent));
+        String userAgent = claims.get(SSOConstants.TOKEN_USER_AGENT,String.class);
+        if (StringUtils.isNotEmpty(userAgent)) {
+            ssoToken.setUserAgent(userAgent);
         }
-        Object flag = claims.get(SSOConstants.TOKEN_FLAG);
-        if (null != flag) {
-            ssoToken.setFlag(TokenFlag.fromValue(String.valueOf(flag)));
+        String flag = claims.get(SSOConstants.TOKEN_FLAG,String.class);
+        if (StringUtils.isNotEmpty(flag)) {
+            ssoToken.setFlag(TokenFlag.fromValue(flag));
         }
         // TOKEN 来源
-        if (null != origin) {
-            ssoToken.setOrigin(TokenOrigin.fromValue(String.valueOf(origin)));
+        if (StringUtils.isNotEmpty(origin)) {
+            ssoToken.setOrigin(TokenOrigin.fromValue(origin));
         }
         ssoToken.setTime(claims.getIssuedAt().getTime());
         ssoToken.setClaims(claims);
