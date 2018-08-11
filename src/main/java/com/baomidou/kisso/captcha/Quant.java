@@ -18,6 +18,7 @@ package com.baomidou.kisso.captcha;
 /**
  * <p>
  * Gif 编码辅助类
+ * https://github.com/rtyley/animated-gif-lib-for-java
  * </p>
  *
  * @author unknown

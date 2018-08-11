@@ -38,7 +38,7 @@ public class TestCaptcha {
     @Test
     public void test() throws Exception {
         String code = new ImageCaptcha()
-                .out(new FileOutputStream(new File("abc.png")));
+                .writeImage(new FileOutputStream(new File("abc.png")));
         System.out.println("验证码：" + code);
     }
 
@@ -49,7 +49,7 @@ public class TestCaptcha {
                 .setLength(6)
                 .setWidth(200)
                 .setRandomType(RandomType.MIX)
-                .out(new FileOutputStream(new File("abc.gif")));
+                .writeImage(new FileOutputStream(new File("abc.gif")));
         System.out.println("验证码：" + code);
     }
 
@@ -58,7 +58,7 @@ public class TestCaptcha {
         String code = new ImageCaptcha()
                 .setRandomType(RandomType.CHINESE)
                 .setFont(new Font("微软雅黑", Font.PLAIN, 30))
-                .out(new FileOutputStream(new File("han.png")));
+                .writeImage(new FileOutputStream(new File("han.png")));
         System.out.println("验证码：" + code);
     }
 
@@ -72,7 +72,7 @@ public class TestCaptcha {
                 .setFont(new Font("微软雅黑", Font.PLAIN, 30))
                 .setColor(Color.BLACK)
                 .setInterfereColor(Color.orange)
-                .out(new FileOutputStream(new File("han.gif")));
+                .writeImage(new FileOutputStream(new File("han.gif")));
         System.out.println("验证码：" + code);
     }
 

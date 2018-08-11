@@ -40,15 +40,15 @@ public class ImageCaptcha extends AbstractCaptcha {
 
   /**
    * <p>
-   * 生成验证码
+   * 生成图片验证码
    * </p>
    *
    * @param out 输出流
    * @return 是否成功
    */
   @Override
-  public String out(OutputStream out) throws IOException {
-    String code = randomCode();
+  public String writeImage(OutputStream out) throws IOException {
+    String captcha = randomCaptcha();
     if (gif) {
       GifEncoder gifEncoder = new GifEncoder();
       gifEncoder.start(out);
@@ -56,14 +56,14 @@ public class ImageCaptcha extends AbstractCaptcha {
       gifEncoder.setDelay(100);
       gifEncoder.setRepeat(0);
       for (int i = 0; i < length; i++) {
-        gifEncoder.addFrame(graphicsImage(code, i));
+        gifEncoder.addFrame(graphicsImage(captcha, i));
       }
       gifEncoder.finish();
     } else {
-      ImageIO.write(graphicsImage(code, 1), suffix, out);
+      ImageIO.write(graphicsImage(captcha, 1), suffix, out);
     }
     out.flush();
-    return code;
+    return captcha;
   }
 
 

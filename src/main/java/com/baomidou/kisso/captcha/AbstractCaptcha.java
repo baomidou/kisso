@@ -19,7 +19,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Serializable;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.baomidou.kisso.common.util.RandomType;
 import com.baomidou.kisso.common.util.RandomUtil;
@@ -37,7 +38,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public abstract class AbstractCaptcha implements Serializable {
+public abstract class AbstractCaptcha implements ICaptcha {
 
     /**
      * 是否为 GIF 验证码
@@ -84,6 +85,16 @@ public abstract class AbstractCaptcha implements Serializable {
      */
     protected String chineseUnicode;
 
+    /**
+     * 图片验证码票据存储接口
+     */
+    protected ICaptchaStore captchaStore;
+
+    /**
+     * 是否忽略验证内容大小写，默认 true
+     */
+    protected boolean ignoreCase = true;
+
     public AbstractCaptcha() {
         // to do nothing
     }
@@ -111,6 +122,38 @@ public abstract class AbstractCaptcha implements Serializable {
         }
     }
 
+    @Override
+    public void generate(HttpServletRequest request, OutputStream out, String ticket) throws IOException {
+        String captcha = writeImage(out);
+        if (null != captcha) {
+            getCaptchaStore(request).put(ticket, captcha);
+        }
+    }
+
+    @Override
+    public boolean verification(HttpServletRequest request, String ticket, String captcha) {
+        String tc = getCaptchaStore(request).get(ticket);
+        if (null == tc) {
+            return false;
+        }
+        return ignoreCase ? tc.equalsIgnoreCase(captcha) : tc.equals(captcha);
+    }
+
+    /**
+     * <p>
+     * 内置 HttpSession 存储验证
+     * </p>
+     *
+     * @param request
+     * @return
+     */
+    private ICaptchaStore getCaptchaStore(HttpServletRequest request) {
+        if (null == captchaStore) {
+            return new CaptchaStoreSession(request);
+        }
+        return captchaStore;
+    }
+
     /**
      * <p>
      * 输出图片验证码
@@ -120,7 +163,7 @@ public abstract class AbstractCaptcha implements Serializable {
      * @return 字符串验证码
      * @throws IOException
      */
-    public abstract String out(OutputStream out) throws IOException;
+    public abstract String writeImage(OutputStream out) throws IOException;
 
     /**
      * 产生两个数之间的随机数
@@ -146,7 +189,7 @@ public abstract class AbstractCaptcha implements Serializable {
     /**
      * 随机验证码
      */
-    protected String randomCode() {
+    protected String randomCaptcha() {
         // 默认设置
         if (null == randomType) {
             randomType = RandomType.MIX;

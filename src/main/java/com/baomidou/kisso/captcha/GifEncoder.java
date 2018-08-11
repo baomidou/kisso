@@ -41,6 +41,7 @@ import java.io.OutputStream;
  * for any purpose, however, refer to the Unisys LZW patent for restrictions
  * on use of the associated Encoder class.  Please forward any corrections
  * to questions at fmsware.com.
+ * https://github.com/rtyley/animated-gif-lib-for-java
  */
 public class GifEncoder {
     protected int width;
