@@ -24,9 +24,10 @@ import javax.servlet.http.HttpSession;
  * </p>
  *
  * @author hubin
- * @Date 2018-08-11
+ * @since 2018-08-11
  */
 public class CaptchaStoreSession implements ICaptchaStore {
+
   private HttpSession httpSession;
 
   private CaptchaStoreSession() {

@@ -29,10 +29,8 @@ public interface SSOEncrypt {
      * 字符串内容加密
      * <p>
      *
-     * @param value
-     *            加密内容
-     * @param key
-     *            密钥
+     * @param value 加密内容
+     * @param key   密钥
      * @return
      * @throws Exception
      */
@@ -42,10 +40,8 @@ public interface SSOEncrypt {
      * 字符串内容解密
      * <p>
      *
-     * @param value
-     *            解密内容
-     * @param key
-     *            密钥
+     * @param value 解密内容
+     * @param key   密钥
      * @return
      * @throws Exception
      */

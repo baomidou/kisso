@@ -56,9 +56,9 @@ public class Base64Encoder implements Encoder {
             out.write(encodingTable[a3 & 0x3f]);
         }
 
-		/*
+        /*
          * process the tail end.
-		 */
+         */
         int b1, b2, b3;
         int d1, d2;
 

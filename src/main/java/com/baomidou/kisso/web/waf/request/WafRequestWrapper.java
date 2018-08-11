@@ -27,126 +27,123 @@ import com.baomidou.kisso.web.waf.WafHelper;
 /**
  * Request请求过滤包装
  * <p>
+ *
  * @author hubin
  * @since 2014-5-8
  */
 public class WafRequestWrapper extends HttpServletRequestWrapper {
 
-    private boolean filterXSS = true;
+  private boolean filterXSS = true;
 
-    private boolean filterSQL = true;
+  private boolean filterSQL = true;
 
 
-    public WafRequestWrapper(HttpServletRequest request, boolean filterXSS, boolean filterSQL) {
-        super(request);
-        this.filterXSS = filterXSS;
-        this.filterSQL = filterSQL;
+  public WafRequestWrapper(HttpServletRequest request, boolean filterXSS, boolean filterSQL) {
+    super(request);
+    this.filterXSS = filterXSS;
+    this.filterSQL = filterSQL;
+  }
+
+
+  public WafRequestWrapper(HttpServletRequest request) {
+    this(request, true, true);
+  }
+
+
+  /**
+   * @param parameter 过滤参数
+   * @return
+   * @since 数组参数过滤
+   */
+  @Override
+  public String[] getParameterValues(String parameter) {
+    String[] values = super.getParameterValues(parameter);
+    if (values == null) {
+      return null;
     }
 
-
-    public WafRequestWrapper(HttpServletRequest request) {
-        this(request, true, true);
+    int count = values.length;
+    String[] encodedValues = new String[count];
+    for (int i = 0; i < count; i++) {
+      encodedValues[i] = filterParamString(values[i]);
     }
 
+    return encodedValues;
+  }
 
-    /**
-     * @Description 数组参数过滤
-     * @param parameter
-     * 				过滤参数
-     * @return
-     */
-    @Override
-    public String[] getParameterValues(String parameter) {
-        String[] values = super.getParameterValues(parameter);
-        if (values == null) {
-            return null;
-        }
-
-        int count = values.length;
-        String[] encodedValues = new String[count];
-        for (int i = 0; i < count; i++) {
-            encodedValues[i] = filterParamString(values[i]);
-        }
-
-        return encodedValues;
+  @Override
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  public Map getParameterMap() {
+    Map<String, String[]> primary = super.getParameterMap();
+    Map<String, String[]> result = new HashMap<String, String[]>(primary.size());
+    for (Map.Entry<String, String[]> entry : primary.entrySet()) {
+      result.put(entry.getKey(), filterEntryString(entry.getValue()));
     }
+    return result;
 
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public Map getParameterMap() {
-        Map<String, String[]> primary = super.getParameterMap();
-        Map<String, String[]> result = new HashMap<String, String[]>(primary.size());
-        for (Map.Entry<String, String[]> entry : primary.entrySet()) {
-            result.put(entry.getKey(), filterEntryString(entry.getValue()));
-        }
-        return result;
+  }
 
+  protected String[] filterEntryString(String[] rawValue) {
+    for (int i = 0; i < rawValue.length; i++) {
+      rawValue[i] = filterParamString(rawValue[i]);
     }
+    return rawValue;
+  }
 
-    protected String[] filterEntryString(String[] rawValue) {
-        for (int i = 0; i < rawValue.length; i++) {
-            rawValue[i] = filterParamString(rawValue[i]);
-        }
-        return rawValue;
+  /**
+   * @param parameter 过滤参数
+   * @return
+   * @since 参数过滤
+   */
+  @Override
+  public String getParameter(String parameter) {
+    return filterParamString(super.getParameter(parameter));
+  }
+
+
+  /**
+   * @param name 过滤内容
+   * @return
+   * @since 请求头过滤
+   */
+  @Override
+  public String getHeader(String name) {
+    return filterParamString(super.getHeader(name));
+  }
+
+
+  /**
+   * @return
+   * @since Cookie内容过滤
+   */
+  @Override
+  public Cookie[] getCookies() {
+    Cookie[] existingCookies = super.getCookies();
+    if (existingCookies != null) {
+      for (int i = 0; i < existingCookies.length; ++i) {
+        Cookie cookie = existingCookies[i];
+        cookie.setValue(filterParamString(cookie.getValue()));
+      }
     }
+    return existingCookies;
+  }
 
-    /**
-     * @Description 参数过滤
-     * @param parameter
-     * 				过滤参数
-     * @return
-     */
-    @Override
-    public String getParameter(String parameter) {
-        return filterParamString(super.getParameter(parameter));
+  /**
+   * @param rawValue 待处理内容
+   * @return
+   * @since 过滤字符串内容
+   */
+  protected String filterParamString(String rawValue) {
+    if (rawValue == null) {
+      return null;
     }
-
-
-    /**
-     * @Description 请求头过滤
-     * @param name
-     * 				过滤内容
-     * @return
-     */
-    @Override
-    public String getHeader(String name) {
-        return filterParamString(super.getHeader(name));
+    String tmpStr = rawValue;
+    if (this.filterXSS) {
+      tmpStr = WafHelper.stripXSS(rawValue);
     }
-
-
-    /**
-     * @Description Cookie内容过滤
-     * @return
-     */
-    @Override
-    public Cookie[] getCookies() {
-        Cookie[] existingCookies = super.getCookies();
-        if (existingCookies != null) {
-            for (int i = 0; i < existingCookies.length; ++i) {
-                Cookie cookie = existingCookies[i];
-                cookie.setValue(filterParamString(cookie.getValue()));
-            }
-        }
-        return existingCookies;
+    if (this.filterSQL) {
+      tmpStr = WafHelper.stripSqlInjection(tmpStr);
     }
-
-    /**
-     * @Description 过滤字符串内容
-     * @param rawValue
-     * 				待处理内容
-     * @return
-     */
-    protected String filterParamString(String rawValue) {
-        if (rawValue == null) {
-            return null;
-        }
-        String tmpStr = rawValue;
-        if (this.filterXSS) {
-            tmpStr = WafHelper.stripXSS(rawValue);
-        }
-        if (this.filterSQL) {
-            tmpStr = WafHelper.stripSqlInjection(tmpStr);
-        }
-        return tmpStr;
-    }
+    return tmpStr;
+  }
 }

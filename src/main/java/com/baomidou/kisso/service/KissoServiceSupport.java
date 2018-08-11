@@ -15,6 +15,15 @@
  */
 package com.baomidou.kisso.service;
 
+import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOPlugin;
@@ -26,13 +35,6 @@ import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.security.token.Token;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * <p>
@@ -95,14 +97,14 @@ public class KissoServiceSupport {
             } else {
                 /*
                  * 开启缓存，判断是否宕机：
-				 * 1、缓存正常，返回 tk
-				 * 2、缓存宕机，执行读取 Cookie 逻辑
-				 */
+                 * 1、缓存正常，返回 tk
+                 * 2、缓存宕机，执行读取 Cookie 逻辑
+                 */
                 if (cacheSSOToken.getFlag() != TokenFlag.CACHE_SHUT) {
                     /*
                      * 验证 cookie 与 cache 中 SSOToken 登录时间是否<br>
-					 * 不一致返回 null
-					 */
+                     * 不一致返回 null
+                     */
                     if (cookieSSOToken.getTime() / SSOConstants.JWT_TIMESTAMP_CUT
                             == cacheSSOToken.getTime() / SSOConstants.JWT_TIMESTAMP_CUT) {
                         return cacheSSOToken;

@@ -18,16 +18,16 @@ package com.baomidou.kisso.web.waf.attack;
 /**
  * SQL注入攻击
  * <p>
+ *
  * @author hubin
  * @since 2014-5-8
  */
 public class SqlInjection implements Istrip {
 
     /**
-     * @Description SQL注入内容剥离
-     * @param value
-     * 				待处理内容
+     * @param value 待处理内容
      * @return
+     * @since SQL注入内容剥离
      */
     @Override
     public String strip(String value) {

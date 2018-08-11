@@ -75,16 +75,16 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
                 return true;
             }
 
-			/*
+            /*
              * 权限验证合法
-			 */
+             */
             if (isVerification(request, handler, token)) {
                 return true;
             }
 
-			/*
+            /*
              * 无权限访问
-			 */
+             */
             return unauthorizedAccess(request, response);
         }
 
@@ -105,16 +105,16 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
     protected boolean isVerification(HttpServletRequest request, Object handler, SSOToken token) {
         /*
          * URL 权限认证
-		 */
+         */
         if (SSOConfig.getInstance().isPermissionUri()) {
             String uri = request.getRequestURI();
             if (uri == null || this.getAuthorization().isPermitted(token, uri)) {
                 return true;
             }
         }
-		/*
-		 * 注解权限认证
-		 */
+        /*
+         * 注解权限认证
+         */
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
         Permission pm = method.getAnnotation(Permission.class);
@@ -136,9 +136,9 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
              */
             return true;
         }
-		/*
-		 * 非法访问
-		 */
+        /*
+         * 非法访问
+         */
         return false;
     }
 
@@ -156,10 +156,10 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
     protected boolean unauthorizedAccess(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.fine(" request 403 url: " + request.getRequestURI());
         if (HttpUtil.isAjax(request)) {
-			/* AJAX 请求 403 未授权访问提示 */
+            /* AJAX 请求 403 未授权访问提示 */
             HttpUtil.ajaxStatus(response, 403, "ajax Unauthorized access.");
         } else {
-			/* 正常 HTTP 请求 */
+            /* 正常 HTTP 请求 */
             if (this.getIllegalUrl() == null || "".equals(this.getIllegalUrl())) {
                 response.sendError(403, "Forbidden");
             } else {

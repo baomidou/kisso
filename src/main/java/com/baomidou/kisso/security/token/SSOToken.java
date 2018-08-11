@@ -218,7 +218,7 @@ public class SSOToken extends AccessToken {
         if (null == claims) {
             return null;
         }
-        String origin = claims.get(SSOConstants.TOKEN_ORIGIN,String.class);
+        String origin = claims.get(SSOConstants.TOKEN_ORIGIN, String.class);
         if (header && StringUtils.isEmpty(origin)) {
             logger.warn("illegal token request orgin.");
             return null;
@@ -226,15 +226,15 @@ public class SSOToken extends AccessToken {
         SSOToken ssoToken = new SSOToken();
         ssoToken.setId(claims.getId());
         ssoToken.setIssuer(claims.getIssuer());
-        String ip = claims.get(SSOConstants.TOKEN_USER_IP,String.class);
+        String ip = claims.get(SSOConstants.TOKEN_USER_IP, String.class);
         if (StringUtils.isNotEmpty(ip)) {
             ssoToken.setIp(ip);
         }
-        String userAgent = claims.get(SSOConstants.TOKEN_USER_AGENT,String.class);
+        String userAgent = claims.get(SSOConstants.TOKEN_USER_AGENT, String.class);
         if (StringUtils.isNotEmpty(userAgent)) {
             ssoToken.setUserAgent(userAgent);
         }
-        String flag = claims.get(SSOConstants.TOKEN_FLAG,String.class);
+        String flag = claims.get(SSOConstants.TOKEN_FLAG, String.class);
         if (StringUtils.isNotEmpty(flag)) {
             ssoToken.setFlag(TokenFlag.fromValue(flag));
         }

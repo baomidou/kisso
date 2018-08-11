@@ -47,7 +47,7 @@ public class MD5 {
      *
      * @param plainText 需要加密的字符串
      * @return
-     * @Description 字符串加密为MD5 中文加密一致通用,必须转码处理： plainText.getBytes("UTF-8")
+     * @since 字符串加密为MD5 中文加密一致通用,必须转码处理： plainText.getBytes("UTF-8")
      */
     public static String toMD5(String plainText) {
         StringBuffer rlt = new StringBuffer();

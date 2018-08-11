@@ -21,8 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.baomidou.kisso.annotation.Action;
-
 /**
  * <p>
  * kisso 权限注解

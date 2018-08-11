@@ -91,8 +91,8 @@ public class SSOSymmetrical implements SSOEncrypt {
      */
     private Key toKey(Algorithm algorithm, String strKey) throws Exception {
         /*
-		 * MD5 处理密钥
-		 */
+         * MD5 处理密钥
+         */
         byte[] key = MD5.md5Raw(strKey.getBytes(SSOConfig.getSSOEncoding()));
         if (Algorithm.DES == algorithm) {
             DESKeySpec dks = new DESKeySpec(key);

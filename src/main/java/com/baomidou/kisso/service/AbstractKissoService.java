@@ -177,7 +177,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
     @Override
     public void clearRedirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		/* 清理当前登录状态 */
+        /* 清理当前登录状态 */
         clearLogin(request, response);
 
         /* redirect login page */
@@ -198,7 +198,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         /* delete cookie */
         logout(request, response, config.getCache());
 
-		/* redirect logout page */
+        /* redirect logout page */
         String logoutUrl = config.getLogoutUrl();
         if ("".equals(logoutUrl)) {
             response.getWriter().write("sso.properties Must include: sso.logout.url");

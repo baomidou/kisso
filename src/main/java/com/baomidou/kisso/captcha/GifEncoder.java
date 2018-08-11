@@ -15,7 +15,8 @@
  */
 package com.baomidou.kisso.captcha;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.BufferedOutputStream;
@@ -44,6 +45,7 @@ import java.io.OutputStream;
  * https://github.com/rtyley/animated-gif-lib-for-java
  */
 public class GifEncoder {
+
     protected int width;
     protected int height;
     protected Color transparent;
@@ -341,8 +343,8 @@ public class GifEncoder {
         int k = 0;
         for (int i = 0; i < nPix; i++) {
             int index = nq.map(pixels[k++] & 0xff,
-                            pixels[k++] & 0xff,
-                            pixels[k++] & 0xff);
+                    pixels[k++] & 0xff,
+                    pixels[k++] & 0xff);
             usedEntry[index] = true;
             indexedPixels[i] = (byte) index;
         }

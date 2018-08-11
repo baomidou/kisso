@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * </p>
  *
  * @author hubin
- * @Date 2018-08-11
+ * @since 2018-08-11
  */
 public interface ICaptcha extends Serializable {
 

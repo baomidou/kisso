@@ -28,11 +28,9 @@ import java.util.Formatter;
 public class Byte2Hex {
 
     /**
-     *
      * 字节转换为 16 进制字符串
      *
-     * @param b
-     * 			字节
+     * @param b 字节
      * @return
      */
     public static String byte2Hex(byte b) {
@@ -48,11 +46,9 @@ public class Byte2Hex {
 
 
     /**
-     *
      * 字节数组转换为 16 进制字符串
      *
-     * @param bytes
-     * 			字节数组
+     * @param bytes 字节数组
      * @return
      */
     public static String byte2Hex(byte[] bytes) {

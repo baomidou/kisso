@@ -46,6 +46,7 @@ import com.baomidou.kisso.common.util.Base64Util;
  * 由于非对称加密速度极其缓慢，一般文件不使用它来加密而是使用对称加密，<br/>
  * 非对称加密算法可以用来对对称加密的密钥加密，这样保证密钥的安全也就保证了数据的安全
  * </p>
+ *
  * @author hubin
  * @since 2014-6-17
  */
@@ -106,9 +107,8 @@ public class RSA {
      * 用私钥对信息生成数字签名
      * </p>
      *
-     * @param data 已加密数据
+     * @param data       已加密数据
      * @param privateKey 私钥(BASE64编码)
-     *
      * @return
      * @throws Exception
      */
@@ -128,13 +128,11 @@ public class RSA {
      * 校验数字签名
      * </p>
      *
-     * @param data 已加密数据
+     * @param data      已加密数据
      * @param publicKey 公钥(BASE64编码)
-     * @param sign 数字签名
-     *
+     * @param sign      数字签名
      * @return
      * @throws Exception
-     *
      */
     public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
         byte[] keyBytes = Base64Util.decode(publicKey);
@@ -153,7 +151,7 @@ public class RSA {
      * </p>
      *
      * @param encryptedData 已加密数据
-     * @param privateKey 私钥(BASE64编码)
+     * @param privateKey    私钥(BASE64编码)
      * @return
      * @throws Exception
      */
@@ -191,7 +189,7 @@ public class RSA {
      * </p>
      *
      * @param encryptedData 已加密数据
-     * @param publicKey 公钥(BASE64编码)
+     * @param publicKey     公钥(BASE64编码)
      * @return
      * @throws Exception
      */
@@ -228,7 +226,7 @@ public class RSA {
      * 公钥加密
      * </p>
      *
-     * @param data 源数据
+     * @param data      源数据
      * @param publicKey 公钥(BASE64编码)
      * @return
      * @throws Exception
@@ -267,7 +265,7 @@ public class RSA {
      * 私钥加密
      * </p>
      *
-     * @param data 源数据
+     * @param data       源数据
      * @param privateKey 私钥(BASE64编码)
      * @return
      * @throws Exception

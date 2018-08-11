@@ -18,16 +18,16 @@ package com.baomidou.kisso.web.waf.attack;
 /**
  * 攻击过滤父类
  * <p>
+ *
  * @author hubin
  * @since 2014-12-08
  */
 public interface Istrip {
 
-    /**
-     * @Description 脚本内容剥离
-     * @param value
-     * 				待处理内容
-     * @return
-     */
-    String strip(String value);
+  /**
+   * @param value 待处理内容
+   * @return
+   * @since 脚本内容剥离
+   */
+  String strip(String value);
 }

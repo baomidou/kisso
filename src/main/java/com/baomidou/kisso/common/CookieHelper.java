@@ -21,6 +21,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.baomidou.kisso.common.util.StringUtils;
+
 /**
  * Cookie工具类
  * <p>
@@ -34,10 +36,14 @@ public class CookieHelper {
 
     private static final Logger logger = Logger.getLogger("CookieHelper");
 
-    /* 浏览器关闭时自动删除 */
+    /**
+     * 浏览器关闭时自动删除
+     */
     public final static int CLEAR_BROWSER_IS_CLOSED = -1;
 
-    /* 立即删除 */
+    /**
+     * 立即删除
+     */
     public final static int CLEAR_IMMEDIATELY_REMOVE = 0;
 
     /**
@@ -150,7 +156,9 @@ public class CookieHelper {
         try {
             Cookie cookie = new Cookie(cookieName, "");
             cookie.setMaxAge(CLEAR_IMMEDIATELY_REMOVE);
-            cookie.setDomain(domain);
+            if (StringUtils.isNotEmpty(domain)) {
+                cookie.setDomain(domain);
+            }
             cookie.setPath(path);
             response.addCookie(cookie);
             logger.fine("clear cookie " + cookieName);
@@ -181,7 +189,7 @@ public class CookieHelper {
         /**
          * 不设置该参数默认 当前所在域
          */
-        if (domain != null && !"".equals(domain)) {
+        if (StringUtils.isNotEmpty(domain)) {
             cookie.setDomain(domain);
         }
         cookie.setPath(path);
@@ -196,10 +204,10 @@ public class CookieHelper {
         if (httpOnly) {
             addHttpOnlyCookie(response, cookie);
         } else {
-            /*
-             * //servlet 3.0 support
-			 * cookie.setHttpOnly(httpOnly);
-			 */
+            /**
+             * servlet 3.0 support
+             * cookie.setHttpOnly(httpOnly)
+             */
             response.addCookie(cookie);
         }
     }

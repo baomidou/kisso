@@ -32,10 +32,14 @@ public enum Algorithm {
     RC2("RC2", "RC2 encrypt"),
     RC4("RC4", "RC4 encrypt");
 
-    /** 主键 */
+    /**
+     * 主键
+     */
     private final String key;
 
-    /** 描述 */
+    /**
+     * 描述
+     */
     private final String desc;
 
     Algorithm(final String key, final String desc) {

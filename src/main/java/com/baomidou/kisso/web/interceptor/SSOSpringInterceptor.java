@@ -82,14 +82,14 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
                 if (HttpUtil.isAjax(request)) {
                     /*
                      * Handler 处理 AJAX 请求
-					 */
+                     */
                     this.getHandlerInterceptor().preTokenIsNullAjax(request, response);
                     return false;
                 } else {
-					/*
-					 * token 为空，调用 Handler 处理
-					 * 返回 true 继续执行，清理登录状态并重定向至登录界面
-					 */
+                    /*
+                     * token 为空，调用 Handler 处理
+                     * 返回 true 继续执行，清理登录状态并重定向至登录界面
+                     */
                     if (this.getHandlerInterceptor().preTokenIsNull(request, response)) {
                         logger.fine("logout. request url:" + request.getRequestURL());
                         SSOHelper.clearRedirectLogin(request, response);
@@ -97,9 +97,9 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
                     return false;
                 }
             } else {
-				/*
-				 * 正常请求，request 设置 token 减少二次解密
-				 */
+                /*
+                 * 正常请求，request 设置 token 减少二次解密
+                 */
                 request.setAttribute(SSOConstants.SSO_TOKEN_ATTR, ssoToken);
             }
         }

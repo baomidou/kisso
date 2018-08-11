@@ -17,7 +17,6 @@ package com.baomidou.kisso.common.encrypt;
 
 import java.util.Arrays;
 
-import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.common.SSOConstants;
 
 /**
@@ -33,13 +32,11 @@ public class PKCS7Encoder {
     private static final int BLOCK_SIZE = 32;
 
     /**
-     *
      * <p>
      * 获得对明文进行补位填充的字节
      * </p>
      *
-     * @param count
-     * 				需要进行填充补位操作的明文字节个数
+     * @param count 需要进行填充补位操作的明文字节个数
      * @return 补齐用的字节数组
      */
     public static byte[] encode(int count) {
@@ -49,7 +46,7 @@ public class PKCS7Encoder {
             amountToPad = BLOCK_SIZE;
         }
 
-		/* 获得补位所用的字符 */
+        /* 获得补位所用的字符 */
         char padChr = chr(amountToPad);
         String tmp = new String();
         for (int index = 0; index < amountToPad; index++) {
@@ -59,13 +56,11 @@ public class PKCS7Encoder {
     }
 
     /**
-     *
      * <p>
      * 删除解密后明文的补位字符
      * </p>
      *
-     * @param decrypted
-     * 					解密后的明文
+     * @param decrypted 解密后的明文
      * @return 删除补位字符后的明文
      */
     public static byte[] decode(byte[] decrypted) {
@@ -77,13 +72,11 @@ public class PKCS7Encoder {
     }
 
     /**
-     *
      * <p>
      * 将数字转化成ASCII码对应的字符，用于对明文进行补码
      * </p>
      *
-     * @param a
-     * 			需要转化的数字
+     * @param a 需要转化的数字
      * @return 转化得到的字符
      */
     public static char chr(int a) {
