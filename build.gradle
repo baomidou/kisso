@@ -10,6 +10,7 @@ ext {
     libraries = [
             springBootVersion = "1.5.6.RELEASE",
             springSecurityJwtVersion = "1.0.8.RELEASE",
+            lombokVersion = "1.18.2",
             jjwtVersion = "0.7.0"
     ]
 }
@@ -37,6 +38,7 @@ dependencies {
     compileOnly("javax.servlet:jsp-api:2.0")
     compileOnly("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
 
     compile("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
     compile("org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}")
