@@ -50,7 +50,7 @@ public abstract class AbstractCaptcha implements Serializable {
     /**
      * 干扰量
      */
-    protected int interfere = 11;
+    protected int interfere = 5;
     /**
      * 干扰色默认随机
      */

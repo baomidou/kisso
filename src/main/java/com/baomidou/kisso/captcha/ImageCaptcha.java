@@ -56,11 +56,11 @@ public class ImageCaptcha extends AbstractCaptcha {
       gifEncoder.setDelay(100);
       gifEncoder.setRepeat(0);
       for (int i = 0; i < length; i++) {
-        gifEncoder.addFrame(graphicsImage(code));
+        gifEncoder.addFrame(graphicsImage(code, i));
       }
       gifEncoder.finish();
     } else {
-      ImageIO.write(graphicsImage(code), suffix, out);
+      ImageIO.write(graphicsImage(code, 1), suffix, out);
     }
     out.flush();
     return code;
@@ -73,9 +73,10 @@ public class ImageCaptcha extends AbstractCaptcha {
    * </p>
    *
    * @param code 验证码
+   * @param flag 透明度
    * @return BufferedImage
    */
-  private BufferedImage graphicsImage(String code) {
+  private BufferedImage graphicsImage(String code, int flag) {
     BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     Graphics2D g = (Graphics2D) bi.getGraphics();
     g.setColor(Color.WHITE);
@@ -97,31 +98,26 @@ public class ImageCaptcha extends AbstractCaptcha {
         g.drawOval(num(width), num(height), 3 + num(15), 3 + num(15));
       }
     }
-    // 画字符串指定透明度
-    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f));
-    int hp = (height - font.getSize()) >> 1;
-    int h = height - hp;
+    // 画字符串
+    int h = height - ((height - font.getSize()) >> 1);
     int w = width / length;
-    //int sp = (w - font.getSize()) / 2;
     for (int i = 0; i < length; i++) {
       g.setColor(null == color ? new Color(20 + num(110), 20 + num(110), 20 + num(110)) : color);
+      g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, gif ? getAlpha(i, flag) : 0.75f));
       // 计算坐标
-      int x = i * w + num(10);
-      int y = h - num(9);
-      if (x < 0) {
-        x = 0;
-      }
-      if (x + font.getSize() > width) {
-        x = width - font.getSize();
-      }
-      if (y > height) {
-        y = height;
-      }
-      if (y - font.getSize() < 0) {
-        y = font.getSize();
-      }
-      g.drawString(String.valueOf(code.charAt(i)), x, y);
+      g.drawString(String.valueOf(code.charAt(i)), (width - (length - i) * w) + (w - font.getSize()) + 1, h - 3);
     }
     return bi;
+  }
+
+
+  /**
+   * 获取透明度,从0到1,自动计算步长
+   */
+  private float getAlpha(int i, int j) {
+    int num = i + j;
+    float r = (float) 1 / (length - 1);
+    float s = length * r;
+    return num >= length ? (num * r - s) : num * r;
   }
 }

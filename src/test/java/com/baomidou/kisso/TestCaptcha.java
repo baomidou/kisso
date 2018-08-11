@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,6 +46,8 @@ public class TestCaptcha {
     public void testGIf() throws Exception {
         String code = new ImageCaptcha()
                 .setGif(true)
+                .setLength(6)
+                .setWidth(200)
                 .setRandomType(RandomType.MIX)
                 .out(new FileOutputStream(new File("abc.gif")));
         System.out.println("验证码：" + code);
@@ -63,8 +66,12 @@ public class TestCaptcha {
     public void testGifHan() throws Exception {
         String code = new ImageCaptcha().setGif(false)
                 .setGif(true)
+                .setLength(4)
+                .setInterfere(3)
                 .setRandomType(RandomType.CHINESE)
                 .setFont(new Font("微软雅黑", Font.PLAIN, 30))
+                .setColor(Color.BLACK)
+                .setInterfereColor(Color.orange)
                 .out(new FileOutputStream(new File("han.gif")));
         System.out.println("验证码：" + code);
     }
