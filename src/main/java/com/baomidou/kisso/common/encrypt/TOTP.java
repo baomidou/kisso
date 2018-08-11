@@ -18,13 +18,13 @@ package com.baomidou.kisso.common.encrypt;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.baomidou.kisso.common.util.RandomUtil;
+import com.baomidou.kisso.common.util.StringUtils;
 
 
 /**
@@ -96,6 +96,9 @@ public class TOTP {
      * @return true 合法 false 非法
      */
     public static boolean isValidCode(String secretKey, long totpCode) {
+        if (StringUtils.isEmpty(secretKey) || totpCode < 0) {
+            return false;
+        }
         byte[] decodedKey = decodeSecretKey(secretKey);
 
         int window = WINDOW;
@@ -140,10 +143,14 @@ public class TOTP {
      * </p>
      *
      * @return Base32 加密字符串密钥
-     * @throws NoSuchAlgorithmException
      */
-    public static String getSecretKey() throws Exception {
-        return getSecretKey(generateKey());
+    public static String getSecretKey() {
+        try {
+            return getSecretKey(generateKey());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
