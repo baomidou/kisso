@@ -86,7 +86,7 @@ public class ImageCaptcha extends AbstractCaptcha {
     // 随机画干扰线
     if (interfere > 0) {
       for (int i = 0; i < interfere; i++) {
-        g.setColor(null == interfereColor ? RandomUtil.getColor(150, 250) : interfereColor);
+        g.setColor(null == interfereColor ? RandomUtil.getColor(rgbArr) : interfereColor);
         g.setStroke(new BasicStroke(1.1f + RandomUtil.RANDOM.nextFloat() / 2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
         int x1 = num(-10, width - 10);
         int y1 = num(5, height - 5);
@@ -94,7 +94,7 @@ public class ImageCaptcha extends AbstractCaptcha {
         int y2 = num(2, height - 2);
         g.drawLine(x1, y1, x2, y2);
         // 画干扰圆圈
-        g.setColor(null == interfereColor ? RandomUtil.getColor(100, 250) : interfereColor);
+        g.setColor(null == interfereColor ? RandomUtil.getColor(rgbArr) : interfereColor);
         g.drawOval(num(width), num(height), 3 + num(15), 3 + num(15));
       }
     }
@@ -102,7 +102,7 @@ public class ImageCaptcha extends AbstractCaptcha {
     int h = height - ((height - font.getSize()) >> 1);
     int w = width / length;
     for (int i = 0; i < length; i++) {
-      g.setColor(null == color ? new Color(20 + num(110), 20 + num(110), 20 + num(110)) : color);
+      g.setColor(null == color ? RandomUtil.getColor(rgbArr) : color);
       g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, gif ? getAlpha(i, flag) : 0.75f));
       // 计算坐标
       g.drawString(String.valueOf(code.charAt(i)), (width - (length - i) * w) + (w - font.getSize()) + 1, h - 3);

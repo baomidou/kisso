@@ -49,6 +49,10 @@ public abstract class AbstractCaptcha implements ICaptcha {
      */
     protected Font font;
     /**
+     * RGB 颜色数组
+     */
+    protected int[][] rgbArr;
+    /**
      * 干扰量
      */
     protected int interfere = 5;
@@ -200,6 +204,9 @@ public abstract class AbstractCaptcha implements ICaptcha {
             } else {
                 font = new Font("Arial", Font.PLAIN, 32);
             }
+        }
+        if(null == rgbArr){
+            rgbArr = ColorType.LIVELY;
         }
         if (null == suffix) {
             suffix = gif ? "gif" : "png";

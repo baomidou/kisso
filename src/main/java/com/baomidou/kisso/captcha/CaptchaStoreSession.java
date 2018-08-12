@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * <p>
- * 图片验证码内容存储 Session
+ * 图片验证码内容存储 Session 设置 1 分钟过期
  * </p>
  *
  * @author hubin
@@ -45,6 +45,7 @@ public class CaptchaStoreSession implements ICaptchaStore {
 
   @Override
   public boolean put(String ticket, String captcha) {
+    httpSession.setMaxInactiveInterval(60);
     httpSession.setAttribute(ticket, captcha);
     return true;
   }
