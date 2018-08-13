@@ -99,33 +99,6 @@ public abstract class AbstractCaptcha implements ICaptcha {
      */
     protected boolean ignoreCase = true;
 
-    public AbstractCaptcha() {
-        // to do nothing
-    }
-
-    public AbstractCaptcha(int width, int height) {
-        this(width, height, 0, null);
-    }
-
-    public AbstractCaptcha(int width, int height, int length) {
-        this(width, height, length, null);
-    }
-
-    public AbstractCaptcha(int width, int height, int length, Font font) {
-        if (width > 0) {
-            this.width = width;
-        }
-        if (height > 0) {
-            this.height = height;
-        }
-        if (length > 0) {
-            this.length = length;
-        }
-        if (null != font) {
-            this.font = font;
-        }
-    }
-
     @Override
     public void generate(HttpServletRequest request, OutputStream out, String ticket) throws IOException {
         String captcha = writeImage(out);
@@ -167,7 +140,7 @@ public abstract class AbstractCaptcha implements ICaptcha {
      * @return 字符串验证码
      * @throws IOException
      */
-    public abstract String writeImage(OutputStream out) throws IOException;
+    protected abstract String writeImage(OutputStream out) throws IOException;
 
     /**
      * 产生两个数之间的随机数
