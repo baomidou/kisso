@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.baomidou.kisso.common.util.StringUtils;
+
 /**
  * <p>
  * 获取IP地址类
@@ -106,5 +108,30 @@ public class IpHelper {
             }
         }
         return ip;
+    }
+
+    /**
+     * <p>
+     * 判断是否为本地 IP
+     * </p>
+     *
+     * @param ip 待判断 IP
+     * @return
+     */
+    public static boolean isLocalIp(String ip) {
+        if (StringUtils.isNotEmpty(ip)) {
+            try {
+                InetAddress inetAddress = InetAddress.getLocalHost();
+                InetAddress[] ias = InetAddress.getAllByName(inetAddress.getHostName());
+                for (InetAddress ia : ias) {
+                    if (ip.equals(ia.getHostAddress())) {
+                        return true;
+                    }
+                }
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }
