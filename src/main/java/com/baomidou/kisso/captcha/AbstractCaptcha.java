@@ -101,9 +101,9 @@ public abstract class AbstractCaptcha implements ICaptcha {
 
     @Override
     public void generate(HttpServletRequest request, OutputStream out, String ticket) throws IOException {
-        String captcha = writeImage(out);
-        if (null != captcha) {
-            getCaptchaStore(request).put(ticket, captcha);
+        String captcha = randomCaptcha();
+        if (getCaptchaStore(request).put(ticket, captcha)) {
+            writeImage(captcha, out);
         }
     }
 
@@ -136,11 +136,12 @@ public abstract class AbstractCaptcha implements ICaptcha {
      * 输出图片验证码
      * </p>
      *
-     * @param out 输出流
+     * @param captcha 验证码
+     * @param out     输出流
      * @return 字符串验证码
      * @throws IOException
      */
-    protected abstract String writeImage(OutputStream out) throws IOException;
+    protected abstract String writeImage(String captcha, OutputStream out) throws IOException;
 
     /**
      * 产生两个数之间的随机数
@@ -178,7 +179,7 @@ public abstract class AbstractCaptcha implements ICaptcha {
                 font = new Font("Arial", Font.PLAIN, 32);
             }
         }
-        if(null == rgbArr){
+        if (null == rgbArr) {
             rgbArr = ColorType.LIVELY;
         }
         if (null == suffix) {

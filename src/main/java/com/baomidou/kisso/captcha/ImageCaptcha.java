@@ -67,8 +67,7 @@ public class ImageCaptcha extends AbstractCaptcha {
      * @return 是否成功
      */
     @Override
-    protected String writeImage(OutputStream out) throws IOException {
-        String captcha = randomCaptcha();
+    protected String writeImage(String captcha, OutputStream out) throws IOException {
         if (gif) {
             GifEncoder gifEncoder = new GifEncoder();
             gifEncoder.start(out);
