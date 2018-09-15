@@ -20,6 +20,8 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import com.baomidou.kisso.common.OperatingSystem;
+
 /**
  * <p>
  * 获取系统环境变量工具类
@@ -32,24 +34,13 @@ public class EnvUtil {
 
     private static final Logger logger = Logger.getLogger("EnvUtil");
 
-    private static Boolean OS_LINUX = null;
-
     /**
      * 判断当前系统是否为 linux
      *
      * @return true linux, false windows
      */
     public static boolean isLinux() {
-        if (OS_LINUX == null) {
-            String OS = System.getProperty("os.name").toLowerCase();
-            logger.info("os.name: " + OS);
-            if (OS != null && OS.contains("windows")) {
-                OS_LINUX = false;
-            } else {
-                OS_LINUX = true;
-            }
-        }
-        return OS_LINUX;
+        return OperatingSystem.get() != OperatingSystem.OS.WINDOWS;
     }
 
     /**
