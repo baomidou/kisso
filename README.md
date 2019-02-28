@@ -8,10 +8,10 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 
 [spring boot 演示 demo](https://git.oschina.net/baomidou/kisso-spring-boot)
 
-[kisso spring mvc 演示 demo](https://git.oschina.net/juapk/kisso_springmvc)
+[kisso spring mvc 演示 demo](https://git.oschina.net/jobob/kisso_springmvc)
 
 
-[3.7.0 之前版本，实战 DEMO](http://git.oschina.net/juapk/SpringWind)
+[3.7.0 之前版本，实战 DEMO](http://git.oschina.net/jobob/SpringWind)
 
 
 
