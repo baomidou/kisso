@@ -48,12 +48,34 @@ public class SSOToken extends AccessToken {
     private static Logger logger = LoggerFactory.getLogger(SSOToken.class);
     private TokenFlag flag = TokenFlag.NORMAL;
     private TokenOrigin origin = TokenOrigin.COOKIE;
-    private String id; // 主键
-    private String issuer; // 发布者
-    private String ip; // IP 地址
-    private long time = System.currentTimeMillis(); // 创建日期
-    private String userAgent; // 请求头信息
-    private Object data; // 预留扩展、配合缓存使用
+    /**
+     * 主键
+     */
+    private String id;
+    /**
+     * 主键
+     */
+    private String tenantId;
+    /**
+     * 发布者
+     */
+    private String issuer;
+    /**
+     * IP 地址
+     */
+    private String ip;
+    /**
+     * 创建日期
+     */
+    private long time = System.currentTimeMillis();
+    /**
+     * 请求头信息
+     */
+    private String userAgent;
+    /**
+     * 预留扩展、配合缓存使用
+     */
+    private Object data;
     private JwtBuilder jwtBuilder;
     private Claims claims;
 
@@ -80,6 +102,9 @@ public class SSOToken extends AccessToken {
         }
         if (null != this.getId()) {
             this.jwtBuilder.setId(this.getId());
+        }
+        if (null != this.getTenantId()) {
+            this.jwtBuilder.claim(SSOConstants.TOKEN_TENANT_ID, this.getTenantId());
         }
         if (null != this.getIp()) {
             this.jwtBuilder.claim(SSOConstants.TOKEN_USER_IP, this.getIp());
@@ -127,6 +152,15 @@ public class SSOToken extends AccessToken {
 
     public SSOToken setId(Object id) {
         this.id = String.valueOf(id);
+        return this;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public SSOToken setTenantId(String tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 
@@ -237,6 +271,10 @@ public class SSOToken extends AccessToken {
         String flag = claims.get(SSOConstants.TOKEN_FLAG, String.class);
         if (StringUtils.isNotEmpty(flag)) {
             ssoToken.setFlag(TokenFlag.fromValue(flag));
+        }
+        String tenantId = claims.get(SSOConstants.TOKEN_TENANT_ID, String.class);
+        if (StringUtils.isNotEmpty(tenantId)) {
+            ssoToken.setTenantId(tenantId);
         }
         // TOKEN 来源
         if (StringUtils.isNotEmpty(origin)) {
