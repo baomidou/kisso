@@ -155,6 +155,11 @@ public class SSOToken extends AccessToken {
         return this;
     }
 
+    public SSOToken setId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public String getTenantId() {
         return tenantId;
     }
@@ -164,8 +169,8 @@ public class SSOToken extends AccessToken {
         return this;
     }
 
-    public SSOToken setId(String id) {
-        this.id = id;
+    public SSOToken setTenantId(Object tenantId) {
+        this.tenantId = String.valueOf(tenantId);
         return this;
     }
 
