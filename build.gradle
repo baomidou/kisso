@@ -39,8 +39,8 @@ dependencies {
     compileOnly("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    compileOnly("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
 
-    compile("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
     compile("org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}")
     compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
 
