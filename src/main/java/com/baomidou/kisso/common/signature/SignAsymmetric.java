@@ -31,25 +31,25 @@ import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
  */
 public class SignAsymmetric implements ISign {
 
-  private final PrivateKey key;
+    private final PrivateKey key;
 
-  public SignAsymmetric(final PrivateKey key) {
-    this.key = key;
-  }
-
-  @Override
-  public byte[] sign(Provider provider, ShaAlgorithm shaAlgorithm, byte[] signingStringBytes) {
-    try {
-      final java.security.Signature instance = provider == null ?
-        java.security.Signature.getInstance(shaAlgorithm.getJmvName()) :
-        java.security.Signature.getInstance(shaAlgorithm.getJmvName(), provider);
-      instance.initSign(key);
-      instance.update(signingStringBytes);
-      return instance.sign();
-    } catch (NoSuchAlgorithmException e) {
-      throw new UnsupportedAlgorithmException(shaAlgorithm.getJmvName());
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
+    public SignAsymmetric(final PrivateKey key) {
+        this.key = key;
     }
-  }
+
+    @Override
+    public byte[] sign(Provider provider, ShaAlgorithm shaAlgorithm, byte[] signingStringBytes) {
+        try {
+            final java.security.Signature instance = provider == null ?
+                    java.security.Signature.getInstance(shaAlgorithm.getJmvName()) :
+                    java.security.Signature.getInstance(shaAlgorithm.getJmvName(), provider);
+            instance.initSign(key);
+            instance.update(signingStringBytes);
+            return instance.sign();
+        } catch (NoSuchAlgorithmException e) {
+            throw new UnsupportedAlgorithmException(shaAlgorithm.getJmvName());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }

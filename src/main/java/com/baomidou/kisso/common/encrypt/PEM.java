@@ -16,6 +16,7 @@
 package com.baomidou.kisso.common.encrypt;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,16 +54,19 @@ import com.baomidou.kisso.common.encrypt.base64.Base64;
  * </ul>
  */
 public class PEM {
+
     private static final String BEGIN_MARKER = "-----BEGIN ";
+
+    public static PrivateKey readPrivateKey(final byte[] privateKeyBytes) throws InvalidKeySpecException, IOException {
+        return readPrivateKey(new ByteArrayInputStream(privateKeyBytes));
+    }
 
     /**
      * Returns the first private key that is found from the input stream of a
      * PEM file.
      *
-     * @throws InvalidKeySpecException
-     *             if failed to convert the DER bytes into a private key.
-     * @throws IllegalArgumentException
-     *             if no private key is found.
+     * @throws InvalidKeySpecException  if failed to convert the DER bytes into a private key.
+     * @throws IllegalArgumentException if no private key is found.
      */
     public static PrivateKey readPrivateKey(final InputStream is) throws InvalidKeySpecException, IOException {
         final List<PEMObject> objects = readPEMObjects(is);
@@ -85,14 +89,16 @@ public class PEM {
         throw new IllegalArgumentException("Found no private key");
     }
 
+    public static PublicKey readPublicKey(final byte[] publicKeyBytes) throws InvalidKeySpecException, IOException {
+        return readPublicKey(new ByteArrayInputStream(publicKeyBytes));
+    }
+
     /**
      * Returns the first public key that is found from the input stream of a PEM
      * file.
      *
-     * @throws InvalidKeySpecException
-     *             if failed to convert the DER bytes into a public key.
-     * @throws IllegalArgumentException
-     *             if no public key is found.
+     * @throws InvalidKeySpecException  if failed to convert the DER bytes into a public key.
+     * @throws IllegalArgumentException if no public key is found.
      */
     public static PublicKey readPublicKey(final InputStream is) throws InvalidKeySpecException, IOException {
 
@@ -126,11 +132,11 @@ public class PEM {
 
         final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         try {
-            final List<PEMObject> pemContents = new ArrayList<PEMObject>();
-        /*
-         * State of reading: set to true if reading content between a
-         * begin-marker and end-marker; false otherwise.
-         */
+            final List<PEMObject> pemContents = new ArrayList<>();
+            /*
+             * State of reading: set to true if reading content between a
+             * begin-marker and end-marker; false otherwise.
+             */
             boolean readingContent = false;
             String beginMarker = null;
             String endMarker = null;
@@ -167,11 +173,12 @@ public class PEM {
 
     /**
      * A PEM object in a PEM file.
-     *<p>
+     * <p>
      * A PEM file can contain one or multiple PEM objects, each with a beginning
      * and ending marker.
      */
     static class PEMObject {
+
         private final String beginMarker;
         private final byte[] derBytes;
 
@@ -195,7 +202,7 @@ public class PEM {
 
     /**
      * The type of a specific PEM object in a PEM file.
-     *<p>
+     * <p>
      * A PEM file can contain one or multiple PEM objects, each with a beginning
      * and ending marker.
      */
@@ -218,7 +225,7 @@ public class PEM {
 
         public static PEMObjectType fromBeginMarker(final String beginMarker) {
             for (PEMObjectType e : PEMObjectType.values()) {
-                if (e.getBeginMarker().equals(beginMarker)){
+                if (e.getBeginMarker().equals(beginMarker)) {
                     return e;
                 }
             }

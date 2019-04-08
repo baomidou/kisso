@@ -98,10 +98,10 @@ public class RSA {
         KeyPair keyPair = keyPairGen.generateKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        Map<String, Object> keyMap = new HashMap<String, Object>(2);
-        keyMap.put(PUBLIC_KEY, publicKey);
-        keyMap.put(PRIVATE_KEY, privateKey);
-        return keyMap;
+        return new HashMap<String, Object>(2) {{
+            put(PUBLIC_KEY, publicKey);
+            put(PRIVATE_KEY, privateKey);
+        }};
     }
 
     /**
@@ -115,12 +115,8 @@ public class RSA {
      * @throws Exception
      */
     public static String sign(byte[] data, String privateKey) throws Exception {
-        byte[] keyBytes = Base64Util.decode(privateKey);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
-        PrivateKey privateK = keyFactory.generatePrivate(pkcs8KeySpec);
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        signature.initSign(privateK);
+        signature.initSign(privateKey(privateKey));
         signature.update(data);
         return Base64Util.encode(signature.sign());
     }
@@ -137,14 +133,24 @@ public class RSA {
      * @throws Exception
      */
     public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
+        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+        signature.initVerify(publicKey(publicKey));
+        signature.update(data);
+        return signature.verify(Base64Util.decode(sign));
+    }
+
+    public static PrivateKey privateKey(String privateKey) throws Exception {
+        byte[] keyBytes = Base64Util.decode(privateKey);
+        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
+        return keyFactory.generatePrivate(pkcs8KeySpec);
+    }
+
+    public static PublicKey publicKey(String publicKey) throws Exception {
         byte[] keyBytes = Base64Util.decode(publicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
-        PublicKey publicK = keyFactory.generatePublic(keySpec);
-        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        signature.initVerify(publicK);
-        signature.update(data);
-        return signature.verify(Base64Util.decode(sign));
+        return keyFactory.generatePublic(keySpec);
     }
 
     /**
@@ -158,31 +164,7 @@ public class RSA {
      * @throws Exception
      */
     public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey) throws Exception {
-        byte[] keyBytes = Base64Util.decode(privateKey);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
-        Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.DECRYPT_MODE, privateK);
-        int inputLen = encryptedData.length;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int offSet = 0;
-        byte[] cache;
-        int i = 0;
-        // 对数据分段解密
-        while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
-                cache = cipher.doFinal(encryptedData, offSet, MAX_DECRYPT_BLOCK);
-            } else {
-                cache = cipher.doFinal(encryptedData, offSet, inputLen - offSet);
-            }
-            out.write(cache, 0, cache.length);
-            i++;
-            offSet = i * MAX_DECRYPT_BLOCK;
-        }
-        byte[] decryptedData = out.toByteArray();
-        out.close();
-        return decryptedData;
+        return cipherDecryptData(encryptedData, privateKey(privateKey));
     }
 
     /**
@@ -196,31 +178,39 @@ public class RSA {
      * @throws Exception
      */
     public static byte[] decryptByPublicKey(byte[] encryptedData, String publicKey) throws Exception {
-        byte[] keyBytes = Base64Util.decode(publicKey);
-        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
-        Key publicK = keyFactory.generatePublic(x509KeySpec);
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.DECRYPT_MODE, publicK);
-        int inputLen = encryptedData.length;
+        return cipherDecryptData(encryptedData, publicKey(publicKey));
+    }
+
+    private static byte[] cipherDecryptData(byte[] data, Key key) throws Exception {
+        return cipherData(data, key, Cipher.DECRYPT_MODE, MAX_DECRYPT_BLOCK);
+    }
+
+    private static byte[] cipherEncryptData(byte[] data, Key key) throws Exception {
+        return cipherData(data, key, Cipher.ENCRYPT_MODE, MAX_ENCRYPT_BLOCK);
+    }
+
+    private static byte[] cipherData(byte[] data, Key key, int mode, int block) throws Exception {
+        Cipher cipher = Cipher.getInstance(SSOConstants.RSA);
+        cipher.init(mode, key);
+        int inputLen = data.length;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int offSet = 0;
         byte[] cache;
         int i = 0;
-        // 对数据分段解密
+        // 对数据分段加密
         while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
-                cache = cipher.doFinal(encryptedData, offSet, MAX_DECRYPT_BLOCK);
+            if (inputLen - offSet > block) {
+                cache = cipher.doFinal(data, offSet, block);
             } else {
-                cache = cipher.doFinal(encryptedData, offSet, inputLen - offSet);
+                cache = cipher.doFinal(data, offSet, inputLen - offSet);
             }
             out.write(cache, 0, cache.length);
             i++;
-            offSet = i * MAX_DECRYPT_BLOCK;
+            offSet = i * block;
         }
-        byte[] decryptedData = out.toByteArray();
+        byte[] encryptedData = out.toByteArray();
         out.close();
-        return decryptedData;
+        return encryptedData;
     }
 
     /**
@@ -234,32 +224,7 @@ public class RSA {
      * @throws Exception
      */
     public static byte[] encryptByPublicKey(byte[] data, String publicKey) throws Exception {
-        byte[] keyBytes = Base64Util.decode(publicKey);
-        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
-        Key publicK = keyFactory.generatePublic(x509KeySpec);
-        // 对数据加密
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.ENCRYPT_MODE, publicK);
-        int inputLen = data.length;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int offSet = 0;
-        byte[] cache;
-        int i = 0;
-        // 对数据分段加密
-        while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_ENCRYPT_BLOCK) {
-                cache = cipher.doFinal(data, offSet, MAX_ENCRYPT_BLOCK);
-            } else {
-                cache = cipher.doFinal(data, offSet, inputLen - offSet);
-            }
-            out.write(cache, 0, cache.length);
-            i++;
-            offSet = i * MAX_ENCRYPT_BLOCK;
-        }
-        byte[] encryptedData = out.toByteArray();
-        out.close();
-        return encryptedData;
+        return cipherEncryptData(data, publicKey(publicKey));
     }
 
     /**
@@ -273,31 +238,7 @@ public class RSA {
      * @throws Exception
      */
     public static byte[] encryptByPrivateKey(byte[] data, String privateKey) throws Exception {
-        byte[] keyBytes = Base64Util.decode(privateKey);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
-        Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.ENCRYPT_MODE, privateK);
-        int inputLen = data.length;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int offSet = 0;
-        byte[] cache;
-        int i = 0;
-        // 对数据分段加密
-        while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_ENCRYPT_BLOCK) {
-                cache = cipher.doFinal(data, offSet, MAX_ENCRYPT_BLOCK);
-            } else {
-                cache = cipher.doFinal(data, offSet, inputLen - offSet);
-            }
-            out.write(cache, 0, cache.length);
-            i++;
-            offSet = i * MAX_ENCRYPT_BLOCK;
-        }
-        byte[] encryptedData = out.toByteArray();
-        out.close();
-        return encryptedData;
+        return cipherEncryptData(data, privateKey(privateKey));
     }
 
     /**
@@ -372,7 +313,7 @@ public class RSA {
 
     /**
      * Convert PKCS#1 encoded private key into RSAPrivateCrtKeySpec.
-     *
+     * <p>
      * <p/>The ASN.1 syntax for the private key with CRT is
      *
      * <pre>
