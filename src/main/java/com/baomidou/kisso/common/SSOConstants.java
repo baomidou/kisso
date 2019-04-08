@@ -33,8 +33,8 @@ public interface SSOConstants {
     String TOKEN_FLAG = "fg";
     String TOKEN_ORIGIN = "og";
     String TOKEN_TENANT_ID = "tid";
-    // RSA 签名算法
-    String SIGN_RSA = "RSA";
+    String RSA = "RSA";
+    String ACCESS_SECRET = "accessSecret";
 
     /**
      * <p>

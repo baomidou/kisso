@@ -68,7 +68,6 @@ public class SSOSymmetrical implements SSOEncrypt {
     private Algorithm algorithm = Algorithm.RC4;
 
     public SSOSymmetrical() {
-
     }
 
     public SSOSymmetrical(Algorithm algorithm) {
@@ -76,11 +75,13 @@ public class SSOSymmetrical implements SSOEncrypt {
         logger.info("Your current encryption algorithm is " + algorithm.getKey());
     }
 
+    @Override
     public String encrypt(String value, String key) throws Exception {
         byte[] b = UrlBase64.encode(encrypt(algorithm, value.getBytes(SSOConfig.getSSOEncoding()), key));
         return new String(b, SSOConfig.getSSOEncoding());
     }
 
+    @Override
     public String decrypt(String value, String key) throws Exception {
         byte[] b = decrypt(algorithm, UrlBase64.decode(value.getBytes(SSOConfig.getSSOEncoding())), key);
         return new String(b, SSOConfig.getSSOEncoding());

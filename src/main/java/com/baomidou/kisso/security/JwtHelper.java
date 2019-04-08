@@ -49,7 +49,7 @@ public class JwtHelper {
     public static String signCompact(JwtBuilder jwtBuilder) {
         SSOConfig config = SSOConfig.getInstance();
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(config.getSignAlgorithm());
-        if (SSOConstants.SIGN_RSA.equals(signatureAlgorithm.getFamilyName())) {
+        if (SSOConstants.RSA.equals(signatureAlgorithm.getFamilyName())) {
             try {
                 ClassPathResource resource = new ClassPathResource(config.getRsaKeystore());
                 KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -75,7 +75,7 @@ public class JwtHelper {
         try {
             SSOConfig config = SSOConfig.getInstance();
             SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(config.getSignAlgorithm());
-            if (SSOConstants.SIGN_RSA.equals(signatureAlgorithm.getFamilyName())) {
+            if (SSOConstants.RSA.equals(signatureAlgorithm.getFamilyName())) {
                 ClassPathResource resource = new ClassPathResource(config.getRsaCertstore());
                 String publicKey = new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));
                 // RSA 签名验证

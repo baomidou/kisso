@@ -16,22 +16,29 @@
 package com.baomidou.kisso.common.encrypt;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.crypto.Cipher;
 
+import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.common.util.Base64Util;
 
 /**
@@ -51,11 +58,6 @@ import com.baomidou.kisso.common.util.Base64Util;
  * @since 2014-6-17
  */
 public class RSA {
-
-    /**
-     * 加密算法RSA
-     */
-    public static final String KEY_ALGORITHM = "RSA";
 
     /**
      * 签名算法
@@ -91,7 +93,7 @@ public class RSA {
      * @throws Exception
      */
     public static Map<String, Object> genKeyPair() throws Exception {
-        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(SSOConstants.RSA);
         keyPairGen.initialize(1024);
         KeyPair keyPair = keyPairGen.generateKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
@@ -115,7 +117,7 @@ public class RSA {
     public static String sign(byte[] data, String privateKey) throws Exception {
         byte[] keyBytes = Base64Util.decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
         PrivateKey privateK = keyFactory.generatePrivate(pkcs8KeySpec);
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initSign(privateK);
@@ -137,7 +139,7 @@ public class RSA {
     public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
         byte[] keyBytes = Base64Util.decode(publicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
         PublicKey publicK = keyFactory.generatePublic(keySpec);
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initVerify(publicK);
@@ -158,7 +160,7 @@ public class RSA {
     public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey) throws Exception {
         byte[] keyBytes = Base64Util.decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
         Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
         cipher.init(Cipher.DECRYPT_MODE, privateK);
@@ -196,7 +198,7 @@ public class RSA {
     public static byte[] decryptByPublicKey(byte[] encryptedData, String publicKey) throws Exception {
         byte[] keyBytes = Base64Util.decode(publicKey);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
         Key publicK = keyFactory.generatePublic(x509KeySpec);
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
         cipher.init(Cipher.DECRYPT_MODE, publicK);
@@ -234,7 +236,7 @@ public class RSA {
     public static byte[] encryptByPublicKey(byte[] data, String publicKey) throws Exception {
         byte[] keyBytes = Base64Util.decode(publicKey);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
         Key publicK = keyFactory.generatePublic(x509KeySpec);
         // 对数据加密
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
@@ -273,7 +275,7 @@ public class RSA {
     public static byte[] encryptByPrivateKey(byte[] data, String privateKey) throws Exception {
         byte[] keyBytes = Base64Util.decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
         Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
         cipher.init(Cipher.ENCRYPT_MODE, privateK);
@@ -326,4 +328,94 @@ public class RSA {
         return Base64Util.encode(key.getEncoded());
     }
 
+
+    /**
+     * Returns a private key constructed from the given DER bytes in PKCS#8 format.
+     */
+    public static PrivateKey privateKeyFromPKCS8(final byte[] pkcs8) throws InvalidKeySpecException {
+        try {
+            final EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(pkcs8);
+            final KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
+            return keyFactory.generatePrivate(privateKeySpec);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Returns a private key constructed from the given DER bytes in PKCS#1 format.
+     */
+    public static PrivateKey privateKeyFromPKCS1(final byte[] pkcs1) throws InvalidKeySpecException {
+        try {
+            final RSAPrivateCrtKeySpec privateKeySpec = newRSAPrivateCrtKeySpec(pkcs1);
+            final KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
+            return keyFactory.generatePrivate(privateKeySpec);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Returns a public key constructed from the given DER bytes.
+     */
+    public static PublicKey publicKeyFrom(final byte[] derBytes) throws InvalidKeySpecException {
+        try {
+            final KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
+            final EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(derBytes);
+            return keyFactory.generatePublic(publicKeySpec);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Convert PKCS#1 encoded private key into RSAPrivateCrtKeySpec.
+     *
+     * <p/>The ASN.1 syntax for the private key with CRT is
+     *
+     * <pre>
+     * --
+     * -- Representation of RSA private key with information for the CRT algorithm.
+     * --
+     * RSAPrivateKey ::= SEQUENCE {
+     *   version           Version,
+     *   modulus           INTEGER,  -- n
+     *   publicExponent    INTEGER,  -- e
+     *   privateExponent   INTEGER,  -- d
+     *   prime1            INTEGER,  -- p
+     *   prime2            INTEGER,  -- q
+     *   exponent1         INTEGER,  -- d mod (p-1)
+     *   exponent2         INTEGER,  -- d mod (q-1)
+     *   coefficient       INTEGER,  -- (inverse of q) mod p
+     *   otherPrimeInfos   OtherPrimeInfos OPTIONAL
+     * }
+     * </pre>
+     *
+     * @param keyInPkcs1 PKCS#1 encoded key
+     * @throws IOException
+     */
+    private static RSAPrivateCrtKeySpec newRSAPrivateCrtKeySpec(final byte[] keyInPkcs1) throws IOException {
+        final DerParser parser = new DerParser(keyInPkcs1);
+
+        final Asn1Object sequence = parser.read();
+        if (sequence.getType() != DerParser.SEQUENCE) {
+            throw new IllegalArgumentException("Invalid DER: not a sequence");
+        }
+
+        // Parse inside the sequence
+        final DerParser p = sequence.getParser();
+
+        p.read(); // Skip version
+        final BigInteger modulus = p.read().getInteger();
+        final BigInteger publicExp = p.read().getInteger();
+        final BigInteger privateExp = p.read().getInteger();
+        final BigInteger prime1 = p.read().getInteger();
+        final BigInteger prime2 = p.read().getInteger();
+        final BigInteger exp1 = p.read().getInteger();
+        final BigInteger exp2 = p.read().getInteger();
+        final BigInteger crtCoef = p.read().getInteger();
+        return new RSAPrivateCrtKeySpec(modulus, publicExp, privateExp, prime1, prime2, exp1, exp2, crtCoef);
+    }
 }

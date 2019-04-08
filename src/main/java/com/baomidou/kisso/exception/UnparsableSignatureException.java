@@ -15,31 +15,9 @@
  */
 package com.baomidou.kisso.exception;
 
-/**
- * <p>
- * SSO 异常
- * </p>
- *
- * @author hubin
- * @since 2014-5-9
- */
-public class KissoException extends RuntimeException {
+public class UnparsableSignatureException extends AuthenticationException {
 
-    private static final long serialVersionUID = 1L;
-
-    public KissoException() {
+    public UnparsableSignatureException(String message, Throwable cause) {
+        super(message, cause);
     }
-
-    public KissoException(String message) {
-        super(message);
-    }
-
-    public KissoException(Throwable throwable) {
-        super(throwable);
-    }
-
-    public KissoException(String message, Throwable throwable) {
-        super(message, throwable);
-    }
-
 }

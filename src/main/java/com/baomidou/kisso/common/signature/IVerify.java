@@ -13,33 +13,30 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.kisso.exception;
+package com.baomidou.kisso.common.signature;
+
+import java.security.Provider;
 
 /**
  * <p>
- * SSO 异常
+ * 验签接口
  * </p>
  *
  * @author hubin
- * @since 2014-5-9
+ * @since 2019-04-08
  */
-public class KissoException extends RuntimeException {
+public interface IVerify {
 
-    private static final long serialVersionUID = 1L;
-
-    public KissoException() {
-    }
-
-    public KissoException(String message) {
-        super(message);
-    }
-
-    public KissoException(Throwable throwable) {
-        super(throwable);
-    }
-
-    public KissoException(String message, Throwable throwable) {
-        super(message, throwable);
-    }
-
+  /**
+   * <p>
+   * 签名
+   * </p>
+   *
+   * @param provider           提供本服务的 Provider
+   * @param shaAlgorithm       SHA 算法
+   * @param signingStringBytes 签名字节数组
+   * @param verifyString       待验签字符串
+   * @return
+   */
+  boolean verify(Provider provider, ShaAlgorithm shaAlgorithm, byte[] signingStringBytes, String verifyString);
 }
