@@ -139,20 +139,6 @@ public class RSA {
         return signature.verify(Base64Util.decode(sign));
     }
 
-    public static PrivateKey privateKey(String privateKey) throws Exception {
-        byte[] keyBytes = Base64Util.decode(privateKey);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
-        return keyFactory.generatePrivate(pkcs8KeySpec);
-    }
-
-    public static PublicKey publicKey(String publicKey) throws Exception {
-        byte[] keyBytes = Base64Util.decode(publicKey);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(SSOConstants.RSA);
-        return keyFactory.generatePublic(keySpec);
-    }
-
     /**
      * <P>
      * 私钥解密
@@ -248,9 +234,8 @@ public class RSA {
      *
      * @param keyMap 密钥对
      * @return
-     * @throws Exception
      */
-    public static String getPrivateKey(Map<String, Object> keyMap) throws Exception {
+    public static String getPrivateKey(Map<String, Object> keyMap) {
         Key key = (Key) keyMap.get(PRIVATE_KEY);
         return Base64Util.encode(key.getEncoded());
     }
@@ -262,13 +247,20 @@ public class RSA {
      *
      * @param keyMap 密钥对
      * @return
-     * @throws Exception
      */
-    public static String getPublicKey(Map<String, Object> keyMap) throws Exception {
+    public static String getPublicKey(Map<String, Object> keyMap) {
         Key key = (Key) keyMap.get(PUBLIC_KEY);
         return Base64Util.encode(key.getEncoded());
     }
 
+
+    public static PrivateKey privateKey(String privateKey) throws InvalidKeySpecException {
+        return privateKeyFromPKCS8(Base64Util.decode(privateKey));
+    }
+
+    public static PublicKey publicKey(String publicKey) throws InvalidKeySpecException {
+        return publicKeyFrom(Base64Util.decode(publicKey));
+    }
 
     /**
      * Returns a private key constructed from the given DER bytes in PKCS#8 format.
@@ -348,15 +340,14 @@ public class RSA {
         // Parse inside the sequence
         final DerParser p = sequence.getParser();
 
-        p.read(); // Skip version
-        final BigInteger modulus = p.read().getInteger();
-        final BigInteger publicExp = p.read().getInteger();
-        final BigInteger privateExp = p.read().getInteger();
-        final BigInteger prime1 = p.read().getInteger();
-        final BigInteger prime2 = p.read().getInteger();
-        final BigInteger exp1 = p.read().getInteger();
-        final BigInteger exp2 = p.read().getInteger();
-        final BigInteger crtCoef = p.read().getInteger();
-        return new RSAPrivateCrtKeySpec(modulus, publicExp, privateExp, prime1, prime2, exp1, exp2, crtCoef);
+        // Skip version
+        p.read();
+        return new RSAPrivateCrtKeySpec(readInteger(p), readInteger(p),
+                readInteger(p), readInteger(p), readInteger(p),
+                readInteger(p), readInteger(p), readInteger(p));
+    }
+
+    private static BigInteger readInteger(final DerParser p) throws IOException {
+        return p.read().getInteger();
     }
 }
