@@ -25,9 +25,8 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.Signature;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -90,18 +89,20 @@ public class RSA {
      * </p>
      *
      * @return
-     * @throws Exception
+     * @throws NoSuchAlgorithmException
      */
-    public static Map<String, Object> genKeyPair() throws Exception {
-        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(SSOConstants.RSA);
-        keyPairGen.initialize(1024);
-        KeyPair keyPair = keyPairGen.generateKeyPair();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+    public static Map<String, Object> genKeyPair() throws NoSuchAlgorithmException {
+        KeyPair keyPair = getKeyPair();
         return new HashMap<String, Object>(2) {{
-            put(PUBLIC_KEY, publicKey);
-            put(PRIVATE_KEY, privateKey);
+            put(PUBLIC_KEY, keyPair.getPublic());
+            put(PRIVATE_KEY, keyPair.getPrivate());
         }};
+    }
+
+    private static KeyPair getKeyPair() throws NoSuchAlgorithmException {
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(SSOConstants.RSA);
+        keyPairGen.initialize(1024, new SecureRandom());
+        return keyPairGen.generateKeyPair();
     }
 
     /**
