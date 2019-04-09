@@ -32,6 +32,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,17 +92,17 @@ public class RSA {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public static Map<String, Object> genKeyPair() throws NoSuchAlgorithmException {
-        KeyPair keyPair = getKeyPair();
-        return new HashMap<String, Object>(2) {{
+    public static Map<String, Key> genKeyPair() throws NoSuchAlgorithmException {
+        KeyPair keyPair = getKeyPair(1024);
+        return new HashMap<String, Key>(2) {{
             put(PUBLIC_KEY, keyPair.getPublic());
             put(PRIVATE_KEY, keyPair.getPrivate());
         }};
     }
 
-    private static KeyPair getKeyPair() throws NoSuchAlgorithmException {
+    public static KeyPair getKeyPair(int keySize) throws NoSuchAlgorithmException {
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(SSOConstants.RSA);
-        keyPairGen.initialize(1024, new SecureRandom());
+        keyPairGen.initialize(keySize, new SecureRandom());
         return keyPairGen.generateKeyPair();
     }
 
@@ -236,9 +237,13 @@ public class RSA {
      * @param keyMap 密钥对
      * @return
      */
-    public static String getPrivateKey(Map<String, Object> keyMap) {
-        Key key = (Key) keyMap.get(PRIVATE_KEY);
-        return Base64Util.encode(key.getEncoded());
+    public static String getPrivateKey(Map<String, Key> keyMap) {
+        return Base64Util.encode(keyMap.get(PRIVATE_KEY).getEncoded());
+    }
+
+    public static String getBase64PrivateKey(Map<String, Key> keyMap) {
+        String privateKey = Base64.getMimeEncoder().encodeToString(keyMap.get(PRIVATE_KEY).getEncoded());
+        return "-----BEGIN PRIVATE KEY-----\n" + privateKey + "\n-----END PRIVATE KEY-----";
     }
 
     /**
@@ -249,9 +254,13 @@ public class RSA {
      * @param keyMap 密钥对
      * @return
      */
-    public static String getPublicKey(Map<String, Object> keyMap) {
-        Key key = (Key) keyMap.get(PUBLIC_KEY);
-        return Base64Util.encode(key.getEncoded());
+    public static String getPublicKey(Map<String, Key> keyMap) {
+        return Base64Util.encode(keyMap.get(PUBLIC_KEY).getEncoded());
+    }
+
+    public static String getBase64PublicKey(Map<String, Key> keyMap) {
+        String publicKey = Base64.getMimeEncoder().encodeToString(keyMap.get(PUBLIC_KEY).getEncoded());
+        return "-----BEGIN PUBLIC KEY-----\n" + publicKey + "\n-----END PUBLIC KEY-----";
     }
 
 

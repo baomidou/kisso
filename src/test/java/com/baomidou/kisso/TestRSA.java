@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso;
 
+import java.security.Key;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -39,9 +40,12 @@ public class TestRSA {
 
     static {
         try {
-            Map<String, Object> keyMap = RSA.genKeyPair();
+            Map<String, Key> keyMap = RSA.genKeyPair();
             publicKey = RSA.getPublicKey(keyMap);
             privateKey = RSA.getPrivateKey(keyMap);
+            System.err.println("Base64 公钥: \n\r" + RSA.getBase64PublicKey(keyMap));
+            System.err.println("Base64 私钥： \n\r" + RSA.getBase64PrivateKey(keyMap));
+
             System.err.println("公钥: \n\r" + publicKey);
             System.err.println("私钥： \n\r" + privateKey);
 
