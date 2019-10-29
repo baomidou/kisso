@@ -8,9 +8,9 @@ ext {
     ]
 
     libraries = [
-            springBootVersion = "2.1.3.RELEASE",
+            springBootVersion = "2.2.0.RELEASE",
             springSecurityJwtVersion = "1.0.10.RELEASE",
-            lombokVersion = "1.18.6",
+            lombokVersion = "1.18.10",
             jjwtVersion = "0.9.1"
     ]
 }
