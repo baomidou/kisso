@@ -1,4 +1,4 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -8,8 +8,8 @@ ext {
     ]
 
     libraries = [
-            springBootVersion = "2.2.0.RELEASE",
-            springSecurityJwtVersion = "1.0.10.RELEASE",
+            springBootVersion = "2.2.2.RELEASE",
+            springSecurityJwtVersion = "1.1.0.RELEASE",
             lombokVersion = "1.18.10",
             jjwtVersion = "0.9.1"
     ]
@@ -41,8 +41,8 @@ dependencies {
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
 
-    compile("org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}")
-    compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
+    api("org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}")
+    api("io.jsonwebtoken:jjwt:${jjwtVersion}")
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
     testCompile("javax.servlet:servlet-api:2.5")
@@ -51,7 +51,7 @@ dependencies {
 
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
@@ -67,7 +67,7 @@ javadoc {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from 'build/docs/javadoc'
 }
 
