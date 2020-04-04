@@ -1,11 +1,11 @@
 package com.baomidou.kisso.starter;
 
+import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.SSOHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.baomidou.kisso.SSOConfig;
 
 @Configuration
 @EnableConfigurationProperties(KissoProperties.class)
@@ -19,6 +19,6 @@ public class KissoAutoConfiguration {
      */
     @Bean
     public SSOConfig getInstance() {
-        return SSOConfig.init(properties.getConfig());
+        return SSOHelper.setSsoConfig(properties.getConfig());
     }
 }

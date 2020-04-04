@@ -1,0 +1,24 @@
+{
+    "groups": [
+        {
+            "sourceType": "com.baomidou.kisso.starter.KissoProperties",
+            "name": "kisso",
+            "type": "com.baomidou.kisso.starter.KissoProperties"
+        },
+        {
+            "sourceType": "com.baomidou.kisso.starter.KissoProperties",
+            "name": "kisso.config",
+            "sourceMethod": "getConfig()",
+            "type": "com.baomidou.kisso.SSOConfig"
+        }
+    ],
+    "properties": [
+        {
+            "sourceType": "com.baomidou.kisso.SSOConfig",
+            "name":  "kisso.config.sign-algorithm",
+            "defaultValue": "HS512",
+            "description": "token sign algorithm.",
+            "type": "java.lang.String"
+        }
+    ]
+}

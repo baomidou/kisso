@@ -25,5 +25,8 @@ package com.baomidou.kisso.security.token;
  */
 public interface Token {
 
-    String getToken(); // 生成 Token 字符串
+    /**
+     * 生成 Token 字符串
+     */
+    String getToken();
 }

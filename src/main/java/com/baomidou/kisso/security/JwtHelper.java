@@ -42,6 +42,14 @@ import java.util.Base64;
  * @since 2017-07-19
  */
 public class JwtHelper {
+    /**
+     * RSA 密钥
+     */
+    private static Key RSA_KEY;
+    /**
+     * RSA 公钥
+     */
+    private static PublicKey RSA_PUBLICKEY;
 
     /**
      * 获取一个随机的 HS512 算法签名密钥
@@ -84,12 +92,14 @@ public class JwtHelper {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(config.getSignAlgorithm());
         if (SSOConstants.RSA.equals(signatureAlgorithm.getFamilyName())) {
             try {
-                ClassPathResource resource = new ClassPathResource(config.getRsaJksStore());
-                KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-                keystore.load(resource.getInputStream(), config.getRsaStorepass().toCharArray());
-                Key key = keystore.getKey(config.getRsaAlias(), config.getRsaKeypass().toCharArray());
+                if(null == RSA_KEY) {
+                    ClassPathResource resource = new ClassPathResource(config.getRsaJksStore());
+                    KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+                    keystore.load(resource.getInputStream(), config.getRsaStorepass().toCharArray());
+                    RSA_KEY = keystore.getKey(config.getRsaAlias(), config.getRsaKeypass().toCharArray());
+                }
                 // RSA 签名
-                return jwtBuilder.signWith(key, signatureAlgorithm).compact();
+                return jwtBuilder.signWith(RSA_KEY, signatureAlgorithm).compact();
             } catch (Exception e) {
                 throw new KissoException("signCompact error.", e);
             }
@@ -110,10 +120,12 @@ public class JwtHelper {
             SSOConfig config = SSOConfig.getInstance();
             SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(config.getSignAlgorithm());
             if (SSOConstants.RSA.equals(signatureAlgorithm.getFamilyName())) {
-                ClassPathResource resource = new ClassPathResource(config.getRsaCertStore());
-                PublicKey publicKey = RsaKeyHelper.getRsaPublicKey(resource.getInputStream());
+                if(null == RSA_PUBLICKEY) {
+                    ClassPathResource resource = new ClassPathResource(config.getRsaCertStore());
+                    RSA_PUBLICKEY = RsaKeyHelper.getRsaPublicKey(resource.getInputStream());
+                }
                 // RSA 签名验证
-                return Jwts.parserBuilder().setSigningKey(publicKey).build();
+                return Jwts.parserBuilder().setSigningKey(RSA_PUBLICKEY).build();
             }
             // 普通签名验证
             SecretKey secretKey = getSecretKey(config.getSignKey(), signatureAlgorithm);

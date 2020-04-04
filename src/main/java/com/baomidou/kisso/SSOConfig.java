@@ -15,15 +15,14 @@
  */
 package com.baomidou.kisso;
 
-import java.util.List;
-
 import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
-
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * <p>
@@ -36,10 +35,18 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class SSOConfig {
+    /**
+     * 编码格式，默认 UTF-8
+     */
     private String encoding = SSOConstants.ENCODING;
-    private String signKey = "Janfv5UgKhoDrH73EZT7m+81pgqLN3EjWKXZtqF9lQHH9WruxqX0+FkQys6XK0QXzSUckseOAZGeQyvfreA3tw==";
+    /**
+     * 签名密钥（用于对此算法）
+     */
+    private String signKey;
     /**
      * 签名算法
+     *
+     * @see io.jsonwebtoken.SignatureAlgorithm
      */
     private String signAlgorithm = "HS512";
     /**
@@ -49,23 +56,74 @@ public class SSOConfig {
     /**
      * 私钥 jwt.jks
      */
-    private String rsaJksStore = "jwt.jks";
+    private String rsaJksStore = "key.jks";
+    /**
+     * RSA 密钥 Alias
+     */
     private String rsaAlias = "jwtkey";
+    /**
+     * RSA 密钥 keypass
+     */
     private String rsaKeypass = "llTs1p68K";
+    /**
+     * RSA 密钥 storepass
+     */
     private String rsaStorepass = "lLt66Y8L321";
+    /**
+     * 访问票据名
+     */
     private String accessTokenName = "accessToken";
+    /**
+     * cookie 名称
+     */
     private String cookieName = "uid";
+    /**
+     * cookie 所在有效域名，不设置为当前访问域名
+     */
     private String cookieDomain;
+    /**
+     * cookie 路径
+     */
     private String cookiePath = "/";
+    /**
+     * cookie 是否设置安全，设置 true 那么只能为 https 协议访问
+     */
     private boolean cookieSecure = false;
+    /**
+     * cookie 是否为只读状态，设置 js 无法获取
+     */
     private boolean cookieHttpOnly = true;
+    /**
+     * cookie 有效期 -1 关闭浏览器失效
+     */
     private int cookieMaxAge = -1;
+    /**
+     * 是否验证 cookie 设置时浏览器信息
+     */
     private boolean cookieBrowser = false;
+    /**
+     * 是否验证 cookie 设置时 IP 信息
+     */
     private boolean cookieCheckIp = false;
+    /**
+     * 登录地址
+     */
     private String loginUrl = "";
+    /**
+     * 退出地址
+     */
     private String logoutUrl = "";
+    /**
+     * 登录成功回调地址
+     */
     private String paramReturnUrl = "ReturnURL";
+    /**
+     * 缓存有效期设置
+     */
     private int cacheExpires = CookieHelper.CLEAR_BROWSER_IS_CLOSED;
+    /**
+     * 访问票据
+     */
     private SSOToken ssoToken;
 
     /**
@@ -77,11 +135,15 @@ public class SSOConfig {
      * 插件列表
      */
     private List<SSOPlugin> pluginList;
+    /**
+     * SSO 缓存
+     */
     private SSOCache cache;
+    /**
+     * SSO 权限授权
+     */
+    private SSOAuthorization authorization;
 
-    private static SSOConfig SSO_CONFIG = null;
-
-    private static SSOAuthorization SSO_AUTHORIZATION;
 
     public SSOConfig() {
         /* 支持 setInstance 设置初始化 */
@@ -91,15 +153,7 @@ public class SSOConfig {
      * new 当前对象
      */
     public static SSOConfig getInstance() {
-        if (SSO_CONFIG == null) {
-            SSO_CONFIG = new SSOConfig();
-        }
-        return SSO_CONFIG;
-    }
-
-    public static SSOConfig init(SSOConfig ssoConfig) {
-        SSO_CONFIG = ssoConfig;
-        return ssoConfig;
+        return SSOHelper.getSsoConfig();
     }
 
     public static String getSSOEncoding() {
@@ -113,6 +167,16 @@ public class SSOConfig {
         return rsaCertStore;
     }
 
+    /**
+     * 签名密钥
+     */
+    public String getSignKey() {
+        if (null == this.signKey) {
+            return "Janfv5UgKhoDrH73EZT7m+81pgqLN3EjWKXZtqF9lQHH9WruxqX0+FkQys6XK0QXzSUckseOAZGeQyvfreA3tw==";
+        }
+        return this.signKey;
+    }
+
     public String getRsaJksStore() {
         if (null == rsaJksStore) {
             throw new KissoException("jwt.jks not found");
@@ -122,11 +186,11 @@ public class SSOConfig {
 
 
     public SSOAuthorization getAuthorization() {
-        return SSO_AUTHORIZATION;
+        return authorization;
     }
 
-    public SSOConfig setAuthorization(SSOAuthorization ssoAuthorization) {
-        SSO_AUTHORIZATION = ssoAuthorization;
+    public SSOConfig setAuthorization(SSOAuthorization authorization) {
+        this.authorization = authorization;
         return this;
     }
 

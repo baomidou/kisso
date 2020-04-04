@@ -18,6 +18,7 @@ package com.baomidou.kisso.starter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.baomidou.kisso.SSOConfig;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * <p>
@@ -30,6 +31,7 @@ import com.baomidou.kisso.SSOConfig;
 @ConfigurationProperties(prefix = "kisso")
 public class KissoProperties {
 
+    @NestedConfigurationProperty
     private SSOConfig config;
 
     public SSOConfig getConfig() {

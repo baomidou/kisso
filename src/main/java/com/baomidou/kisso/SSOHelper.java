@@ -15,14 +15,13 @@
  */
 package com.baomidou.kisso;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.baomidou.kisso.common.util.RandomUtil;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -33,8 +32,20 @@ import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
  * @since 2016-01-21
  */
 public class SSOHelper {
-
+    protected static SSOConfig SSO_CONFIG;
     protected static ConfigurableAbstractKissoService kissoService;
+
+    public static SSOConfig getSsoConfig() {
+        if (null == SSO_CONFIG) {
+            SSO_CONFIG = new SSOConfig();
+        }
+        return SSO_CONFIG;
+    }
+
+    public static SSOConfig setSsoConfig(SSOConfig ssoConfig) {
+        SSO_CONFIG = ssoConfig;
+        return SSO_CONFIG;
+    }
 
     /**
      * Kisso 服务初始化
