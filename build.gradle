@@ -38,6 +38,7 @@ dependencies {
     compileOnly("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
 
     api("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
     api("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
