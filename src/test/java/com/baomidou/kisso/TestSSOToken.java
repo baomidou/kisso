@@ -59,11 +59,6 @@ public class TestSSOToken {
 
     public void rsaToken() {
         SSOConfig ssoConfig = SSOConfig.getInstance();
-        ssoConfig.setRsaCertStore("public.cert");
-        ssoConfig.setRsaJksStore("jwt.jks");
-        ssoConfig.setRsaAlias("jwtkey");
-        ssoConfig.setRsaKeypass("llTs1p68K");
-        ssoConfig.setRsaStorepass("lLt66Y8L321");
         ssoConfig.setSignAlgorithm("RS512");
         String token = SSOToken.create().setIp("127.0.0.1").setTime(1502085277L).setId(1)
                 .setOrigin(TokenOrigin.IOS).setUserAgent("123").setIssuer("kisso").getToken();

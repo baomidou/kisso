@@ -45,14 +45,14 @@ public class SSOConfig {
     /**
      * 公钥 public.cert
      */
-    private String rsaCertStore;
+    private String rsaCertStore = "public.cert";
     /**
      * 私钥 jwt.jks
      */
-    private String rsaJksStore;
+    private String rsaJksStore = "jwt.jks";
     private String rsaAlias = "jwtkey";
-    private String rsaKeypass = "keypassword";
-    private String rsaStorepass = "letkisso";
+    private String rsaKeypass = "llTs1p68K";
+    private String rsaStorepass = "lLt66Y8L321";
     private String accessTokenName = "accessToken";
     private String cookieName = "uid";
     private String cookieDomain;
