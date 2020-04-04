@@ -17,6 +17,8 @@ package com.baomidou.kisso.security.token;
 
 import io.jsonwebtoken.JwtBuilder;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * JWT 访问票据
@@ -25,7 +27,7 @@ import io.jsonwebtoken.JwtBuilder;
  * @author hubin
  * @since 2017-07-17
  */
-public class AccessToken implements Token {
+public class AccessToken implements Token, Serializable {
 
     private String token;
 
