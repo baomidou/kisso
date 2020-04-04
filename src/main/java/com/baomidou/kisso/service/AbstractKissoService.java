@@ -136,7 +136,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         /**
          * Cookie设置HttpOnly
          */
-        if (config.isCookieHttponly()) {
+        if (config.isCookieHttpOnly()) {
             CookieHelper.addHttpOnlyCookie(response, ck);
         } else {
             response.addCookie(ck);
@@ -187,7 +187,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         } else {
             String retUrl = HttpUtil.getQueryString(request, config.getEncoding());
             logger.debug("loginAgain redirect pageUrl.." + retUrl);
-            response.sendRedirect(HttpUtil.encodeRetURL(loginUrl, config.getParamReturl(), retUrl));
+            response.sendRedirect(HttpUtil.encodeRetURL(loginUrl, config.getParamReturnUrl(), retUrl));
         }
     }
 

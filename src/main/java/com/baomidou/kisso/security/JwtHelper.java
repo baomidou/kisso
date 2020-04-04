@@ -15,21 +15,23 @@
  */
 package com.baomidou.kisso.security;
 
-import java.security.Key;
-import java.security.KeyStore;
-
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.FileCopyUtils;
-
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.common.RsaKeyHelper;
 import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.exception.KissoException;
-
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.core.io.ClassPathResource;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
+import java.security.KeyStore;
+import java.security.PublicKey;
+import java.util.Base64;
 
 /**
  * <p>
@@ -42,6 +44,37 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtHelper {
 
     /**
+     * 获取一个随机的 HS512 算法签名密钥
+     *
+     * @return
+     */
+    public static String getHS512SecretKey() {
+        return getSecretKey(SignatureAlgorithm.HS512);
+    }
+
+    /**
+     * 获取对应签名算法的字符串密钥
+     *
+     * @param signatureAlgorithm 签名算法
+     * @return
+     */
+    public static String getSecretKey(SignatureAlgorithm signatureAlgorithm) {
+        Key key = Keys.secretKeyFor(signatureAlgorithm);
+        return Base64.getEncoder().encodeToString(key.getEncoded());
+    }
+
+    /**
+     * 字符串密钥生成加密 Key
+     *
+     * @param signKey            密钥
+     * @param signatureAlgorithm 签名算法
+     * @return
+     */
+    public static SecretKey getSecretKey(String signKey, SignatureAlgorithm signatureAlgorithm) {
+        return new SecretKeySpec(signKey.getBytes(), signatureAlgorithm.getJcaName());
+    }
+
+    /**
      * <p>
      * 签名并生成 Token
      * </p>
@@ -51,18 +84,19 @@ public class JwtHelper {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(config.getSignAlgorithm());
         if (SSOConstants.RSA.equals(signatureAlgorithm.getFamilyName())) {
             try {
-                ClassPathResource resource = new ClassPathResource(config.getRsaKeystore());
+                ClassPathResource resource = new ClassPathResource(config.getRsaJksStore());
                 KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
                 keystore.load(resource.getInputStream(), config.getRsaStorepass().toCharArray());
                 Key key = keystore.getKey(config.getRsaAlias(), config.getRsaKeypass().toCharArray());
                 // RSA 签名
-                return jwtBuilder.signWith(signatureAlgorithm, key).compact();
+                return jwtBuilder.signWith(key, signatureAlgorithm).compact();
             } catch (Exception e) {
                 throw new KissoException("signCompact error.", e);
             }
         }
         // 普通签名
-        return jwtBuilder.signWith(signatureAlgorithm, config.getSignkey()).compact();
+        SecretKey secretKey = getSecretKey(config.getSignKey(), signatureAlgorithm);
+        return jwtBuilder.signWith(secretKey, signatureAlgorithm).compact();
     }
 
 
@@ -76,13 +110,14 @@ public class JwtHelper {
             SSOConfig config = SSOConfig.getInstance();
             SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(config.getSignAlgorithm());
             if (SSOConstants.RSA.equals(signatureAlgorithm.getFamilyName())) {
-                ClassPathResource resource = new ClassPathResource(config.getRsaCertstore());
-                String publicKey = new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));
+                ClassPathResource resource = new ClassPathResource(config.getRsaCertStore());
+                PublicKey publicKey = RsaKeyHelper.getRsaPublicKey(resource.getInputStream());
                 // RSA 签名验证
-                return Jwts.parser().setSigningKey(RsaKeyHelper.parsePublicKey(publicKey));
+                return Jwts.parserBuilder().setSigningKey(publicKey).build();
             }
             // 普通签名验证
-            return Jwts.parser().setSigningKey(config.getSignkey());
+            SecretKey secretKey = getSecretKey(config.getSignKey(), signatureAlgorithm);
+            return Jwts.parserBuilder().setSigningKey(secretKey).build();
         } catch (Exception e) {
             throw new KissoException("verifyParser error.", e);
         }

@@ -26,7 +26,6 @@ public class SqlInjection implements Istrip {
 
     /**
      * @param value 待处理内容
-     * @return
      * @since SQL注入内容剥离
      */
     @Override

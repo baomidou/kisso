@@ -36,18 +36,20 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class SSOConfig {
-
     private String encoding = SSOConstants.ENCODING;
-    private String signkey = "3QD2j1B1s6Uj1jx6q8";
+    private String signKey = "Janfv5UgKhoDrH73EZT7m+81pgqLN3EjWKXZtqF9lQHH9WruxqX0+FkQys6XK0QXzSUckseOAZGeQyvfreA3tw==";
+    /**
+     * 签名算法
+     */
     private String signAlgorithm = "HS512";
     /**
      * 公钥 public.cert
      */
-    private String rsaCertstore;
+    private String rsaCertStore;
     /**
      * 私钥 jwt.jks
      */
-    private String rsaKeystore;
+    private String rsaJksStore;
     private String rsaAlias = "jwtkey";
     private String rsaKeypass = "keypassword";
     private String rsaStorepass = "letkisso";
@@ -56,13 +58,13 @@ public class SSOConfig {
     private String cookieDomain;
     private String cookiePath = "/";
     private boolean cookieSecure = false;
-    private boolean cookieHttponly = true;
-    private int cookieMaxage = -1;
+    private boolean cookieHttpOnly = true;
+    private int cookieMaxAge = -1;
     private boolean cookieBrowser = false;
-    private boolean cookieCheckip = false;
+    private boolean cookieCheckIp = false;
     private String loginUrl = "";
     private String logoutUrl = "";
-    private String paramReturl = "ReturnURL";
+    private String paramReturnUrl = "ReturnURL";
     private int cacheExpires = CookieHelper.CLEAR_BROWSER_IS_CLOSED;
     private SSOToken ssoToken;
 
@@ -104,18 +106,18 @@ public class SSOConfig {
         return getInstance().getEncoding();
     }
 
-    public String getRsaCertstore() {
-        if (null == rsaCertstore) {
+    public String getRsaCertStore() {
+        if (null == rsaCertStore) {
             throw new KissoException("public.cert not found");
         }
-        return rsaCertstore;
+        return rsaCertStore;
     }
 
-    public String getRsaKeystore() {
-        if (null == rsaKeystore) {
+    public String getRsaJksStore() {
+        if (null == rsaJksStore) {
             throw new KissoException("jwt.jks not found");
         }
-        return rsaKeystore;
+        return rsaJksStore;
     }
 
 

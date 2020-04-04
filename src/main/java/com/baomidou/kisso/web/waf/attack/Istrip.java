@@ -26,7 +26,6 @@ public interface Istrip {
 
   /**
    * @param value 待处理内容
-   * @return
    * @since 脚本内容剥离
    */
   String strip(String value);

@@ -168,7 +168,7 @@ public class KissoServiceSupport {
         /**
          * 判断请求 IP 是否合法
          */
-        if (config.isCookieCheckip()) {
+        if (config.isCookieCheckIp()) {
             String ip = IpHelper.getIpAddr(request);
             if (ssoToken != null && ip != null && !ip.equals(ssoToken.getIp())) {
                 logger.info(String.format("ip inconsistent! return SSOToken null, SSOToken userIp:%s, reqIp:%s",
@@ -235,7 +235,7 @@ public class KissoServiceSupport {
             /**
              * 设置Cookie超时时间
              */
-            int maxAge = config.getCookieMaxage();
+            int maxAge = config.getCookieMaxAge();
             Integer attrMaxAge = (Integer) request.getAttribute(SSOConstants.SSO_COOKIE_MAXAGE);
             if (attrMaxAge != null) {
                 maxAge = attrMaxAge;
@@ -289,7 +289,7 @@ public class KissoServiceSupport {
         /**
          * 删除登录 Cookie
          */
-        return CookieHelper.clearCookieByName(request, response, config.getCookieName(), config.getCookieDomain(),
-                config.getCookiePath());
+        return CookieHelper.clearCookieByName(request, response, config.getCookieName(),
+                config.getCookieDomain(), config.getCookiePath());
     }
 }

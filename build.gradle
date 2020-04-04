@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 ext {
@@ -8,15 +8,14 @@ ext {
     ]
 
     libraries = [
-            springBootVersion = "2.2.2.RELEASE",
-            springSecurityJwtVersion = "1.1.0.RELEASE",
+            springBootVersion = "2.2.6.RELEASE",
             lombokVersion = "1.18.10",
-            jjwtVersion = "0.9.1"
+            jjwtVersion = "0.11.0"
     ]
 }
 
 group = 'com.baomidou'
-version = '3.7.5'
+version = '3.7.6'
 
 description = "kisso is a lightweight Java SSO Framework and reusable components."
 
@@ -38,11 +37,14 @@ dependencies {
     compileOnly("javax.servlet:jsp-api:2.0")
     compileOnly("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
-    compileOnly("org.projectlombok:lombok:${lombokVersion}")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
 
-    api("org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}")
-    api("io.jsonwebtoken:jjwt:${jjwtVersion}")
+    api("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
+    api("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
+    api("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
+
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
     testCompile("javax.servlet:servlet-api:2.5")
@@ -76,56 +78,73 @@ artifacts {
     archives javadocJar
 }
 
-signing {
-    sign configurations.archives
-}
-
-// gradle clean build uploadArchives -Dun=用户名 -Dps=密码
-uploadArchives {
+publishing {
     repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
+        maven {
             def userName = System.getProperty("un")
             def passWord = System.getProperty("ps")
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: userName, password: passWord)
-            }
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: userName, password: passWord)
+            credentials {
+                username userName
+                password passWord
             }
+        }
+    }
+    publications {
 
-            pom.version = "$project.version"
-            pom.artifactId = "$project.name"
-            pom.groupId = "$project.group"
-            pom.project {
-                name 'kisso'
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'kisso'
                 packaging 'jar'
-                description 'kisso is a lightweight Java SSO Framework and reusable components.'
-                url 'https://github.com/baomidou/kisso'
+                description = 'An enhanced toolkit of SSO to simplify development.'
+                url = 'https://github.com/baomidou/kisso'
 
                 scm {
-                    connection 'scm:git@github.com:Codearte/gradle-nexus-staging-plugin.git'
-                    developerConnection 'scm:git@github.com:Codearte/gradle-nexus-staging-plugin.git'
-                    url 'https://github.com/baomidou/kisso'
+                    connection = 'scm:git@github.com:Codearte/gradle-nexus-staging-plugin.git'
+                    developerConnection = 'scm:git@github.com:Codearte/gradle-nexus-staging-plugin.git'
+                    url = 'https://github.com/baomidou/kisso'
                 }
 
                 licenses {
                     license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'baomidou'
-                        name 'hubin'
-                        email 'jobob@qq.com'
+                        id = 'baomidou'
+                        name = 'hubin'
+                        email = 'jobob@qq.com'
+                    }
+                }
+
+                withXml {
+                    def root = asNode()
+                    root.dependencies.'*'.findAll {
+                        def d = it
+                        d.scope.text() == 'runtime' && project.configurations.findByName("implementation").allDependencies.find { dep ->
+                            dep.name == it.artifactId.text()
+                        }.each() {
+                            d.scope*.value = 'compile'
+                            d.appendNode('optional', true)
+                        }
                     }
                 }
             }
         }
+    }
+
+    signing {
+        sign publishing.publications.mavenJava
     }
 }
