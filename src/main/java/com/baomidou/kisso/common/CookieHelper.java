@@ -15,13 +15,12 @@
  */
 package com.baomidou.kisso.common;
 
-import java.util.logging.Logger;
+import com.baomidou.kisso.common.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.baomidou.kisso.common.util.StringUtils;
 
 /**
  * Cookie工具类
@@ -32,9 +31,8 @@ import com.baomidou.kisso.common.util.StringUtils;
  * @author hubin
  * @since 2014-5-8
  */
+@Slf4j
 public class CookieHelper {
-
-    private static final Logger logger = Logger.getLogger("CookieHelper");
 
     /**
      * 浏览器关闭时自动删除
@@ -111,7 +109,7 @@ public class CookieHelper {
         for (int i = 0; i < cookies.length; i++) {
             clearCookie(response, cookies[i].getName(), domain, path);
         }
-        logger.info("clearAllCookie in  domain " + domain);
+        log.info("clearAllCookie in  domain " + domain);
     }
 
     /**
@@ -161,10 +159,10 @@ public class CookieHelper {
             }
             cookie.setPath(path);
             response.addCookie(cookie);
-            logger.fine("clear cookie " + cookieName);
+            log.debug("clear cookie " + cookieName);
             result = true;
         } catch (Exception e) {
-            logger.severe("clear cookie " + cookieName + " is exception!\n" + e.toString());
+            log.error("clear cookie " + cookieName + " is exception!\n" + e.toString());
         }
         return result;
     }

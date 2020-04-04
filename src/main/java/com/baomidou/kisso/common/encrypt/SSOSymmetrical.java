@@ -15,18 +15,17 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
-import java.security.Key;
-import java.util.logging.Logger;
+import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.common.encrypt.base64.UrlBase64;
+import com.baomidou.kisso.exception.KissoException;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.baomidou.kisso.SSOConfig;
-import com.baomidou.kisso.common.encrypt.base64.UrlBase64;
-import com.baomidou.kisso.exception.KissoException;
+import java.security.Key;
 
 /**
  * <p>
@@ -62,9 +61,8 @@ import com.baomidou.kisso.exception.KissoException;
  * @author hubin
  * @since 2016-08-11
  */
+@Slf4j
 public class SSOSymmetrical implements SSOEncrypt {
-
-    private static final Logger logger = Logger.getLogger("SSOSymmetrical");
     private Algorithm algorithm = Algorithm.RC4;
 
     public SSOSymmetrical() {
@@ -72,7 +70,7 @@ public class SSOSymmetrical implements SSOEncrypt {
 
     public SSOSymmetrical(Algorithm algorithm) {
         this.algorithm = algorithm;
-        logger.info("Your current encryption algorithm is " + algorithm.getKey());
+        log.info("Your current encryption algorithm is " + algorithm.getKey());
     }
 
     @Override
@@ -118,7 +116,7 @@ public class SSOSymmetrical implements SSOEncrypt {
             cipher.init(Cipher.DECRYPT_MODE, this.toKey(algorithm, key));
             return cipher.doFinal(data);
         } catch (Exception e) {
-            logger.severe("Encrypt setKey is exception.");
+            log.error("Encrypt setKey is exception.");
             throw new KissoException(e);
         }
     }
@@ -137,7 +135,7 @@ public class SSOSymmetrical implements SSOEncrypt {
             cipher.init(Cipher.ENCRYPT_MODE, this.toKey(algorithm, key));
             return cipher.doFinal(data);
         } catch (Exception e) {
-            logger.severe("Encrypt setKey is exception.");
+            log.error("Encrypt setKey is exception.");
             throw new KissoException(e);
         }
     }

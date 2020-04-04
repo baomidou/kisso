@@ -15,23 +15,15 @@
  */
 package com.baomidou.kisso.common.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.Map;
+import com.baomidou.kisso.SSOConfig;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.baomidou.kisso.SSOConfig;
+import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * <p>
@@ -41,9 +33,8 @@ import com.baomidou.kisso.SSOConfig;
  * @author hubin
  * @since 2017-07-17
  */
+@Slf4j
 public class HttpUtil {
-
-    private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
     public static final String XML_HTTP_REQUEST = "XMLHttpRequest";
     public static final String X_REQUESTED_WITH = "X-Requested-With";
 
@@ -76,7 +67,7 @@ public class HttpUtil {
             out.print(tip);
             out.flush();
         } catch (IOException e) {
-            logger.error(e.toString());
+            log.error(e.getMessage());
         }
     }
 
@@ -161,8 +152,7 @@ public class HttpUtil {
         try {
             retStr.append(URLEncoder.encode(retUrl, SSOConfig.getSSOEncoding()));
         } catch (UnsupportedEncodingException e) {
-            logger.error("encodeRetURL error.{}", url);
-            e.printStackTrace();
+            log.error("encodeRetURL error.{} , {}", url, e.getMessage());
         }
 
         if (data != null) {
@@ -191,7 +181,7 @@ public class HttpUtil {
         try {
             retUrl = URLDecoder.decode(url, SSOConfig.getSSOEncoding());
         } catch (UnsupportedEncodingException e) {
-            logger.error("encodeRetURL error.{} ,{}", url, e.getMessage());
+            log.error("encodeRetURL error.{} ,{}", url, e.getMessage());
         }
 
         return retUrl;
@@ -239,7 +229,7 @@ public class HttpUtil {
         try {
             response.sendRedirect(location);
         } catch (IOException e) {
-            logger.error("sendRedirect location:{} ,{}", location, e.getMessage());
+            log.error("sendRedirect location:{} ,{}", location, e.getMessage());
         }
     }
 

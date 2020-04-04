@@ -15,13 +15,12 @@
  */
 package com.baomidou.kisso.common;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.logging.Logger;
+import com.baomidou.kisso.common.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.baomidou.kisso.common.util.StringUtils;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * <p>
@@ -31,9 +30,8 @@ import com.baomidou.kisso.common.util.StringUtils;
  * @author hubin
  * @since 2014-5-8
  */
+@Slf4j
 public class IpHelper {
-
-    private static final Logger logger = Logger.getLogger("IpHelper");
 
     /**
      * 系统的本地IP地址
@@ -59,7 +57,7 @@ public class IpHelper {
             }
         } catch (UnknownHostException e) {
             ip = "unknown";
-            logger.severe(e.getMessage());
+            log.error(e.getMessage());
         } finally {
             LOCAL_IP = ip;
         }
@@ -94,7 +92,7 @@ public class IpHelper {
                 try {
                     ip = InetAddress.getLocalHost().getHostAddress();
                 } catch (UnknownHostException e) {
-                    logger.severe("IpHelper error." + e.getMessage());
+                    log.error("IpHelper error." + e.getMessage());
                 }
             }
         }

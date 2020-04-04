@@ -15,15 +15,6 @@
  */
 package com.baomidou.kisso.web.interceptor;
 
-import java.lang.reflect.Method;
-import java.util.logging.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
 import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.annotation.Action;
 import com.baomidou.kisso.annotation.Login;
@@ -32,6 +23,13 @@ import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.web.handler.KissoDefaultHandler;
 import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 
 /**
  * 登录权限验证
@@ -42,9 +40,8 @@ import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
  * @author hubin
  * @since 2015-11-10
  */
+@Slf4j
 public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
-
-    private static final Logger logger = Logger.getLogger("SSOInterceptor");
     private SSOHandlerInterceptor handlerInterceptor;
 
     /**
@@ -91,7 +88,7 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
                      * 返回 true 继续执行，清理登录状态并重定向至登录界面
                      */
                     if (this.getHandlerInterceptor().preTokenIsNull(request, response)) {
-                        logger.fine("logout. request url:" + request.getRequestURL());
+                        log.debug("logout. request url:" + request.getRequestURL());
                         SSOHelper.clearRedirectLogin(request, response);
                     }
                     return false;

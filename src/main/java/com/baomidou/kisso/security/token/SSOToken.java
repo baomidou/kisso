@@ -15,13 +15,6 @@
  */
 package com.baomidou.kisso.security.token;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.IpHelper;
@@ -30,10 +23,13 @@ import com.baomidou.kisso.common.util.StringUtils;
 import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.JwtHelper;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * <p>
@@ -43,9 +39,8 @@ import io.jsonwebtoken.Jwts;
  * @author hubin
  * @since 2017-07-17
  */
+@Slf4j
 public class SSOToken extends AccessToken {
-
-    private static Logger logger = LoggerFactory.getLogger(SSOToken.class);
     private TokenFlag flag = TokenFlag.NORMAL;
     private TokenOrigin origin = TokenOrigin.COOKIE;
     /**
@@ -263,7 +258,7 @@ public class SSOToken extends AccessToken {
         }
         String origin = claims.get(SSOConstants.TOKEN_ORIGIN, String.class);
         if (header && StringUtils.isEmpty(origin)) {
-            logger.warn("illegal token request orgin.");
+            log.warn("illegal token request orgin.");
             return null;
         }
         SSOToken ssoToken = new SSOToken();

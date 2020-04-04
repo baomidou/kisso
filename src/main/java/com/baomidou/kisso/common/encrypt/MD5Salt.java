@@ -15,11 +15,11 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
-import java.security.MessageDigest;
-import java.util.logging.Logger;
-
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.common.SSOConstants;
+import lombok.extern.slf4j.Slf4j;
+
+import java.security.MessageDigest;
 
 /**
  * <p>
@@ -29,9 +29,8 @@ import com.baomidou.kisso.common.SSOConstants;
  * @author hubin
  * @since 2016-01-20
  */
+@Slf4j
 public class MD5Salt {
-
-    private static final Logger logger = Logger.getLogger("PasswordEncoder");
 
     /**
      * 盐值
@@ -95,7 +94,7 @@ public class MD5Salt {
             //加密后的字符串
             return Byte2Hex.byte2Hex(md.digest(mergeRawTextAndSalt(rawText).getBytes(SSOConfig.getSSOEncoding())));
         } catch (Exception e) {
-            logger.severe(" MD5Salt encode exception.");
+            log.error(" MD5Salt encode exception.");
             e.printStackTrace();
         }
         return null;

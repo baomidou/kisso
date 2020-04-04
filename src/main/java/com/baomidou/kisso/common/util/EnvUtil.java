@@ -15,12 +15,11 @@
  */
 package com.baomidou.kisso.common.util;
 
+import com.baomidou.kisso.common.OperatingSystem;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Properties;
-import java.util.logging.Logger;
-
-import com.baomidou.kisso.common.OperatingSystem;
 
 /**
  * <p>
@@ -31,8 +30,6 @@ import com.baomidou.kisso.common.OperatingSystem;
  * @since 2015-1-13
  */
 public class EnvUtil {
-
-    private static final Logger logger = Logger.getLogger("EnvUtil");
 
     /**
      * 判断当前系统是否为 linux

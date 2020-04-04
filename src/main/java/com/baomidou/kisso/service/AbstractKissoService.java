@@ -15,13 +15,6 @@
  */
 package com.baomidou.kisso.service;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.baomidou.kisso.SSOCache;
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOPlugin;
@@ -30,6 +23,13 @@ import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.common.util.RandomUtil;
 import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.security.token.SSOToken;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * <p>
@@ -39,6 +39,7 @@ import com.baomidou.kisso.security.token.SSOToken;
  * @author hubin
  * @since 2015-12-03
  */
+@Slf4j
 public abstract class AbstractKissoService extends KissoServiceSupport implements IKissoService {
 
     /**
@@ -82,7 +83,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         if (cache != null) {
             return cache.delete(SSOConfig.toCacheKey(userId));
         } else {
-            logger.info(" kickLogin! please implements SSOCache class.");
+            log.info(" kickLogin! please implements SSOCache class.");
         }
         return false;
     }
@@ -186,7 +187,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
             response.getWriter().write("{code:\"logout\", msg:\"Please login\"}");
         } else {
             String retUrl = HttpUtil.getQueryString(request, config.getEncoding());
-            logger.debug("loginAgain redirect pageUrl.." + retUrl);
+            log.debug("loginAgain redirect pageUrl.." + retUrl);
             response.sendRedirect(HttpUtil.encodeRetURL(loginUrl, config.getParamReturnUrl(), retUrl));
         }
     }

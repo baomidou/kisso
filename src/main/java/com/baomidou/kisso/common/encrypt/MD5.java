@@ -15,6 +15,9 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
+import com.baomidou.kisso.SSOConfig;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -23,9 +26,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Logger;
-
-import com.baomidou.kisso.SSOConfig;
 
 /**
  * <p>
@@ -35,9 +35,8 @@ import com.baomidou.kisso.SSOConfig;
  * @author hubin
  * @since 2014-5-9
  */
+@Slf4j
 public class MD5 {
-
-    private static final Logger logger = Logger.getLogger("MD5");
     public static final String ALGORITHM = "MD5";
 
     /**
@@ -54,7 +53,7 @@ public class MD5 {
         try {
             rlt.append(md5String(plainText.getBytes(SSOConfig.getSSOEncoding())));
         } catch (UnsupportedEncodingException e) {
-            logger.severe(" CipherHelper toMD5 exception.");
+            log.error(" CipherHelper toMD5 exception.");
             e.printStackTrace();
         }
         return rlt.toString();
@@ -104,8 +103,7 @@ public class MD5 {
             md5buf = md5.digest(data);
         } catch (Exception e) {
             md5buf = null;
-            logger.severe("md5Raw error.");
-            e.printStackTrace();
+            log.error("md5Raw error.", e);
         }
         return md5buf;
     }
@@ -120,8 +118,7 @@ public class MD5 {
             }
         } catch (Exception e) {
             md5Str = null;
-            logger.severe("md5String error.");
-            e.printStackTrace();
+            log.error("md5String error.", e);
         }
         return md5Str;
     }

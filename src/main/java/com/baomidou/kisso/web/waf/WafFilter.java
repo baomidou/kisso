@@ -15,19 +15,13 @@
  */
 package com.baomidou.kisso.web.waf;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.web.waf.request.WafRequestWrapper;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Waf防火墙过滤器
@@ -36,15 +30,20 @@ import com.baomidou.kisso.web.waf.request.WafRequestWrapper;
  * @author hubin
  * @since 2014-5-8
  */
+@Slf4j
 public class WafFilter implements Filter {
-
-  private static final Logger logger = Logger.getLogger("WafFilter");
-
-  private static String OVER_URL = null;//非过滤地址
-
-  private static boolean FILTER_XSS = true;//开启XSS脚本过滤
-
-  private static boolean FILTER_SQL = true;//开启SQL注入过滤
+  /**
+   * 非过滤地址
+   */
+  private static String OVER_URL = null;
+  /**
+   * 开启XSS脚本过滤
+   */
+  private static boolean FILTER_XSS = true;
+  /**
+   * 开启SQL注入过滤
+   */
+  private static boolean FILTER_SQL = true;
 
 
   public void init(FilterConfig config) throws ServletException {
@@ -69,7 +68,7 @@ public class WafFilter implements Filter {
         //Request请求XSS过滤
         chain.doFilter(new WafRequestWrapper(req, FILTER_XSS, FILTER_SQL), response);
       } catch (Exception e) {
-        logger.severe(" wafxx.jar WafFilter exception , requestURL: " + req.getRequestURL());
+        log.error(" wafxx.jar WafFilter exception , requestURL: " + req.getRequestURL());
       }
       return;
     }
@@ -79,7 +78,7 @@ public class WafFilter implements Filter {
 
 
   public void destroy() {
-    logger.warning(" WafFilter destroy .");
+    log.warn(" WafFilter destroy .");
   }
 
 

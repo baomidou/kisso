@@ -15,15 +15,6 @@
  */
 package com.baomidou.kisso.web.interceptor;
 
-import java.lang.reflect.Method;
-import java.util.logging.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
 import com.baomidou.kisso.SSOAuthorization;
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
@@ -31,6 +22,13 @@ import com.baomidou.kisso.annotation.Action;
 import com.baomidou.kisso.annotation.Permission;
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.security.token.SSOToken;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 
 /**
  * <p>
@@ -40,9 +38,8 @@ import com.baomidou.kisso.security.token.SSOToken;
  * @author hubin
  * @since 2016-04-03
  */
+@Slf4j
 public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
-
-    private static final Logger logger = Logger.getLogger("SSOPermissionInterceptor");
 
     /*
      * 系统权限授权接口
@@ -154,7 +151,7 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
      * @throws Exception
      */
     protected boolean unauthorizedAccess(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        logger.fine(" request 403 url: " + request.getRequestURI());
+        log.debug(" request 403 url: " + request.getRequestURI());
         if (HttpUtil.isAjax(request)) {
             /* AJAX 请求 403 未授权访问提示 */
             HttpUtil.ajaxStatus(response, 403, "ajax Unauthorized access.");
