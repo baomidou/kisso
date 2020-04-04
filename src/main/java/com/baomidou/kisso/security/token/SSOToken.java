@@ -252,6 +252,10 @@ public class SSOToken extends AccessToken {
         return SSOConfig.toCacheKey(this.getId());
     }
 
+    public static SSOToken parser(String jwtToken) {
+        return parser(jwtToken, false);
+    }
+
     public static SSOToken parser(String jwtToken, boolean header) {
         Claims claims = JwtHelper.verifyParser().parseClaimsJws(jwtToken).getBody();
         if (null == claims) {

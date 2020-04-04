@@ -50,13 +50,13 @@ public class SSOConfig {
      */
     private String signAlgorithm = "HS512";
     /**
-     * 公钥 public.cert
-     */
-    private String rsaCertStore = "public.cert";
-    /**
-     * 私钥 jwt.jks
+     * RSA 私钥 jwt.jks 存储路径
      */
     private String rsaJksStore = "key.jks";
+    /**
+     * RSA 公钥 public.cert 存储路径
+     */
+    private String rsaCertStore = "public.cert";
     /**
      * RSA 密钥 Alias
      */

@@ -15,7 +15,7 @@
  */
 package com.baomidou.kisso;
 
-import com.baomidou.kisso.common.util.RandomUtil;
+import com.baomidou.kisso.security.JwtHelper;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
 
@@ -58,13 +58,10 @@ public class SSOHelper {
     }
 
     /**
-     * <p>
-     * 生成 18 位随机字符串密钥<br>
-     * 替换配置文件 sso.properties 属性 sso.secretkey=随机18位字符串
-     * </p>
+     * HS512 密钥
      */
-    public static String getSecretKey() {
-        return RandomUtil.getCharacterAndNumber(18);
+    public static String getHS512SecretKey() {
+        return JwtHelper.getHS512SecretKey();
     }
 
     /**
@@ -94,6 +91,10 @@ public class SSOHelper {
         } else {
             getKissoService().setCookie(request, response, ssoToken);
         }
+    }
+
+    public static void setCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken) {
+        setCookie(request, response, ssoToken, false);
     }
 
     /**
