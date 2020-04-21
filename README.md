@@ -7,6 +7,18 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 
 - QQ 群 1064693672
 
+# 仓库
+`https://search.maven.org/search?q=g:com.baomidou`
+
+```
+<dependency>
+  <groupId>com.baomidou</groupId>
+  <artifactId>kisso</artifactId>
+  <version>3.7.6</version>
+</dependency>
+```
+
+
 # 使用文档
 
 ```
