@@ -34,7 +34,23 @@ SSOHelper.setCookie(request, response,  new SSOToken().setId(String.valueOf(1)).
 // 权限拦截器类 SSOSpringInterceptor
 // 注解不拦截 @Login(action = Action.Skip)
 // yml 配置 kisso.config....
-```     
+```
+
+- Spring Boot
+```
+@ControllerAdvice
+@Configuration
+public class WebConfig extends WebServiceConfigurer {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // SSO 授权拦截器
+        SSOSpringInterceptor ssoInterceptor = new SSOSpringInterceptor();
+        ssoInterceptor.setHandlerInterceptor(new LoginHandlerInterceptor());
+        registry.addInterceptor(ssoInterceptor).addPathPatterns("/**").excludePathPatterns("/v1/sso/**");
+    }
+}
+```
 
 
 # 默认 HS512 算法
@@ -64,16 +80,6 @@ $ keytool -export -alias jwtkey -file public.cert -keystore key.jks -storepass j
 
 - [Mybatis-Plus CRUD 快速开发框架](http://git.oschina.net/baomidou/mybatis-plus)
 
-
-Maven 坐标
-===
-```
-<dependency>
-  <groupId>com.baomidou</groupId>
-  <artifactId>kisso</artifactId>
-  <version>最新版本 maven 为准</version>
-</dependency>
-```
 
 捐赠 kisso
 ====================

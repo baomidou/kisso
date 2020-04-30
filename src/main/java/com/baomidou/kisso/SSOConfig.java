@@ -50,7 +50,7 @@ public class SSOConfig {
      */
     private String signAlgorithm = "HS512";
     /**
-     * RSA 私钥 jwt.jks 存储路径
+     * RSA 私钥 key.jks 存储路径
      */
     private String rsaJksStore = "key.jks";
     /**
