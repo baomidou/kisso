@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2017-2021, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -48,7 +48,7 @@ public class SSOToken extends AccessToken {
      */
     private String id;
     /**
-     * 主键
+     * 租户 ID
      */
     private String tenantId;
     /**
