@@ -22,8 +22,8 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 # 使用文档
 
 ```
-// 生成 jwt 票据，访问请求头设置‘ accessToken=票据内容 ’
-String jwtToken = SSOToken.create().setId(1).setIssuer("admin").getToken();
+// 生成 jwt 票据，访问请求头设置‘ accessToken=票据内容 ’ 适合前后分离模式单点登录
+String jwtToken = SSOToken.create().setId(1).setIssuer("admin").setOrigin(TokenOrigin.HTML5).getToken();
 
 // 解析票据
 SSOToken ssoToken = SSOToken.parser(jwtToken);
