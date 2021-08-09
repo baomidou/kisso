@@ -6,7 +6,7 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 
 # 其他开源项目 | Other Project
 
-- [Mybatis-Plus CRUD 快速开发框架](http://git.oschina.net/baomidou/mybatis-plus)
+- [Mybatis-Plus CRUD 快速开发框架](https://gitee.com/baomidou/mybatis-plus)
 
 - [Mybatis-Plus 企业版高级特性示例](https://gitee.com/baomidou/mybatis-mate-examples)
 
