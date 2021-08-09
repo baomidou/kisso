@@ -3,6 +3,14 @@
 
 kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 java Web 登录系统（SSO）的瑞士军刀。
 
+
+# 其他开源项目 | Other Project
+
+- [Mybatis-Plus CRUD 快速开发框架](http://git.oschina.net/baomidou/mybatis-plus)
+
+- [Mybatis-Plus 企业版高级特性示例](https://gitee.com/baomidou/mybatis-mate-examples)
+
+
 - 前后分离可选：请求 Header 票据模式, 请求 Cookie 模式
 
 - QQ 群 1064693672
@@ -75,10 +83,6 @@ $ keytool -genkeypair -alias jwtkey -keyalg RSA -dname "CN=llt" -keypass keypass
 // RSA 公钥，配置参数 kisso.config.rsa-cert-store
 $ keytool -export -alias jwtkey -file public.cert -keystore key.jks -storepass jkspassword
 ```
-
-# 其他开源项目 | Other Project
-
-- [Mybatis-Plus CRUD 快速开发框架](http://git.oschina.net/baomidou/mybatis-plus)
 
 
 捐赠 kisso
