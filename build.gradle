@@ -51,9 +51,9 @@ dependencies {
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
     annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
-    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
-    testCompile("javax.servlet:servlet-api:2.5")
-    testCompile("junit:junit:4.12")
+    testCompileOnly("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompileOnly("javax.servlet:servlet-api:2.5")
+    testCompileOnly("junit:junit:4.12")
 }
 
 
