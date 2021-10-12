@@ -33,66 +33,42 @@ import java.security.MessageDigest;
 public class MD5Salt {
 
     /**
-     * 盐值
-     */
-    private String salt;
-
-    /**
-     * 算法
-     */
-    private String algorithm;
-
-
-    protected MD5Salt() {
-        /* 保护 */
-    }
-
-
-    public MD5Salt(String salt, String algorithm) {
-        this.salt = salt;
-        this.algorithm = algorithm;
-    }
-
-    /**
-     * <p>
      * md5 盐值加密字符串
-     * </p>
      *
      * @param salt    盐值
      * @param rawText 需要加密的字符串
      * @return
      */
+    @Deprecated
     public static String md5SaltEncode(String salt, String rawText) {
-        return new MD5Salt(salt, MD5.ALGORITHM).encode(rawText);
+        return encode(salt, rawText);
     }
 
     /**
-     * <p>
      * 判断md5 盐值加密内容是否正确
-     * </p>
      *
      * @param salt       盐值
      * @param encodeText 加密后的文本内容
      * @param rawText    加密前的文本内容
      * @return
      */
+    @Deprecated
     public static boolean md5SaltValid(String salt, String encodeText, String rawText) {
-        return new MD5Salt(salt, MD5.ALGORITHM).isValid(encodeText, rawText);
+        return isValid(salt, encodeText, rawText);
     }
 
     /**
-     * <p>
      * 字符串盐值加密
-     * </p>
      *
+     * @param salt    盐值
      * @param rawText 需要加密的字符串
      * @return
      */
-    public String encode(String rawText) {
+    public static String encode(String salt, String rawText) {
         try {
-            MessageDigest md = MessageDigest.getInstance(this.getAlgorithm());
+            MessageDigest md = MessageDigest.getInstance(MD5.ALGORITHM);
             //加密后的字符串
-            return Byte2Hex.byte2Hex(md.digest(mergeRawTextAndSalt(rawText).getBytes(SSOConfig.getSSOEncoding())));
+            return Byte2Hex.byte2Hex(md.digest(mergeRawTextAndSalt(salt, rawText).getBytes(SSOConfig.getSSOEncoding())));
         } catch (Exception e) {
             log.error(" MD5Salt encode exception.");
             e.printStackTrace();
@@ -102,60 +78,36 @@ public class MD5Salt {
 
 
     /**
-     * <p>
      * 判断加密内容是否正确
-     * </p>
      *
      * @param encodeText 加密后的文本内容
      * @param rawText    加密前的文本内容
      * @return
      */
-    public boolean isValid(String encodeText, String rawText) {
-        return this.encode(rawText).equals(encodeText);
+    public static boolean isValid(String salt, String encodeText, String rawText) {
+        return encode(salt, rawText).equals(encodeText);
     }
 
     /**
-     * <p>
      * 合并混淆盐值至加密内容
-     * </p>
      *
+     * @param salt    盐值
      * @param rawText 需要加密的字符串
      * @return
      */
-    private String mergeRawTextAndSalt(String rawText) {
+    private static String mergeRawTextAndSalt(String salt, String rawText) {
         if (rawText == null) {
             rawText = "";
         }
 
-        if (this.getSalt() == null || "".equals(this.getSalt())) {
+        if (null == salt || "".equals(salt)) {
             return rawText;
         } else {
             StringBuffer mt = new StringBuffer();
             mt.append(rawText);
             mt.append(SSOConstants.CUT_SYMBOL);
-            mt.append(this.getSalt());
+            mt.append(salt);
             return mt.toString();
         }
     }
-
-
-    public String getSalt() {
-        return salt;
-    }
-
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-
-    public String getAlgorithm() {
-        return algorithm;
-    }
-
-
-    public void setAlgorithm(String algorithm) {
-        this.algorithm = algorithm;
-    }
-
 }
