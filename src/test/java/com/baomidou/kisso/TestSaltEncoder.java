@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2017-2022, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -41,18 +41,9 @@ public class TestSaltEncoder {
         String pwd = "1q2=3e!$-Qde";
 
 		/* MD5 盐加密 */
-        MD5Salt md5 = new MD5Salt(salt, "MD5");
-        String et1 = md5.encode(pwd);
+        String et1 = MD5Salt.encode(salt, pwd);
         System.out.println(et1);
-        boolean passwordValid = md5.isValid(et1, pwd);
+        boolean passwordValid = MD5Salt.isValid(salt, et1, pwd);
         System.err.println(passwordValid);
-
-		/* SHA 盐加密 */
-        MD5Salt sha = new MD5Salt(salt, "SHA");
-        String et2 = sha.encode(pwd);
-        System.out.println(et2);
-        boolean passwordValid2 = sha.isValid(et2, pwd);
-        System.err.println(passwordValid2);
-
     }
 }

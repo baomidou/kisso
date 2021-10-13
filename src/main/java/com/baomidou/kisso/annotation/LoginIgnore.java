@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2017-2022, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,46 +15,17 @@
  */
 package com.baomidou.kisso.annotation;
 
+import java.lang.annotation.*;
+
 /**
- * <p>
- * SSO 执行状态
- * </p>
+ * 登录忽略，忽略当前方法。
  *
  * @author hubin
- * @since 2015-11-10
+ * @since 2021-10-13
  */
-public enum Action {
-    /**
-     * 正常（默认）
-     */
-    Normal("0", "执行权限验证"),
-
-    /**
-     * 跳过
-     */
-    Skip("1", "跳过权限验证");
-
-    /**
-     * 主键
-     */
-    private final String key;
-
-    /**
-     * 描述
-     */
-    private final String desc;
-
-    Action(final String key, final String desc) {
-        this.key = key;
-        this.desc = desc;
-    }
-
-    public String getKey() {
-        return this.key;
-    }
-
-    public String getDesc() {
-        return this.desc;
-    }
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface LoginIgnore {
 
 }

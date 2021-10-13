@@ -39,8 +39,8 @@ SSOToken ssoToken = SSOToken.parser(jwtToken);
 // Cookie 模式设置
 SSOHelper.setCookie(request, response,  new SSOToken().setId(String.valueOf(1)).setIssuer("admin"));
 
-// 权限拦截器类 SSOSpringInterceptor
-// 注解不拦截 @Login(action = Action.Skip)
+// 登录权限拦截器类 SSOSpringInterceptor
+// 注解不拦截 @LoginIgnore
 // yml 配置 kisso.config....
 ```
 

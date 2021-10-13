@@ -8,14 +8,14 @@ ext {
     ]
 
     libraries = [
-            springBootVersion = "2.5.3",
-            lombokVersion = "1.18.20",
+            springBootVersion = "2.5.5",
+            lombokVersion = "1.18.22",
             jjwtVersion = "0.11.2"
     ]
 }
 
 group = 'com.baomidou'
-version = '3.7.7'
+version = '3.8.0'
 
 description = "kisso is a lightweight Java SSO Framework and reusable components."
 

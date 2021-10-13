@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2017-2022, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
  * kisso 权限注解
- * </p>
  *
  * @author hubin
- * @since 2016-03-07
+ * @since 2021-10-13
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -40,9 +38,8 @@ public @interface Permission {
     String value() default "";
 
     /**
-     * 执行动作
-     * {@link Action}
+     * 忽略
      */
-    Action action() default Action.Normal;
+    boolean ignore() default false;
 
 }

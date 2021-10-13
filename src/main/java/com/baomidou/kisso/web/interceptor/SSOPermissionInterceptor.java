@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2017-2022, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,13 +18,12 @@ package com.baomidou.kisso.web.interceptor;
 import com.baomidou.kisso.SSOAuthorization;
 import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
-import com.baomidou.kisso.annotation.Action;
 import com.baomidou.kisso.annotation.Permission;
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.security.token.SSOToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +38,7 @@ import java.lang.reflect.Method;
  * @since 2016-04-03
  */
 @Slf4j
-public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
+public class SSOPermissionInterceptor implements AsyncHandlerInterceptor {
 
     /*
      * 系统权限授权接口
@@ -68,7 +67,7 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
             throws Exception {
         if (handler instanceof HandlerMethod) {
             SSOToken token = SSOHelper.attrToken(request);
-            if (token == null) {
+            if (null == token) {
                 return true;
             }
 
@@ -116,7 +115,7 @@ public class SSOPermissionInterceptor extends HandlerInterceptorAdapter {
         Method method = handlerMethod.getMethod();
         Permission pm = method.getAnnotation(Permission.class);
         if (pm != null) {
-            if (pm.action() == Action.Skip) {
+            if (pm.ignore()) {
                 /**
                  * 忽略拦截
                  */

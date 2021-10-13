@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2017-2022, hubin (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,8 +16,7 @@
 package com.baomidou.kisso.web.interceptor;
 
 import com.baomidou.kisso.SSOHelper;
-import com.baomidou.kisso.annotation.Action;
-import com.baomidou.kisso.annotation.Login;
+import com.baomidou.kisso.annotation.LoginIgnore;
 import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.security.token.SSOToken;
@@ -25,6 +24,7 @@ import com.baomidou.kisso.web.handler.KissoDefaultHandler;
 import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ import java.lang.reflect.Method;
  * @since 2015-11-10
  */
 @Slf4j
-public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
+public class SSOSpringInterceptor implements AsyncHandlerInterceptor {
     private SSOHandlerInterceptor handlerInterceptor;
 
     /**
@@ -61,14 +61,12 @@ public class SSOSpringInterceptor extends HandlerInterceptorAdapter {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
-            Login login = method.getAnnotation(Login.class);
-            if (login != null) {
-                if (login.action() == Action.Skip) {
-                    /**
-                     * 忽略拦截
-                     */
-                    return true;
-                }
+            LoginIgnore loginIgnore = method.getAnnotation(LoginIgnore.class);
+            if (null != loginIgnore) {
+                /**
+                 * 忽略拦截
+                 */
+                return true;
             }
 
             /**
