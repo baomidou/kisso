@@ -27,6 +27,14 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 ```
 
 
+# 测试 demo
+
+- [kisso-spring-boot](https://gitee.com/baomidou/kisso-spring-boot)
+- [kisso_springmvc](https://gitee.com/jobob/kisso_springmvc)
+- [kisso_jfinal](https://gitee.com/jobob/kisso_jfinal)
+- [kisso_crossdomain](https://gitee.com/jobob/kisso_crossdomain)
+
+
 # 使用文档
 
 ```
