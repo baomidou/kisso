@@ -16,6 +16,7 @@
 package com.baomidou.kisso.common;
 
 import com.baomidou.kisso.common.util.StringUtils;
+import com.baomidou.kisso.service.SSOCookie;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.Cookie;
@@ -68,8 +69,9 @@ public class CookieHelper {
      */
     public static Cookie findCookieByName(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
-        if (cookies == null)
+        if (cookies == null) {
             return null;
+        }
         for (int i = 0; i < cookies.length; i++) {
             if (cookies[i].getName().equals(cookieName)) {
                 return cookies[i];
@@ -179,73 +181,68 @@ public class CookieHelper {
      * @param value    内容
      * @param maxAge   生命周期参数
      * @param httpOnly 只读
-     * @param secured  Https协议下安全传输
+     * @param secure   Https协议下安全传输
      */
     public static void addCookie(HttpServletResponse response, String domain, String path, String name, String value,
-                                 int maxAge, boolean httpOnly, boolean secured) {
-        Cookie cookie = new Cookie(name, value);
+                                 int maxAge, boolean httpOnly, boolean secure) {
+        SSOCookie ssoCookie = new SSOCookie(name, value);
         /**
          * 不设置该参数默认 当前所在域
          */
         if (StringUtils.isNotEmpty(domain)) {
-            cookie.setDomain(domain);
+            ssoCookie.setDomain(domain);
         }
-        cookie.setPath(path);
-        cookie.setMaxAge(maxAge);
+        ssoCookie.setPath(path);
+        ssoCookie.setMaxAge(maxAge);
+        if (httpOnly) {
+            ssoCookie.setHttpOnly(true);
+        }
 
         /** Cookie 只在Https协议下传输设置 */
-        if (secured) {
-            cookie.setSecure(secured);
+        if (secure) {
+            ssoCookie.setSecure(secure);
         }
-
-        /** Cookie 只读设置 */
-        if (httpOnly) {
-            addHttpOnlyCookie(response, cookie);
-        } else {
-            /**
-             * servlet 3.0 support
-             * cookie.setHttpOnly(httpOnly)
-             */
-            response.addCookie(cookie);
-        }
+        addSSOCookie(response, ssoCookie);
     }
 
     /**
-     * <p>
-     * 解决 servlet 3.0 以下版本不支持 HttpOnly
-     * </p>
+     * 设置 SSO Cookie
      *
-     * @param response HttpServletResponse类型的响应
-     * @param cookie   要设置httpOnly的cookie对象
+     * @param response  HttpServletResponse类型的响应
+     * @param ssoCookie {@link SSOCookie}
      */
-    public static void addHttpOnlyCookie(HttpServletResponse response, Cookie cookie) {
-        if (cookie == null) {
+    public static void addSSOCookie(HttpServletResponse response, SSOCookie ssoCookie) {
+        if (null == ssoCookie) {
             return;
         }
         /**
          * 依次取得cookie中的名称、值、 最大生存时间、路径、域和是否为安全协议信息
          */
-        String cookieName = cookie.getName();
-        String cookieValue = cookie.getValue();
-        int maxAge = cookie.getMaxAge();
-        String path = cookie.getPath();
-        String domain = cookie.getDomain();
-        boolean isSecure = cookie.getSecure();
+        String cookieName = ssoCookie.getName();
+        String cookieValue = ssoCookie.getValue();
         StringBuffer sf = new StringBuffer();
         sf.append(cookieName + "=" + cookieValue + ";");
+        int maxAge = ssoCookie.getMaxAge();
         if (maxAge >= 0) {
-            sf.append("Max-Age=" + cookie.getMaxAge() + ";");
+            sf.append("Max-Age=" + maxAge + ";");
         }
-        if (domain != null) {
+        String domain = ssoCookie.getDomain();
+        if (null != domain) {
             sf.append("domain=" + domain + ";");
         }
-        if (path != null) {
+        String path = ssoCookie.getPath();
+        if (null != path) {
             sf.append("path=" + path + ";");
         }
-        if (isSecure) {
-            sf.append("secure;HTTPOnly;");
-        } else {
+        if (ssoCookie.getSecure()) {
+            sf.append("secure;");
+        }
+        if (ssoCookie.isHttpOnly()) {
             sf.append("HTTPOnly;");
+        }
+        String sameSite = ssoCookie.getSameSite();
+        if (null != sameSite) {
+            sf.append("SameSite=" + sameSite + ";");
         }
         response.addHeader("Set-Cookie", sf.toString());
     }

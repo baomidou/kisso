@@ -98,6 +98,16 @@ public class SSOConfig {
      */
     private int cookieMaxAge = -1;
     /**
+     * cookie的SameSite属性用来限制第三方Cookie，从而减少安全风险(防止CSRF) 支持三种模式：
+     * <p>
+     * Strict 仅允许一方请求携带Cookie，即浏览器将只发送相同站点请求的Cookie，即当前网页URL与请求目标URL完全一致，浏览器默认该模式。
+     * <p>
+     * Lax 允许部分第三方请求携带Cookie
+     * <p>
+     * None 无论是否跨站都会发送Cookie
+     */
+    private String cookieSameSite;
+    /**
      * 是否验证 cookie 设置时浏览器信息
      */
     private boolean cookieBrowser = false;
@@ -171,10 +181,10 @@ public class SSOConfig {
      * 签名密钥
      */
     public String getSignKey() {
-        if (null == this.signKey) {
+        if (null == signKey) {
             return "Janfv5UgKhoDrH73EZT7m+81pgqLN3EjWKXZtqF9lQHH9WruxqX0+FkQys6XK0QXzSUckseOAZGeQyvfreA3tw==";
         }
-        return this.signKey;
+        return signKey;
     }
 
     public String getRsaJksStore() {
@@ -192,6 +202,15 @@ public class SSOConfig {
     public SSOConfig setAuthorization(SSOAuthorization authorization) {
         this.authorization = authorization;
         return this;
+    }
+
+    public String getCookieSameSite() {
+        if (null != cookieSameSite && ("Strict".equalsIgnoreCase(cookieSameSite)
+                || "Lax".equalsIgnoreCase(cookieSameSite)
+                || "None".equalsIgnoreCase(cookieSameSite))) {
+            return cookieSameSite;
+        }
+        return null;
     }
 
     /**

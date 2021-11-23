@@ -25,7 +25,6 @@ import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.security.token.SSOToken;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -105,7 +104,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         /**
          * 设置加密 Cookie
          */
-        Cookie ck = this.generateCookie(request, ssoToken);
+        SSOCookie ssoCookie = this.generateCookie(request, ssoToken);
 
         /**
          * 判断 SSOToken 是否缓存处理失效
@@ -135,13 +134,9 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         }
 
         /**
-         * Cookie设置HttpOnly
+         * 设置 SSO Cookie
          */
-        if (config.isCookieHttpOnly()) {
-            CookieHelper.addHttpOnlyCookie(response, ck);
-        } else {
-            response.addCookie(ck);
-        }
+        CookieHelper.addSSOCookie(response, ssoCookie);
     }
 
     /**

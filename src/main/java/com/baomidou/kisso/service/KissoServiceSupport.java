@@ -209,11 +209,13 @@ public class KissoServiceSupport {
      * @param token   SSO 登录信息票据
      * @return Cookie 登录信息Cookie {@link Cookie}
      */
-    protected Cookie generateCookie(HttpServletRequest request, Token token) {
+    protected SSOCookie generateCookie(HttpServletRequest request, Token token) {
         try {
-            Cookie cookie = new Cookie(config.getCookieName(), token.getToken());
-            cookie.setPath(config.getCookiePath());
-            cookie.setSecure(config.isCookieSecure());
+            SSOCookie ssoCookie = new SSOCookie(config.getCookieName(), token.getToken());
+            ssoCookie.setPath(config.getCookiePath());
+            ssoCookie.setSecure(config.isCookieSecure());
+            ssoCookie.setHttpOnly(config.isCookieHttpOnly());
+            ssoCookie.setSameSite(config.getCookieSameSite());
             /**
              * domain 提示
              * <p>
@@ -222,7 +224,7 @@ public class KissoServiceSupport {
              */
             String domain = config.getCookieDomain();
             if (null != domain) {
-                cookie.setDomain(domain);
+                ssoCookie.setDomain(domain);
                 if ("".equals(domain) || domain.contains("localhost")) {
                     log.warn("if you can't login, please enter normal domain. instead:" + domain);
                 }
@@ -237,9 +239,9 @@ public class KissoServiceSupport {
                 maxAge = attrMaxAge;
             }
             if (maxAge >= 0) {
-                cookie.setMaxAge(maxAge);
+                ssoCookie.setMaxAge(maxAge);
             }
-            return cookie;
+            return ssoCookie;
         } catch (Exception e) {
             throw new KissoException("Generate sso cookie exception ", e);
         }
