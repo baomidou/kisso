@@ -1,5 +1,10 @@
 ﻿# CHANGELOG
 
+## [v3.8.1] 2021.11.23
+
+- 新增 SameSite 特性防止 CSRF
+
+
 ## [v3.8.0] 2021.10.13
 
 - 升级 springboot 2.5.5 依赖
