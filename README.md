@@ -10,6 +10,8 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 
 - [Mybatis-Plus 企业版高级特性示例](https://gitee.com/baomidou/mybatis-mate-examples)
 
+- [AiZuDa 爱组搭 ~ 低代码开发组件库](https://gitee.com/aizuda/aizuda-components)
+
 
 - 前后分离可选：请求 Header 票据模式, 请求 Cookie 模式
 
