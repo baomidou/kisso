@@ -94,6 +94,40 @@ $ keytool -genkeypair -alias jwtkey -keyalg RSA -dname "CN=llt" -keypass keypass
 $ keytool -export -alias jwtkey -file public.cert -keystore key.jks -storepass jkspassword
 ```
 
+# 常见安全策略
+
+- Secure
+标记为 Secure 的 Cookie 只应通过被HTTPS协议加密过的请求发送给服务端。使用 HTTPS 安全协议，可以保护 Cookie 在浏览器和 Web 服务器间的传输过程中不被窃取和篡改。
+
+- HTTPOnly
+设置 HTTPOnly 属性可以防止客户端脚本通过 document.cookie 等方式访问 Cookie，有助于避免 XSS 攻击。
+
+- SameSite
+SameSite 属性可以让 Cookie 在跨站请求时不会被发送，从而可以阻止跨站请求伪造攻击（CSRF）。
+
+```
+SameSite 可以有下面三种值：
+1、Strict仅允许一方请求携带 Cookie，即浏览器将只发送相同站点请求的 Cookie，即当前网页 URL 与请求目标 URL 完全一致。
+2、Lax允许部分第三方请求携带 Cookie
+3、None无论是否跨站都会发送 Cookie
+造成现在无法获取cookie是因为之前默认是 None 的，Chrome80 后默认是 Lax
+```
+
+- 安全配置如下：
+
+```
+kisso:
+  config:
+    # 开启 https 有效，传输更安全
+    cookie-secure: true
+    # 防止 XSS 防止脚本攻击
+    cookie-http-only: true
+    # 防止 CSRF 跨站攻击
+    cookie-same-site: Lax
+    # 加密算法 RSA
+    sign-algorithm: RS512
+    ...
+```
 
 捐赠 kisso
 ====================
