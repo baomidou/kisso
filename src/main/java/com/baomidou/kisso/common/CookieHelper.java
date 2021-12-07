@@ -19,7 +19,6 @@ import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.common.util.StringUtils;
 import com.baomidou.kisso.service.SSOCookie;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -246,7 +245,7 @@ public class CookieHelper {
         if (null != sameSite) {
             sf.append("SameSite=").append(sameSite).append(StringPool.SEMICOLON);
         }
-        response.addHeader(HttpHeaders.SET_COOKIE, sf.toString());
+        response.addHeader("Set-Cookie", sf.toString());
     }
 
 }
