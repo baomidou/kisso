@@ -56,7 +56,7 @@ public class EnvUtil {
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
             while ((line = br.readLine()) != null) {
-                int i = line.indexOf("=");
+                int i = line.indexOf(StringPool.EQUALS);
                 if (i > -1) {
                     String key = line.substring(0, i);
                     String value = line.substring(i + 1);

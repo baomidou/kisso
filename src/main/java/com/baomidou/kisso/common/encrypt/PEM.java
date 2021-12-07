@@ -15,18 +15,15 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import com.baomidou.kisso.common.encrypt.base64.Base64;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.baomidou.kisso.common.encrypt.base64.Base64;
 
 /**
  * A PEM utility that can be used to read keys from PEM. With this PEM utility,
@@ -147,7 +144,7 @@ public class PEM {
                 if (readingContent) {
                     if (line.contains(endMarker)) {
                         pemContents.add( // completed reading one PEM object
-                                new PEMObject(beginMarker, Base64.decode(sb.toString().getBytes("UTF-8"))));
+                                new PEMObject(beginMarker, Base64.decode(sb.toString().getBytes(StandardCharsets.UTF_8))));
                         readingContent = false;
                     } else {
                         sb.append(line.trim());

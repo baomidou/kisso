@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso.common;
 
+import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,15 +44,54 @@ public class IpHelper {
      */
     public static String HOST_NAME;
 
+    private static final String[] HEADERS = {
+            "x-forwarded-for",
+            "Proxy-Client-IP",
+            "WL-Proxy-Client-IP",
+            "HTTP_X_FORWARDED_FOR",
+            "HTTP_X_FORWARDED",
+            "HTTP_X_CLUSTER_CLIENT_IP",
+            "HTTP_CLIENT_IP",
+            "HTTP_FORWARDED_FOR",
+            "HTTP_FORWARDED",
+            "HTTP_VIA",
+            "REMOTE_ADDR",
+            "X-Real-IP"
+    };
+
+    private static boolean isNotUnknown(final String checkIp) {
+        return StringUtils.isNotEmpty(checkIp) && !"unknown".equalsIgnoreCase(checkIp);
+    }
+
+    /**
+     * 从多级反向代理中获得第一个非unknown IP地址
+     *
+     * @param ip 获得的IP地址
+     * @return 第一个非unknown IP地址
+     */
+    private static String getMultistageReverseProxyIp(String ip) {
+        // 多级反向代理检测
+        if (ip != null && ip.indexOf(StringPool.COMMA) > 0) {
+            String[] ips = ip.trim().split(StringPool.COMMA);
+            for (String subIp : ips) {
+                if (isNotUnknown(subIp)) {
+                    ip = subIp;
+                    break;
+                }
+            }
+        }
+        return ip;
+    }
+
     static {
-        String ip = "";
+        String ip = StringPool.EMPTY;
         try {
             InetAddress inetAddr = InetAddress.getLocalHost();
             HOST_NAME = inetAddr.getHostName();
             byte[] addr = inetAddr.getAddress();
             for (int i = 0; i < addr.length; i++) {
                 if (i > 0) {
-                    ip += ".";
+                    ip += StringPool.DOT;
                 }
                 ip += addr[i] & 0xFF;
             }
@@ -78,34 +118,24 @@ public class IpHelper {
      * @return IP 地址
      */
     public static String getIpAddr(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
+        String ip = null;
+        for (String header : HEADERS) {
+            String currentIp = request.getHeader(header);
+            if (isNotUnknown(currentIp)) {
+                ip = currentIp;
+                break;
+            }
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (null == ip) {
             ip = request.getRemoteAddr();
-            if (ip.equals("127.0.0.1")) {
-                /** 根据网卡取本机配置的IP */
-                try {
-                    ip = InetAddress.getLocalHost().getHostAddress();
-                } catch (UnknownHostException e) {
-                    log.error("IpHelper error." + e.getMessage());
-                }
-            }
         }
-        /**
-         * 对于通过多个代理的情况， 第一个IP为客户端真实IP,多个IP按照','分割 "***.***.***.***".length() =
-         * 15
-         */
-        if (ip != null && ip.length() > 15) {
-            if (ip.indexOf(",") > 0) {
-                ip = ip.substring(0, ip.indexOf(","));
-            }
+        if (null == ip) {
+            return StringPool.EMPTY;
         }
-        return ip;
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
+            return "127.0.0.1";
+        }
+        return getMultistageReverseProxyIp(ip);
     }
 
     /**

@@ -31,14 +31,14 @@ public class JoinUtil {
 
     public static String join(final String delimiter, final Collection<String> collection) {
         if (null == collection || collection.size() == 0) {
-            return "";
+            return StringPool.EMPTY;
         }
         return collection.stream().collect(Collectors.joining(delimiter));
     }
 
     public static String join(final String delimiter, final String... objects) {
         if (objects.length == 0) {
-            return "";
+            return StringPool.EMPTY;
         }
         return Arrays.stream(objects).collect(Collectors.joining(delimiter));
     }

@@ -15,11 +15,12 @@
  */
 package com.baomidou.kisso.common.signature;
 
+import com.baomidou.kisso.common.util.StringPool;
+import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
+
 import javax.crypto.Mac;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
 
 /**
  * <p>
@@ -106,7 +107,7 @@ public enum ShaAlgorithm {
     }
 
     private static String normalize(String algorithm) {
-        return algorithm.replaceAll("[^A-Za-z0-9]+", "").toLowerCase();
+        return algorithm.replaceAll("[^A-Za-z0-9]+", StringPool.EMPTY).toLowerCase();
     }
 
 

@@ -16,7 +16,7 @@
 package com.baomidou.kisso.common.encrypt;
 
 import com.baomidou.kisso.SSOConfig;
-import com.baomidou.kisso.common.SSOConstants;
+import com.baomidou.kisso.common.util.StringPool;
 import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
@@ -97,15 +97,15 @@ public class MD5Salt {
      */
     private static String mergeRawTextAndSalt(String salt, String rawText) {
         if (rawText == null) {
-            rawText = "";
+            rawText = StringPool.EMPTY;
         }
 
-        if (null == salt || "".equals(salt)) {
+        if (null == salt || StringPool.EMPTY.equals(salt)) {
             return rawText;
         } else {
             StringBuffer mt = new StringBuffer();
             mt.append(rawText);
-            mt.append(SSOConstants.CUT_SYMBOL);
+            mt.append(StringPool.HASH);
             mt.append(salt);
             return mt.toString();
         }

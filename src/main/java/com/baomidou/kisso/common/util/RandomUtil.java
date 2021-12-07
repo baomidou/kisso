@@ -15,7 +15,7 @@
  */
 package com.baomidou.kisso.common.util;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Random;
 import java.util.UUID;
 
@@ -126,7 +126,7 @@ public class RandomUtil {
      * </p>
      */
     public static String get32UUID() {
-        return getUUID().replace("-", "");
+        return getUUID().replace(StringPool.DASH, StringPool.EMPTY);
     }
 
     /**

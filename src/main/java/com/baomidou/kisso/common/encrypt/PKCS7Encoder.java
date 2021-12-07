@@ -15,9 +15,8 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-
-import com.baomidou.kisso.common.SSOConstants;
 
 /**
  * <p>
@@ -52,7 +51,7 @@ public class PKCS7Encoder {
         for (int index = 0; index < amountToPad; index++) {
             tmp += padChr;
         }
-        return tmp.getBytes(SSOConstants.CHARSET_ENCODING);
+        return tmp.getBytes(StandardCharsets.UTF_8);
     }
 
     /**

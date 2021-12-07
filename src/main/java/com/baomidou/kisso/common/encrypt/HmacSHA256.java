@@ -15,14 +15,12 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.baomidou.kisso.common.SSOConstants;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 
 /**
@@ -46,8 +44,8 @@ public class HmacSHA256 {
      */
     public static byte[] generate(String data, String key) throws UnsupportedEncodingException,
             NoSuchAlgorithmException, InvalidKeyException {
-        return generate(data.getBytes(SSOConstants.ENCODING),
-                key.getBytes(SSOConstants.ENCODING));
+        return generate(data.getBytes(StandardCharsets.UTF_8),
+                key.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
