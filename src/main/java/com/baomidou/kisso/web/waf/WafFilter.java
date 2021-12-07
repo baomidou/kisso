@@ -16,6 +16,7 @@
 package com.baomidou.kisso.web.waf;
 
 import com.baomidou.kisso.common.util.HttpUtil;
+import com.baomidou.kisso.common.util.StringUtils;
 import com.baomidou.kisso.web.waf.request.WafRequestWrapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -88,7 +89,7 @@ public class WafFilter implements Filter {
    * @since 获取参数配置
    */
   private boolean getParamConfig(String value) {
-    if (value == null || "".equals(value.trim())) {
+    if (StringUtils.isEmpty(value)) {
       //未配置默认 True
       return true;
     }

@@ -20,6 +20,7 @@ import com.baomidou.kisso.SSOConfig;
 import com.baomidou.kisso.SSOHelper;
 import com.baomidou.kisso.annotation.Permission;
 import com.baomidou.kisso.common.util.HttpUtil;
+import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.security.token.SSOToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
@@ -120,7 +121,7 @@ public class SSOPermissionInterceptor implements AsyncHandlerInterceptor {
                  * 忽略拦截
                  */
                 return true;
-            } else if (!"".equals(pm.value()) && this.getAuthorization().isPermitted(token, pm.value())) {
+            } else if (!StringPool.EMPTY.equals(pm.value()) && this.getAuthorization().isPermitted(token, pm.value())) {
                 /**
                  * 权限合法
                  */

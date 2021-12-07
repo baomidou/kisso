@@ -222,9 +222,6 @@ public class SSOConfig {
      * @return
      */
     public static String toCacheKey(Object userId) {
-        StringBuffer ck = new StringBuffer();
-        ck.append("ssoTokenKey_");
-        ck.append(userId);
-        return ck.toString();
+        return "ssoTokenKey_" + userId;
     }
 }
