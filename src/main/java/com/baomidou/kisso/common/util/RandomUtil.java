@@ -67,6 +67,8 @@ public class RandomUtil {
                 case NUMBER:
                     out.append(RANDOM.nextInt(10));
                     break;
+                default:
+                    break;
             }
         }
         return out.toString();

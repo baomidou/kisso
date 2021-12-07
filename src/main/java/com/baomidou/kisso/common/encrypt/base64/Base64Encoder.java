@@ -64,8 +64,6 @@ public class Base64Encoder implements Encoder {
         int d1, d2;
 
         switch (modulus) {
-            case 0: /* nothing left to do */
-                break;
             case 1:
                 d1 = data[off + dataLength] & 0xff;
                 b1 = (d1 >>> 2) & 0x3f;
@@ -88,6 +86,9 @@ public class Base64Encoder implements Encoder {
                 out.write(encodingTable[b2]);
                 out.write(encodingTable[b3]);
                 out.write(padding);
+                break;
+            default:
+                /* nothing left to do */
                 break;
         }
 
