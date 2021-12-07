@@ -15,15 +15,10 @@
  */
 package com.baomidou.kisso.captcha;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * Gif生成工具
@@ -364,7 +359,9 @@ public class GifEncoder {
      * @return int
      */
     protected int findClosest(Color c) {
-        if (colorTab == null) return -1;
+        if (colorTab == null) {
+            return -1;
+        }
         int r = c.getRed();
         int g = c.getGreen();
         int b = c.getBlue();
