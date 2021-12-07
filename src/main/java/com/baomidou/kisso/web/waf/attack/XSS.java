@@ -32,6 +32,7 @@ public class XSS implements Istrip {
    * @param value 待处理内容
    * @since XSS脚本内容剥离
    */
+  @Override
   public String strip(String value) {
     String rlt = null;
 

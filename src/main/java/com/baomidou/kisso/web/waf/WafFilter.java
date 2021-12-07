@@ -47,6 +47,7 @@ public class WafFilter implements Filter {
   private static boolean FILTER_SQL = true;
 
 
+  @Override
   public void init(FilterConfig config) throws ServletException {
     //读取Web.xml配置地址
     OVER_URL = config.getInitParameter("over.url");
@@ -56,6 +57,7 @@ public class WafFilter implements Filter {
   }
 
 
+  @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
     ServletException {
     HttpServletRequest req = (HttpServletRequest) request;
@@ -78,6 +80,7 @@ public class WafFilter implements Filter {
   }
 
 
+  @Override
   public void destroy() {
     log.warn(" WafFilter destroy .");
   }

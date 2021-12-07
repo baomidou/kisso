@@ -25,7 +25,6 @@ import com.baomidou.kisso.web.handler.SSOHandlerInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,6 +49,7 @@ public class SSOSpringInterceptor implements AsyncHandlerInterceptor {
      * 方法拦截 Controller 处理之前进行调用。
      * </p>
      */
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         /**

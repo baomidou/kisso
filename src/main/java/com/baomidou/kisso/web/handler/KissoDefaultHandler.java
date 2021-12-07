@@ -15,10 +15,9 @@
  */
 package com.baomidou.kisso.web.handler;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -48,6 +47,7 @@ public class KissoDefaultHandler implements SSOHandlerInterceptor {
      * 返回 HTTP 状态码 401（未授权） 请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应。
      * </p>
      */
+    @Override
     public boolean preTokenIsNullAjax(HttpServletRequest request, HttpServletResponse response) {
         try {
             response.getWriter().write("{code:\"logout\", msg:\"Have logout\"}");
@@ -57,6 +57,7 @@ public class KissoDefaultHandler implements SSOHandlerInterceptor {
         return false;
     }
 
+    @Override
     public boolean preTokenIsNull(HttpServletRequest request, HttpServletResponse response) {
         /* 预留子类处理 */
         return true;

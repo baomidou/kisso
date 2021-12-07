@@ -40,6 +40,7 @@ public class Base64Encoder implements Encoder {
      *
      * @return the number of bytes produced.
      */
+    @Override
     public int encode(byte[] data, int off, int length, OutputStream out) throws IOException {
         int modulus = length % 3;
         int dataLength = (length - modulus);
@@ -103,6 +104,7 @@ public class Base64Encoder implements Encoder {
      *
      * @return the number of bytes produced.
      */
+    @Override
     public int decode(byte[] data, int off, int length, OutputStream out) throws IOException {
         byte b1, b2, b3, b4;
         int outLen = 0;
@@ -169,6 +171,7 @@ public class Base64Encoder implements Encoder {
      *
      * @return the number of bytes produced.
      */
+    @Override
     public int decode(String data, OutputStream out) throws IOException {
         byte b1, b2, b3, b4;
         int length = 0;
