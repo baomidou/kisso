@@ -15,12 +15,13 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
+import com.baomidou.kisso.common.util.StringPool;
+import com.baomidou.kisso.exception.AESException;
+import com.baomidou.kisso.exception.KissoException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-
-import com.baomidou.kisso.exception.AESException;
-import com.baomidou.kisso.exception.KissoException;
 
 /**
  * <p>
@@ -47,27 +48,25 @@ public class Hash {
     public static String getSerialKey(String stringInput) {
         try {
             StringBuffer out = new StringBuffer();
-            StringBuffer serialKey = new StringBuffer();
-            serialKey.append(calculate(stringInput, "MD2"));
-            serialKey.append(calculate(stringInput, "MD5"));
-            serialKey.append(calculate(stringInput, "SHA1"));
-            String serialNumberEncoded = serialKey.toString();
+            String serialNumberEncoded = calculate(stringInput, "MD2") +
+                    calculate(stringInput, "MD5") +
+                    calculate(stringInput, "SHA1");
             out.append(serialNumberEncoded.charAt(32));
             out.append(serialNumberEncoded.charAt(76));
             out.append(serialNumberEncoded.charAt(100));
             out.append(serialNumberEncoded.charAt(50));
-            out.append("-");
+            out.append(StringPool.DASH);
             out.append(serialNumberEncoded.charAt(2));
             out.append(serialNumberEncoded.charAt(91));
             out.append(serialNumberEncoded.charAt(73));
             out.append(serialNumberEncoded.charAt(72));
             out.append(serialNumberEncoded.charAt(98));
-            out.append("-");
+            out.append(StringPool.DASH);
             out.append(serialNumberEncoded.charAt(47));
             out.append(serialNumberEncoded.charAt(65));
             out.append(serialNumberEncoded.charAt(18));
             out.append(serialNumberEncoded.charAt(85));
-            out.append("-");
+            out.append(StringPool.DASH);
             out.append(serialNumberEncoded.charAt(27));
             out.append(serialNumberEncoded.charAt(53));
             out.append(serialNumberEncoded.charAt(102));
@@ -90,19 +89,19 @@ public class Hash {
      * @throws NoSuchAlgorithmException
      */
     public static String calculate(String stringInput, String algorithmName) throws NoSuchAlgorithmException {
-        String hexMessageEncode = "";
+        StringBuilder hexMessageEncode = new StringBuilder();
         byte[] buffer = stringInput.getBytes();
         MessageDigest messageDigest = MessageDigest.getInstance(algorithmName);
         messageDigest.update(buffer);
         byte[] messageDigestBytes = messageDigest.digest();
-        for (int index = 0; index < messageDigestBytes.length; index++) {
-            int countEncode = messageDigestBytes[index] & 0xff;
+        for (byte messageDigestByte : messageDigestBytes) {
+            int countEncode = messageDigestByte & 0xff;
             if (Integer.toHexString(countEncode).length() == 1) {
-                hexMessageEncode = hexMessageEncode + "0";
+                hexMessageEncode.append("0");
             }
-            hexMessageEncode = hexMessageEncode + Integer.toHexString(countEncode);
+            hexMessageEncode.append(Integer.toHexString(countEncode));
         }
-        return hexMessageEncode;
+        return hexMessageEncode.toString();
     }
 
 
@@ -135,9 +134,9 @@ public class Hash {
             byte[] digest = md.digest();
 
             StringBuffer hexstr = new StringBuffer();
-            String shaHex = "";
-            for (int i = 0; i < digest.length; i++) {
-                shaHex = Integer.toHexString(digest[i] & 0xFF);
+            String shaHex = StringPool.EMPTY;
+            for (byte b : digest) {
+                shaHex = Integer.toHexString(b & 0xFF);
                 if (shaHex.length() < 2) {
                     hexstr.append(0);
                 }

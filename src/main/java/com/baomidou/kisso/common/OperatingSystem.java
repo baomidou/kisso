@@ -15,9 +15,9 @@
  */
 package com.baomidou.kisso.common;
 
-import static com.baomidou.kisso.common.OperatingSystem.OS.MAC;
-import static com.baomidou.kisso.common.OperatingSystem.OS.UNIX;
-import static com.baomidou.kisso.common.OperatingSystem.OS.WINDOWS;
+import com.baomidou.kisso.common.util.StringPool;
+
+import static com.baomidou.kisso.common.OperatingSystem.OS.*;
 
 /**
  * <p>
@@ -35,7 +35,7 @@ public class OperatingSystem {
     UNIX
   }
 
-  private static final OS OS = get(System.getProperty("os.name", "").toLowerCase());
+  private static final OS OS = get(System.getProperty("os.name", StringPool.EMPTY).toLowerCase());
 
   public static OS get() {
     return OS;

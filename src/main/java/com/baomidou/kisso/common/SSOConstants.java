@@ -15,8 +15,6 @@
  */
 package com.baomidou.kisso.common;
 
-import java.nio.charset.Charset;
-
 /**
  * <p>
  * SSO 定义常量
@@ -27,7 +25,6 @@ import java.nio.charset.Charset;
  */
 public interface SSOConstants {
 
-    String ENCODING = "UTF-8";
     String TOKEN_USER_IP = "ip";
     String TOKEN_USER_AGENT = "ua";
     String TOKEN_FLAG = "fg";
@@ -60,13 +57,6 @@ public interface SSOConstants {
      * </p>
      */
     String SSO_COOKIE_MAXAGE = "kisso_cookie_maxage";
-
-    /**
-     * Charset 类型编码格式
-     */
-    Charset CHARSET_ENCODING = Charset.forName(ENCODING);
-
-    String CUT_SYMBOL = "#";
 
     /**
      * <p>

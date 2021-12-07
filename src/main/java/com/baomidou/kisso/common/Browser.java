@@ -15,9 +15,9 @@
  */
 package com.baomidou.kisso.common;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.baomidou.kisso.common.encrypt.MD5;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -39,7 +39,7 @@ public class Browser {
    * @since 获取浏览器客户端信息签名值
    */
   public static String getUserAgent(HttpServletRequest request) {
-    String userAgent = MD5.toMD5(request.getHeader("user-agent"));
+    String userAgent = MD5.toMD5(request.getHeader("User-Agent"));
     if (null == userAgent) {
       return null;
     }

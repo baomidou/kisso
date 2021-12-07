@@ -16,10 +16,11 @@
 package com.baomidou.kisso.common.encrypt;
 
 
+import com.baomidou.kisso.common.util.StringPool;
+import com.baomidou.kisso.exception.KissoException;
+
 import java.util.HashMap;
 import java.util.Locale;
-
-import com.baomidou.kisso.exception.KissoException;
 
 /**
  * <p>
@@ -51,8 +52,6 @@ public class Base32 {
     private int SHIFT;
     private HashMap<Character, Integer> CHAR_MAP;
 
-    static final String SEPARATOR = "-";
-
     protected Base32(String alphabet) {
         this.ALPHABET = alphabet;
         DIGITS = ALPHABET.toCharArray();
@@ -70,12 +69,12 @@ public class Base32 {
 
     protected byte[] decodeInternal(String encoded) throws KissoException {
         // Remove whitespace and separators
-        encoded = encoded.trim().replaceAll(SEPARATOR, "").replaceAll(" ", "");
+        encoded = encoded.trim().replaceAll(StringPool.DASH, StringPool.EMPTY).replaceAll(StringPool.SPACE, StringPool.EMPTY);
 
         // Remove padding. Note: the padding is used as hint to determine how many
         // bits to decode from the last incomplete chunk (which is commented out
         // below, so this may have been wrong to start with).
-        encoded = encoded.replaceFirst("[=]*$", "");
+        encoded = encoded.replaceFirst("[=]*$", StringPool.EMPTY);
 
         // Canonicalize to all upper case
         encoded = encoded.toUpperCase(Locale.US);
@@ -114,7 +113,7 @@ public class Base32 {
 
     protected String encodeInternal(byte[] data) {
         if (data.length == 0) {
-            return "";
+            return StringPool.EMPTY;
         }
 
         // SHIFT is the number of bits per output character, so the length of the

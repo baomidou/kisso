@@ -86,7 +86,7 @@ public class HttpUtil {
         StringBuffer sb = new StringBuffer(url);
         String query = request.getQueryString();
         if (query != null && query.length() > 0) {
-            sb.append(url.contains("?") ? "&" : "?").append(query);
+            sb.append(url.contains(StringPool.QUESTION_MARK) ? StringPool.AMPERSAND : StringPool.QUESTION_MARK).append(query);
         }
         return URLEncoder.encode(sb.toString(), encode);
     }
@@ -102,8 +102,8 @@ public class HttpUtil {
      */
     public static boolean inContainURL(HttpServletRequest request, String url) {
         boolean result = false;
-        if (url != null && !"".equals(url.trim())) {
-            String[] urlArr = url.split(";");
+        if (StringUtils.isNotEmpty(url)) {
+            String[] urlArr = url.split(StringPool.SEMICOLON);
             StringBuffer reqUrl = new StringBuffer(request.getRequestURL());
             for (int i = 0; i < urlArr.length; i++) {
                 if (reqUrl.indexOf(urlArr[i]) > 1) {
@@ -146,9 +146,9 @@ public class HttpUtil {
         }
 
         StringBuffer retStr = new StringBuffer(url);
-        retStr.append(url.contains("?") ? "&" : "?");
+        retStr.append(url.contains(StringPool.QUESTION_MARK) ? StringPool.AMPERSAND : StringPool.QUESTION_MARK);
         retStr.append(retParam);
-        retStr.append("=");
+        retStr.append(StringPool.EQUALS);
         try {
             retStr.append(URLEncoder.encode(retUrl, SSOConfig.getSSOEncoding()));
         } catch (UnsupportedEncodingException e) {
@@ -157,7 +157,7 @@ public class HttpUtil {
 
         if (data != null) {
             for (Map.Entry<String, String> entry : data.entrySet()) {
-                retStr.append("&").append(entry.getKey()).append("=").append(entry.getValue());
+                retStr.append(StringPool.AMPERSAND).append(entry.getKey()).append(StringPool.EQUALS).append(entry.getValue());
             }
         }
 
@@ -176,7 +176,7 @@ public class HttpUtil {
         if (url == null) {
             return null;
         }
-        String retUrl = "";
+        String retUrl = StringPool.EMPTY;
 
         try {
             retUrl = URLDecoder.decode(url, SSOConfig.getSSOEncoding());
@@ -254,7 +254,7 @@ public class HttpUtil {
                     stringBuilder.append(charBuffer, 0, bytesRead);
                 }
             } else {
-                stringBuilder.append("");
+                stringBuilder.append(StringPool.EMPTY);
             }
         } catch (IOException ex) {
             throw ex;
@@ -288,7 +288,7 @@ public class HttpUtil {
         url.append(request.getRequestURI());
         if (request.getQueryString() != null) {
             // 请求参数
-            url.append("?").append(request.getQueryString());
+            url.append(StringPool.QUESTION_MARK).append(request.getQueryString());
         }
         return url.toString();
     }

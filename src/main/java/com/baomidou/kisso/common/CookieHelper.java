@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso.common;
 
+import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.common.util.StringUtils;
 import com.baomidou.kisso.service.SSOCookie;
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +90,7 @@ public class CookieHelper {
      * @param cookieName
      */
     public static void clearCookieByName(HttpServletResponse response, String cookieName) {
-        Cookie cookie = new Cookie(cookieName, "");
+        Cookie cookie = new Cookie(cookieName, StringPool.EMPTY);
         cookie.setMaxAge(CLEAR_IMMEDIATELY_REMOVE);
         response.addCookie(cookie);
     }
@@ -154,7 +155,7 @@ public class CookieHelper {
     private static boolean clearCookie(HttpServletResponse response, String cookieName, String domain, String path) {
         boolean result = false;
         try {
-            Cookie cookie = new Cookie(cookieName, "");
+            Cookie cookie = new Cookie(cookieName, StringPool.EMPTY);
             cookie.setMaxAge(CLEAR_IMMEDIATELY_REMOVE);
             if (StringUtils.isNotEmpty(domain)) {
                 cookie.setDomain(domain);
@@ -221,18 +222,18 @@ public class CookieHelper {
         String cookieName = ssoCookie.getName();
         String cookieValue = ssoCookie.getValue();
         StringBuffer sf = new StringBuffer();
-        sf.append(cookieName + "=" + cookieValue + ";");
+        sf.append(cookieName).append(StringPool.EQUALS).append(cookieValue).append(StringPool.SEMICOLON);
         int maxAge = ssoCookie.getMaxAge();
         if (maxAge >= 0) {
-            sf.append("Max-Age=" + maxAge + ";");
+            sf.append("Max-Age=").append(maxAge).append(StringPool.SEMICOLON);
         }
         String domain = ssoCookie.getDomain();
         if (null != domain) {
-            sf.append("domain=" + domain + ";");
+            sf.append("domain=").append(domain).append(StringPool.SEMICOLON);
         }
         String path = ssoCookie.getPath();
         if (null != path) {
-            sf.append("path=" + path + ";");
+            sf.append("path=").append(path).append(StringPool.SEMICOLON);
         }
         if (ssoCookie.getSecure()) {
             sf.append("secure;");
@@ -242,7 +243,7 @@ public class CookieHelper {
         }
         String sameSite = ssoCookie.getSameSite();
         if (null != sameSite) {
-            sf.append("SameSite=" + sameSite + ";");
+            sf.append("SameSite=").append(sameSite).append(StringPool.SEMICOLON);
         }
         response.addHeader("Set-Cookie", sf.toString());
     }

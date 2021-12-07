@@ -15,26 +15,17 @@
  */
 package com.baomidou.kisso.common.signature;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.common.encrypt.MD5;
 import com.baomidou.kisso.common.util.JoinUtil;
-import com.baomidou.kisso.exception.AuthenticationException;
-import com.baomidou.kisso.exception.MissingAlgorithmException;
-import com.baomidou.kisso.exception.MissingKeyIdException;
-import com.baomidou.kisso.exception.MissingRequiredHeaderException;
-import com.baomidou.kisso.exception.MissingSignatureException;
-import com.baomidou.kisso.exception.UnparsableSignatureException;
+import com.baomidou.kisso.common.util.StringPool;
+import com.baomidou.kisso.exception.*;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * <p>
@@ -165,7 +156,7 @@ public class Signature {
         for (final String key : required) {
             if ("(request-target)".equals(key)) {
                 method = lowercase(method);
-                list.add(JoinUtil.join(" ", "(request-target):", method, uri));
+                list.add(JoinUtil.join(StringPool.SPACE, "(request-target):", method, uri));
             } else {
                 final String value = headers.get(key);
                 if (value == null) {
@@ -174,7 +165,7 @@ public class Signature {
                 list.add(key + ": " + value);
             }
         }
-        return JoinUtil.join("\n", list);
+        return JoinUtil.join(StringPool.NEWLINE, list);
     }
 
     private static Map<String, String> lowercase(final Map<String, String> headers) {
@@ -208,17 +199,17 @@ public class Signature {
             if (first) {
                 first = false;
             } else {
-                temp.append("&");
+                temp.append(StringPool.AMPERSAND);
             }
-            temp.append(key).append("=");
+            temp.append(key).append(StringPool.EQUALS);
             Object value = params.get(key);
-            String valueString = "";
+            String valueString = StringPool.EMPTY;
             if (null != value) {
                 valueString = String.valueOf(value);
             }
             temp.append(valueString);
         }
-        temp.append("&").append(SSOConstants.ACCESS_SECRET).append("=").append(accessSecret);
+        temp.append(StringPool.AMPERSAND).append(SSOConstants.ACCESS_SECRET).append(StringPool.EQUALS).append(accessSecret);
         return MD5.toMD5(temp.toString());
     }
 
@@ -226,7 +217,7 @@ public class Signature {
     public String toString() {
         return "Signature keyId=\"" + keyId + '\"' +
                 ",shaAlgorithm=\"" + shaAlgorithm + '\"' +
-                ",headers=\"" + JoinUtil.join(" ", headers) + '\"' +
+                ",headers=\"" + JoinUtil.join(StringPool.SPACE, headers) + '\"' +
                 ",signature=\"" + signature + '\"';
     }
 }

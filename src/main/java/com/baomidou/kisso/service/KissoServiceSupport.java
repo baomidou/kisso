@@ -22,6 +22,8 @@ import com.baomidou.kisso.common.Browser;
 import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.SSOConstants;
+import com.baomidou.kisso.common.util.StringPool;
+import com.baomidou.kisso.common.util.StringUtils;
 import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
@@ -130,7 +132,7 @@ public class KissoServiceSupport {
      */
     protected SSOToken getSSOToken(HttpServletRequest request, String cookieName) {
         String accessToken = request.getHeader(config.getAccessTokenName());
-        if (null == accessToken || "".equals(accessToken)) {
+        if (StringUtils.isEmpty(accessToken)) {
             Cookie uid = CookieHelper.findCookieByName(request, cookieName);
             if (null == uid) {
                 log.debug("Unauthorized login request, ip=" + IpHelper.getIpAddr(request));
@@ -166,7 +168,7 @@ public class KissoServiceSupport {
          */
         if (config.isCookieCheckIp()) {
             String ip = IpHelper.getIpAddr(request);
-            if (ssoToken != null && ip != null && !ip.equals(ssoToken.getIp())) {
+            if (ip != null && !ip.equals(ssoToken.getIp())) {
                 log.info(String.format("ip inconsistent! return SSOToken null, SSOToken userIp:%s, reqIp:%s",
                         ssoToken.getIp(), ip));
                 return null;
@@ -225,7 +227,7 @@ public class KissoServiceSupport {
             String domain = config.getCookieDomain();
             if (null != domain) {
                 ssoCookie.setDomain(domain);
-                if ("".equals(domain) || domain.contains("localhost")) {
+                if (StringPool.EMPTY.equals(domain) || domain.contains("localhost")) {
                     log.warn("if you can't login, please enter normal domain. instead:" + domain);
                 }
             }

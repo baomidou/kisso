@@ -15,6 +15,8 @@
  */
 package com.baomidou.kisso.web.waf.attack;
 
+import com.baomidou.kisso.common.util.StringPool;
+
 /**
  * SQL注入攻击
  * <p>
@@ -32,6 +34,6 @@ public class SqlInjection implements Istrip {
     public String strip(String value) {
 
         //剥离SQL注入部分代码
-        return value.replaceAll("('.+--)|(--)|(\\|)|(%7C)", "");
+        return value.replaceAll("('.+--)|(--)|(\\|)|(%7C)", StringPool.EMPTY);
     }
 }

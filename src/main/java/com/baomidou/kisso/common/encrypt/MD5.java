@@ -16,6 +16,7 @@
 package com.baomidou.kisso.common.encrypt;
 
 import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.common.util.StringPool;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class MD5 {
     }
 
     public static String md5String(byte[] data) {
-        String md5Str = "";
+        String md5Str = StringPool.EMPTY;
         try {
             MessageDigest md5 = MessageDigest.getInstance(ALGORITHM);
             byte[] buf = md5.digest(data);

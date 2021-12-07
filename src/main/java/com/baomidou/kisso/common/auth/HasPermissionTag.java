@@ -15,13 +15,14 @@
  */
 package com.baomidou.kisso.common.auth;
 
+import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.SSOHelper;
+import com.baomidou.kisso.common.util.StringPool;
+import com.baomidou.kisso.security.token.SSOToken;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-
-import com.baomidou.kisso.SSOConfig;
-import com.baomidou.kisso.SSOHelper;
-import com.baomidou.kisso.security.token.SSOToken;
 
 /**
  * <p>
@@ -56,7 +57,7 @@ public class HasPermissionTag extends BodyTagSupport {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         SSOToken token = SSOHelper.getSSOToken(request);
         // 如果 token 或者 name 为空
-        if (token != null && this.getName() != null && !"".equals(this.getName().trim())) {
+        if (token != null && this.getName() != null && !StringPool.EMPTY.equals(this.getName().trim())) {
             boolean result = SSOConfig.getInstance().getAuthorization().isPermitted(token, this.getName());
             if (result) {
                 // 权限验证通过

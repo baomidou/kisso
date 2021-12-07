@@ -16,7 +16,7 @@
 package com.baomidou.kisso;
 
 import com.baomidou.kisso.common.CookieHelper;
-import com.baomidou.kisso.common.SSOConstants;
+import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
 import lombok.Data;
@@ -38,7 +38,7 @@ public class SSOConfig {
     /**
      * 编码格式，默认 UTF-8
      */
-    private String encoding = SSOConstants.ENCODING;
+    private String encoding = StringPool.UTF_8;
     /**
      * 签名密钥（用于对此算法）
      */
@@ -222,9 +222,6 @@ public class SSOConfig {
      * @return
      */
     public static String toCacheKey(Object userId) {
-        StringBuffer ck = new StringBuffer();
-        ck.append("ssoTokenKey_");
-        ck.append(userId);
-        return ck.toString();
+        return "ssoTokenKey_" + userId;
     }
 }

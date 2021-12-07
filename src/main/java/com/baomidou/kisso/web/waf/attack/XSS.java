@@ -15,6 +15,8 @@
  */
 package com.baomidou.kisso.web.waf.attack;
 
+import com.baomidou.kisso.common.util.StringPool;
+
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +32,7 @@ public class XSS implements Istrip {
    * @param value 待处理内容
    * @since XSS脚本内容剥离
    */
+  @Override
   public String strip(String value) {
     String rlt = null;
 
@@ -39,52 +42,52 @@ public class XSS implements Istrip {
       // value = ESAPI.encoder().canonicalize(value);
 
       // Avoid null characters
-      rlt = value.replaceAll("", "");
+      rlt = value.replaceAll(StringPool.EMPTY, StringPool.EMPTY);
 
       // Avoid anything between script tags
       Pattern scriptPattern = Pattern.compile("<script>(.*?)</script>", Pattern.CASE_INSENSITIVE);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       // Avoid anything in a src='...' type of expression
       scriptPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'", Pattern.CASE_INSENSITIVE
         | Pattern.MULTILINE | Pattern.DOTALL);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       scriptPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\"(.*?)\\\"", Pattern.CASE_INSENSITIVE
         | Pattern.MULTILINE | Pattern.DOTALL);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       // Remove any lonesome </script> tag
       scriptPattern = Pattern.compile("</script>", Pattern.CASE_INSENSITIVE);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       // Remove any lonesome <script ...> tag
       scriptPattern = Pattern.compile("<script(.*?)>", Pattern.CASE_INSENSITIVE
         | Pattern.MULTILINE | Pattern.DOTALL);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       // Avoid eval(...) expressions
       scriptPattern = Pattern.compile("eval\\((.*?)\\)", Pattern.CASE_INSENSITIVE
         | Pattern.MULTILINE | Pattern.DOTALL);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       // Avoid expression(...) expressions
       scriptPattern = Pattern.compile("expression\\((.*?)\\)", Pattern.CASE_INSENSITIVE
         | Pattern.MULTILINE | Pattern.DOTALL);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       // Avoid javascript:... expressions
       scriptPattern = Pattern.compile("javascript:", Pattern.CASE_INSENSITIVE);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       // Avoid vbscript:... expressions
       scriptPattern = Pattern.compile("vbscript:", Pattern.CASE_INSENSITIVE);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
 
       // Avoid onload= expressions
       scriptPattern = Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE
         | Pattern.MULTILINE | Pattern.DOTALL);
-      rlt = scriptPattern.matcher(rlt).replaceAll("");
+      rlt = scriptPattern.matcher(rlt).replaceAll(StringPool.EMPTY);
     }
 
     return rlt;

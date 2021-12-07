@@ -17,6 +17,7 @@ package com.baomidou.kisso.common.encrypt;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 /**
  * An ASN.1 TLV. The object is not parsed. It can
@@ -113,11 +114,11 @@ public class Asn1Object {
       case DerParser.GRAPHIC_STRING:
       case DerParser.ISO646_STRING:
       case DerParser.GENERAL_STRING:
-        return new String(value, "ISO-8859-1");
+        return new String(value, StandardCharsets.ISO_8859_1);
       case DerParser.BMP_STRING:
-        return new String(value, "UTF-16BE");
+        return new String(value, StandardCharsets.UTF_16BE);
       case DerParser.UTF8_STRING:
-        return new String(value, "UTF-8");
+        return new String(value, StandardCharsets.UTF_8);
       case DerParser.UNIVERSAL_STRING:
         throw new IOException("Invalid DER: can't handle UCS-4 string");
       default:
