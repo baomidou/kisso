@@ -58,7 +58,7 @@ SSOHelper.setCookie(request, response,  new SSOToken().setId(String.valueOf(1)).
 ```
 @ControllerAdvice
 @Configuration
-public class WebConfig extends WebServiceConfigurer {
+public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

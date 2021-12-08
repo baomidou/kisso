@@ -8,7 +8,7 @@ ext {
     ]
 
     libraries = [
-            springBootVersion = "2.5.5",
+            springBootVersion = "2.6.1",
             lombokVersion = "1.18.22",
             jjwtVersion = "0.11.2"
     ]
