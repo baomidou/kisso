@@ -116,7 +116,7 @@ public class SSOToken extends AccessToken {
         if (TokenFlag.NORMAL != this.getFlag()) {
             this.jwtBuilder.claim(SSOConstants.TOKEN_FLAG, this.getFlag().value());
         }
-        if (TokenOrigin.COOKIE != this.getOrigin()) {
+        if (null != this.getOrigin()) {
             this.jwtBuilder.claim(SSOConstants.TOKEN_ORIGIN, this.getOrigin().value());
         }
         this.jwtBuilder.setIssuedAt(new Date(time));
