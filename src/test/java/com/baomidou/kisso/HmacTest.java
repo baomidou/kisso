@@ -21,14 +21,14 @@ import java.util.Map;
 
 import javax.crypto.spec.SecretKeySpec;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.baomidou.kisso.common.signature.ShaAlgorithm;
 import com.baomidou.kisso.common.signature.Signature;
 import com.baomidou.kisso.common.signature.Signer;
 
-public class HmacTest extends Assert {
+public class HmacTest {
 
     final String method = "GET";
     final String uri = "/foo/Bar";
@@ -109,6 +109,6 @@ public class HmacTest extends Assert {
         );
 
         final Signature signed = signer.sign(method, uri, headers);
-        assertEquals(expected, signed.getSignature());
+        Assertions.assertEquals(expected, signed.getSignature());
     }
 }

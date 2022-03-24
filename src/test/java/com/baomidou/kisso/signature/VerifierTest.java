@@ -16,50 +16,46 @@
  */
 package com.baomidou.kisso.signature;
 
+import com.baomidou.kisso.common.signature.Signature;
+import com.baomidou.kisso.common.signature.Verifier;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.security.Provider;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.spec.SecretKeySpec;
+public class VerifierTest {
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.baomidou.kisso.exception.MissingRequiredHeaderException;
-import com.baomidou.kisso.common.signature.Signature;
-import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
-import com.baomidou.kisso.common.signature.Verifier;
-
-public class VerifierTest extends Assert {
-
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void validVerifier() {
         final Signature signature = new Signature("hmac-key-1", "hmac-sha256", null, "content-length", "host", "date", "(request-target)");
         final Key key = new SecretKeySpec("don't tell".getBytes(), "HmacSHA256");
         new Verifier(key, signature);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullKey() {
         final Signature signature = new Signature("hmac-key-1", "hmac-sha256", null, "content-length", "host", "date", "(request-target)");
         new Verifier(null, signature);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullSignature() {
         final Key key = new SecretKeySpec("don't tell".getBytes(), "HmacSHA256");
         new Verifier(key, null);
     }
 
-    @Test(expected = UnsupportedAlgorithmException.class)
+    @Test
     public void unsupportedAlgorithm() {
         final Signature signature = new Signature("hmac-key-1", "should fail because of this", null, "content-length", "host", "date", "(request-target)");
         final Key key = new SecretKeySpec("don't tell".getBytes(), "HmacSHA256");
         new Verifier(key, signature);
     }
 
-    @Test(expected = UnsupportedAlgorithmException.class)
+    @Test
     public void algoNotImplemented() {
         final Provider p = new Provider("Tribe", 1.0, "Only for mock") {{
             clear();
@@ -97,7 +93,7 @@ public class VerifierTest extends Assert {
             headers.put("Accept", "*/*");
             headers.put("Content-Length", "18");
             boolean verifies = verifier.verify(method, uri, headers);
-            assertTrue(verifies);
+            Assertions.assertTrue(verifies);
         }
 
         { // method changed.  should get a different signature
@@ -111,7 +107,7 @@ public class VerifierTest extends Assert {
             headers.put("Accept", "*/*");
             headers.put("Content-Length", "18");
             boolean verifies = verifier.verify(method, uri, headers);
-            assertFalse(verifies);
+            Assertions.assertFalse(verifies);
         }
 
         { // only Digest changed.  not part of the signature, should have no effect
@@ -125,7 +121,7 @@ public class VerifierTest extends Assert {
             headers.put("Accept", "*/*");
             headers.put("Content-Length", "18");
             boolean verifies = verifier.verify(method, uri, headers);
-            assertTrue(verifies);
+            Assertions.assertTrue(verifies);
         }
 
         { // uri changed.  should get a different signature
@@ -139,7 +135,7 @@ public class VerifierTest extends Assert {
             headers.put("Accept", "*/*");
             headers.put("Content-Length", "18");
             boolean verifies = verifier.verify(method, uri, headers);
-            assertFalse(verifies);
+            Assertions.assertFalse(verifies);
         }
     }
 
@@ -156,7 +152,7 @@ public class VerifierTest extends Assert {
             headers.put("Date", "Tue, 07 Jun 2014 20:51:35 GMT");
 
             boolean verifies = verifier.verify("GET", "/foo/Bar", headers);
-            assertTrue(verifies);
+            Assertions.assertTrue(verifies);
         }
 
         { // adding other headers shouldn't matter
@@ -168,11 +164,11 @@ public class VerifierTest extends Assert {
             headers.put("Content-Length", "18");
 
             boolean verifies = verifier.verify("GET", "/foo/Bar", headers);
-            assertTrue(verifies);
+            Assertions.assertTrue(verifies);
         }
     }
 
-    @Test(expected = MissingRequiredHeaderException.class)
+    @Test
     public void missingDefaultHeader() throws Exception {
         final String authorization = "Signature keyId=\"hmac-key-1\",shaAlgorithm=\"hmac-sha256\",headers=\"\",signature=\"WbB9VXuVdRt1LKQ5mDuT+tiaChn8R7WhdAWAY1lhKZQ=\"";
         final Signature signature = Signature.fromString(authorization);
@@ -184,7 +180,7 @@ public class VerifierTest extends Assert {
         verifier.verify("GET", "/foo/Bar", headers);
     }
 
-    @Test(expected = MissingRequiredHeaderException.class)
+    @Test
     public void missingExplicitHeader() throws Exception {
         final String authorization = "Signature keyId=\"hmac-key-1\",shaAlgorithm=\"hmac-sha256\",headers=\"date accept\",signature=\"WbB9VXuVdRt1LKQ5mDuT+tiaChn8R7WhdAWAY1lhKZQ=\"";
         final Signature signature = Signature.fromString(authorization);
@@ -223,7 +219,7 @@ public class VerifierTest extends Assert {
                     "date: Tue, 07 Jun 2014 20:51:35 GMT\n" +
                     "(request-target): get /foo/Bar";
 
-            assertEquals(signingString, verifier.createSigningString("GET", "/foo/Bar", headers));
+            Assertions.assertEquals(signingString, verifier.createSigningString("GET", "/foo/Bar", headers));
         }
 
     }
@@ -248,7 +244,7 @@ public class VerifierTest extends Assert {
             final Verifier verifier = new Verifier(key, signature);
 
             final String string = verifier.createSigningString(method, uri, headers);
-            assertEquals("(request-target): post /foo\n" +
+            Assertions.assertEquals("(request-target): post /foo\n" +
                     "host: example.org\n" +
                     "date: Tue, 07 Jun 2014 20:51:35 GMT\n" +
                     "digest: SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=\n" +
@@ -273,10 +269,10 @@ public class VerifierTest extends Assert {
             final Verifier verifier = new Verifier(key, signature);
 
             final String string = verifier.createSigningString(method, uri, headers);
-            assertEquals("content-length: 18\n" +
-                    "host: example.org\n" +
-                    "date: Tue, 07 Jun 2014 20:51:35 GMT\n" +
-                    "(request-target): get /foo/Bar"
+            Assertions.assertEquals("content-length: 18\n" +
+                            "host: example.org\n" +
+                            "date: Tue, 07 Jun 2014 20:51:35 GMT\n" +
+                            "(request-target): get /foo/Bar"
                     , string);
         }
     }

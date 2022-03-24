@@ -18,8 +18,8 @@ package com.baomidou.kisso;
 import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.JwtHelper;
 import com.baomidou.kisso.security.token.SSOToken;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * <p>
@@ -40,11 +40,11 @@ public class TestSSOToken {
     public void hs512Token() {
         String token = SSOToken.create().setIp("127.0.0.1").setTime(1502085277L).setId(1)
                 .setOrigin(TokenOrigin.IOS).setUserAgent("123").setIssuer("kisso").getToken();
-        Assert.assertEquals(token, "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIxIiwiaXAiOiIxMjcuMC4wLjEiLCJpc3MiOiJra" +
+        Assertions.assertEquals(token, "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIxIiwiaXAiOiIxMjcuMC4wLjEiLCJpc3MiOiJra" +
                 "XNzbyIsInVhIjoiMTIzIiwib2ciOiIyIiwiaWF0IjoxNTAyMDg1fQ.dVhcDtXYayHsYcw7_eMOtJeuR5xoNMzGty44TxcH7m" +
                 "v2FNFYdrj0pKkLEy4j5kt8i7YUatcRtkTmf7BV_Tpk1Q");
         SSOToken ssoToken = SSOToken.parser(token, true);
-        Assert.assertEquals("kisso", ssoToken.getIssuer());
+        Assertions.assertEquals("kisso", ssoToken.getIssuer());
 
         this.rsaToken();
     }
@@ -54,7 +54,7 @@ public class TestSSOToken {
         String token = SSOToken.create().getToken();
         System.out.println(token);
         SSOToken ssoToken = SSOToken.parser(token, true);
-        Assert.assertNull(ssoToken);
+        Assertions.assertNull(ssoToken);
     }
 
     public void rsaToken() {
@@ -62,7 +62,7 @@ public class TestSSOToken {
         ssoConfig.setSignAlgorithm("RS512");
         String token = SSOToken.create().setIp("127.0.0.1").setTime(1502085277L).setId(1)
                 .setOrigin(TokenOrigin.IOS).setUserAgent("123").setIssuer("kisso").getToken();
-        Assert.assertEquals(token, "eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiIxIiwiaXAiOiIxMjcuMC4w" +
+        Assertions.assertEquals(token, "eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiIxIiwiaXAiOiIxMjcuMC4w" +
                 "LjEiLCJpc3MiOiJraXNzbyIsInVhIjoiMTIzIiwib2ciOiIyIiwiaWF0IjoxNTAyMDg1fQ.TrfBLtwc" +
                 "GDeq-buzqTQjtBzX0bWX_aOOda78gnGdemOb_zjf_stHVgsaqSB42AvZvz3DEn9yMzRFcz5FwYKdc-g" +
                 "Dwn02IZ-0VFtQCXA2HO4UGCa0ipMGLaTe8lujSxMhwcqFxgZAa87MUzst-Ddd516DGvvuX7vZTiw0qA" +
@@ -70,6 +70,6 @@ public class TestSSOToken {
                 "dFMyLIqkX5A3G-wAfPMZ7tpNBeCiS9OKNpWkM1gexVLzN7l6m7J5Qj04x17UFNiiw1S5HHgo6oTz_K3i" +
                 "jZPIF0DwGmhTk0DnQ");
         SSOToken ssoToken = SSOToken.parser(token, true);
-        Assert.assertEquals("kisso", ssoToken.getIssuer());
+        Assertions.assertEquals("kisso", ssoToken.getIssuer());
     }
 }

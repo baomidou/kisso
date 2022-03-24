@@ -16,23 +16,14 @@
  */
 package com.baomidou.kisso.signature;
 
-import static com.baomidou.kisso.common.util.JoinUtil.join;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-import org.junit.Test;
-
 import com.baomidou.kisso.common.signature.Signature;
 import com.baomidou.kisso.exception.AuthenticationException;
-import com.baomidou.kisso.exception.MissingAlgorithmException;
-import com.baomidou.kisso.exception.MissingKeyIdException;
-import com.baomidou.kisso.exception.MissingSignatureException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
+import static com.baomidou.kisso.common.util.JoinUtil.join;
 
 public class SignatureTest {
 
@@ -41,7 +32,7 @@ public class SignatureTest {
         new Signature("somekey", "hmac-sha256", "yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", "date", "accept");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void nullKey() {
         new Signature(null, "hmac-sha256", "yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", "date", "accept");
     }
@@ -51,7 +42,7 @@ public class SignatureTest {
         new Signature("somekey", "hmac-sha256", null, "date", "accept");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void nullAlgorithm() {
         new Signature("somekey", (String) null, "yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", "date", "accept");
     }
@@ -59,8 +50,8 @@ public class SignatureTest {
     @Test
     public void nullHeaders() {
         final Signature signature = new Signature("somekey", "hmac-sha256", "yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=");
-        assertEquals(1, signature.getHeaders().size()); // should contain at least the Date which is required
-        assertEquals("date", signature.getHeaders().get(0).toLowerCase());
+        Assertions.assertEquals(1, signature.getHeaders().size()); // should contain at least the Date which is required
+        Assertions.assertEquals("date", signature.getHeaders().get(0).toLowerCase());
     }
 
 
@@ -80,10 +71,10 @@ public class SignatureTest {
 
         final Signature signature = Signature.fromString(authorization);
 
-        assertEquals("hmac-key-1", signature.getKeyId());
-        assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
-        assertEquals("yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", signature.getSignature());
-        assertEquals("(request-target)\n" +
+        Assertions.assertEquals("hmac-key-1", signature.getKeyId());
+        Assertions.assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
+        Assertions.assertEquals("yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", signature.getSignature());
+        Assertions.assertEquals("(request-target)\n" +
                 "host\n" +
                 "date\n" +
                 "digest\n" +
@@ -98,7 +89,7 @@ public class SignatureTest {
 
         final Signature signature = Signature.fromString(authorization);
 
-        assertEquals("UID=jsmith,DC=example,DC=net", signature.getKeyId());
+        Assertions.assertEquals("UID=jsmith,DC=example,DC=net", signature.getKeyId());
     }
 
     /**
@@ -112,10 +103,10 @@ public class SignatureTest {
 
         final Signature signature = Signature.fromString(authorization);
 
-        assertEquals("hmac-key-1", signature.getKeyId());
-        assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
-        assertEquals("Base64(HMAC-SHA256(signing string))", signature.getSignature());
-        assertEquals("date", join("\n", signature.getHeaders()));
+        Assertions.assertEquals("hmac-key-1", signature.getKeyId());
+        Assertions.assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
+        Assertions.assertEquals("Base64(HMAC-SHA256(signing string))", signature.getSignature());
+        Assertions.assertEquals("date", join("\n", signature.getHeaders()));
     }
 
     /**
@@ -129,10 +120,10 @@ public class SignatureTest {
 
         final Signature signature = Signature.fromString(authorization);
 
-        assertEquals("hmac-key-1", signature.getKeyId());
-        assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
-        assertEquals("Base64(HMAC-SHA256(signing string))", signature.getSignature());
-        assertEquals("one\n" +
+        Assertions.assertEquals("hmac-key-1", signature.getKeyId());
+        Assertions.assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
+        Assertions.assertEquals("Base64(HMAC-SHA256(signing string))", signature.getSignature());
+        Assertions.assertEquals("one\n" +
                 "two\n" +
                 "three\n" +
                 "four\n" +
@@ -147,10 +138,10 @@ public class SignatureTest {
 
         final Signature signature = Signature.fromString(authorization);
 
-        assertEquals("hmac-key-1", signature.getKeyId());
-        assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
-        assertEquals("Base64(HMAC-SHA256(signing string))", signature.getSignature());
-        assertEquals("date", join("\n", signature.getHeaders()));
+        Assertions.assertEquals("hmac-key-1", signature.getKeyId());
+        Assertions.assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
+        Assertions.assertEquals("Base64(HMAC-SHA256(signing string))", signature.getSignature());
+        Assertions.assertEquals("date", join("\n", signature.getHeaders()));
     }
 
     /**
@@ -164,10 +155,10 @@ public class SignatureTest {
 
         final Signature signature = Signature.fromString(authorization);
 
-        assertEquals("hmac-key-1", signature.getKeyId());
-        assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
-        assertEquals("Base64(HMAC-SHA256(signing string))", signature.getSignature());
-        assertEquals("date", join("\n", signature.getHeaders()));
+        Assertions.assertEquals("hmac-key-1", signature.getKeyId());
+        Assertions.assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
+        Assertions.assertEquals("Base64(HMAC-SHA256(signing string))", signature.getSignature());
+        Assertions.assertEquals("date", join("\n", signature.getHeaders()));
     }
 
     /**
@@ -204,10 +195,10 @@ public class SignatureTest {
 
         final Signature signature = new Signature("hmac-key-1", "hMaC-ShA256", "yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", "dAte", "aCcEpt");
 
-        assertEquals("hmac-key-1", signature.getKeyId());
-        assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
-        assertEquals("yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", signature.getSignature());
-        assertEquals("date\naccept", join("\n", signature.getHeaders()));
+        Assertions.assertEquals("hmac-key-1", signature.getKeyId());
+        Assertions.assertEquals("hmac-sha256", signature.getShaAlgorithm().toString());
+        Assertions.assertEquals("yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", signature.getSignature());
+        Assertions.assertEquals("date\naccept", join("\n", signature.getHeaders()));
     }
 
     /**
@@ -306,7 +297,7 @@ public class SignatureTest {
                 "headers=\"(request-target) host date digest content-length\"," +
                 "signature=\"Base64(HMAC-SHA256(signing string))\"";
 
-        assertEquals(authorization, signature.toString());
+        Assertions.assertEquals(authorization, signature.toString());
     }
 
 
@@ -337,12 +328,12 @@ public class SignatureTest {
             } catch (AuthenticationException e) {
                 // pass
             } catch (Throwable e) {
-                fail("SignatureHeaderFormatException should be the only possible exception type: caught " + e.getClass().getName());
+                Assertions.fail("SignatureHeaderFormatException should be the only possible exception type: caught " + e.getClass().getName());
             }
         }
     }
 
-    @Test(expected = MissingKeyIdException.class)
+    @Test
     public void missingKeyId() {
         String authorization = "" +
 //                "keyId=\"hmac-key-1\"," +
@@ -353,7 +344,7 @@ public class SignatureTest {
         Signature.fromString(authorization);
     }
 
-    @Test(expected = MissingAlgorithmException.class)
+    @Test
     public void missingAlgorithm() {
         String authorization = "" +
                 "keyId=\"hmac-key-1\"," +
@@ -365,7 +356,7 @@ public class SignatureTest {
     }
 
 
-    @Test(expected = MissingSignatureException.class)
+    @Test
     public void missingSignature() {
         String authorization = "" +
                 "keyId=\"hmac-key-1\"," +
@@ -387,8 +378,8 @@ public class SignatureTest {
                         put("age", 1);
                     }
                 });
-        assertEquals("5390444a44003408cb2b3eab95a84ad3", md5SigningString);
-        assertEquals(md5SigningString, Signature.md5Signing(accessSecret,
+        Assertions.assertEquals("5390444a44003408cb2b3eab95a84ad3", md5SigningString);
+        Assertions.assertEquals(md5SigningString, Signature.md5Signing(accessSecret,
                 new HashMap<String, Object>() {
                     {
                         put("age", 1);
@@ -405,9 +396,9 @@ public class SignatureTest {
     }
 
     private static void assertSignature(Signature expected, Signature actual) {
-        assertEquals(expected.getKeyId(), actual.getKeyId());
-        assertEquals(expected.getShaAlgorithm(), actual.getShaAlgorithm());
-        assertEquals(expected.getSignature(), actual.getSignature());
-        assertEquals(join("\n", expected.getHeaders()), join("\n", actual.getHeaders()));
+        Assertions.assertEquals(expected.getKeyId(), actual.getKeyId());
+        Assertions.assertEquals(expected.getShaAlgorithm(), actual.getShaAlgorithm());
+        Assertions.assertEquals(expected.getSignature(), actual.getSignature());
+        Assertions.assertEquals(join("\n", expected.getHeaders()), join("\n", actual.getHeaders()));
     }
 }

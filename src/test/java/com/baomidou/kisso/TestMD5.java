@@ -17,6 +17,8 @@ package com.baomidou.kisso;
 
 import com.baomidou.kisso.common.IpHelper;
 import com.baomidou.kisso.common.encrypt.MD5;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * <p>
@@ -31,9 +33,10 @@ public class TestMD5 {
     /**
      * 测试
      */
-    public static void main(String[] args) {
+    @Test
+    public void md5() {
         System.out.println(IpHelper.LOCAL_IP);
         System.out.println(IpHelper.HOST_NAME);
-        System.out.println(MD5.toMD5("123"));
+        Assertions.assertEquals("202cb962ac59075b964b07152d234b70", MD5.toMD5("123"));
     }
 }

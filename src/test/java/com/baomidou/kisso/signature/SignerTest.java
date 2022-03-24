@@ -16,22 +16,18 @@
  */
 package com.baomidou.kisso.signature;
 
+import com.baomidou.kisso.common.signature.Signature;
+import com.baomidou.kisso.common.signature.Signer;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.security.Provider;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.spec.SecretKeySpec;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.baomidou.kisso.common.signature.Signature;
-import com.baomidou.kisso.common.signature.Signer;
-import com.baomidou.kisso.exception.MissingRequiredHeaderException;
-import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
-
-public class SignerTest extends Assert {
+public class SignerTest {
 
     @Test
     public void validSigner() {
@@ -40,26 +36,26 @@ public class SignerTest extends Assert {
         new Signer(key, signature);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullKey() {
         final Signature signature = new Signature("hmac-key-1", "hmac-sha256", null, "content-length", "host", "date", "(request-target)");
         new Signer(null, signature);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullSignature() {
         final Key key = new SecretKeySpec("don't tell".getBytes(), "HmacSHA256");
         new Signer(key, null);
     }
 
-    @Test(expected = UnsupportedAlgorithmException.class)
+    @Test
     public void unsupportedAlgorithm() {
         final Signature signature = new Signature("hmac-key-1", "should fail because of this", null, "content-length", "host", "date", "(request-target)");
         final Key key = new SecretKeySpec("don't tell".getBytes(), "HmacSHA256");
         new Signer(key, signature);
     }
 
-    @Test(expected = UnsupportedAlgorithmException.class)
+    @Test
     public void algoNotImplemented() {
         final Provider p = new Provider("Tribe", 1.0, "Only for mock") {{
             clear();
@@ -100,7 +96,7 @@ public class SignerTest extends Assert {
                 }
             };
             final Signature signed = signer.sign(method, uri, headers);
-            assertEquals("yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", signed.getSignature());
+            Assertions.assertEquals("yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", signed.getSignature());
         }
 
         { // method changed.  should get a different signature
@@ -115,7 +111,7 @@ public class SignerTest extends Assert {
                 put("Content-Length", "18");
             }};
             final Signature signed = signer.sign(method, uri, headers);
-            assertEquals("DPIsA/PWeYjySmfjw2P2SLJXZj1szDOei/Hh8nTcaPo=", signed.getSignature());
+            Assertions.assertEquals("DPIsA/PWeYjySmfjw2P2SLJXZj1szDOei/Hh8nTcaPo=", signed.getSignature());
         }
 
         { // only Digest changed.  not part of the signature, should have no effect
@@ -131,7 +127,7 @@ public class SignerTest extends Assert {
 
             }};
             final Signature signed = signer.sign(method, uri, headers);
-            assertEquals("DPIsA/PWeYjySmfjw2P2SLJXZj1szDOei/Hh8nTcaPo=", signed.getSignature());
+            Assertions.assertEquals("DPIsA/PWeYjySmfjw2P2SLJXZj1szDOei/Hh8nTcaPo=", signed.getSignature());
         }
 
         { // uri changed.  should get a different signature
@@ -147,7 +143,7 @@ public class SignerTest extends Assert {
 
             }};
             final Signature signed = signer.sign(method, uri, headers);
-            assertEquals("IWTDxmOoEJI67YxY3eDIRzxrsAtlYYCuGZxKlkUSYdA=", signed.getSignature());
+            Assertions.assertEquals("IWTDxmOoEJI67YxY3eDIRzxrsAtlYYCuGZxKlkUSYdA=", signed.getSignature());
         }
     }
 
@@ -164,7 +160,7 @@ public class SignerTest extends Assert {
             }};
 
             final Signature signed = signer.sign("GET", "/foo/Bar", headers);
-            assertEquals("WbB9VXuVdRt1LKQ5mDuT+tiaChn8R7WhdAWAY1lhKZQ=", signed.getSignature());
+            Assertions.assertEquals("WbB9VXuVdRt1LKQ5mDuT+tiaChn8R7WhdAWAY1lhKZQ=", signed.getSignature());
         }
 
         { // one second later
@@ -173,7 +169,7 @@ public class SignerTest extends Assert {
             }};
 
             final Signature signed = signer.sign("GET", "/foo/Bar", headers);
-            assertEquals("kRkh0bV1wKZSXBgexUB+zlPU88/za5K/gk/F0Aikg7Q=", signed.getSignature());
+            Assertions.assertEquals("kRkh0bV1wKZSXBgexUB+zlPU88/za5K/gk/F0Aikg7Q=", signed.getSignature());
         }
 
         { // adding other headers shouldn't matter
@@ -187,11 +183,11 @@ public class SignerTest extends Assert {
             }};
 
             final Signature signed = signer.sign("GET", "/foo/Bar", headers);
-            assertEquals("kRkh0bV1wKZSXBgexUB+zlPU88/za5K/gk/F0Aikg7Q=", signed.getSignature());
+            Assertions.assertEquals("kRkh0bV1wKZSXBgexUB+zlPU88/za5K/gk/F0Aikg7Q=", signed.getSignature());
         }
     }
 
-    @Test(expected = MissingRequiredHeaderException.class)
+    @Test
     public void missingDefaultHeader() throws Exception {
         final Signature signature = new Signature("hmac-key-1", "hmac-sha256", null);
 
@@ -202,14 +198,14 @@ public class SignerTest extends Assert {
         signer.sign("GET", "/foo/Bar", headers);
     }
 
-    @Test(expected = MissingRequiredHeaderException.class)
+    @Test
     public void missingExplicitHeader() throws Exception {
         final Signature signature = new Signature("hmac-key-1", "hmac-sha256", null, "date", "accept");
 
         final Key key = new SecretKeySpec("don't tell".getBytes(), "HmacSHA256");
         final Signer signer = new Signer(key, signature);
 
-        final Map<String, String> headers = new HashMap<String, String>(){{
+        final Map<String, String> headers = new HashMap<String, String>() {{
             put("Date", "Tue, 07 Jun 2014 20:51:36 GMT");
         }};
         signer.sign("GET", "/foo/Bar", headers);
@@ -239,14 +235,14 @@ public class SignerTest extends Assert {
                     "date: Tue, 07 Jun 2014 20:51:35 GMT\n" +
                     "(request-target): get /foo/Bar";
 
-            assertEquals(signingString, signer.createSigningString("GET", "/foo/Bar", headers));
+            Assertions.assertEquals(signingString, signer.createSigningString("GET", "/foo/Bar", headers));
         }
 
         { // Assert the signature
 
             final String encodedSignature = signer.sign("GET", "/foo/Bar", headers).getSignature();
 
-            assertEquals("yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", encodedSignature);
+            Assertions.assertEquals("yT/NrPI9mKB5R7FTLRyFWvB+QLQOEAvbGmauC0tI+Jg=", encodedSignature);
         }
     }
 
@@ -269,7 +265,7 @@ public class SignerTest extends Assert {
             final Signer signer = new Signer(key, signature);
 
             final String string = signer.createSigningString(method, uri, headers);
-            assertEquals("(request-target): post /foo\n" +
+            Assertions.assertEquals("(request-target): post /foo\n" +
                     "host: example.org\n" +
                     "date: Tue, 07 Jun 2014 20:51:35 GMT\n" +
                     "digest: SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=\n" +
@@ -293,7 +289,7 @@ public class SignerTest extends Assert {
             final Signer signer = new Signer(key, signature);
 
             final String string = signer.createSigningString(method, uri, headers);
-            assertEquals("content-length: 18\n" +
+            Assertions.assertEquals("content-length: 18\n" +
                             "host: example.org\n" +
                             "date: Tue, 07 Jun 2014 20:51:35 GMT\n" +
                             "(request-target): get /foo/Bar"

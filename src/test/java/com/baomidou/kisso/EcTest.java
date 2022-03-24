@@ -16,6 +16,14 @@
  */
 package com.baomidou.kisso;
 
+import com.baomidou.kisso.common.encrypt.PEM;
+import com.baomidou.kisso.common.signature.ShaAlgorithm;
+import com.baomidou.kisso.common.signature.Signature;
+import com.baomidou.kisso.common.signature.Signer;
+import com.baomidou.kisso.common.signature.Verifier;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayInputStream;
 import java.security.PrivateKey;
 import java.security.Provider;
@@ -24,16 +32,7 @@ import java.security.Security;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.baomidou.kisso.common.encrypt.PEM;
-import com.baomidou.kisso.common.signature.ShaAlgorithm;
-import com.baomidou.kisso.common.signature.Signature;
-import com.baomidou.kisso.common.signature.Signer;
-import com.baomidou.kisso.common.signature.Verifier;
-
-public class EcTest extends Assert {
+public class EcTest {
 
     private final Provider SUN_EC_PROVIDER = Security.getProvider("SunEC");
 
@@ -160,7 +159,7 @@ public class EcTest extends Assert {
 
         final Verifier verifier = new Verifier(publicKey, new Signature("some-key-1", algorithm, signature, sign), SUN_EC_PROVIDER);
 
-        assertEquals(expected, verifier.verify(method, uri, headers));
+        Assertions.assertEquals(expected, verifier.verify(method, uri, headers));
     }
 
 }

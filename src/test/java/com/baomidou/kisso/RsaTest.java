@@ -16,21 +16,20 @@
  */
 package com.baomidou.kisso;
 
+import com.baomidou.kisso.common.encrypt.PEM;
+import com.baomidou.kisso.common.signature.ShaAlgorithm;
+import com.baomidou.kisso.common.signature.Signature;
+import com.baomidou.kisso.common.signature.Signer;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayInputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.baomidou.kisso.common.encrypt.PEM;
-import com.baomidou.kisso.common.signature.ShaAlgorithm;
-import com.baomidou.kisso.common.signature.Signature;
-import com.baomidou.kisso.common.signature.Signer;
-
-public class RsaTest extends Assert {
+public class RsaTest {
 
 
     private final String privateKeyPem = "-----BEGIN RSA PRIVATE KEY-----\n" +
@@ -154,7 +153,7 @@ public class RsaTest extends Assert {
 
         final Signature signed = signer.sign(method, uri, headers);
 
-        assertEquals(expected, signed.getSignature());
+        Assertions.assertEquals(expected, signed.getSignature());
     }
 
 }
