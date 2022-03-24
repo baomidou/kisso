@@ -159,14 +159,14 @@ public class KissoServiceSupport {
         /**
          * 判断请求浏览器是否合法
          */
-        if (config.isCookieBrowser() && !Browser.isLegalUserAgent(request, ssoToken.getUserAgent())) {
+        if (config.isCheckBrowser() && !Browser.isLegalUserAgent(request, ssoToken.getUserAgent())) {
             log.info("The request browser is inconsistent.");
             return null;
         }
         /**
          * 判断请求 IP 是否合法
          */
-        if (config.isCookieCheckIp()) {
+        if (config.isCheckIp()) {
             String ip = IpHelper.getIpAddr(request);
             if (ip != null && !ip.equals(ssoToken.getIp())) {
                 log.info(String.format("ip inconsistent! return SSOToken null, SSOToken userIp:%s, reqIp:%s",

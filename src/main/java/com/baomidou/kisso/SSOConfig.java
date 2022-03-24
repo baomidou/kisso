@@ -40,7 +40,7 @@ public class SSOConfig {
      */
     private String encoding = StringPool.UTF_8;
     /**
-     * 签名密钥（用于对此算法）
+     * 签名密钥（用于对称算法）
      */
     private String signKey;
     /**
@@ -64,7 +64,7 @@ public class SSOConfig {
     /**
      * RSA 密钥 keypass
      */
-    private String rsaKeypass = "llTs1p68K";
+        private String rsaKeypass = "llTs1p68K";
     /**
      * RSA 密钥 storepass
      */
@@ -108,23 +108,27 @@ public class SSOConfig {
      */
     private String cookieSameSite;
     /**
-     * 是否验证 cookie 设置时浏览器信息
+     * 是否验证 token 设置时浏览器信息，命名不够准确，后面修改为 checkBrowser
      */
+    @Deprecated
     private boolean cookieBrowser = false;
+    private boolean checkBrowser = false;
     /**
-     * 是否验证 cookie 设置时 IP 信息
+     * 是否验证 token 设置时 IP 信息，命名不够准确，后面修改为 checkIp
      */
+    @Deprecated
     private boolean cookieCheckIp = false;
+    private boolean checkIp = false;
     /**
-     * 登录地址
+     * 登录地址（设置后拦截器自动跳转）
      */
     private String loginUrl = "";
     /**
-     * 退出地址
+     * 退出地址（设置后拦截器自动跳转）
      */
     private String logoutUrl = "";
     /**
-     * 登录成功回调地址
+     * 登录成功回调地址（设置后拦截器自动跳转）
      */
     private String paramReturnUrl = "ReturnURL";
     /**
@@ -137,7 +141,7 @@ public class SSOConfig {
     private SSOToken ssoToken;
 
     /**
-     * 权限认证（默认 false）
+     * 权限认证
      */
     private boolean permissionUri = false;
 
@@ -202,6 +206,14 @@ public class SSOConfig {
     public SSOConfig setAuthorization(SSOAuthorization authorization) {
         this.authorization = authorization;
         return this;
+    }
+
+    public boolean isCheckBrowser() {
+        return checkBrowser ? true : cookieBrowser;
+    }
+
+    public boolean isCheckIp() {
+        return checkIp ? true : cookieCheckIp;
     }
 
     public String getCookieSameSite() {
