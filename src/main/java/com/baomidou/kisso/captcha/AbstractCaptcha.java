@@ -45,7 +45,7 @@ public abstract class AbstractCaptcha implements ICaptcha {
      */
     protected boolean gif;
     /**
-     * 字体Verdana
+     * 字体
      */
     protected Font font;
     /**
