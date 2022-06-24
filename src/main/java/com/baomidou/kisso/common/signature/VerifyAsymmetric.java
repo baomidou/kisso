@@ -15,12 +15,12 @@
  */
 package com.baomidou.kisso.common.signature;
 
+import com.baomidou.kisso.common.util.Base64Util;
+import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.PublicKey;
-
-import com.baomidou.kisso.common.encrypt.base64.Base64;
-import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
 
 /**
  * <p>
@@ -46,7 +46,7 @@ public class VerifyAsymmetric implements IVerify {
         java.security.Signature.getInstance(shaAlgorithm.getJmvName(), provider);
       instance.initVerify(key);
       instance.update(signingStringBytes);
-      return instance.verify(Base64.decode(verifyString.getBytes()));
+      return instance.verify(Base64Util.decode(verifyString));
     } catch (NoSuchAlgorithmException e) {
       throw new UnsupportedAlgorithmException(shaAlgorithm.getJmvName());
     } catch (Exception e) {

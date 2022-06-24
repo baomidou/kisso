@@ -16,7 +16,7 @@
 package com.baomidou.kisso.common.encrypt;
 
 import com.baomidou.kisso.SSOConfig;
-import com.baomidou.kisso.common.encrypt.base64.UrlBase64;
+import com.baomidou.kisso.common.util.Base64Util;
 import com.baomidou.kisso.exception.KissoException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -75,13 +75,12 @@ public class SSOSymmetrical implements SSOEncrypt {
 
     @Override
     public String encrypt(String value, String key) throws Exception {
-        byte[] b = UrlBase64.encode(encrypt(algorithm, value.getBytes(SSOConfig.getSSOEncoding()), key));
-        return new String(b, SSOConfig.getSSOEncoding());
+        return Base64Util.urlEncode(encrypt(algorithm, value.getBytes(SSOConfig.getSSOEncoding()), key));
     }
 
     @Override
     public String decrypt(String value, String key) throws Exception {
-        byte[] b = decrypt(algorithm, UrlBase64.decode(value.getBytes(SSOConfig.getSSOEncoding())), key);
+        byte[] b = decrypt(algorithm, Base64Util.urlDecode(value), key);
         return new String(b, SSOConfig.getSSOEncoding());
     }
 

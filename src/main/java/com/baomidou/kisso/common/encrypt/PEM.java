@@ -15,10 +15,9 @@
  */
 package com.baomidou.kisso.common.encrypt;
 
-import com.baomidou.kisso.common.encrypt.base64.Base64;
+import com.baomidou.kisso.common.util.Base64Util;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
@@ -144,7 +143,7 @@ public class PEM {
                 if (readingContent) {
                     if (line.contains(endMarker)) {
                         pemContents.add( // completed reading one PEM object
-                                new PEMObject(beginMarker, Base64.decode(sb.toString().getBytes(StandardCharsets.UTF_8))));
+                                new PEMObject(beginMarker, Base64Util.decode(sb.toString())));
                         readingContent = false;
                     } else {
                         sb.append(line.trim());

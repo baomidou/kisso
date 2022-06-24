@@ -15,7 +15,7 @@
  */
 package com.baomidou.kisso.common.signature;
 
-import com.baomidou.kisso.common.encrypt.base64.Base64;
+import com.baomidou.kisso.common.util.Base64Util;
 import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
 
 import javax.crypto.Mac;
@@ -75,8 +75,7 @@ public class Signer {
     public Signature sign(final String method, final String uri, final Map<String, String> headers) throws IOException {
         final String signingString = createSigningString(method, uri, headers);
         final byte[] binarySignature = sign.sign(provider, shaAlgorithm, signingString.getBytes(StandardCharsets.UTF_8));
-        final byte[] encoded = Base64.encode(binarySignature);
-        final String signedAndEncodedString = new String(encoded, StandardCharsets.UTF_8);
+        final String signedAndEncodedString = Base64Util.encode(binarySignature);
         return new Signature(signature.getKeyId(), signature.getShaAlgorithm(), signedAndEncodedString, signature.getHeaders());
     }
 

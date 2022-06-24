@@ -15,15 +15,14 @@
  */
 package com.baomidou.kisso.common.signature;
 
-import java.security.Key;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Provider;
+import com.baomidou.kisso.common.util.Base64Util;
+import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
 
 import javax.crypto.Mac;
-
-import com.baomidou.kisso.common.encrypt.base64.Base64;
-import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.util.Objects;
 
 /**
  * <p>
@@ -35,25 +34,24 @@ import com.baomidou.kisso.exception.UnsupportedAlgorithmException;
  */
 public class VerifySymmetric implements IVerify {
 
-  private final Key key;
+    private final Key key;
 
-  public VerifySymmetric(final Key key) {
-    this.key = key;
-  }
-
-  @Override
-  public boolean verify(Provider provider, ShaAlgorithm shaAlgorithm, byte[] signingStringBytes, String verifyString) {
-    try {
-      final Mac mac = provider == null ? Mac.getInstance(shaAlgorithm.getJmvName())
-        : Mac.getInstance(shaAlgorithm.getJmvName(), provider);
-      mac.init(key);
-      byte[] hash = mac.doFinal(signingStringBytes);
-      byte[] encoded = Base64.encode(hash);
-      return MessageDigest.isEqual(encoded, verifyString.getBytes());
-    } catch (NoSuchAlgorithmException e) {
-      throw new UnsupportedAlgorithmException(shaAlgorithm.getJmvName());
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
+    public VerifySymmetric(final Key key) {
+        this.key = key;
     }
-  }
+
+    @Override
+    public boolean verify(Provider provider, ShaAlgorithm shaAlgorithm, byte[] signingStringBytes, String verifyString) {
+        try {
+            final Mac mac = provider == null ? Mac.getInstance(shaAlgorithm.getJmvName())
+                    : Mac.getInstance(shaAlgorithm.getJmvName(), provider);
+            mac.init(key);
+            byte[] hash = mac.doFinal(signingStringBytes);
+            return Objects.equals(Base64Util.encode(hash), verifyString);
+        } catch (NoSuchAlgorithmException e) {
+            throw new UnsupportedAlgorithmException(shaAlgorithm.getJmvName());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }

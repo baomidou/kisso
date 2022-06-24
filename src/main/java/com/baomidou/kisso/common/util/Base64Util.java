@@ -15,17 +15,10 @@
  */
 package com.baomidou.kisso.common.util;
 
-import com.baomidou.kisso.SSOConfig;
-import com.baomidou.kisso.common.encrypt.base64.Base64;
-import com.baomidou.kisso.common.encrypt.base64.UrlBase64;
+import java.util.Base64;
 
 /**
- * <p>
  * BASE64编码解码工具包
- * </p>
- * <p>
- * 依赖bcprov-jdk14-1.48.jar
- * </p>
  *
  * @author hubin
  * @since 2014-6-17
@@ -33,52 +26,47 @@ import com.baomidou.kisso.common.encrypt.base64.UrlBase64;
 public class Base64Util {
 
     /**
-     * <p>
-     * BASE64字符串解码为二进制数据
-     * </p>
+     * base64 encode
      *
-     * @param base64
+     * @param src 编码内容
      * @return
      * @throws Exception
      */
-    public static byte[] decode(String base64) {
-        return Base64.decode(base64.getBytes());
+    public static String encode(byte[] src) {
+        return Base64.getEncoder().encodeToString(src);
     }
 
     /**
-     * <p>
-     * 二进制数据编码为BASE64字符串
-     * </p>
+     * base64 decode
      *
-     * @param bytes
+     * @param src 解码内容
      * @return
      * @throws Exception
      */
-    public static String encode(byte[] bytes) {
-        return new String(Base64.encode(bytes));
+    public static byte[] decode(String src) {
+        return Base64.getDecoder().decode(src);
     }
 
     /**
-     * BASE64 encrypt
+     * base64 url encode
      *
-     * @param key
+     * @param src 编码内容
      * @return
      * @throws Exception
      */
-    public static String encryptBASE64(byte[] key) throws Exception {
-        byte[] b = UrlBase64.encode(key);
-        return new String(b, SSOConfig.getSSOEncoding());
+    public static String urlEncode(byte[] src) throws Exception {
+        return Base64.getUrlEncoder().encodeToString(src);
     }
 
     /**
-     * BASE64 decrypt
+     * base64 url decode
      *
-     * @param key
+     * @param src 解码内容
      * @return
      * @throws Exception
      */
-    public static byte[] decryptBASE64(String key) throws Exception {
-        return UrlBase64.decode(key.getBytes(SSOConfig.getSSOEncoding()));
+    public static byte[] urlDecode(String src) throws Exception {
+        return Base64.getUrlDecoder().decode(src);
     }
 
 }
