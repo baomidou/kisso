@@ -31,6 +31,7 @@ public interface SSOConstants {
     String TOKEN_ORIGIN = "og";
     String TOKEN_TENANT_ID = "tid";
     String RSA = "RSA";
+    String HTTPS = "https";
     String ACCESS_SECRET = "accessSecret";
 
     /**

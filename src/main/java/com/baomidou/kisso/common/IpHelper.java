@@ -20,8 +20,8 @@ import com.baomidou.kisso.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
+import java.util.Enumeration;
 
 /**
  * <p>
@@ -139,26 +139,30 @@ public class IpHelper {
     }
 
     /**
-     * <p>
      * 判断是否为本地 IP
-     * </p>
      *
      * @param ip 待判断 IP
      * @return
      */
     public static boolean isLocalIp(String ip) {
-        if (StringUtils.isNotEmpty(ip)) {
-            try {
-                InetAddress inetAddress = InetAddress.getLocalHost();
-                InetAddress[] ias = InetAddress.getAllByName(inetAddress.getHostName());
-                for (InetAddress ia : ias) {
-                    if (ip.equals(ia.getHostAddress())) {
+        try {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface ni = networkInterfaces.nextElement();
+                Enumeration<InetAddress> e2 = ni.getInetAddresses();
+                while (e2.hasMoreElements()) {
+                    InetAddress ia = e2.nextElement();
+                    if (ia instanceof Inet6Address) {
+                        continue;
+                    }
+                    String address = ia.getHostAddress();
+                    if (null != address && address.contains(ip)) {
                         return true;
                     }
                 }
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
             }
+        } catch (SocketException e) {
+            e.printStackTrace();
         }
         return false;
     }

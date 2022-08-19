@@ -34,6 +34,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -215,7 +216,7 @@ public class KissoServiceSupport {
         try {
             SSOCookie ssoCookie = new SSOCookie(config.getCookieName(), token.getToken());
             ssoCookie.setPath(config.getCookiePath());
-            ssoCookie.setSecure(config.isCookieSecure());
+            ssoCookie.setSecure(Objects.equals(request.getScheme(), SSOConstants.HTTPS));
             ssoCookie.setHttpOnly(config.isCookieHttpOnly());
             ssoCookie.setSameSite(config.getCookieSameSite());
             /**

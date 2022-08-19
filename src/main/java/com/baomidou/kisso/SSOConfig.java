@@ -86,10 +86,6 @@ public class SSOConfig {
      */
     private String cookiePath = "/";
     /**
-     * cookie 是否设置安全，设置 true 那么只能为 https 协议访问
-     */
-    private boolean cookieSecure = false;
-    /**
      * cookie 是否为只读状态，设置 js 无法获取
      */
     private boolean cookieHttpOnly = true;
