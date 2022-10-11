@@ -1,22 +1,39 @@
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
+apply plugin: "io.spring.dependency-management"
 
 ext {
     configuration = [
             javaVersion = JavaVersion.VERSION_1_8
     ]
 
-    libraries = [
-            springBootVersion = "2.6.6",
-            lombokVersion = "1.18.22",
-            jjwtVersion = "0.11.2",
-            jupiterVersion = "5.8.2"
-    ]
+}
+
+// 编译脚本
+buildscript {
+    ext {
+        springBootVersion = "2.7.0"
+        jjwtVersion = "0.11.5"
+    }
+
+    // 仓库配置
+    repositories {
+        mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://repo.spring.io/release' }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 group = 'com.baomidou'
-version = '3.8.1'
+version = '3.8.3'
 
 description = "kisso is a lightweight Java SSO Framework and reusable components."
 
@@ -36,26 +53,35 @@ repositories {
     maven { url 'https://repo.spring.io/milestone' }
 }
 
+// 依赖管理
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+}
+
 dependencies {
     compileOnly("javax.servlet:servlet-api:2.5")
     compileOnly("javax.servlet:jsp-api:2.0")
-    compileOnly("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    compileOnly("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
-    compileOnly("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework.boot:spring-boot-autoconfigure")
+    compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     api("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
     api("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
     api("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
 
-    compileOnly("org.projectlombok:lombok:${lombokVersion}")
-    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
 
-    testCompileOnly("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompileOnly("org.springframework.boot:spring-boot-starter-test")
     testCompileOnly("javax.servlet:servlet-api:2.5")
     testImplementation("org.slf4j:slf4j-log4j12:1.7.36")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}")
-    testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testCompileOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
 

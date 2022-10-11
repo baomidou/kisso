@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 public @interface Permission {
 
     /**
-     * 权限内容
+     * 权限内容，多个符号 ; 分隔
      */
     String value() default "";
 

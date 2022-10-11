@@ -24,7 +24,6 @@ package com.baomidou.kisso.common;
  * @since 2017-07-17
  */
 public interface SSOConstants {
-
     String TOKEN_USER_IP = "ip";
     String TOKEN_USER_AGENT = "ua";
     String TOKEN_FLAG = "fg";
@@ -33,6 +32,14 @@ public interface SSOConstants {
     String RSA = "RSA";
     String HTTPS = "https";
     String ACCESS_SECRET = "accessSecret";
+    String AUTHORIZATION = "Authorization";
+
+    /**
+     * http basic 认证
+     */
+    String BASIC_AUTHENTICATE_SESSION = "basicAuthenticateSession";
+    String BASIC_AUTHENTICATE_USERNAME = "basicAuthenticateUsername";
+    String BASIC_AUTHENTICATE_PASSWORD = "basicAuthenticatePassword";
 
     /**
      * <p>
