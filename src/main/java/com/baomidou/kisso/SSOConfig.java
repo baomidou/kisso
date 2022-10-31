@@ -64,7 +64,7 @@ public class SSOConfig {
     /**
      * RSA 密钥 keypass
      */
-        private String rsaKeypass = "llTs1p68K";
+    private String rsaKeypass = "llTs1p68K";
     /**
      * RSA 密钥 storepass
      */

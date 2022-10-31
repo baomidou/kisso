@@ -18,7 +18,7 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 
 - 前后分离可选：请求 Header 票据模式, 请求 Cookie 模式
 
-- QQ 群 1064693672
+- 交流群 + 微信 `wx153666`
 
 # 仓库
 `https://search.maven.org/search?q=g:com.baomidou`
@@ -27,7 +27,7 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>3.8.1</version>
+  <version>3.8.3</version>
 </dependency>
 ```
 
@@ -38,6 +38,7 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 - [kisso_springmvc](https://gitee.com/jobob/kisso_springmvc)
 - [kisso_jfinal](https://gitee.com/jobob/kisso_jfinal)
 - [kisso_crossdomain](https://gitee.com/jobob/kisso_crossdomain)
+- [kisso-oauth2-demo](https://gitee.com/jobob/kisso-oauth2-demo)
 
 
 # 使用文档
@@ -92,9 +93,16 @@ SSOHelper.getHS512SecretKey()
 // RSA 生成 jks 密钥
 $ keytool -genkeypair -alias jwtkey -keyalg RSA -dname "CN=llt" -keypass keypassword -keystore key.jks -storepass jkspassword
 
-// RSA 生成证书
-// RSA 公钥，配置参数 kisso.config.rsa-cert-store
+// ---  RSA 生成证书，默认 cert 格式  ---
+
+// 公钥 cert 格式，配置参数 kisso.config.rsa-cert-store
 $ keytool -export -alias jwtkey -file public.cert -keystore key.jks -storepass jkspassword
+
+// 公钥 cer 格式，用于 .net 语言
+$ keytool -alias jwtkey -exportcert -keystore key.jks -file public.cer -storepass jkspassword
+
+// 公钥 pem 格式，用于 go 语言
+keytool -export -rfc -keystore key.jks --alias jwtkey -file public.pem -storepass jkspassword
 ```
 
 # 常见安全策略
