@@ -53,6 +53,9 @@ SSOToken ssoToken = SSOToken.parser(jwtToken);
 // Cookie 模式设置
 SSOHelper.setCookie(request, response,  new SSOToken().setId(String.valueOf(1)).setIssuer("admin"));
 
+// 如果想同时支持 cookie 和 header 模式如下设置
+ssoToken.setOrigin(TokenOrigin.HTML5);
+
 // 登录权限拦截器类 SSOSpringInterceptor
 // 注解不拦截 @LoginIgnore
 // yml 配置 kisso.config....
