@@ -19,7 +19,7 @@ import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.*;
 import java.util.Enumeration;
 

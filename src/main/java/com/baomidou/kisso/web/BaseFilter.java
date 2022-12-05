@@ -17,8 +17,8 @@ package com.baomidou.kisso.web;
 
 import com.baomidou.kisso.common.util.StringUtils;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterConfig;
 import java.util.function.Consumer;
 
 /**
@@ -58,6 +58,6 @@ public interface BaseFilter extends Filter {
      */
     default boolean getBoolParameter(FilterConfig filterConfig, String parameter, Boolean defVal) {
         String value = filterConfig.getInitParameter(parameter);
-        return StringUtils.isEmpty(value) ? defVal : new Boolean(value);
+        return StringUtils.isEmpty(value) ? defVal : Boolean.parseBoolean(value);
     }
 }

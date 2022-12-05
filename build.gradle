@@ -5,7 +5,7 @@ apply plugin: "io.spring.dependency-management"
 
 ext {
     configuration = [
-            javaVersion = JavaVersion.VERSION_1_8
+            javaVersion = JavaVersion.VERSION_17
     ]
 
 }
@@ -13,7 +13,7 @@ ext {
 // 编译脚本
 buildscript {
     ext {
-        springBootVersion = "2.7.0"
+        springBootVersion = "3.0.0"
         jjwtVersion = "0.11.5"
     }
 
@@ -33,7 +33,7 @@ buildscript {
 }
 
 group = 'com.baomidou'
-version = '3.8.3'
+version = '3.9.0'
 
 description = "kisso is a lightweight Java SSO Framework and reusable components."
 
@@ -61,8 +61,6 @@ dependencyManagement {
 }
 
 dependencies {
-    compileOnly("javax.servlet:servlet-api:2.5")
-    compileOnly("javax.servlet:jsp-api:2.0")
     compileOnly("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
@@ -78,8 +76,8 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok")
 
     testCompileOnly("org.springframework.boot:spring-boot-starter-test")
-    testCompileOnly("javax.servlet:servlet-api:2.5")
-    testImplementation("org.slf4j:slf4j-log4j12:1.7.36")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.slf4j:slf4j-log4j12:2.0.5")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testCompileOnly("org.junit.jupiter:junit-jupiter-engine")
 }

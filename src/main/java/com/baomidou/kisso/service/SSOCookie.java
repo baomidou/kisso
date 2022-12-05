@@ -18,7 +18,7 @@ package com.baomidou.kisso.service;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 /**
  * SSO Cookie

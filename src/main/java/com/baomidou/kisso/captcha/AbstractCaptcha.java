@@ -20,7 +20,7 @@ import java.awt.Font;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.baomidou.kisso.common.util.RandomType;
 import com.baomidou.kisso.common.util.RandomUtil;

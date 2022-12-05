@@ -17,7 +17,7 @@ package com.baomidou.kisso.common;
 
 import com.baomidou.kisso.common.encrypt.MD5;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>

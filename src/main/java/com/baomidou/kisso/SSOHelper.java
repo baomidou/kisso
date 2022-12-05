@@ -19,8 +19,8 @@ import com.baomidou.kisso.security.JwtHelper;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
