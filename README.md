@@ -27,10 +27,11 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>3.8.3</version>
+  <version>3.9.0</version>
 </dependency>
 ```
 
+> spring boot 2.x 使用 3.9.0 之前的版本
 
 # 测试 demo
 
