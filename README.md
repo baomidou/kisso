@@ -144,6 +144,22 @@ kisso:
     ...
 ```
 
+# 支持 spring boot actuator 权限认证
+
+> 注入以下配置，用户名密码切勿泄露
+
+```
+@Bean
+@ConditionalOnMissingBean
+public FilterRegistrationBean basicAuthenticateFilter() {
+  FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+  registrationBean.setFilter(new BasicAuthenticateFilter("用户名", "密码"));
+  registrationBean.addUrlPatterns("/actuator", "/actuator/**");
+  registrationBean.setOrder(Integer.MAX_VALUE);
+  return registrationBean;
+}
+```
+
 捐赠 kisso
 ====================
 
