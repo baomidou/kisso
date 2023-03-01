@@ -144,9 +144,11 @@ kisso:
     ...
 ```
 
-# 支持 spring boot actuator 权限认证
+# 支持 actuator basic 权限认证
 
 > 注入以下配置，用户名密码切勿泄露
+
+- Spring Boot Web
 
 ```
 @Bean
@@ -157,6 +159,15 @@ public FilterRegistrationBean basicAuthenticateFilter() {
   registrationBean.addUrlPatterns("/actuator", "/actuator/**");
   registrationBean.setOrder(Integer.MAX_VALUE);
   return registrationBean;
+}
+```
+
+- Spring Cloud Gateway Webflux
+
+```
+@Bean
+public BasicAuthenticateWebfluxFilter BasicAuthenticateWebfluxFilter() {
+    return new BasicAuthenticateWebfluxFilter("用户名", "密码");
 }
 ```
 

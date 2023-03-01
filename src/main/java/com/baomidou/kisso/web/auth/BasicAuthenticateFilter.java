@@ -17,19 +17,18 @@ package com.baomidou.kisso.web.auth;
 
 import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.common.util.Base64Util;
-import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.common.util.StringUtils;
 import com.baomidou.kisso.web.BaseFilter;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Objects;
@@ -83,14 +82,13 @@ public class BasicAuthenticateFilter implements BaseFilter {
         }
         if (!certified) {
             String authorization = request.getHeader(SSOConstants.AUTHORIZATION);
-            if (StringUtils.isNotEmpty(authorization)) {
-                String auth = new String(Base64Util.decode(authorization.substring(6)));
-                String[] arr = auth.split(StringPool.COLON);
-                if (2 == arr.length) {
-                    if (Objects.equals(arr[0], this.username) && Objects.equals(arr[1], this.password)) {
-                        httpSession.setAttribute(SSOConstants.BASIC_AUTHENTICATE_SESSION, this.username);
-                        certified = true;
-                    }
+            if (StringUtils.isNotEmpty(authorization) && authorization.startsWith(SSOConstants.BASIC)
+                    && authorization.length() > 5) {
+                String token = authorization.substring(5).trim();
+                String content = username + ":" + password;
+                if (Base64Util.encode(content.getBytes()).equalsIgnoreCase(token)) {
+                    httpSession.setAttribute(SSOConstants.BASIC_AUTHENTICATE_SESSION, this.username);
+                    certified = true;
                 }
             }
         }

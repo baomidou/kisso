@@ -33,7 +33,7 @@ buildscript {
 }
 
 group = 'com.baomidou'
-version = '3.9.0'
+version = '3.9.1'
 
 description = "kisso is a lightweight Java SSO Framework and reusable components."
 
@@ -70,6 +70,7 @@ dependencies {
     api("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
     api("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
 
+    compileOnly("io.projectreactor:reactor-core")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testAnnotationProcessor("org.projectlombok:lombok")

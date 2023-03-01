@@ -33,6 +33,8 @@ public interface SSOConstants {
     String HTTPS = "https";
     String ACCESS_SECRET = "accessSecret";
     String AUTHORIZATION = "Authorization";
+    String BASIC = "Basic ";
+    String BASIC_ACTUATOR = "/actuator";
 
     /**
      * http basic 认证
