@@ -96,7 +96,7 @@ javadoc {
         author true
         version true
         failOnError false
-        links "http://docs.oracle.com/javase/7/docs/api"
+        links "https://docs.oracle.com/javase/17/docs/api"
     }
 }
 
