@@ -15,12 +15,13 @@
  */
 package com.baomidou.kisso;
 
+import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.JwtHelper;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /**
@@ -177,7 +178,7 @@ public class SSOHelper {
      * </p>
      *
      * @param request 当前请求
-     * @return
+     * @return 缓存 KEY
      */
     public static String getTokenCacheKey(HttpServletRequest request) {
         return getSSOToken(request).toCacheKey();
@@ -189,10 +190,10 @@ public class SSOHelper {
      * </p>
      *
      * @param userId 用户ID
-     * @return
+     * @return 缓存 KEY
      */
-    public static String getTokenCacheKey(Object userId) {
-        return SSOConfig.toCacheKey(userId);
+    public static String getTokenCacheKey(String userId, TokenOrigin tokenOrigin) {
+        return SSOConfig.toCacheKey(userId, tokenOrigin);
     }
 
     /**
@@ -200,11 +201,12 @@ public class SSOHelper {
      * 踢出 指定用户 ID 的登录用户，退出当前系统。
      * </p>
      *
-     * @param userId 用户ID
-     * @return
+     * @param userId      用户ID
+     * @param tokenOrigin {@link TokenOrigin}
+     * @return true 成功 false 失败
      */
-    public static boolean kickLogin(Object userId) {
-        return getKissoService().kickLogin(userId);
+    public static boolean kickLogin(String userId, TokenOrigin tokenOrigin) {
+        return getKissoService().kickLogin(userId, tokenOrigin);
     }
 
 }

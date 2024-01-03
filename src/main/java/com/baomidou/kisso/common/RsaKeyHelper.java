@@ -36,12 +36,11 @@ public class RsaKeyHelper {
     /**
      * 获取 RSA 密钥
      *
-     * @param jksInputStream
-     * @param alias
-     * @param keypass
-     * @param storepass
-     * @return
-     * @throws Exception
+     * @param jksInputStream {@link InputStream}
+     * @param alias          别名
+     * @param keypass        KEY密钥
+     * @param storepass      存储密钥
+     * @return {@link Key}
      */
     public static Key getRsaKey(InputStream jksInputStream, String alias, String keypass, String storepass) throws Exception {
         KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -52,9 +51,8 @@ public class RsaKeyHelper {
     /**
      * 读取 RSA 公钥 public.cert
      *
-     * @param certInputStream
-     * @return
-     * @throws Exception
+     * @param certInputStream {@link InputStream}
+     * @return {@link PublicKey}
      */
     public static PublicKey getRsaPublicKey(InputStream certInputStream) throws Exception {
         CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");

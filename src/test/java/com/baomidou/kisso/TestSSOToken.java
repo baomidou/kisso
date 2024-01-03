@@ -54,7 +54,7 @@ public class TestSSOToken {
         String token = SSOToken.create().getToken();
         System.out.println(token);
         SSOToken ssoToken = SSOToken.parser(token, true);
-        Assertions.assertNull(ssoToken);
+        Assertions.assertNotNull(ssoToken);
     }
 
     public void rsaToken() {

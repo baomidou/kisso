@@ -15,10 +15,9 @@
  */
 package com.baomidou.kisso;
 
+import com.baomidou.kisso.security.token.SSOToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import com.baomidou.kisso.security.token.SSOToken;
 
 /**
  * <p>
@@ -35,9 +34,9 @@ public abstract class SSOPlugin {
      * 登录时调用该方法
      * </p>
      *
-     * @param request
-     * @param response
-     * @return
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     * @return true 成功 false 失败
      */
     public abstract boolean login(HttpServletRequest request, HttpServletResponse response);
 
@@ -51,7 +50,7 @@ public abstract class SSOPlugin {
      * </p>
      *
      * @param ssoToken 登录票据
-     * @return
+     * @return true 成功 false 失败
      */
     public boolean validateToken(SSOToken ssoToken) {
         return true;
@@ -63,9 +62,9 @@ public abstract class SSOPlugin {
      * 退出时调用该方法
      * </p>
      *
-     * @param request
-     * @param response
-     * @return
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     * @return true 成功 false 失败
      */
     public abstract boolean logout(HttpServletRequest request, HttpServletResponse response);
 }

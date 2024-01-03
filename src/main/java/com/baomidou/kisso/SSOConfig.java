@@ -17,9 +17,11 @@ package com.baomidou.kisso;
 
 import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.util.StringPool;
+import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
 import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import java.util.List;
@@ -106,14 +108,12 @@ public class SSOConfig {
     /**
      * 是否验证 token 设置时浏览器信息，命名不够准确，后面修改为 checkBrowser
      */
-    @Deprecated
-    private boolean cookieBrowser = false;
+    @Getter
     private boolean checkBrowser = false;
     /**
      * 是否验证 token 设置时 IP 信息，命名不够准确，后面修改为 checkIp
      */
-    @Deprecated
-    private boolean cookieCheckIp = false;
+    @Getter
     private boolean checkIp = false;
     /**
      * 登录地址（设置后拦截器自动跳转）
@@ -152,6 +152,7 @@ public class SSOConfig {
     /**
      * SSO 权限授权
      */
+    @Getter
     private SSOAuthorization authorization;
 
 
@@ -195,25 +196,13 @@ public class SSOConfig {
     }
 
 
-    public SSOAuthorization getAuthorization() {
-        return authorization;
-    }
-
     public SSOConfig setAuthorization(SSOAuthorization authorization) {
         this.authorization = authorization;
         return this;
     }
 
-    public boolean isCheckBrowser() {
-        return checkBrowser ? true : cookieBrowser;
-    }
-
-    public boolean isCheckIp() {
-        return checkIp ? true : cookieCheckIp;
-    }
-
     public String getCookieSameSite() {
-        if (null != cookieSameSite && ("Strict".equalsIgnoreCase(cookieSameSite)
+        if (("Strict".equalsIgnoreCase(cookieSameSite)
                 || "Lax".equalsIgnoreCase(cookieSameSite)
                 || "None".equalsIgnoreCase(cookieSameSite))) {
             return cookieSameSite;
@@ -226,10 +215,11 @@ public class SSOConfig {
      * 生成 Token 缓存主键
      * </p>
      *
-     * @param userId 用户ID
-     * @return
+     * @param userId      用户ID
+     * @param tokenOrigin {@link TokenOrigin}
+     * @return 缓存 KEY
      */
-    public static String toCacheKey(Object userId) {
-        return "ssoTokenKey_" + userId;
+    public static String toCacheKey(String userId, TokenOrigin tokenOrigin) {
+        return "ssoTokenKey_" + tokenOrigin.value() + userId;
     }
 }

@@ -22,11 +22,12 @@ import com.baomidou.kisso.common.CookieHelper;
 import com.baomidou.kisso.common.util.HttpUtil;
 import com.baomidou.kisso.common.util.RandomUtil;
 import com.baomidou.kisso.enums.TokenFlag;
+import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.token.SSOToken;
-import lombok.extern.slf4j.Slf4j;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -47,13 +48,13 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
      * 从 Cookie 解密 SSOToken 使用场景，拦截器，非拦截器建议使用 attrSSOToken 减少二次解密
      * </p>
      *
-     * @param request
+     * @param request {@link HttpServletRequest}
      * @return SSOToken {@link SSOToken}
      */
     @Override
     public SSOToken getSSOToken(HttpServletRequest request) {
         SSOToken tk = checkIpBrowser(request, cacheSSOToken(request, config.getCache()));
-        /**
+        /*
          * 执行插件逻辑
          */
         List<SSOPlugin> pluginList = config.getPluginList();
@@ -69,18 +70,13 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
     }
 
     /**
-     * <p>
      * 踢出 指定用户 ID 的登录用户，退出当前系统。
-     * </p>
-     *
-     * @param userId 用户ID
-     * @return
      */
     @Override
-    public boolean kickLogin(Object userId) {
+    public boolean kickLogin(String userId, TokenOrigin tokenOrigin) {
         SSOCache cache = config.getCache();
         if (cache != null) {
-            return cache.delete(SSOConfig.toCacheKey(userId));
+            return cache.delete(SSOConfig.toCacheKey(userId, tokenOrigin));
         } else {
             log.info(" kickLogin! please implements SSOCache class.");
         }
@@ -96,17 +92,17 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
      * -1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
      * </p>
      *
-     * @param request
-     * @param response
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
      */
     @Override
     public void setCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken) {
-        /**
+        /*
          * 设置加密 Cookie
          */
         SSOCookie ssoCookie = this.generateCookie(request, ssoToken);
 
-        /**
+        /*
          * 判断 SSOToken 是否缓存处理失效
          * <p>
          * cache 缓存宕机，flag 设置为失效
@@ -120,7 +116,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
             }
         }
 
-        /**
+        /*
          * 执行插件逻辑
          */
         List<SSOPlugin> pluginList = config.getPluginList();
@@ -133,7 +129,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
             }
         }
 
-        /**
+        /*
          * 设置 SSO Cookie
          */
         CookieHelper.addSSOCookie(response, ssoCookie);
@@ -142,8 +138,8 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
     /**
      * 当前访问域下设置登录Cookie 设置防止伪造SESSIONID攻击
      *
-     * @param request
-     * @param response
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
      */
     public void authCookie(HttpServletRequest request, HttpServletResponse response, SSOToken SSOToken) {
         CookieHelper.authJSESSIONID(request, RandomUtil.getCharacterAndNumber(8));
@@ -153,8 +149,8 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
     /**
      * 清除登录状态
      *
-     * @param request
-     * @param response
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
      * @return boolean true 成功, false 失败
      */
     @Override
@@ -167,8 +163,8 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
      * 重新登录 退出当前登录状态、重定向至登录页.
      * </p>
      *
-     * @param request
-     * @param response
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
      */
     @Override
     public void clearRedirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {

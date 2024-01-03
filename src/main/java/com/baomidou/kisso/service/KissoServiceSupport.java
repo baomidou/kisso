@@ -28,11 +28,11 @@ import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.exception.KissoException;
 import com.baomidou.kisso.security.token.SSOToken;
 import com.baomidou.kisso.security.token.Token;
-import lombok.extern.slf4j.Slf4j;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -48,7 +48,7 @@ import java.util.Objects;
 public class KissoServiceSupport {
     protected SSOConfig config;
 
-    /**
+    /*
      * ------------------------------- 客户端相关方法 -------------------------------
      */
 
@@ -58,7 +58,7 @@ public class KissoServiceSupport {
      * 此属性在过滤器拦截器中设置，业务系统中调用有效
      * </p>
      *
-     * @param request
+     * @param request {@link HttpServletRequest}
      * @return SSOToken {@link SSOToken}
      */
     @SuppressWarnings("unchecked")
@@ -74,11 +74,11 @@ public class KissoServiceSupport {
      * 判断 SSOToken 是否缓存 ， 如果缓存不存退出登录
      * </p>
      *
-     * @param request
+     * @param request {@link HttpServletRequest}
      * @return SSOToken {@link SSOToken}
      */
     protected SSOToken cacheSSOToken(HttpServletRequest request, SSOCache cache) {
-        /**
+        /*
          * 如果缓存不存退出登录
          */
         if (cache != null) {
@@ -116,7 +116,7 @@ public class KissoServiceSupport {
             }
         }
 
-        /**
+        /*
          * SSOToken 为 null 执行以下逻辑
          */
         return getSSOToken(request, config.getCookieName());
@@ -127,7 +127,7 @@ public class KissoServiceSupport {
      * 获取当前请求 SSOToken
      * </p>
      *
-     * @param request
+     * @param request    {@link HttpServletRequest}
      * @param cookieName Cookie名称
      * @return SSOToken
      */
@@ -149,7 +149,7 @@ public class KissoServiceSupport {
      * 校验SSOToken IP 浏览器 与登录一致
      * </p>
      *
-     * @param request
+     * @param request  {@link HttpServletRequest}
      * @param ssoToken 登录票据
      * @return SSOToken {@link SSOToken}
      */
@@ -157,14 +157,14 @@ public class KissoServiceSupport {
         if (null == ssoToken) {
             return null;
         }
-        /**
+        /*
          * 判断请求浏览器是否合法
          */
         if (config.isCheckBrowser() && !Browser.isLegalUserAgent(request, ssoToken.getUserAgent())) {
             log.info("The request browser is inconsistent.");
             return null;
         }
-        /**
+        /*
          * 判断请求 IP 是否合法
          */
         if (config.isCheckIp()) {
@@ -180,8 +180,9 @@ public class KissoServiceSupport {
 
 
     /**
-     * cookie 中获取 SSOToken, 该方法未验证 IP 等其他信息。
      * <p>
+     * cookie 中获取 SSOToken, 该方法未验证 IP 等其他信息。
+     * </p>
      * <p>
      * 1、自动设置
      * 2、拦截器 request 中获取
@@ -189,7 +190,7 @@ public class KissoServiceSupport {
      * </p>
      *
      * @param request HTTP 请求
-     * @return
+     * @return {@link SSOToken}
      */
     public SSOToken getSSOTokenFromCookie(HttpServletRequest request) {
         SSOToken tk = this.attrSSOToken(request);
@@ -199,7 +200,7 @@ public class KissoServiceSupport {
         return tk;
     }
 
-    /**
+    /*
      * ------------------------------- 登录相关方法 -------------------------------
      */
 
@@ -208,7 +209,7 @@ public class KissoServiceSupport {
      * 根据SSOToken生成登录信息Cookie
      * </p>
      *
-     * @param request
+     * @param request {@link HttpServletRequest}
      * @param token   SSO 登录信息票据
      * @return Cookie 登录信息Cookie {@link Cookie}
      */
@@ -219,7 +220,7 @@ public class KissoServiceSupport {
             ssoCookie.setSecure(Objects.equals(request.getScheme(), SSOConstants.HTTPS));
             ssoCookie.setHttpOnly(config.isCookieHttpOnly());
             ssoCookie.setSameSite(config.getCookieSameSite());
-            /**
+            /*
              * domain 提示
              * <p>
              * 有些浏览器 localhost 无法设置 cookie
@@ -233,7 +234,7 @@ public class KissoServiceSupport {
                 }
             }
 
-            /**
+            /*
              * 设置Cookie超时时间
              */
             int maxAge = config.getCookieMaxAge();
@@ -256,12 +257,12 @@ public class KissoServiceSupport {
      * 退出当前登录状态
      * </p>
      *
-     * @param request
-     * @param response
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
      * @return boolean true 成功, false 失败
      */
     protected boolean logout(HttpServletRequest request, HttpServletResponse response, SSOCache cache) {
-        /**
+        /*
          * SSOToken 如果开启了缓存，删除缓存记录
          */
         if (cache != null && !SSOConstants.SSO_KICK_USER.equals(request.getAttribute(SSOConstants.SSO_KICK_FLAG))) {
@@ -274,7 +275,7 @@ public class KissoServiceSupport {
             }
         }
 
-        /**
+        /*
          * 执行插件逻辑
          */
         List<SSOPlugin> pluginList = config.getPluginList();
@@ -287,7 +288,7 @@ public class KissoServiceSupport {
             }
         }
 
-        /**
+        /*
          * 删除登录 Cookie
          */
         return CookieHelper.clearCookieByName(request, response, config.getCookieName(),

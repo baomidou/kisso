@@ -26,10 +26,12 @@ import com.baomidou.kisso.security.JwtHelper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * <p>
@@ -41,90 +43,83 @@ import java.util.Date;
  */
 @Slf4j
 public class SSOToken extends AccessToken {
+    @Getter
     private TokenFlag flag = TokenFlag.NORMAL;
+    @Getter
     private TokenOrigin origin = TokenOrigin.COOKIE;
     /**
      * 主键
      */
+    @Getter
     private String id;
     /**
      * 租户 ID
      */
+    @Getter
     private String tenantId;
     /**
      * 发布者
      */
+    @Getter
     private String issuer;
     /**
      * IP 地址
      */
+    @Getter
     private String ip;
     /**
      * 创建日期
      */
-    private long time = System.currentTimeMillis();
+    @Getter
+    private long time;
     /**
      * 请求头信息
      */
+    @Getter
     private String userAgent;
     /**
-     * 预留扩展、配合缓存使用
+     * 预留扩展参数
      */
-    private Object data;
-    private JwtBuilder jwtBuilder;
-    private Claims claims;
+    @Getter
+    private Map<String, Object> data;
 
     public SSOToken() {
         // TO DO NOTHING
     }
 
-    public SSOToken(JwtBuilder jwtBuilder) {
-        this.jwtBuilder = jwtBuilder;
-    }
-
     public static SSOToken create() {
-        return new SSOToken();
-    }
-
-    public static SSOToken create(JwtBuilder jwtBuilder) {
-        return create().setJwtBuilder(jwtBuilder);
+        return new SSOToken().setTime(System.currentTimeMillis());
     }
 
     @Override
     public String getToken() {
-        if (null == this.jwtBuilder) {
-            this.jwtBuilder = Jwts.builder();
-        }
+        JwtBuilder jwtBuilder = Jwts.builder();
         if (null != this.getId()) {
-            this.jwtBuilder.setId(this.getId());
+            jwtBuilder.setId(this.getId());
         }
         if (null != this.getTenantId()) {
-            this.jwtBuilder.claim(SSOConstants.TOKEN_TENANT_ID, this.getTenantId());
+            jwtBuilder.claim(SSOConstants.TOKEN_TENANT_ID, this.getTenantId());
         }
         if (null != this.getIp()) {
-            this.jwtBuilder.claim(SSOConstants.TOKEN_USER_IP, this.getIp());
+            jwtBuilder.claim(SSOConstants.TOKEN_USER_IP, this.getIp());
         }
         if (null != this.getIssuer()) {
-            this.jwtBuilder.setIssuer(this.getIssuer());
+            jwtBuilder.setIssuer(this.getIssuer());
         }
         if (null != this.getUserAgent()) {
-            this.jwtBuilder.claim(SSOConstants.TOKEN_USER_AGENT, this.getUserAgent());
-        }
-        if (null != this.getClaims()) {
-            this.jwtBuilder.setClaims(this.getClaims());
+            jwtBuilder.claim(SSOConstants.TOKEN_USER_AGENT, this.getUserAgent());
         }
         if (TokenFlag.NORMAL != this.getFlag()) {
-            this.jwtBuilder.claim(SSOConstants.TOKEN_FLAG, this.getFlag().value());
+            jwtBuilder.claim(SSOConstants.TOKEN_FLAG, this.getFlag().value());
         }
         if (null != this.getOrigin()) {
-            this.jwtBuilder.claim(SSOConstants.TOKEN_ORIGIN, this.getOrigin().value());
+            jwtBuilder.claim(SSOConstants.TOKEN_ORIGIN, this.getOrigin().value());
         }
-        this.jwtBuilder.setIssuedAt(new Date(time));
+        jwtBuilder.setIssuedAt(new Date(time));
+        if (null != data) {
+            data.forEach(jwtBuilder::claim);
+        }
         return JwtHelper.signCompact(jwtBuilder);
-    }
-
-    public TokenFlag getFlag() {
-        return flag;
     }
 
     public SSOToken setFlag(TokenFlag flag) {
@@ -132,17 +127,9 @@ public class SSOToken extends AccessToken {
         return this;
     }
 
-    public TokenOrigin getOrigin() {
-        return origin;
-    }
-
     public SSOToken setOrigin(TokenOrigin origin) {
         this.origin = origin;
         return this;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public SSOToken setId(Object id) {
@@ -155,10 +142,6 @@ public class SSOToken extends AccessToken {
         return this;
     }
 
-    public String getTenantId() {
-        return tenantId;
-    }
-
     public SSOToken setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -169,17 +152,9 @@ public class SSOToken extends AccessToken {
         return this;
     }
 
-    public String getIssuer() {
-        return issuer;
-    }
-
     public SSOToken setIssuer(String issuer) {
         this.issuer = issuer;
         return this;
-    }
-
-    public String getIp() {
-        return ip;
     }
 
     public SSOToken setIp(HttpServletRequest request) {
@@ -192,10 +167,6 @@ public class SSOToken extends AccessToken {
         return this;
     }
 
-    public String getUserAgent() {
-        return userAgent;
-    }
-
     public SSOToken setUserAgent(String userAgent) {
         this.userAgent = userAgent;
         return this;
@@ -206,45 +177,18 @@ public class SSOToken extends AccessToken {
         return this;
     }
 
-    public long getTime() {
-        return time;
-    }
-
     public SSOToken setTime(long time) {
         this.time = time;
         return this;
     }
 
-    public Object getData() {
-        return data;
-    }
-
-    public SSOToken setData(Object data) {
+    public SSOToken setData(Map<String, Object> data) {
         this.data = data;
         return this;
     }
 
-    public JwtBuilder getJwtBuilder() {
-        return jwtBuilder;
-    }
-
-    // Jwts.builder()
-    public SSOToken setJwtBuilder(JwtBuilder jwtBuilder) {
-        this.jwtBuilder = jwtBuilder;
-        return this;
-    }
-
-    public Claims getClaims() {
-        return claims;
-    }
-
-    public SSOToken setClaims(Claims claims) {
-        this.claims = claims;
-        return this;
-    }
-
     public String toCacheKey() {
-        return SSOConfig.toCacheKey(this.getId());
+        return SSOConfig.toCacheKey(id, origin);
     }
 
     public static SSOToken parser(String jwtToken) {
@@ -258,10 +202,10 @@ public class SSOToken extends AccessToken {
         }
         String origin = claims.get(SSOConstants.TOKEN_ORIGIN, String.class);
         if (header && StringUtils.isEmpty(origin)) {
-            log.warn("illegal token request orgin.");
+            log.warn("illegal token request origin.");
             return null;
         }
-        SSOToken ssoToken = new SSOToken();
+        SSOToken ssoToken = SSOToken.create();
         ssoToken.setId(claims.getId());
         ssoToken.setIssuer(claims.getIssuer());
         String ip = claims.get(SSOConstants.TOKEN_USER_IP, String.class);
@@ -285,7 +229,6 @@ public class SSOToken extends AccessToken {
             ssoToken.setOrigin(TokenOrigin.fromValue(origin));
         }
         ssoToken.setTime(claims.getIssuedAt().getTime());
-        ssoToken.setClaims(claims);
         return ssoToken;
     }
 }
