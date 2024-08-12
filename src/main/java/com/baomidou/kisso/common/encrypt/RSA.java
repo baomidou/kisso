@@ -169,11 +169,11 @@ public class RSA {
         return cipherDecryptData(encryptedData, publicKey(publicKey));
     }
 
-    private static byte[] cipherDecryptData(byte[] data, Key key) throws Exception {
+    public static byte[] cipherDecryptData(byte[] data, Key key) throws Exception {
         return cipherData(data, key, Cipher.DECRYPT_MODE, MAX_DECRYPT_BLOCK);
     }
 
-    private static byte[] cipherEncryptData(byte[] data, Key key) throws Exception {
+    public static byte[] cipherEncryptData(byte[] data, Key key) throws Exception {
         return cipherData(data, key, Cipher.ENCRYPT_MODE, MAX_ENCRYPT_BLOCK);
     }
 
