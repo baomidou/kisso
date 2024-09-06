@@ -17,9 +17,9 @@ package com.baomidou.kisso.common;
 
 import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.common.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.net.*;
 import java.util.Enumeration;
 
@@ -84,22 +84,22 @@ public class IpHelper {
     }
 
     static {
-        String ip = StringPool.EMPTY;
+        StringBuilder ip = new StringBuilder(StringPool.EMPTY);
         try {
             InetAddress inetAddr = InetAddress.getLocalHost();
             HOST_NAME = inetAddr.getHostName();
             byte[] addr = inetAddr.getAddress();
             for (int i = 0; i < addr.length; i++) {
                 if (i > 0) {
-                    ip += StringPool.DOT;
+                    ip.append(StringPool.DOT);
                 }
-                ip += addr[i] & 0xFF;
+                ip.append(addr[i] & 0xFF);
             }
         } catch (UnknownHostException e) {
-            ip = "unknown";
+            ip = new StringBuilder("unknown");
             log.error(e.getMessage());
         } finally {
-            LOCAL_IP = ip;
+            LOCAL_IP = ip.toString();
         }
     }
 
@@ -142,7 +142,7 @@ public class IpHelper {
      * 判断是否为本地 IP
      *
      * @param ip 待判断 IP
-     * @return
+     * @return ture 成功 false 失败
      */
     public static boolean isLocalIp(String ip) {
         try {

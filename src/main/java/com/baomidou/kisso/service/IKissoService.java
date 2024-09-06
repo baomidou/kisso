@@ -17,6 +17,7 @@ package com.baomidou.kisso.service;
 
 import java.io.IOException;
 
+import com.baomidou.kisso.enums.TokenOrigin;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -44,10 +45,11 @@ public interface IKissoService {
      * 踢出 指定用户 ID 的登录用户，退出当前系统。
      * </p>
      *
-     * @param userId 用户ID
-     * @return
+     * @param userId      用户ID
+     * @param tokenOrigin {@link TokenOrigin}
+     * @return true 成功 false 失败
      */
-    boolean kickLogin(Object userId);
+    boolean kickLogin(String userId, TokenOrigin tokenOrigin);
 
     /**
      * <p>

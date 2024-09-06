@@ -18,11 +18,10 @@ package com.baomidou.kisso.common;
 import com.baomidou.kisso.common.util.StringPool;
 import com.baomidou.kisso.common.util.StringUtils;
 import com.baomidou.kisso.service.SSOCookie;
-import lombok.extern.slf4j.Slf4j;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Cookie工具类
@@ -97,20 +96,19 @@ public class CookieHelper {
 
     /**
      * <p>
-     * 清除指定doamin的所有Cookie
+     * 清除指定domain的所有Cookie
      * </p>
      *
-     * @param request
-     * @param response
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
      * @param domain   Cookie所在的域
      * @param path     Cookie 路径
-     * @return
      */
     public static void clearAllCookie(HttpServletRequest request, HttpServletResponse response, String domain,
                                       String path) {
         Cookie[] cookies = request.getCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            clearCookie(response, cookies[i].getName(), domain, path);
+        for (Cookie cookie : cookies) {
+            clearCookie(response, cookie.getName(), domain, path);
         }
         log.info("clearAllCookie in  domain " + domain);
     }
@@ -120,12 +118,12 @@ public class CookieHelper {
      * 根据cookieName清除指定Cookie
      * </p>
      *
-     * @param request
-     * @param response
+     * @param request    {@link HttpServletRequest}
+     * @param response   {@link HttpServletResponse}
      * @param cookieName cookie name
      * @param domain     Cookie所在的域
      * @param path       Cookie 路径
-     * @return boolean
+     * @return true 成功 false 失败
      */
     public static boolean clearCookieByName(HttpServletRequest request, HttpServletResponse response, String cookieName,
                                             String domain, String path) {
@@ -146,11 +144,11 @@ public class CookieHelper {
      * 该方法不判断Cookie是否存在,因此不对外暴露防止Cookie不存在异常.
      * </p>
      *
-     * @param response
+     * @param response   {@link HttpServletResponse}
      * @param cookieName cookie name
      * @param domain     Cookie所在的域
      * @param path       Cookie 路径
-     * @return boolean
+     * @return true 成功 false 失败
      */
     private static boolean clearCookie(HttpServletResponse response, String cookieName, String domain, String path) {
         boolean result = false;
@@ -175,7 +173,7 @@ public class CookieHelper {
      * 添加 Cookie
      * </p>
      *
-     * @param response
+     * @param response {@link HttpServletResponse}
      * @param domain   所在域
      * @param path     域名路径
      * @param name     名称
@@ -187,7 +185,7 @@ public class CookieHelper {
     public static void addCookie(HttpServletResponse response, String domain, String path, String name, String value,
                                  int maxAge, boolean httpOnly, boolean secure) {
         SSOCookie ssoCookie = new SSOCookie(name, value);
-        /**
+        /*
          * 不设置该参数默认 当前所在域
          */
         if (StringUtils.isNotEmpty(domain)) {
@@ -199,9 +197,9 @@ public class CookieHelper {
             ssoCookie.setHttpOnly(true);
         }
 
-        /** Cookie 只在Https协议下传输设置 */
+        /* Cookie 只在Https协议下传输设置 */
         if (secure) {
-            ssoCookie.setSecure(secure);
+            ssoCookie.setSecure(true);
         }
         addSSOCookie(response, ssoCookie);
     }
@@ -216,12 +214,12 @@ public class CookieHelper {
         if (null == ssoCookie) {
             return;
         }
-        /**
+        /*
          * 依次取得cookie中的名称、值、 最大生存时间、路径、域和是否为安全协议信息
          */
         String cookieName = ssoCookie.getName();
         String cookieValue = ssoCookie.getValue();
-        StringBuffer sf = new StringBuffer();
+        StringBuilder sf = new StringBuilder();
         sf.append(cookieName).append(StringPool.EQUALS).append(cookieValue).append(StringPool.SEMICOLON);
         int maxAge = ssoCookie.getMaxAge();
         if (maxAge >= 0) {
