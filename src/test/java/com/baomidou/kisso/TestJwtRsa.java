@@ -62,7 +62,7 @@ public class TestJwtRsa {
 
         // CRT 证书中读取公钥解密
         PublicKey publicKey = RsaKeyHelper.getRsaPublicKey(new ClassPathResource(ssoConfig.getRsaCertStore()).getInputStream());
-        Jws<Claims> crtClaimsJws = Jwts.parserBuilder().require("user", "cope")
+        Jws<Claims> crtClaimsJws = Jwts.parser().require("user", "cope")
                 .setSigningKey(publicKey).build().parseClaimsJws(token);
         System.out.println("crt subject: " + crtClaimsJws.getBody().getSubject());
     }
