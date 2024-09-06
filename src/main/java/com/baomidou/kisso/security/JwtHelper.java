@@ -125,11 +125,11 @@ public class JwtHelper {
                     RSA_PUBLICKEY = RsaKeyHelper.getRsaPublicKey(resource.getInputStream());
                 }
                 // RSA 签名验证
-                return Jwts.parserBuilder().setSigningKey(RSA_PUBLICKEY).build();
+                return Jwts.parser().verifyWith(RSA_PUBLICKEY).build();
             }
             // 普通签名验证
             SecretKey secretKey = getSecretKey(config.getSignKey(), signatureAlgorithm);
-            return Jwts.parserBuilder().setSigningKey(secretKey).build();
+            return Jwts.parser().verifyWith(secretKey).build();
         } catch (Exception e) {
             throw new KissoException("verifyParser error.", e);
         }
