@@ -3,17 +3,13 @@
 
 kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 java Web 登录系统（SSO）的瑞士军刀。
 
-
-[ ！！ 官方文档 ！！ ](http://doc.aizuda.com/pages/9xd005)
-
-
 # 其他开源项目 | Other Project
 
 - [Mybatis-Plus CRUD 快速开发框架](https://gitee.com/baomidou/mybatis-plus)
 
 - [Mybatis-Plus 企业版高级特性示例](https://gitee.com/baomidou/mybatis-mate-examples)
 
-- [AiZuDa 爱组搭 ~ 低代码开发组件库](https://gitee.com/aizuda/aizuda-components)
+- [AiZuDa 爱组搭](https://gitee.com/aizuda)
 
 
 - 前后分离可选：请求 Header 票据模式, 请求 Cookie 模式
@@ -27,7 +23,7 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>3.9.1</version>
+  <version>3.9.2</version>
 </dependency>
 ```
 
