@@ -15,11 +15,11 @@
  */
 package com.baomidou.kisso.captcha;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -39,7 +39,6 @@ public interface ICaptcha extends Serializable {
      * @param request 当前请求
      * @param out     输出流
      * @param ticket  验证码票据
-     * @return String 验证码内容
      */
     void generate(HttpServletRequest request, OutputStream out, String ticket) throws IOException;
 
