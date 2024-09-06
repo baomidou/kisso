@@ -16,9 +16,9 @@
 package com.baomidou.kisso.web;
 
 import com.baomidou.kisso.common.util.StringUtils;
-
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterConfig;
+
 import java.util.function.Consumer;
 
 /**
@@ -38,7 +38,6 @@ public interface BaseFilter extends Filter {
      * @param filterConfig      {@link FilterConfig}
      * @param parameter         配置参数
      * @param parameterConsumer 参数处理函数
-     * @return
      */
     default void initParameter(FilterConfig filterConfig, String parameter, Consumer<String> parameterConsumer) {
         String value = filterConfig.getInitParameter(parameter);
@@ -54,7 +53,6 @@ public interface BaseFilter extends Filter {
      * @param filterConfig {@link FilterConfig}
      * @param parameter    配置参数
      * @param defVal       默认值
-     * @return
      */
     default boolean getBoolParameter(FilterConfig filterConfig, String parameter, Boolean defVal) {
         String value = filterConfig.getInitParameter(parameter);
