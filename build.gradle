@@ -77,6 +77,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:-serial"
     options.encoding = 'UTF-8'
     options.warnings = false
     options.deprecation = true
