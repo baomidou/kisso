@@ -1,20 +1,13 @@
 apply plugin: 'java-library'
-apply plugin: 'maven-publish'
+apply plugin: 'com.vanniktech.maven.publish'
 apply plugin: 'signing'
-apply plugin: "io.spring.dependency-management"
-
-ext {
-    configuration = [
-            javaVersion = JavaVersion.VERSION_17
-    ]
-
-}
+apply plugin: 'io.spring.dependency-management'
 
 // 编译脚本
 buildscript {
     ext {
         springBootVersion = "3.0.0"
-        jjwtVersion = "0.11.5"
+        jjwtVersion = "0.12.6"
     }
 
     // 仓库配置
@@ -23,26 +16,19 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/spring' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://repo.spring.io/release' }
-        maven { url 'https://repo.spring.io/milestone' }
+        mavenCentral()
     }
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("com.vanniktech:gradle-maven-publish-plugin:0.29.0")
     }
 }
 
-group = 'com.baomidou'
-version = '3.9.1'
+group = APP_GROUP
+version = APP_VERSION
 
 description = "kisso is a lightweight Java SSO Framework and reusable components."
-
-sourceCompatibility = "${javaVersion}"
-targetCompatibility = "${javaVersion}"
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
 
 repositories {
     mavenLocal()
@@ -83,8 +69,26 @@ dependencies {
     testCompileOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
+tasks.named('test') {
+    useJUnitPlatform()
+}
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.warnings = false
+    options.deprecation = true
+    options.compilerArgs += ["-parameters"]
+}
+
+tasks.withType(GenerateModuleMetadata).configureEach {
+    enabled = false
+}
+
+tasks.register('sourcesJar', Jar) {
+    dependsOn classes
     archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
@@ -96,91 +100,17 @@ javadoc {
         author true
         version true
         failOnError false
-        links "http://docs.oracle.com/javase/7/docs/api"
+        links "https://docs.oracle.com/javase/8/docs/api"
     }
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+tasks.withType(MavenPublication).configureEach {
+    doFirst {
+        options.skipCertificateChecks = true
+    }
+}
+
+tasks.register('javadocJar', Jar) {
     archiveClassifier = 'javadoc'
-    from 'build/docs/javadoc'
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-test {
-    useJUnitPlatform()
-}
-
-publishing {
-    repositories {
-        maven {
-            def userName = System.getProperty("un")
-            def passWord = System.getProperty("ps")
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-
-            credentials {
-                username userName
-                password passWord
-            }
-        }
-    }
-    publications {
-
-        mavenJava(MavenPublication) {
-            from components.java
-
-            artifact sourcesJar
-            artifact javadocJar
-
-            pom {
-                name = 'kisso'
-                packaging 'jar'
-                description = 'An enhanced toolkit of SSO to simplify development.'
-                url = 'https://github.com/baomidou/kisso'
-
-                scm {
-                    connection = 'scm:git@github.com:Codearte/gradle-nexus-staging-plugin.git'
-                    developerConnection = 'scm:git@github.com:Codearte/gradle-nexus-staging-plugin.git'
-                    url = 'https://github.com/baomidou/kisso'
-                }
-
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'baomidou'
-                        name = 'hubin'
-                        email = 'jobob@qq.com'
-                    }
-                }
-
-                withXml {
-                    def root = asNode()
-                    root.dependencies.'*'.findAll {
-                        def d = it
-                        d.scope.text() == 'runtime' && project.configurations.findByName("implementation").allDependencies.find { dep ->
-                            dep.name == it.artifactId.text()
-                        }.each() {
-                            d.scope*.value = 'compile'
-                            d.appendNode('optional', true)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    signing {
-        sign publishing.publications.mavenJava
-    }
+    from javadoc
 }
