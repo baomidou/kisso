@@ -23,7 +23,7 @@ kisso  =  cookie sso 基于 Cookie 的 SSO 中间件，它是一把快速开发 
 <dependency>
   <groupId>com.baomidou</groupId>
   <artifactId>kisso</artifactId>
-  <version>3.9.2</version>
+  <version>3.9.3</version>
 </dependency>
 ```
 
