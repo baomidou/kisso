@@ -52,10 +52,10 @@ public class TestJwtRsa {
 
         // 加密
         String token = Jwts.builder()
-                .setClaims(claims)
-                .setSubject("test rsa jwt")
-                .setIssuedAt(new Date())
-                .setExpiration(expires.getTime())
+                .claims(claims)
+                .subject("test rsa jwt")
+                .issuedAt(new Date())
+                .expiration(expires.getTime())
                 .signWith(key, SignatureAlgorithm.RS512)
                 .compact();
         System.out.println(token);

@@ -112,7 +112,7 @@ public abstract class AbstractKissoService extends KissoServiceSupport implement
         if (cache != null) {
             boolean rlt = cache.set(ssoToken.toCacheKey(), ssoToken, config.getCacheExpires());
             if (!rlt) {
-                ssoToken.setFlag(TokenFlag.CACHE_SHUT);
+                ssoToken.flag(TokenFlag.CACHE_SHUT);
             }
         }
 

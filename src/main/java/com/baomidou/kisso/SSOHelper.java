@@ -65,9 +65,10 @@ public class SSOHelper {
         return JwtHelper.getHS512SecretKey();
     }
 
-    /**
+    /*
      * ------------------------------- 登录相关方法 -------------------------------
      */
+
     /**
      * <p>
      * 设置加密 Cookie（登录验证成功）<br>
@@ -81,8 +82,8 @@ public class SSOHelper {
      * maxAge 定义：-1 浏览器关闭时自动删除 0 立即删除 120 表示Cookie有效期2分钟(以秒为单位)
      * </p>
      *
-     * @param request
-     * @param response
+     * @param request    HttpServletRequest
+     * @param response   HttpServletResponse
      * @param ssoToken   SSO 票据
      * @param invalidate 销毁当前 JSESSIONID
      */
@@ -98,9 +99,10 @@ public class SSOHelper {
         setCookie(request, response, ssoToken, false);
     }
 
-    /**
+    /*
      * ------------------------------- 客户端相关方法 -------------------------------
      */
+
     /**
      * <p>
      * 获取当前请求 token<br>
@@ -110,8 +112,7 @@ public class SSOHelper {
      * 如果该请求在登录拦截器之后请使用 attrToken(request) 防止二次解密
      * </p>
      *
-     * @param request
-     * @return
+     * @param request HttpServletRequest
      */
     @SuppressWarnings("unchecked")
     public static <T extends SSOToken> T getSSOToken(HttpServletRequest request) {
@@ -125,8 +126,7 @@ public class SSOHelper {
      * 该数据为登录拦截器放入 request 中，防止二次解密
      * </p>
      *
-     * @param request 访问请求
-     * @return
+     * @param request HttpServletRequest
      */
     public static <T extends SSOToken> T attrToken(HttpServletRequest request) {
         return getKissoService().attrSSOToken(request);
@@ -137,9 +137,8 @@ public class SSOHelper {
      * 退出登录， 并且跳至 sso.properties 配置的属性 sso.logout.url 地址
      * </p>
      *
-     * @param request
-     * @param response
-     * @throws IOException
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
      */
     public static void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         getKissoService().logout(request, response);
@@ -151,9 +150,8 @@ public class SSOHelper {
      * 清理 Cookie、缓存、统计、等数据
      * </p>
      *
-     * @param request
-     * @param response
-     * @return
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
      */
     public static boolean clearLogin(HttpServletRequest request, HttpServletResponse response) {
         return getKissoService().clearLogin(request, response);
@@ -164,9 +162,8 @@ public class SSOHelper {
      * 退出重定向登录页，跳至 sso.properties 配置的属性 sso.login.url 地址
      * </p>
      *
-     * @param request
-     * @param response
-     * @throws IOException
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
      */
     public static void clearRedirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         getKissoService().clearRedirectLogin(request, response);
@@ -177,7 +174,7 @@ public class SSOHelper {
      * 获取 token 的缓存主键
      * </p>
      *
-     * @param request 当前请求
+     * @param request HttpServletRequest
      * @return 缓存 KEY
      */
     public static String getTokenCacheKey(HttpServletRequest request) {

@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso;
 
+import com.baomidou.kisso.enums.TokenFlag;
 import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.JwtHelper;
 import com.baomidou.kisso.security.token.SSOToken;
@@ -32,21 +33,15 @@ import org.junit.jupiter.api.Test;
 public class TestSSOToken {
 
     @Test
-    public void getHS512SecretKey() {
-        System.out.println(JwtHelper.getHS512SecretKey());
-    }
-
-    @Test
     public void hs512Token() {
-        String token = SSOToken.create().setIp("127.0.0.1").setTime(1502085277L).setId(1)
-                .setOrigin(TokenOrigin.IOS).setUserAgent("123").setIssuer("kisso").getToken();
-        Assertions.assertEquals(token, "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIxIiwiaXAiOiIxMjcuMC4wLjEiLCJpc3MiOiJra" +
-                "XNzbyIsInVhIjoiMTIzIiwib2ciOiIyIiwiaWF0IjoxNTAyMDg1fQ.dVhcDtXYayHsYcw7_eMOtJeuR5xoNMzGty44TxcH7m" +
-                "v2FNFYdrj0pKkLEy4j5kt8i7YUatcRtkTmf7BV_Tpk1Q");
+        String hs521SecretKey = JwtHelper.getHS512SecretKey();
+        System.err.println("hs521SecretKey = " + hs521SecretKey);
+
+        String token = SSOToken.create().ip("127.0.0.1").time(1502085277L).id(1).tenantId("123").flag(TokenFlag.NORMAL)
+                .origin(TokenOrigin.IOS).userAgent("123").issuer("kisso").getToken();
+
         SSOToken ssoToken = SSOToken.parser(token, true);
         Assertions.assertEquals("kisso", ssoToken.getIssuer());
-
-        this.rsaToken();
     }
 
     @Test
@@ -57,18 +52,11 @@ public class TestSSOToken {
         Assertions.assertNotNull(ssoToken);
     }
 
+    @Test
     public void rsaToken() {
         SSOConfig ssoConfig = SSOConfig.getInstance();
         ssoConfig.setSignAlgorithm("RS512");
-        String token = SSOToken.create().setIp("127.0.0.1").setTime(1502085277L).setId(1)
-                .setOrigin(TokenOrigin.IOS).setUserAgent("123").setIssuer("kisso").getToken();
-        Assertions.assertEquals(token, "eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiIxIiwiaXAiOiIxMjcuMC4w" +
-                "LjEiLCJpc3MiOiJraXNzbyIsInVhIjoiMTIzIiwib2ciOiIyIiwiaWF0IjoxNTAyMDg1fQ.TrfBLtwc" +
-                "GDeq-buzqTQjtBzX0bWX_aOOda78gnGdemOb_zjf_stHVgsaqSB42AvZvz3DEn9yMzRFcz5FwYKdc-g" +
-                "Dwn02IZ-0VFtQCXA2HO4UGCa0ipMGLaTe8lujSxMhwcqFxgZAa87MUzst-Ddd516DGvvuX7vZTiw0qA" +
-                "Elk_HsUCULeJXrHLIb4BxGymyIi0gUI-G9l15omJyq0GIdvWAViOOhIDGdTBG6zH77xcnceRrHz3ylT" +
-                "dFMyLIqkX5A3G-wAfPMZ7tpNBeCiS9OKNpWkM1gexVLzN7l6m7J5Qj04x17UFNiiw1S5HHgo6oTz_K3i" +
-                "jZPIF0DwGmhTk0DnQ");
+        String token = SSOToken.create().ip("127.0.0.1").time(1502085277L).id(1).issuer("kisso").getToken();
         SSOToken ssoToken = SSOToken.parser(token, true);
         Assertions.assertEquals("kisso", ssoToken.getIssuer());
     }

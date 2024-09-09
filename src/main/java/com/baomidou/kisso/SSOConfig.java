@@ -222,4 +222,8 @@ public class SSOConfig {
     public static String toCacheKey(String userId, TokenOrigin tokenOrigin) {
         return "ssoTokenKey_" + tokenOrigin.value() + userId;
     }
+
+    public boolean rsa() {
+        return null != signAlgorithm && signAlgorithm.contains("RS");
+    }
 }
