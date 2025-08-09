@@ -27,5 +27,12 @@ import com.baomidou.kisso.security.token.SSOToken;
  */
 public interface SSOAuthorization {
 
+    /**
+     * 授权是否允许执行
+     *
+     * @param token {@link SSOToken}
+     * @param permission 权限编码
+     * @return true 合法 false 非法
+     */
     boolean isPermitted(SSOToken token, String permission);
 }

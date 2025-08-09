@@ -47,8 +47,6 @@ public class SSOConfig {
     private String signKey;
     /**
      * 签名算法
-     *
-     * @see io.jsonwebtoken.SignatureAlgorithm
      */
     private String signAlgorithm = "HS512";
     /**
