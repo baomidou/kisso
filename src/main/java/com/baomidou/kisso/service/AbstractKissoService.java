@@ -68,7 +68,7 @@ public abstract class AbstractKissoService implements IKissoService {
         List<SSOPlugin> pluginList = getSSOConfig().getPluginList();
         if (pluginList != null) {
             for (SSOPlugin plugin : pluginList) {
-                boolean valid = plugin.validateToken(tk);
+                boolean valid = plugin.validateToken(request, tk);
                 if (!valid) {
                     return null;
                 }

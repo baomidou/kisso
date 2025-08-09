@@ -51,10 +51,11 @@ public abstract class SSOPlugin {
      * 用来验证 Token 合法性（例如 time 超时验证）
      * </p>
      *
+     * @param request  {@link HttpServletRequest}
      * @param ssoToken 登录票据
      * @return true 成功 false 失败
      */
-    public boolean validateToken(SSOToken ssoToken) {
+    public boolean validateToken(HttpServletRequest request, SSOToken ssoToken) {
         return true;
     }
 
