@@ -24,7 +24,11 @@ public class KissoAutoConfiguration {
                                KissoProperties properties) {
         SSOConfig ssoConfig = properties.getConfig();
         if (null == ssoConfig) {
+            // 默认初始化
             ssoConfig = SSOHelper.getSsoConfig();
+        } else {
+            // 自定义初始化
+            SSOHelper.setSsoConfig(ssoConfig);
         }
         return ssoConfig.setPluginList(ssoPluginList);
     }
