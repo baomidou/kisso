@@ -15,10 +15,13 @@
  */
 package com.baomidou.kisso;
 
+import com.baomidou.kisso.common.CookieHelper;
+import com.baomidou.kisso.common.util.RandomUtil;
 import com.baomidou.kisso.enums.TokenOrigin;
 import com.baomidou.kisso.security.JwtHelper;
 import com.baomidou.kisso.security.token.SSOToken;
-import com.baomidou.kisso.service.ConfigurableAbstractKissoService;
+import com.baomidou.kisso.service.AbstractKissoService;
+import com.baomidou.kisso.service.IKissoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -34,7 +37,7 @@ import java.io.IOException;
  */
 public class SSOHelper {
     protected static SSOConfig SSO_CONFIG;
-    protected static ConfigurableAbstractKissoService kissoService;
+    protected static IKissoService SSO_SERVICE;
 
     public static SSOConfig getSsoConfig() {
         if (null == SSO_CONFIG) {
@@ -44,18 +47,29 @@ public class SSOHelper {
     }
 
     public static SSOConfig setSsoConfig(SSOConfig ssoConfig) {
-        SSO_CONFIG = ssoConfig;
+        if (null != ssoConfig) {
+            SSO_CONFIG = ssoConfig;
+        }
         return SSO_CONFIG;
     }
 
     /**
      * Kisso 服务初始化
      */
-    public static ConfigurableAbstractKissoService getKissoService() {
-        if (kissoService == null) {
-            kissoService = new ConfigurableAbstractKissoService();
+    public static IKissoService getKissoService() {
+        if (SSO_SERVICE == null) {
+            SSO_SERVICE = new AbstractKissoService() {
+                // 不处理
+            };
         }
-        return kissoService;
+        return SSO_SERVICE;
+    }
+
+    public static IKissoService setKissoService(IKissoService kissoService) {
+        if (null != kissoService) {
+            SSO_SERVICE = kissoService;
+        }
+        return SSO_SERVICE;
     }
 
     /**
@@ -89,10 +103,10 @@ public class SSOHelper {
      */
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken, boolean invalidate) {
         if (invalidate) {
-            getKissoService().authCookie(request, response, ssoToken);
-        } else {
-            getKissoService().setCookie(request, response, ssoToken);
+            // 当前访问域下设置登录Cookie 设置防止伪造SessionID攻击
+            CookieHelper.authJSESSIONID(request, RandomUtil.getCharacterAndNumber(8));
         }
+        getKissoService().setCookie(request, response, ssoToken);
     }
 
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken) {

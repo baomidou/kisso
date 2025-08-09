@@ -38,7 +38,9 @@ public abstract class SSOPlugin {
      * @param response {@link HttpServletResponse}
      * @return true 成功 false 失败
      */
-    public abstract boolean login(HttpServletRequest request, HttpServletResponse response);
+    public boolean login(HttpServletRequest request, HttpServletResponse response) {
+        return true;
+    }
 
 
     /**
@@ -66,5 +68,7 @@ public abstract class SSOPlugin {
      * @param response {@link HttpServletResponse}
      * @return true 成功 false 失败
      */
-    public abstract boolean logout(HttpServletRequest request, HttpServletResponse response);
+    public boolean logout(HttpServletRequest request, HttpServletResponse response) {
+        return true;
+    }
 }

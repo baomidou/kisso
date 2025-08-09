@@ -17,6 +17,9 @@ package com.baomidou.kisso.service;
 
 import java.io.IOException;
 
+import com.baomidou.kisso.SSOConfig;
+import com.baomidou.kisso.SSOHelper;
+import com.baomidou.kisso.common.SSOConstants;
 import com.baomidou.kisso.enums.TokenOrigin;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +35,27 @@ import com.baomidou.kisso.security.token.SSOToken;
  * @since 2015-12-03
  */
 public interface IKissoService {
+
+    /**
+     * SSO配置信息
+     */
+    default SSOConfig getSSOConfig() {
+        return SSOHelper.getSsoConfig();
+    }
+
+    /**
+     * 获取当前请求 SSOToken
+     * <p>
+     * 此属性在过滤器拦截器中设置，业务系统中调用有效
+     * </p>
+     *
+     * @param request {@link HttpServletRequest}
+     * @return SSOToken {@link SSOToken}
+     */
+    @SuppressWarnings("unchecked")
+    default  <T extends SSOToken> T attrSSOToken(HttpServletRequest request) {
+        return (T) request.getAttribute(SSOConstants.SSO_TOKEN_ATTR);
+    }
 
     /**
      * <p>
@@ -71,4 +95,11 @@ public interface IKissoService {
      * </p>
      */
     void clearRedirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    /**
+     * <p>
+     * 退出登录
+     * </p>
+     */
+    void logout(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }
