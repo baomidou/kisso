@@ -50,9 +50,8 @@ public class SSOSpringInterceptor implements AsyncHandlerInterceptor {
      * </p>
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
-        /**
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        /*
          * 处理 Controller 方法
          * <p>
          * 判断 handler 是否为 HandlerMethod 实例
@@ -63,13 +62,13 @@ public class SSOSpringInterceptor implements AsyncHandlerInterceptor {
             Method method = handlerMethod.getMethod();
             LoginIgnore loginIgnore = method.getAnnotation(LoginIgnore.class);
             if (null != loginIgnore) {
-                /**
+                /*
                  * 忽略拦截
                  */
                 return true;
             }
 
-            /**
+            /*
              * 正常执行
              */
             SSOToken ssoToken = SSOHelper.getSSOToken(request);
@@ -79,7 +78,6 @@ public class SSOSpringInterceptor implements AsyncHandlerInterceptor {
                      * Handler 处理 AJAX 请求
                      */
                     this.getHandlerInterceptor().preTokenIsNullAjax(request, response);
-                    return false;
                 } else {
                     /*
                      * token 为空，调用 Handler 处理
@@ -89,17 +87,22 @@ public class SSOSpringInterceptor implements AsyncHandlerInterceptor {
                         log.debug("logout. request url:" + request.getRequestURL());
                         SSOHelper.clearRedirectLogin(request, response);
                     }
+                }
+                return false;
+            } else {
+                if (this.getHandlerInterceptor().preToken(request, response, ssoToken)) {
+                    /*
+                     * 正常请求，request 设置 token 减少二次解密
+                     */
+                    request.setAttribute(SSOConstants.SSO_TOKEN_ATTR, ssoToken);
+                } else {
+                    // 预处理登录票据禁止进入系统
                     return false;
                 }
-            } else {
-                /*
-                 * 正常请求，request 设置 token 减少二次解密
-                 */
-                request.setAttribute(SSOConstants.SSO_TOKEN_ATTR, ssoToken);
             }
         }
 
-        /**
+        /*
          * 通过拦截
          */
         return true;

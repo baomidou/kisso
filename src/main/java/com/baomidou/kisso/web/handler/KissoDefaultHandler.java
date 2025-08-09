@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso.web.handler;
 
+import com.baomidou.kisso.security.token.SSOToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -63,4 +64,9 @@ public class KissoDefaultHandler implements SSOHandlerInterceptor {
         return true;
     }
 
+    @Override
+    public boolean preToken(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken) {
+        /* 预留子类处理 */
+        return true;
+    }
 }

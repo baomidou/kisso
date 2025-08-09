@@ -15,6 +15,7 @@
  */
 package com.baomidou.kisso.web.handler;
 
+import com.baomidou.kisso.security.token.SSOToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -31,9 +32,9 @@ public interface SSOHandlerInterceptor {
     /**
      * token 为空未登录, 拦截到 AJAX 方法时
      *
-     * @param request
-     * @param response
-     * @return
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     * @return true 继续执行，false 停止执行
      */
     boolean preTokenIsNullAjax(HttpServletRequest request, HttpServletResponse response);
 
@@ -43,10 +44,19 @@ public interface SSOHandlerInterceptor {
      * 返回 true 继续执行（清理登录状态，重定向至登录界面），false 停止执行
      * </p>
      *
-     * @param request
-     * @param response
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
      * @return true 继续执行，false 停止执行
      */
     boolean preTokenIsNull(HttpServletRequest request, HttpServletResponse response);
 
+    /**
+     * token 存在已登录, 自定义处理逻辑
+     *
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     * @param ssoToken {@link SSOToken}
+     * @return true 继续执行，false 停止执行
+     */
+    boolean preToken(HttpServletRequest request, HttpServletResponse response, SSOToken ssoToken);
 }
