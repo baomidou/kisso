@@ -30,6 +30,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -178,6 +181,17 @@ public class SSOToken extends AccessToken {
     public SSOToken data(Map<String, Object> data) {
         this.data = data;
         return this;
+    }
+
+    /**
+     * 判断时间是否过期
+     */
+    public boolean timeExpired() {
+        LocalDateTime expireTime = LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(this.time),
+                ZoneId.systemDefault()
+        );
+        return LocalDateTime.now().isAfter(expireTime);
     }
 
     public String toCacheKey() {
